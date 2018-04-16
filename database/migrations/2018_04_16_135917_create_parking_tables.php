@@ -13,7 +13,7 @@ class CreateParkingTables extends Migration
      */
     public function up()
     {
-        Schema::create('aps_airports', function (Blueprint $table) {
+        Schema::create('airports', function (Blueprint $table) {
             $table->increments('id');
             $table->string('airport_name', 100)->unique();
             $table->text('description')->nullable();
@@ -33,7 +33,7 @@ class CreateParkingTables extends Migration
             $table->index(['airport_name', 'country_id']);
         });
 
-        Schema::create('aps_carparks', function (Blueprint $table) {
+        Schema::create('carparks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
@@ -52,7 +52,7 @@ class CreateParkingTables extends Migration
             $table->index(['name', 'country_id']);
         });
 
-        Schema::create('aps_products', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('carpark_id');
             $table->integer('airport_id');
@@ -66,7 +66,7 @@ class CreateParkingTables extends Migration
             $table->index(['carpark_id', 'airport_id']);
         });
 
-        Schema::create('aps_prices', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('category_id');
@@ -81,7 +81,7 @@ class CreateParkingTables extends Migration
             $table->index('category_id');
         });
 
-        Schema::create('aps_services', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('service_id');
@@ -91,7 +91,7 @@ class CreateParkingTables extends Migration
             $table->index(['product_id', 'service_id']);
         });
 
-        Schema::create('aps_carpark_services', function (Blueprint $table) {
+        Schema::create('carpark_services', function (Blueprint $table) {
             $table->increments('id');
             $table->string('service_name', 30);
             $table->softDeletes();
@@ -100,7 +100,7 @@ class CreateParkingTables extends Migration
             $table->index('service_name');
         });
 
-        Schema::create('aps_price_categories', function (Blueprint $table) {
+        Schema::create('price_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('category_name', 20);
             $table->softDeletes();
@@ -109,7 +109,7 @@ class CreateParkingTables extends Migration
             $table->index('category_name');
         });
 
-        Schema::create('aps_countries', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('prefix', 5);
             $table->string('country', 50);
@@ -124,13 +124,13 @@ class CreateParkingTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('aps_airports');
-        Schema::dropIfExists('aps_carparks');
-        Schema::dropIfExists('aps_products');
-        Schema::dropIfExists('aps_prices');
-        Schema::dropIfExists('aps_services');
-        Schema::dropIfExists('aps_carpark_services');
-        Schema::dropIfExists('aps_price_categories');
-        Schema::dropIfExists('aps_countries');
+        Schema::dropIfExists('airports');
+        Schema::dropIfExists('carparks');
+        Schema::dropIfExists('products');
+        Schema::dropIfExists('prices');
+        Schema::dropIfExists('services');
+        Schema::dropIfExists('carpark_services');
+        Schema::dropIfExists('price_categories');
+        Schema::dropIfExists('countries');
     }
 }

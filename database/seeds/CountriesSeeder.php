@@ -279,7 +279,7 @@ class CountriesSeeder extends Seeder
         ];
 
         foreach ($countries as $country) {
-            DB::table('aps_countries')->insert([
+            DB::table('countries')->insert([
                 'prefix'     => $country['prefix'],
                 'country'    => $country['country'],
                 'created_at' => date('Y-m-d H:i:s'),

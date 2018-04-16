@@ -14,7 +14,7 @@ class PriceCategoriesSeeder extends Seeder
         $categories = ['Onsite', 'Offsite', 'Park and Ride', 'Meet and Greet'];
 
         foreach ($categories as $category) {
-            DB::table('aps_price_categories')->insert([
+            DB::table('price_categories')->insert([
                 'category_name' => $category,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s'),
