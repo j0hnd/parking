@@ -11,7 +11,7 @@ class AirportsController extends Controller
 {
     public function index()
     {
-        $airports = Airports::active()->orderBy('airport_name', 'asc');
+        $airports = Airports::active()->orderBy('airport_name', 'asc')->paginate(2);
         $page_title = "Currently Listed Airports";
         return view('app.Airport.index', compact('airports', 'page_title'));
     }

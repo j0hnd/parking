@@ -28,8 +28,8 @@
                                 <th>County/State</th>
                                 <th></th>
                             </tr>
-                            @if($airports->count())
-                                @foreach($airports->get() as $airport)
+                            @if(count($airports))
+                                @foreach($airports as $airport)
                                 <tr>
                                     <td>{{ $airport->airport_name }}</td>
                                     <td>{{ $airport->city }}</td>
@@ -47,11 +47,13 @@
                             </tr>
                             @endif
                         </tbody>
+                        @if(count($airports))
                         <tfoot>
                             <tr>
-                                <td colspan="4"></td>
+                                <td colspan="4" style="padding-right: 20px; text-align: right;">{{ $airports->links() }}</td>
                             </tr>
                         </tfoot>
+                        @endif
                     </table>
                 </div>
             </div>
