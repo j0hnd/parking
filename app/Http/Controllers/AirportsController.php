@@ -45,4 +45,12 @@ class AirportsController extends Controller
             abort(404, $e->getMessage());
         }
     }
+
+    public function edit(Request $request, $id)
+    {
+        $airport = Airports::findOrFail($id);
+        $countries = Countries::all();
+        $page_title = "Edit ".$airport->airport_name;
+        return view('app.Airport.edit', compact('countries', 'page_title', 'airport'));
+    }
 }

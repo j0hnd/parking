@@ -35,7 +35,7 @@
                                     <td>{{ $airport->city }}</td>
                                     <td>{{ $airport->county_state }}</td>
                                     <td>
-                                        <button type="button" class="btn bg-maroon btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                        <a href="{{ url('/admin/airport/'.$airport->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                         <button type="button" class="btn bg-orange btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                         <button type="button" class="btn bg-olive btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </td>

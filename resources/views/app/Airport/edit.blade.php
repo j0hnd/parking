@@ -10,12 +10,12 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form id="airport-form" class="form-horizontal" method="post" action="{{ url('/admin/airport') }}">
-                    @include('app.Airport.partials._form')
+                <form id="airport-form" class="form-horizontal" method="put" action="{{ url('/admin/airport') }}">
+                    @include('app.Airport.partials._form', compact('airport'))
 
                     <div class="box-footer">
                         <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
-                        <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
+                        <button type="submit" id="toggle-save" class="btn btn-info pull-right">Update</button>
                     </div>
                     <!-- /.box-footer -->
 
@@ -27,10 +27,10 @@
 @stop
 
 @section('scripts')
-<script type="text/javascript">
-    $(function(){
-        $('#countries').select2();
-        $('#subcategory').select2();
-    });
-</script>
+    <script type="text/javascript">
+        $(function(){
+            $('#countries').select2();
+            $('#subcategory').select2();
+        });
+    </script>
 @stop
