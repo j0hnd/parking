@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Route::get('/admin', function () {
-    return view('admin_template');
+//Route::get('/admin', function () {
+//    return view('admin_template');
+//});
+
+Route::group(['prefix' => 'admin'], function () {
+     Route::resource('airport', 'AirportsController');
 });

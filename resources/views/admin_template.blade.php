@@ -33,8 +33,8 @@ desired effect
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Page Header
-          <small>Optional description</small>
+          {{ $page_title }}
+          <small></small>
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
@@ -67,6 +67,8 @@ desired effect
   <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
   <!-- AdminLTE App -->
   <script src="{{ asset('bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
+  <!-- Select2 -->
+  <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
   @yield('scripts')
 
   <!-- Optionally, you can add Slimscroll and FastClick plugins.
