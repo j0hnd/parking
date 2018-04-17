@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AirportRequestForm;
 use App\Models\Airports;
 use App\Models\Tools\Countries;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AirportsController extends Controller
@@ -74,5 +75,15 @@ class AirportsController extends Controller
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+
+    public function delete($id)
+    {
+        $response = ['success' => false];
+        if (Airports::findOrFail($id)->update(['deleted_at' => date('Y-m-d H:i:s')])) {
+            $response = ['success' => true];
+        }
+
+        return response()->json($response);
     }
 }

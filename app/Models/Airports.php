@@ -18,7 +18,8 @@ class Airports extends Model
         'longtitude',
         'latitude',
         'subcategory',
-        'image'
+        'image',
+        'deleted_at'
     ];
 
     public $timestamps = true;

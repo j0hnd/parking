@@ -36,8 +36,7 @@
                                     <td>{{ $airport->county_state }}</td>
                                     <td>
                                         <a href="{{ url('/admin/airport/'.$airport->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                        <button type="button" class="btn bg-orange btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                        <button type="button" class="btn bg-olive btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -59,4 +58,27 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('scripts')
+<script type="text/javascript">
+$(function () {
+    $(document).on('click', '#toggle-delete', function (e) {
+        var id = $(this).data('id');
+        if (confirm('Delete the selected airport?')) {
+            $.ajax({
+                url: '/admin/airport/' + id + '/delete',
+                type: 'post',
+                data: { _token: '{{ csrf_token() }}' },
+                dataType: 'json',
+                success: function (response) {
+                    if (response) {
+                        window.location = '/admin/airport';
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
 @stop

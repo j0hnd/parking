@@ -20,6 +20,7 @@
 //});
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::resource('airport', 'AirportsController')->except(['update']);
+    Route::resource('airport', 'AirportsController')->except(['update', 'delete']);
     Route::post('/airport/update', 'AirportsController@update');
+    Route::post('/airport/{id}/delete', 'AirportsController@delete');
 });
