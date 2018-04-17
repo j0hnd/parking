@@ -10,7 +10,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form id="airport-form" class="form-horizontal" method="put" action="{{ url('/admin/airport') }}">
+                <form id="airport-form" class="form-horizontal" method="post" action="{{ url('/admin/airport/update') }}">
                     @include('app.Airport.partials._form', compact('airport'))
 
                     <div class="box-footer">
@@ -20,6 +20,7 @@
                     <!-- /.box-footer -->
 
                     {{ csrf_field() }}
+                    <input type="hidden" name="id" value="{{ $airport->id }}">
                 </form>
             </div>
         </div>

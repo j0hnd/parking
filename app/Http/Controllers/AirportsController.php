@@ -46,11 +46,33 @@ class AirportsController extends Controller
         }
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $airport = Airports::findOrFail($id);
         $countries = Countries::all();
         $page_title = "Edit ".$airport->airport_name;
         return view('app.Airport.edit', compact('countries', 'page_title', 'airport'));
+    }
+
+    public function update(AirportRequestForm $request)
+    {
+        try {
+
+            if ($request->isMethod('post')) {
+                $form = $request->except(['_token', 'id']);
+                $id = $request->get('id');
+
+                if (Airports::findOrFail($id)->update($form)) {
+                    return redirect('/admin/airport')->with('success', 'Airport details has been updated');
+                } else {
+                    return back()->with('error', 'Error in updating airport details');
+                }
+            } else {
+                return back()->with('error', 'Invalid request');
+            }
+
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }
