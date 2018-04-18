@@ -12,7 +12,7 @@ class AirportsController extends Controller
 {
     public function index()
     {
-        $airports = Airports::active()->orderBy('airport_name', 'asc')->paginate(2);
+        $airports = Airports::active()->orderBy('airport_name', 'asc')->paginate(15);
         $page_title = "Currently Listed Airports";
         return view('app.Airport.index', compact('airports', 'page_title'));
     }
@@ -73,7 +73,7 @@ class AirportsController extends Controller
             }
 
         } catch (\Exception $e) {
-            dd($e);
+            abort(404, $e->getMessage());
         }
     }
 
@@ -85,5 +85,30 @@ class AirportsController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function search(Request $request)
+    {
+        try {
+
+            if ($request->isMethod('post')) {
+                $form = $request->except('_token');
+                $result = Airports::search($form['search']);
+                if (!is_null($result)) {
+                    $page_title = "Currently Listed Airports";
+                    $airports = $result->paginate(15);
+
+                    return view('app.Airport.index', compact('airports', 'page_title'));
+                } else {
+                    return redirect('/admin/airport')->with('error', 'No data found');
+                }
+
+            } else {
+                return redirect('/admin/airport')->with('error', 'Invalid request');
+            }
+
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }

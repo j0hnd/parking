@@ -23,4 +23,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('airport', 'AirportsController')->except(['update', 'delete']);
     Route::post('/airport/update', 'AirportsController@update');
     Route::post('/airport/{id}/delete', 'AirportsController@delete');
+    Route::post('/airport/search', 'AirportsController@search');
 });

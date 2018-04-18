@@ -2,24 +2,26 @@
 @section('main-content')
     <div class="row">
         <div class="col-xs-12">
+            @include('common.flash')
             <div class="box">
                 <div class="box-header">
                     <a href="{{ url('/admin/airport/create') }}" class="btn bg-navy btn-flat">Add Airport</a>
 
                     <div class="box-tools" style="margin-top: 7px">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                        <form action="{{ url('/admin/airport/search') }}" method="post">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="search" class="form-control pull-right" placeholder="Search">
 
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                </div>
                             </div>
-                        </div>
+                            {{ csrf_field() }}
+                        </form>
                     </div>
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    @include('common.flash')
-
                     <table class="table table-hover">
                         <tbody>
                             <tr>

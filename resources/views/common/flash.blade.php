@@ -16,3 +16,9 @@
         <strong><span id="message-prefix">Success!</span></strong> <span class="message">{{ session('success') }}</span> <br>
     </div>
 @endif
+
+@if (session('error'))
+    <div class="error-message-container alert alert-danger">
+        <strong><span id="message-prefix">Error!</span></strong> <span class="message">{{ session('error') }}</span> <br>
+    </div>
+@endif
