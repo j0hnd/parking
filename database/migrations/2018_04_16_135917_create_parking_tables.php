@@ -25,7 +25,6 @@ class CreateParkingTables extends Migration
             $table->string('zipcode', 10)->nullable();
             $table->string('longitude', 20)->nullable();
             $table->string('latitude', 20)->nullable();
-            $table->integer('subcategory')->default(0);
             $table->string('image', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -50,6 +49,14 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['name', 'country_id']);
+        });
+
+        Schema::create('subcategories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('airport_id');
+            $table->integer('subcategory_id');
+            $table->softDeletes();
+            $table->timestamps();
         });
 
         Schema::create('products', function (Blueprint $table) {
@@ -126,6 +133,7 @@ class CreateParkingTables extends Migration
     {
         Schema::dropIfExists('airports');
         Schema::dropIfExists('carparks');
+        Schema::dropIfExists('subcategories');
         Schema::dropIfExists('products');
         Schema::dropIfExists('prices');
         Schema::dropIfExists('services');

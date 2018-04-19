@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AirportRequestForm;
 use App\Models\Airports;
 use App\Models\Tools\Countries;
+use App\Models\Tools\Subcategories;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use DB;
+
 
 class AirportsController extends Controller
 {
@@ -20,8 +23,9 @@ class AirportsController extends Controller
     public function create()
     {
         $countries = Countries::all();
+        $subcategories = Airports::select(['id', 'airport_name'])->orderBy('created_at', 'desc');
         $page_title = "Add Airport";
-        return view('app.Airport.create', compact('countries', 'page_title'));
+        return view('app.Airport.create', compact('countries', 'subcategories', 'page_title'));
     }
 
     public function store(AirportRequestForm $request)
@@ -30,10 +34,13 @@ class AirportsController extends Controller
 
             if ($request->isMethod('post')) {
 
-                $form = $request->except('_token');
+                $form = $request->except(['_token', 'subcategory']);
                 $current = Carbon::now();
 
+                DB::beginTransaction();
+
                 if ($airport = Airports::create($form)) {
+                    // upload image
                     $path = 'uploads/airports/' . $current->format('Y-m-d');
                     if ($request->hasFile('image')) {
                         $image = \Request::file('image');
@@ -45,12 +52,29 @@ class AirportsController extends Controller
                         }
                     }
 
+                    // set subcategories
+                    $subcategories = $request->get('subcategory');
+                    if (count($subcategories)) {
+                        foreach ($subcategories as $sub) {
+                            Subcategories::insert([
+                                'airport_id' => $airport->id,
+                                'subcategory_id' => $sub
+                            ]);
+                        }
+                    }
+
+                    DB::commit();
+
                     return redirect('/admin/airport')->with('success', 'New airport has been added');
                 } else {
+                    DB::rollback();
+
                     return back()->with('error', 'Error in adding new airport');
                 }
 
             } else {
+                DB::rollback();
+
                 return back()->with('error', 'Invalid request');
             }
 

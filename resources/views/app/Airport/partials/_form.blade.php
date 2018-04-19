@@ -96,7 +96,22 @@
         <label class="col-sm-2 control-label">Sub-Category</label>
 
         <div class="col-sm-6">
-            <select name="subcategory" id="subcategory" class="form-control"></select>
+            <select name="subcategory[]" id="subcategory" class="form-control" multiple="multiple">
+                <option value="">-- SubCategory --</option>
+                @if($subcategories->count())
+                    @foreach($subcategories->get() as $sub)
+                        @if(isset($airport))
+                            @if($sub->id == $airport->id)
+                            <option value="{{ $sub->id }}" selected>{{ $sub->airport_name }}</option>
+                            @else
+                            <option value="{{ $sub->id }}">{{ $sub->airport_name }}</option>
+                            @endif
+                        @else
+                        <option value="{{ $sub->id }}">{{ $sub->airport_name }}</option>
+                        @endif
+                    @endforeach
+                @endif
+            </select>
         </div>
     </div>
 
