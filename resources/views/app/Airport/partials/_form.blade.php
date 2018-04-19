@@ -99,4 +99,12 @@
             <select name="subcategory" id="subcategory" class="form-control"></select>
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Upload Image</label>
+
+        <div class="col-sm-6">
+            <input type="file" class="form-control" name="image">
+        </div>
+    </div>
 </div>

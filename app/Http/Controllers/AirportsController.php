@@ -31,8 +31,20 @@ class AirportsController extends Controller
             if ($request->isMethod('post')) {
 
                 $form = $request->except('_token');
+                $current = Carbon::now();
 
-                if (Airports::create($form)) {
+                if ($airport = Airports::create($form)) {
+                    $path = 'uploads/airports/' . $current->format('Y-m-d');
+                    if ($request->hasFile('image')) {
+                        $image = \Request::file('image');
+                        $filename   = $image->getClientOriginalName();
+                        $image_path = "{$path}/".$airport->id;
+
+                        if ($image->move($image_path, $filename)) {
+                            Airports::where('id', $airport->id)->update(['image' => $image_path."/".$filename]);
+                        }
+                    }
+
                     return redirect('/admin/airport')->with('success', 'New airport has been added');
                 } else {
                     return back()->with('error', 'Error in adding new airport');

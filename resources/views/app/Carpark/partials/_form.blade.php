@@ -91,4 +91,12 @@
             <input type="text" class="form-control" name="latitude" placeholder="Latitude" autocomplete="off" value="{{ isset($carpark->latitude) ? $carpark->latitude : "" }}">
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Upload Image</label>
+
+        <div class="col-sm-6">
+            <input type="file" class="form-control" name="image">
+        </div>
+    </div>
 </div>

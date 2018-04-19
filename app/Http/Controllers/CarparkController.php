@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CarparkFormRequest;
 use App\Models\Carpark;
 use App\Models\Tools\Countries;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CarparkController extends Controller
@@ -30,8 +31,20 @@ class CarparkController extends Controller
             if ($request->isMethod('post')) {
 
                 $form = $request->except('_token');
+                $current = Carbon::now();
 
-                if (Carpark::create($form)) {
+                if ($carpark = Carpark::create($form)) {
+                    $path = 'uploads/carparks/' . $current->format('Y-m-d');
+                    if ($request->hasFile('image')) {
+                        $image = \Request::file('image');
+                        $filename   = $image->getClientOriginalName();
+                        $image_path = "{$path}/".$carpark->id;
+
+                        if ($image->move($image_path, $filename)) {
+                            Carpark::where('id', $carpark->id)->update(['image' => $image_path."/".$filename]);
+                        }
+                    }
+
                     return redirect('/admin/carpark')->with('success', 'New carpark has been added');
                 } else {
                     return back()->with('error', 'Error in adding new carpark');
@@ -42,8 +55,7 @@ class CarparkController extends Controller
             }
 
         } catch (\Exception $e) {
-            // abort(404, $e->getMessage());
-            dd($e);
+            abort(404, $e->getMessage());
         }
     }
 
