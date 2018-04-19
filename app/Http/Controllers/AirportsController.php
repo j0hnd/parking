@@ -74,8 +74,21 @@ class AirportsController extends Controller
             if ($request->isMethod('post')) {
                 $form = $request->except(['_token', 'id']);
                 $id = $request->get('id');
+                $current = Carbon::now();
+                $path = 'uploads/airports/' . $current->format('Y-m-d');
+                $airport = Airports::findOrFail($id);
 
-                if (Airports::findOrFail($id)->update($form)) {
+                if ($airport->update($form)) {
+                    if ($request->hasFile('image')) {
+                        $image = \Request::file('image');
+                        $filename   = $image->getClientOriginalName();
+                        $image_path = "{$path}/".$airport->id;
+
+                        if ($image->move($image_path, $filename)) {
+                            Airports::where('id', $airport->id)->update(['image' => $image_path."/".$filename]);
+                        }
+                    }
+
                     return redirect('/admin/airport')->with('success', 'Airport details has been updated');
                 } else {
                     return back()->with('error', 'Error in updating airport details');

@@ -97,6 +97,9 @@
 
         <div class="col-sm-6">
             <input type="file" class="form-control" name="image">
+            @if(!empty($carpark->image))
+            <a href="{{ URL::asset($carpark->image) }}" target="_blank">View Image</a>
+            @endif
         </div>
     </div>
 </div>

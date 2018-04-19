@@ -105,6 +105,9 @@
 
         <div class="col-sm-6">
             <input type="file" class="form-control" name="image">
+            @if(!empty($airport->image))
+            <a href="{{ URL::asset($airport->image) }}" target="_blank">View Image</a>
+            @endif
         </div>
     </div>
 </div>

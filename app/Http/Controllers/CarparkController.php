@@ -72,10 +72,23 @@ class CarparkController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->except(['_token', 'id']);
+                $form = $request->except(['_token', 'id', 'image']);
                 $id = $request->get('id');
+                $current = Carbon::now();
+                $path = 'uploads/carparks/' . $current->format('Y-m-d');
+                $carpark = Carpark::findOrFail($id);
 
-                if (Carpark::findOrFail($id)->update($form)) {
+                if ($carpark->update($form)) {
+                    if ($request->hasFile('image')) {
+                        $image = \Request::file('image');
+                        $filename   = $image->getClientOriginalName();
+                        $image_path = "{$path}/".$carpark->id;
+
+                        if ($image->move($image_path, $filename)) {
+                            Carpark::where('id', $carpark->id)->update(['image' => $image_path."/".$filename]);
+                        }
+                    }
+
                     return redirect('/admin/carpark')->with('success', 'Carpark details has been updated');
                 } else {
                     return back()->with('error', 'Error in updating carpark details');

@@ -10,7 +10,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form id="carpark-form" class="form-horizontal" method="post" action="{{ url('/admin/carpark/update') }}">
+                <form id="carpark-form" class="form-horizontal" method="post" action="{{ url('/admin/carpark/update') }}" enctype="multipart/form-data">
                     @include('app.Carpark.partials._form', compact('carpark'))
 
                     <div class="box-footer">
