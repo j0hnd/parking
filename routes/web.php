@@ -20,8 +20,13 @@
 //});
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::resource('airport', 'AirportsController')->except(['update', 'delete']);
+    Route::resource('airport', 'AirportsController')->except(['update', 'destroy', 'show']);
     Route::post('/airport/update', 'AirportsController@update');
     Route::post('/airport/{id}/delete', 'AirportsController@delete');
     Route::post('/airport/search', 'AirportsController@search');
+
+    Route::resource('carpark', 'CarparkController')->except(['update', 'destroy', 'show']);
+    Route::post('/carpark/update', 'CarparkController@update');
+    Route::post('/carpark/{id}/delete', 'CarparkController@delete');
+    Route::post('/carpark/search', 'CarparkController@search');
 });
