@@ -7,6 +7,8 @@ use App\Models\Airports;
 use App\Models\Carpark;
 use App\Models\ProductAirports;
 use App\Models\Products;
+use App\Models\Tools\CarparkServices;
+use App\Models\Tools\PriceCategories;
 use DB;
 
 class ProductsController extends Controller
@@ -23,7 +25,9 @@ class ProductsController extends Controller
         $page_title = 'Add Product';
         $carparks = Carpark::active()->orderBy('name', 'desc');
         $airports = Airports::active()->orderBy('airport_name', 'desc');
-        return view('app.Product.create', compact('page_title', 'carparks', 'airports'));
+        $priceCategories = PriceCategories::active();
+        $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
+        return view('app.Product.create', compact('page_title', 'carparks', 'airports', 'priceCategories', 'carparkServices'));
     }
 
     public function store(ProductFormRequest $request)

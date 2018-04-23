@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Products extends Model
+class Products extends BaseModel
 {
     protected $fillable = [
         'carpark_id',
@@ -18,13 +16,6 @@ class Products extends Model
 
     protected $with = ['carpark', 'airport'];
 
-    public $timestamps = true;
-
-
-    public function scopeActive($query)
-    {
-        return $query->whereNull('deleted_at');
-    }
 
     public function carpark()
     {

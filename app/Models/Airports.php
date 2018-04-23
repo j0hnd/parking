@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Models\Tools\Countries;
-use Illuminate\Database\Eloquent\Model;
 use DB;
 
-class Airports extends Model
+class Airports extends BaseModel
 {
     protected $fillable = [
         'airport_name',
@@ -26,13 +25,6 @@ class Airports extends Model
 
     protected $with = ['country'];
 
-    public $timestamps = true;
-
-
-    public function scopeActive($query)
-    {
-        return $query->whereNull('deleted_at');
-    }
 
     public function country()
     {

@@ -31,6 +31,7 @@
     $(function(){
         $('#carpark-id').select2({ placeholder: '-- Carpark --' });
         $('#subcategory').select2({ placeholder: '-- SubCategory --' });
+        $('#countries').select2({ placeholder: '-- Countries --' });
     });
 </script>
 @stop
