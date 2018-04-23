@@ -28,15 +28,20 @@ class Carpark extends Model
     public $timestamps = true;
 
 
+    public function scopeActive($query)
+    {
+        return $query->whereNull('deleted_at');
+    }
+
     public function country()
     {
         return $this->hasOne(Countries::class, 'id', 'country_id');
     }
 
-    public function scopeActive($query)
-    {
-        return $query->whereNull('deleted_at');
-    }
+//    public function products()
+//    {
+//        return $this->belongsTo(Products::class, 'product_id', 'id');
+//    }
 
     public static function search($search_str)
     {
@@ -52,4 +57,6 @@ class Carpark extends Model
 
         return $result->count() ? $result : null;
     }
+
+
 }

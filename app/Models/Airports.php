@@ -39,6 +39,11 @@ class Airports extends Model
         return $this->hasOne(Countries::class, 'id', 'country_id');
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Products::class, 'product_airports', 'airport_id', 'product_id');
+    }
+
     public static function search($search_str)
     {
         $result = DB::table('airports')

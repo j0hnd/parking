@@ -52,7 +52,6 @@
 
         <div class="col-sm-6">
             <select name="country_id" id="countries" class="form-control">
-                <option value="">-- Country --</option>
                 @foreach($countries as $country)
                     @if(isset($carpark))
                         @if($country->id == $carpark->country_id)

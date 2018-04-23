@@ -52,7 +52,6 @@
 
         <div class="col-sm-6">
             <select name="country_id" id="countries" class="form-control">
-                <option value="">-- Country --</option>
                 @foreach($countries as $country)
                     @if(isset($airport))
                         @if($country->id == $airport->country_id)
@@ -97,7 +96,6 @@
 
         <div class="col-sm-6">
             <select name="subcategory[]" id="subcategory" class="form-control" multiple="multiple">
-                <option value="">-- SubCategory --</option>
                 @if($subcategories->count())
                     @foreach($subcategories->get() as $sub)
                         @if(isset($airport))

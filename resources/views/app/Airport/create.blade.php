@@ -29,8 +29,8 @@
 @section('scripts')
 <script type="text/javascript">
     $(function(){
-        $('#countries').select2();
-        $('#subcategory').select2();
+        $('#carpark-id').select2({ placeholder: '-- Carpark --' });
+        $('#subcategory').select2({ placeholder: '-- SubCategory --' });
     });
 </script>
 @stop

@@ -62,7 +62,6 @@ class CreateParkingTables extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('carpark_id');
-            $table->integer('airport_id');
             $table->text('description')->nullable();
             $table->string('on_arrival', 255);
             $table->string('on_return', 255);
@@ -70,7 +69,17 @@ class CreateParkingTables extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['carpark_id', 'airport_id']);
+            $table->index('carpark_id');
+        });
+
+        Schema::create('product_airports', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_id');
+            $table->integer('airport_id');
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->index(['product_id', 'airport_id']);
         });
 
         Schema::create('prices', function (Blueprint $table) {
@@ -85,7 +94,7 @@ class CreateParkingTables extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index('category_id');
+            $table->index(['product_id', 'category_id']);
         });
 
         Schema::create('services', function (Blueprint $table) {

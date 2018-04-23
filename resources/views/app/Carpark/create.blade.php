@@ -29,7 +29,7 @@
 @section('scripts')
     <script type="text/javascript">
         $(function(){
-            $('#countries').select2();
+            $('#countries').select2({ placeholder: '-- Country --' });
         });
     </script>
 @stop
