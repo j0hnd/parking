@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Tools\CarparkServices;
+
 class Products extends BaseModel
 {
     protected $fillable = [
@@ -14,7 +16,7 @@ class Products extends BaseModel
 
     protected $guarded = ['carpark_id'];
 
-    protected $with = ['carpark', 'airport'];
+    protected $with = ['carpark', 'airport', 'carpark_services'];
 
 
     public function carpark()
@@ -25,5 +27,10 @@ class Products extends BaseModel
     public function airport()
     {
         return $this->belongsToMany(Airports::class, 'product_airports', 'product_id', 'id');
+    }
+
+    public function carpark_services()
+    {
+        return $this->belongsToMany(CarparkServices::class, 'services', 'product_id', 'id');
     }
 }

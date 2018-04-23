@@ -31,10 +31,10 @@ class Airports extends BaseModel
         return $this->hasOne(Countries::class, 'id', 'country_id');
     }
 
-    public function products()
-    {
-        return $this->belongsToMany(Products::class, 'product_airports', 'airport_id', 'product_id');
-    }
+//    public function product()
+//    {
+//        return $this->belongsToMany(Products::class, 'product_airports', 'airport_id', 'product_id');
+//    }
 
     public static function search($search_str)
     {

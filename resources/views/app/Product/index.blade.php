@@ -32,7 +32,7 @@
                         @if(count($products))
                             @foreach($products as $product)
                                 <tr>
-                                    <td>{{ $product->carpark->name }}</td>
+                                    <td></td>
                                     <td>
                                         @if($product->airport)
                                             <ul>

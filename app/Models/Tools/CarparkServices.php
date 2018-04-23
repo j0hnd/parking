@@ -2,12 +2,16 @@
 
 namespace App\Models\Tools;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use App\Models\Products;
 
-class CarparkServices extends Model
+class CarparkServices extends BaseModel
 {
-    public function scopeActive($query)
-    {
-        return $query->whereNull('deleted_at');
-    }
+//    protected $with = ['product'];
+//
+//
+//    public function product()
+//    {
+//        return $this->belongsToMany(Products::class, 'services', 'service_id', 'product_id');
+//    }
 }
