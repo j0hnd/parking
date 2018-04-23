@@ -7,6 +7,7 @@ use App\Models\Airports;
 use App\Models\Carpark;
 use App\Models\ProductAirports;
 use App\Models\Products;
+use App\Models\Services;
 use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use DB;
@@ -35,7 +36,7 @@ class ProductsController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return']);
+                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'services']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -46,6 +47,15 @@ class ProductsController extends Controller
                             'product_id' => $products->id,
                             'airport_id' => $airport
                         ]);
+                    }
+
+                    if (isset($form['services'])) {
+                        foreach ($form['services'] as $service) {
+                            Services::create([
+                                'product_id' => $products->id,
+                                'service_id' => $service
+                            ]);
+                        }
                     }
 
                     DB::commit();
