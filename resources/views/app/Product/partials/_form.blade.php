@@ -14,7 +14,7 @@
 
             {{-- prices --}}
             <div class="tab-pane" id="tab_2">
-                {{--@include('app.Product.partials._prices')--}}
+                @include('app.Product.partials._prices')
             </div>
 
             {{-- services --}}

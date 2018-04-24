@@ -35,6 +35,30 @@
             $('#description').wysihtml5();
             $('#on_arrival').wysihtml5();
             $('#on_return').wysihtml5();
+
+            var row_limit = '{{ $priceCategories->count() }}';
+            var row_count = 1;
+
+            $(document).on('click', '#toggle-create-row', function () {
+                var src = $('tbody tr:first').clone();
+                if (row_count < row_limit) {
+                    src.find('input').val(0);
+                    $('#price-form-wrapper').append(src);
+                    row_count++;
+                } else {
+                    alert("You can only add "+ row_limit +" price category variance.");
+                }
+            });
+
+            $(document).on('click', '#toggle-remove-row', function () {
+                var row = $(this).closest('tr');
+                if (row_count == 1) {
+                    alert('Unable to delete this last row.');
+                } else {
+                    row_count--;
+                    row.remove();
+                }
+            });
         });
     </script>
 @stop

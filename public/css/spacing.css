@@ -1,0 +1,59 @@
+/* additional paddings */
+.padding-5 { padding: 5 }
+.padding-10 { padding: 10px }
+.padding-15 { padding: 15px }
+.padding-20 { padding: 20px }
+.padding-25 { padding: 25px }
+.padding-30 { padding: 30px }
+
+.padding-top5 { padding-top:5px !important; }
+.padding-top7 { padding-top:7px !important; }
+.padding-top10 { padding-top:10px !important; }
+.padding-top15 { padding-top:15px !important; }
+.padding-top17 { padding-top:17px !important; }
+.padding-top30 { padding-top:30px !important; }
+
+.padding-left5 { padding-left:5px !important; }
+.padding-left7 { padding-left:7px !important; }
+.padding-left10 { padding-left:10px !important; }
+.padding-left15 { padding-left:15px !important; }
+.padding-left17 { padding-left:17px !important; }
+.padding-left25 { padding-left:25px !important; }
+.padding-left30 { padding-left:30px !important; }
+
+.padding-right5 { padding-right:5px !important; }
+.padding-right7 { padding-right:7px !important; }
+.padding-right10 { padding-right:10px !important; }
+.padding-right15 { padding-right:15px !important; }
+.padding-right17 { padding-right:17px !important; }
+.padding-right25 { padding-right:25px !important; }
+.padding-right30 { padding-right:30px !important; }
+
+/* additional margins */
+.margin-5 { margin: 5 }
+.margin-10 { margin: 10px }
+.margin-15 { margin: 15px }
+.margin-20 { margin: 20px }
+.margin-25 { margin: 25px }
+.margin-30 { margin: 30px }
+
+.margin-top5 { margin-top: 5px !important; }
+.margin-top10 { margin-top: 10px !important; }
+.margin-top15 { margin-top: 15px !important; }
+.margin-top20 { margin-top: 20px !important; }
+.margin-top25 { margin-top: 25px !important; }
+.margin-top30 { margin-top: 30px !important; }
+
+.margin-right5 { margin-right: 5px !important; }
+.margin-right10 { margin-right: 10px !important; }
+.margin-right15 { margin-right: 15px !important; }
+.margin-right20 { margin-right: 20px !important; }
+.margin-right25 { margin-right: 25px !important; }
+.margin-right30 { margin-right: 30px !important; }
+
+.margin-left5 { margin-left: 5px !important; }
+.margin-left10 { margin-left: 10px !important; }
+.margin-left15 { margin-left: 15px !important; }
+.margin-left20 { margin-left: 20px !important; }
+.margin-left25 { margin-left: 25px !important; }
+.margin-left30 { margin-left: 30px !important; }

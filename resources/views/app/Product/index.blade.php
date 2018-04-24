@@ -32,7 +32,10 @@
                         @if(count($products))
                             @foreach($products as $product)
                                 <tr>
-                                    <td></td>
+                                    <td>
+                                        @php($carpark = json_decode($product->carpark, true))
+                                        {{ $carpark['name'] }}
+                                    </td>
                                     <td>
                                         @if($product->airport)
                                             <ul>
