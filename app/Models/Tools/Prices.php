@@ -23,6 +23,11 @@ class Prices extends BaseModel
     public $timestamps = true;
 
 
+    public function scopeActive($query)
+    {
+        return $query->whereNull('deleted_at');
+    }
+
     public function categories()
     {
         return $this->belongsTo(PriceCategories::class, 'category_id', 'id');

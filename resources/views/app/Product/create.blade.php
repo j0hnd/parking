@@ -9,8 +9,15 @@
                     <h3 class="box-title">Fill up Product Details</h3>
                 </div>
                 <!-- /.box-header -->
+
+                @if(isset($product))
+                    @php($action_url = "/admin/product/update")
+                @else
+                    @php($action_url = "/admin/product")
+                @endif
+
                 <!-- form start -->
-                <form id="carpark-form" class="form-horizontal" method="post" action="{{ url('/admin/product') }}">
+                <form id="carpark-form" class="form-horizontal" method="post" action="{{ $action_url }}">
                     @include('app.Product.partials._form')
 
                     <div class="box-footer">
@@ -20,6 +27,9 @@
                     <!-- /.box-footer -->
 
                     {{ csrf_field() }}
+                    @if(isset($product))
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    @endif
                 </form>
             </div>
         </div>
@@ -37,7 +47,7 @@
             $('#on_return').wysihtml5();
 
             var row_limit = '{{ $priceCategories->count() }}';
-            var row_count = 1;
+            var row_count = '{{ $row_count }}';
 
             $(document).on('click', '#toggle-create-row', function () {
                 var src = $('tbody tr:first').clone();

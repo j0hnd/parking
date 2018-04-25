@@ -11,6 +11,7 @@ use App\Models\Services;
 use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,8 @@ class ProductsController extends Controller
         $airports = Airports::active()->orderBy('airport_name', 'desc');
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
-        return view('app.Product.create', compact('page_title', 'carparks', 'airports', 'priceCategories', 'carparkServices'));
+        $row_count = 1;
+        return view('app.Product.create', compact('page_title', 'carparks', 'airports', 'priceCategories', 'carparkServices', 'row_count'));
     }
 
     public function store(ProductFormRequest $request)
@@ -114,6 +116,7 @@ class ProductsController extends Controller
         $airports = Airports::active()->orderBy('airport_name', 'desc');
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
+        $row_count = count($product->prices) ? count($product->prices) : 1;
 
         // get selected services
         $selectedServices = [];
@@ -123,6 +126,86 @@ class ProductsController extends Controller
             }
         }
 
-        return view('app.Product.create', compact('page_title', 'product', 'carparks', 'airports', 'priceCategories', 'carparkServices', 'selectedServices'));
+        return view('app.Product.create', compact(
+            'page_title',
+            'product',
+            'carparks',
+            'airports',
+            'priceCategories',
+            'carparkServices',
+            'selectedServices',
+            'row_count'
+        ));
+    }
+
+    public function update(Request $request)
+    {
+        try {
+
+            if ($request->isMethod('post')) {
+                $product = Products::findOrFail($request->product_id);
+                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services']);
+                $airports = $request->get('airport_id');
+
+                DB::beginTransaction();
+                $product->carpark_id    = $form['carpark_id'];
+                $product->description   = $form['description'];
+                $product->on_arrival    = $form['on_arrival'];
+                $product->on_return     = $form['on_return'];
+                $product->revenue_share = $form['revenue_share'];
+
+                if ($product->save()) {
+                    // update airports
+                    ProductAirports::where('product_id', $product->id)->delete();
+                    foreach ($airports as $airport) {
+                        ProductAirports::create([
+                            'product_id' => $product->id,
+                            'airport_id' => $airport
+                        ]);
+                    }
+
+                    // update prices
+                    Prices::where('product_id', $product->id)->delete();
+                    foreach ($form['prices'] as $field => $prices) {
+                        foreach ($prices as $key => $values) {
+                            foreach ($values as $i => $val) {
+                                $prices_form[$i] = [
+                                    'product_id'      => $product->id,
+                                    'category_id'     => $form['prices']['category_id'][0][$i],
+                                    'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
+                                    'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
+                                    'price_month'     => $form['prices']['price_month'][3][$i],
+                                    'price_year'      => $form['prices']['price_year'][4][$i],
+                                    'price_value'     => $form['prices']['price_value'][5][$i],
+                                ];
+                            }
+                        }
+                    }
+
+                    foreach ($prices_form as $form) {
+                        Prices::create($form);
+                    }
+
+                    // update services
+                    Services::where('product_id', $product->id)->delete();
+                    if (isset($form['services'])) {
+                        foreach ($form['services'] as $service) {
+                            Services::create([
+                                'product_id' => $product->id,
+                                'service_id' => $service
+                            ]);
+                        }
+                    }
+                }
+
+                DB::commit();
+
+                return redirect('/admin/product')->with('success', 'Product has been updated');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+        }
     }
 }

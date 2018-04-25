@@ -63,8 +63,8 @@ class CreateParkingTables extends Migration
             $table->increments('id');
             $table->integer('carpark_id');
             $table->text('description')->nullable();
-            $table->string('on_arrival', 255);
-            $table->string('on_return', 255);
+            $table->text('on_arrival');
+            $table->text('on_return');
             $table->float('revenue_share')->default(0);
             $table->softDeletes();
             $table->timestamps();
