@@ -114,6 +114,14 @@ class ProductsController extends Controller
         $airports = Airports::active()->orderBy('airport_name', 'desc');
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
-        return view('app.Product.create', compact('page_title', 'product', 'carparks', 'airports', 'priceCategories', 'carparkServices'));
+
+        // get selected services
+        $selectedServices = [];
+        if (count($product->carpark_services)) {
+            foreach ($product->carpark_services as $service) {
+                $selectedServices[$service->id] = $service->service_name;
+            }
+        }
+        return view('app.Product.create', compact('page_title', 'product', 'carparks', 'airports', 'priceCategories', 'carparkServices', 'selectedServices'));
     }
 }
