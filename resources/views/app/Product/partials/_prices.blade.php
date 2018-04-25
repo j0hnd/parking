@@ -24,9 +24,9 @@
                             @endif
                         </select>
                     </td>
-                    <td><input type="number" name="prices[price_start_day][1][]" class="form-control" placeholder="Price Start Day" value="0"></td>
-                    <td><input type="number" name="prices[price_end_day][2][]" class="form-control" placeholder="Price End Day" value="0"></td>
-                    <td><input type="number" name="prices[price_month][3][]" class="form-control" placeholder="Price Month" value="0"></td>
+                    <td><input type="number" name="prices[price_start_day][1][]" class="form-control price-start-day" placeholder="Price Start Day" value="0"></td>
+                    <td><input type="number" name="prices[price_end_day][2][]" class="form-control price-end-day" placeholder="Price End Day" value="0"></td>
+                    <td><input type="number" name="prices[price_month][3][]" class="form-control price-month" placeholder="Price Month" value="0"></td>
                     <td><input type="number" name="prices[price_year][4][]" class="form-control" placeholder="Price Year" value="0"></td>
                     <td><input type="number" name="prices[price_value][5][]" class="form-control" placeholder="Price Value" value="0"></td>
                     <td>

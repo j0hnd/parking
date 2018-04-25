@@ -12,6 +12,7 @@ use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 use DB;
+use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
@@ -57,8 +58,8 @@ class ProductsController extends Controller
                                     $prices_form[$i] = [
                                         'product_id'      => $products->id,
                                         'category_id'     => $form['prices']['category_id'][0][$i],
-                                        'price_start_day' => $form['prices']['price_start_day'][1][$i],
-                                        'price_end_day'   => $form['prices']['price_end_day'][2][$i],
+                                        'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
+                                        'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
                                         'price_month'     => $form['prices']['price_month'][3][$i],
                                         'price_year'      => $form['prices']['price_year'][4][$i],
                                         'price_value'     => $form['prices']['price_value'][5][$i],
@@ -93,5 +94,15 @@ class ProductsController extends Controller
             DB::rollback();
             dd($e->getMessage());
         }
+    }
+
+    public function delete($id)
+    {
+        $response = ['success' => false];
+        if (Products::findOrFail($id)->update(['deleted_at' => date('Y-m-d H:i:s')])) {
+            $response = ['success' => true];
+        }
+
+        return response()->json($response);
     }
 }

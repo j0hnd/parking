@@ -59,6 +59,11 @@
                     row.remove();
                 }
             });
+
+            // $(document).on('blur', '.price-month', function () {
+            //     var el = $(this);
+            //
+            // });
         });
     </script>
 @stop

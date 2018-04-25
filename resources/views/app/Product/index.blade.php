@@ -72,3 +72,26 @@
         </div>
     </div>
 @stop
+
+@section('scripts')
+    <script>
+        $(function () {
+            $(document).on('click', '#toggle-delete', function () {
+                var id = $(this).data('id');
+                if (confirm("Delete this product?")) {
+                    $.ajax({
+                        url: '/admin/product/'+ id +'/delete',
+                        type: 'post',
+                        data: { _token: '{{ csrf_token() }}' },
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response) {
+                                window.location = '/admin/product';
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@stop

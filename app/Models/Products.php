@@ -11,7 +11,8 @@ class Products extends BaseModel
         'description',
         'on_arrival',
         'on_return',
-        'revenue_share'
+        'revenue_share',
+        'deleted_at'
     ];
 
     protected $guarded = ['carpark_id'];

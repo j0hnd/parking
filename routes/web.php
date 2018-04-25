@@ -31,4 +31,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/carpark/search', 'CarparkController@search');
 
     Route::resource('product', 'ProductsController')->except(['update', 'destroy', 'show']);
+    Route::post('/product/{id}/delete', 'ProductsController@delete');
 });
