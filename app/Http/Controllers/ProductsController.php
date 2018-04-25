@@ -105,4 +105,15 @@ class ProductsController extends Controller
 
         return response()->json($response);
     }
+
+    public function edit($id)
+    {
+        $product = Products::findOrFail($id);
+        $page_title = "Edit Product";
+        $carparks = Carpark::active()->orderBy('name', 'desc');
+        $airports = Airports::active()->orderBy('airport_name', 'desc');
+        $priceCategories = PriceCategories::active();
+        $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
+        return view('app.Product.create', compact('page_title', 'product', 'carparks', 'airports', 'priceCategories', 'carparkServices'));
+    }
 }
