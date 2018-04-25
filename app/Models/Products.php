@@ -28,7 +28,7 @@ class Products extends BaseModel
 
     public function airport()
     {
-        return $this->belongsToMany(Airports::class, 'product_airports', 'product_id', 'id');
+        return $this->belongsToMany(Airports::class, 'product_airports', 'product_id', 'airport_id')->whereNull('product_airports.deleted_at');
     }
 
     public function carpark_services()

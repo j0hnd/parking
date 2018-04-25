@@ -27,8 +27,8 @@ class ProductsController extends Controller
     public function create()
     {
         $page_title = 'Add Product';
-        $carparks = Carpark::active()->orderBy('name', 'desc');
-        $airports = Airports::active()->orderBy('airport_name', 'desc');
+        $carparks = Carpark::active()->orderBy('name', 'asc');
+        $airports = Airports::active()->orderBy('airport_name', 'asc');
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
         $row_count = 1;
@@ -53,36 +53,36 @@ class ProductsController extends Controller
                         ]);
                     }
 
-                    if (isset($form['prices'])) {
-                        foreach ($form['prices'] as $field => $prices) {
-                            foreach ($prices as $key => $values) {
-                                foreach ($values as $i => $val) {
-                                    $prices_form[$i] = [
-                                        'product_id'      => $products->id,
-                                        'category_id'     => $form['prices']['category_id'][0][$i],
-                                        'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
-                                        'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
-                                        'price_month'     => $form['prices']['price_month'][3][$i],
-                                        'price_year'      => $form['prices']['price_year'][4][$i],
-                                        'price_value'     => $form['prices']['price_value'][5][$i],
-                                    ];
-                                }
-                            }
-                        }
-
-                        foreach ($prices_form as $form) {
-                            Prices::create($form);
-                        }
-                    }
-
-                    if (isset($form['services'])) {
-                        foreach ($form['services'] as $service) {
-                            Services::create([
-                                'product_id' => $products->id,
-                                'service_id' => $service
-                            ]);
-                        }
-                    }
+//                    if (isset($form['prices'])) {
+//                        foreach ($form['prices'] as $field => $prices) {
+//                            foreach ($prices as $key => $values) {
+//                                foreach ($values as $i => $val) {
+//                                    $prices_form[$i] = [
+//                                        'product_id'      => $products->id,
+//                                        'category_id'     => $form['prices']['category_id'][0][$i],
+//                                        'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
+//                                        'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
+//                                        'price_month'     => $form['prices']['price_month'][3][$i],
+//                                        'price_year'      => $form['prices']['price_year'][4][$i],
+//                                        'price_value'     => $form['prices']['price_value'][5][$i],
+//                                    ];
+//                                }
+//                            }
+//                        }
+//
+//                        foreach ($prices_form as $form) {
+//                            Prices::create($form);
+//                        }
+//                    }
+//
+//                    if (isset($form['services'])) {
+//                        foreach ($form['services'] as $service) {
+//                            Services::create([
+//                                'product_id' => $products->id,
+//                                'service_id' => $service
+//                            ]);
+//                        }
+//                    }
 
                     DB::commit();
 
@@ -156,46 +156,70 @@ class ProductsController extends Controller
 
                 if ($product->save()) {
                     // update airports
-                    ProductAirports::where('product_id', $product->id)->delete();
-                    foreach ($airports as $airport) {
-                        ProductAirports::create([
-                            'product_id' => $product->id,
-                            'airport_id' => $airport
-                        ]);
-                    }
+                    if (count($airports)) {
+                        $product->airport()->detach();
+                        ProductAirports::where(['product_id' => $product->id])->delete();
 
-                    // update prices
-                    Prices::where('product_id', $product->id)->delete();
-                    foreach ($form['prices'] as $field => $prices) {
-                        foreach ($prices as $key => $values) {
-                            foreach ($values as $i => $val) {
-                                $prices_form[$i] = [
-                                    'product_id'      => $product->id,
-                                    'category_id'     => $form['prices']['category_id'][0][$i],
-                                    'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
-                                    'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
-                                    'price_month'     => $form['prices']['price_month'][3][$i],
-                                    'price_year'      => $form['prices']['price_year'][4][$i],
-                                    'price_value'     => $form['prices']['price_value'][5][$i],
-                                ];
-                            }
-                        }
-                    }
+                        foreach ($airports as $airport) {
+//                            ProductAirports::create([
+//                                'product_id' => $product->id,
+//                                'airport_id' => (int) $airport,
+//                                'created_at' => Carbon::now(),
+//                                'updated_at' => Carbon::now()
+//                            ]);
 
-                    foreach ($prices_form as $form) {
-                        Prices::create($form);
-                    }
-
-                    // update services
-                    Services::where('product_id', $product->id)->delete();
-                    if (isset($form['services'])) {
-                        foreach ($form['services'] as $service) {
-                            Services::create([
+                            $product->airport()->attach($product->id, [
                                 'product_id' => $product->id,
-                                'service_id' => $service
+                                'airport_id' => (int) $airport,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
                             ]);
                         }
                     }
+
+                    DB::commit();
+
+
+//                    ProductAirports::where('product_id', $product->id)->delete();
+//                    foreach ($airports as $airport) {
+//                        ProductAirports::create([
+//                            'product_id' => $product->id,
+//                            'airport_id' => $airport
+//                        ]);
+//                    }
+
+//                    // update prices
+//                    Prices::where('product_id', $product->id)->delete();
+//                    foreach ($form['prices'] as $field => $prices) {
+//                        foreach ($prices as $key => $values) {
+//                            foreach ($values as $i => $val) {
+//                                $prices_form[$i] = [
+//                                    'product_id'      => $product->id,
+//                                    'category_id'     => $form['prices']['category_id'][0][$i],
+//                                    'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
+//                                    'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
+//                                    'price_month'     => $form['prices']['price_month'][3][$i],
+//                                    'price_year'      => $form['prices']['price_year'][4][$i],
+//                                    'price_value'     => $form['prices']['price_value'][5][$i],
+//                                ];
+//                            }
+//                        }
+//                    }
+//
+//                    foreach ($prices_form as $form) {
+//                        Prices::create($form);
+//                    }
+//
+//                    // update services
+//                    Services::where('product_id', $product->id)->delete();
+//                    if (isset($form['services'])) {
+//                        foreach ($form['services'] as $service) {
+//                            Services::create([
+//                                'product_id' => $product->id,
+//                                'service_id' => $service
+//                            ]);
+//                        }
+//                    }
                 }
 
                 DB::commit();

@@ -3,6 +3,7 @@
 
     <div class="col-sm-9">
         <select name="carpark_id" id="carpark-id" class="form-control">
+            <option value="" readonly>-- Carpark -- </option>
             @if($carparks->count())
                 @foreach($carparks->get() as $carpark)
                     @if(isset($product))
@@ -35,8 +36,9 @@
                             <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
                             @endif
                         @endforeach
+                    @else
+                    <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
                     @endif
-                <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
                 @endforeach
             @endif
         </select>
