@@ -122,6 +122,7 @@ class ProductsController extends Controller
                 $selectedServices[$service->id] = $service->service_name;
             }
         }
+
         return view('app.Product.create', compact('page_title', 'product', 'carparks', 'airports', 'priceCategories', 'carparkServices', 'selectedServices'));
     }
 }

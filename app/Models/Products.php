@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Tools\CarparkServices;
+use App\Models\Tools\Prices;
 
 class Products extends BaseModel
 {
@@ -17,7 +18,7 @@ class Products extends BaseModel
 
     protected $guarded = ['carpark_id'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices'];
 
 
     public function carpark()
@@ -33,5 +34,10 @@ class Products extends BaseModel
     public function carpark_services()
     {
         return $this->belongsToMany(CarparkServices::class, 'services', 'product_id', 'id');
+    }
+
+    public function prices()
+    {
+        return $this->hasMany(Prices::class, 'product_id', 'id');
     }
 }

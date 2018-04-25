@@ -18,5 +18,13 @@ class Prices extends BaseModel
 
     protected $guarded = ['product_id', 'category_id'];
 
+    protected $with = ['categories'];
+
     public $timestamps = true;
+
+
+    public function categories()
+    {
+        return $this->belongsTo(PriceCategories::class, 'category_id', 'id');
+    }
 }
