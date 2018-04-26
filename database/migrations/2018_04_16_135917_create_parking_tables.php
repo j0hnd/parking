@@ -86,10 +86,10 @@ class CreateParkingTables extends Migration
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('category_id');
-            $table->float('price_start_day')->default(0);
-            $table->float('price_end_day')->default(0);
-            $table->float('price_month')->nullable();
-            $table->float('price_year')->nullable();
+            $table->string('price_start_day', 20)->nullable();
+            $table->string('price_end_day', 20)->nullable();
+            $table->string('price_month', 20)->nullable();
+            $table->string('price_year', 20)->nullable();
             $table->float('price_value')->nullable();
             $table->softDeletes();
             $table->timestamps();

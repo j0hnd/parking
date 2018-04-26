@@ -80,28 +80,28 @@ class ProductsController extends Controller
                         ]);
                     }
 
-//                    if (isset($form['prices'])) {
-//                        foreach ($form['prices'] as $field => $prices) {
-//                            foreach ($prices as $key => $values) {
-//                                foreach ($values as $i => $val) {
-//                                    $prices_form[$i] = [
-//                                        'product_id'      => $products->id,
-//                                        'category_id'     => $form['prices']['category_id'][0][$i],
-//                                        'price_start_day' => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_start_day'][1][$i],
-//                                        'price_end_day'   => ($form['prices']['price_month'][3][$i]) ? 0 : $form['prices']['price_end_day'][2][$i],
-//                                        'price_month'     => $form['prices']['price_month'][3][$i],
-//                                        'price_year'      => $form['prices']['price_year'][4][$i],
-//                                        'price_value'     => $form['prices']['price_value'][5][$i],
-//                                    ];
-//                                }
-//                            }
-//                        }
-//
-//                        foreach ($prices_form as $form) {
-//                            Prices::create($form);
-//                        }
-//                    }
-//
+                    if (isset($form['prices'])) {
+                        foreach ($form['prices'] as $field => $prices) {
+                            foreach ($prices as $key => $values) {
+                                foreach ($values as $i => $val) {
+                                    $prices_form[$i] = [
+                                        'product_id'      => $products->id,
+                                        'category_id'     => $form['prices']['category_id'][0][$i],
+                                        'price_start_day' => $form['prices']['price_start_day'][1][$i],
+                                        'price_end_day'   => $form['prices']['price_end_day'][2][$i],
+                                        'price_month'     => $form['prices']['price_month'][3][$i],
+                                        'price_year'      => $form['prices']['price_year'][4][$i],
+                                        'price_value'     => $form['prices']['price_value'][5][$i],
+                                    ];
+                                }
+                            }
+                        }
+
+                        foreach ($prices_form as $form) {
+                            Prices::create($form);
+                        }
+                    }
+
                     if (isset($form['services'])) {
                         foreach ($form['services'] as $service) {
                             Services::create([
@@ -153,6 +153,22 @@ class ProductsController extends Controller
             }
         }
 
+        $timestamp = strtotime('next Sunday');
+        $days = array();
+        for ($i = 0; $i < 7; $i++) {
+            $days[] = strftime('%A', $timestamp);
+            $timestamp = strtotime('+1 day', $timestamp);
+        }
+
+        for ($m = 1; $m <= 12; $m++) {
+            $months[] = date('F', mktime(0,0,0,$m, 1, date('Y')));
+        }
+
+        $years [] = (int) date('Y');
+        for ($y = 1; $y <= 30; $y++) {
+            $years[] = date('Y') + $y;
+        }
+
         return view('app.Product.create', compact(
             'page_title',
             'product',
@@ -161,7 +177,10 @@ class ProductsController extends Controller
             'priceCategories',
             'carparkServices',
             'selectedServices',
-            'row_count'
+            'row_count',
+            'days',
+            'months',
+            'years'
         ));
     }
 

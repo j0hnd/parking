@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Tools\CarparkServices;
+use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 
 class Products extends BaseModel
@@ -39,5 +40,6 @@ class Products extends BaseModel
     public function prices()
     {
         return $this->hasMany(Prices::class, 'product_id', 'id');
+        // return $this->belongsToMany(PriceCategories::class, 'prices', 'product_id', 'category_id');
     }
 }

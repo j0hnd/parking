@@ -34,7 +34,11 @@
                             <select name="prices[price_start_day][1][]" class="form-control price_start_day" id="">
                                 <option value="" readonly>-- Days --</option>
                                 @foreach ($days as $day)
-                                <option value="{{ $day }}">{{ $day }}</option>
+                                    @if($day == $prices->price_start_day)
+                                    <option value="{{ $day }}" selected>{{ $day }}</option>
+                                    @else
+                                    <option value="{{ $day }}">{{ $day }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>
@@ -42,23 +46,35 @@
                             <select name="prices[price_end_day][2][]" class="form-control price_end_day" id="">
                                 <option value="" readonly>-- Days --</option>
                                 @foreach ($days as $day)
+                                    @if($day == $prices->price_end_day)
+                                    <option value="{{ $day }}" selected>{{ $day }}</option>
+                                    @else
                                     <option value="{{ $day }}">{{ $day }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>
                         <td>
                             <select name="prices[price_month][3][]" class="form-control price_month" id="">
-                                <option value="" readonly>-- Days --</option>
-                                @foreach ($monthds as $month)
+                                <option value="" readonly>-- Months --</option>
+                                @foreach ($months as $month)
+                                    @if($month == $prices->price_month)
+                                    <option value="{{ $month }}" selected>{{ $month }}</option>
+                                    @else
                                     <option value="{{ $month }}">{{ $month }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>
                         <td>
                             <select name="prices[price_year][4][]" class="form-control price_year" id="">
-                                <option value="" readonly>-- Days --</option>
+                                <option value="" readonly>-- Years --</option>
                                 @foreach ($years as $year)
+                                    @if($year == $prices->price_year)
+                                    <option value="{{ $year }}" selected>{{ $year }}</option>
+                                    @else
                                     <option value="{{ $year }}">{{ $year }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>
