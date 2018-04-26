@@ -11,15 +11,11 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
-//Route::get('/admin', function () {
-//    return view('admin_template');
-//});
+Route::get('/', 'Auth\LoginController@login');
 
 Route::group(['prefix' => 'admin'], function () {
+    Route::get('/dashboard', 'DashboardController@index');
+
     Route::resource('airport', 'AirportsController')->except(['update', 'destroy', 'show']);
     Route::post('/airport/update', 'AirportsController@update');
     Route::post('/airport/{id}/delete', 'AirportsController@delete');

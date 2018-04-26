@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Cartalyst\Sentinel\Users\EloquentUser;
+use Cartalyst\Sentinel\Users\UserInterface;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends EloquentUser implements UserInterface
 {
     use Notifiable;
 
