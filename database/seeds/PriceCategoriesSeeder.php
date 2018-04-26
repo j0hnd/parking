@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Tools\PriceCategories;
+
 
 class PriceCategoriesSeeder extends Seeder
 {
@@ -11,6 +13,7 @@ class PriceCategoriesSeeder extends Seeder
      */
     public function run()
     {
+        PriceCategories::truncate();
         $categories = ['Onsite', 'Offsite', 'Park and Ride', 'Meet and Greet'];
 
         foreach ($categories as $category) {

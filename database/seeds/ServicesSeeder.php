@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Tools\CarparkServices;
+
 
 class ServicesSeeder extends Seeder
 {
@@ -11,6 +13,7 @@ class ServicesSeeder extends Seeder
      */
     public function run()
     {
+        CarparkServices::truncate();
         $services = ['Security Cams', 'Entry Barriers', 'Indoor', 'Outdoor', 'Insured', 'Car wash', 'Valet', 'Shuttle Bus Charged', 'Shuttle Bus Free', 'Carpark Fees'];
 
         foreach ($services as $service) {

@@ -131,6 +131,16 @@ class CreateParkingTables extends Migration
             $table->string('country', 50);
             $table->timestamps();
         });
+
+        Schema::create('members', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->string('first_name', 25);
+            $table->string('last_name', 25);
+            $table->tinyInteger('is_active')->default(1);
+            $table->softDeletes();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -149,5 +159,6 @@ class CreateParkingTables extends Migration
         Schema::dropIfExists('carpark_services');
         Schema::dropIfExists('price_categories');
         Schema::dropIfExists('countries');
+        Schema::dropIfExists('members');
     }
 }

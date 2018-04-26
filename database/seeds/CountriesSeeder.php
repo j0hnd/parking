@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Tools\Countries;
 
 class CountriesSeeder extends Seeder
 {
@@ -11,6 +12,8 @@ class CountriesSeeder extends Seeder
      */
     public function run()
     {
+        Countries::truncate();
+
         $countries = [
             	[ "prefix" => "AF", "country" => "Afghanistan" ],
                 [ "prefix" => "AL", "country" => "Albania" ],

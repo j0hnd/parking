@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Cartalyst\Sentinel\Users\UserInterface;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+//use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends EloquentUser implements UserInterface
 {
@@ -17,8 +17,10 @@ class User extends EloquentUser implements UserInterface
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'email', 'password', 'permissions', 'last_login', 'is_active', 'remember_token'
     ];
+
+    protected $guarded = ['user_id'];
 
     /**
      * The attributes that should be hidden for arrays.
