@@ -8,7 +8,7 @@
                     <th>Price End Day</th>
                     <th>Price Month</th>
                     <th>Price Year</th>
-                    <th>Price Value</th>
+                    <th style="width: 100px;">Price Value</th>
                     <th></th>
                 </tr>
             </thead>
@@ -30,10 +30,38 @@
                                 @endif
                             </select>
                         </td>
-                        <td><input type="number" name="prices[price_start_day][1][]" class="form-control price-start-day" placeholder="Price Start Day" value="{{ $prices->price_start_day }}"></td>
-                        <td><input type="number" name="prices[price_end_day][2][]" class="form-control price-end-day" placeholder="Price End Day" value="{{ $prices->price_end_day }}"></td>
-                        <td><input type="number" name="prices[price_month][3][]" class="form-control price-month" placeholder="Price Month" value="{{ $prices->price_month }}"></td>
-                        <td><input type="number" name="prices[price_year][4][]" class="form-control" placeholder="Price Year" value="{{ $prices->price_year }}"></td>
+                        <td>
+                            <select name="prices[price_start_day][1][]" class="form-control price_start_day" id="">
+                                <option value="" readonly>-- Days --</option>
+                                @foreach ($days as $day)
+                                <option value="{{ $day }}">{{ $day }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_end_day][2][]" class="form-control price_end_day" id="">
+                                <option value="" readonly>-- Days --</option>
+                                @foreach ($days as $day)
+                                    <option value="{{ $day }}">{{ $day }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_month][3][]" class="form-control price_month" id="">
+                                <option value="" readonly>-- Days --</option>
+                                @foreach ($monthds as $month)
+                                    <option value="{{ $month }}">{{ $month }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_year][4][]" class="form-control price_year" id="">
+                                <option value="" readonly>-- Days --</option>
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </td>
                         <td><input type="number" name="prices[price_value][5][]" class="form-control" placeholder="Price Value" value="{{ $prices->price_value }}"></td>
                         <td>
                             <div class="btn-group">
@@ -48,33 +76,61 @@
                     </tr>
                     @endforeach
                 @else
-                <tr>
-                    <td>
-                        <select name="prices[category_id][0][]" class="form-control">
-                            @if($priceCategories->count())
-                                <option value="">-- Select Price Category --</option>
-                                @foreach($priceCategories->get() as $price)
+                    <tr>
+                        <td>
+                            <select name="prices[category_id][0][]" class="form-control">
+                                @if($priceCategories->count())
+                                    <option value="">-- Category --</option>
+                                    @foreach($priceCategories->get() as $price)
                                     <option value="{{ $price->id }}">{{ $price->category_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_start_day][1][]" class="form-control price_start_day" id="">
+                                <option value="" readonly>-- Days --</option>
+                                @foreach ($days as $day)
+                                    <option value="{{ $day }}">{{ $day }}</option>
                                 @endforeach
-                            @endif
-                        </select>
-                    </td>
-                    <td><input type="number" name="prices[price_start_day][1][]" class="form-control price-start-day" placeholder="Price Start Day" value="0"></td>
-                    <td><input type="number" name="prices[price_end_day][2][]" class="form-control price-end-day" placeholder="Price End Day" value="0"></td>
-                    <td><input type="number" name="prices[price_month][3][]" class="form-control price-month" placeholder="Price Month" value="0"></td>
-                    <td><input type="number" name="prices[price_year][4][]" class="form-control" placeholder="Price Year" value="0"></td>
-                    <td><input type="number" name="prices[price_value][5][]" class="form-control" placeholder="Price Value" value="0"></td>
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row">
-                                <i class="fa fa-trash-o"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_end_day][2][]" class="form-control price_end_day" id="">
+                                <option value="" readonly>-- Days --</option>
+                                @foreach ($days as $day)
+                                    <option value="{{ $day }}">{{ $day }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_month][3][]" class="form-control price_month" id="">
+                                <option value="" readonly>-- Months --</option>
+                                @foreach ($months as $month)
+                                    <option value="{{ $month }}">{{ $month }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select name="prices[price_year][4][]" class="form-control price_year" id="">
+                                <option value="" readonly>-- Years --</option>
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td><input type="number" name="prices[price_value][5][]" class="form-control" placeholder="Price Value" value="0"></td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                 @endif
             </tbody>
         </table>

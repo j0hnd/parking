@@ -46,7 +46,7 @@
             $('#on_arrival').wysihtml5();
             $('#on_return').wysihtml5();
 
-            var row_limit = '{{ $priceCategories->count() }}';
+            var row_limit = 15;
             var row_count = '{{ $row_count }}';
 
             $(document).on('click', '#toggle-create-row', function () {

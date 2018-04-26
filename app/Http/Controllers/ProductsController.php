@@ -32,7 +32,34 @@ class ProductsController extends Controller
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
         $row_count = 1;
-        return view('app.Product.create', compact('page_title', 'carparks', 'airports', 'priceCategories', 'carparkServices', 'row_count'));
+
+        $timestamp = strtotime('next Sunday');
+        $days = array();
+        for ($i = 0; $i < 7; $i++) {
+            $days[] = strftime('%A', $timestamp);
+            $timestamp = strtotime('+1 day', $timestamp);
+        }
+
+        for ($m = 1; $m <= 12; $m++) {
+            $months[] = date('F', mktime(0,0,0,$m, 1, date('Y')));
+        }
+
+        $years [] = (int) date('Y');
+        for ($y = 1; $y <= 30; $y++) {
+            $years[] = date('Y') + $y;
+        }
+
+        return view('app.Product.create', compact(
+            'page_title',
+            'carparks',
+            'airports',
+            'priceCategories',
+            'carparkServices',
+            'row_count',
+            'days',
+            'months',
+            'years'
+        ));
     }
 
     public function store(ProductFormRequest $request)
@@ -203,16 +230,18 @@ class ProductsController extends Controller
 //                        Prices::create($form);
 //                    }
 //
-//                    // update services
-//                    Services::where('product_id', $product->id)->delete();
-//                    if (isset($form['services'])) {
-//                        foreach ($form['services'] as $service) {
-//                            Services::create([
-//                                'product_id' => $product->id,
-//                                'service_id' => $service
-//                            ]);
-//                        }
-//                    }
+                    // update services
+                    if (isset($form['services'])) {
+                        $product->carpark_services()->detach();
+                        Services::where('product_id', $product->id)->delete();
+
+                        foreach ($form['services'] as $service) {
+                            $product->carpark_services()->attach($product->id, [
+                                'product_id' => $product->id,
+                                'service_id' => $service
+                            ]);
+                        }
+                    }
                 }
 
                 DB::commit();
