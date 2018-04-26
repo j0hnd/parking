@@ -75,14 +75,14 @@ class ProductsController extends Controller
 //                        }
 //                    }
 //
-//                    if (isset($form['services'])) {
-//                        foreach ($form['services'] as $service) {
-//                            Services::create([
-//                                'product_id' => $products->id,
-//                                'service_id' => $service
-//                            ]);
-//                        }
-//                    }
+                    if (isset($form['services'])) {
+                        foreach ($form['services'] as $service) {
+                            Services::create([
+                                'product_id' => $products->id,
+                                'service_id' => $service
+                            ]);
+                        }
+                    }
 
                     DB::commit();
 
@@ -161,13 +161,6 @@ class ProductsController extends Controller
                         ProductAirports::where(['product_id' => $product->id])->delete();
 
                         foreach ($airports as $airport) {
-//                            ProductAirports::create([
-//                                'product_id' => $product->id,
-//                                'airport_id' => (int) $airport,
-//                                'created_at' => Carbon::now(),
-//                                'updated_at' => Carbon::now()
-//                            ]);
-
                             $product->airport()->attach($product->id, [
                                 'product_id' => $product->id,
                                 'airport_id' => (int) $airport,

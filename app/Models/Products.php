@@ -33,7 +33,7 @@ class Products extends BaseModel
 
     public function carpark_services()
     {
-        return $this->belongsToMany(CarparkServices::class, 'services', 'product_id', 'id');
+        return $this->belongsToMany(CarparkServices::class, 'services', 'product_id', 'service_id')->whereNull('services.deleted_at');
     }
 
     public function prices()
