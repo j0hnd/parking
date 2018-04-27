@@ -45,11 +45,7 @@ class LoginController extends Controller
             if ($request->isMethod('post')) {
                 // Try to log the user in
                 if ($user = Sentinel::authenticate($request->only(['email', 'password']), $request->get('remember-me', false))) {
-                    if (0 === strpos($request->headers->get('Accept'), 'application/json')) {
-                        return response()->json(['data' => $user, 200]);
-                    } else {
-                        return Redirect::to($this->redirectTo);
-                    }
+                    return redirect($this->redirectTo);
                 } else {
                     return back()->withErrors('Invalid Username and/or Password');
                 }
@@ -58,11 +54,13 @@ class LoginController extends Controller
             }
         } catch (NotActivatedException $e) {
             return back()->withInput()->withErrors('auth/message.account_not_activated');
+
         } catch (ThrottlingException $e) {
-            $delay = $e->getDelay();
             return back()->withInput()->withErrors('auth/message.account_suspended');
+
         } catch (UserNotFoundException $e) {
             return back()->withInput()->withErrors('auth/message.user_not_found');
+
         } catch (ErrorException $e) {
             return back()->withInput()->withErrors('auth/message.unknown_error');
         }

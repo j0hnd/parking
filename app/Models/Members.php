@@ -13,4 +13,9 @@ class Members extends Model
     protected $dates    = ['deleted_at', 'created_at', 'updated_at'];
 
     public $timestamps = true;
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

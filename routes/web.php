@@ -12,8 +12,9 @@
 */
 
 Route::get('/', 'Auth\LoginController@login');
-Route::get('login', 'Auth\LoginController@login');
-Route::get('logout', 'Auth\LoginController@logout');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
+
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');
