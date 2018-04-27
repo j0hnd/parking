@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'Auth\LoginController@login');
+Route::get('login', 'Auth\LoginController@login');
+Route::get('logout', 'Auth\LoginController@logout');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');
