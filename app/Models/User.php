@@ -6,6 +6,7 @@ use Cartalyst\Sentinel\Users\EloquentUser;
 use Cartalyst\Sentinel\Users\UserInterface;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Tools\Roles;
+use DB;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends EloquentUser implements UserInterface
@@ -35,13 +36,44 @@ class User extends EloquentUser implements UserInterface
     protected $with = ['members', 'roles'];
 
 
+    public function scopeActive($query)
+    {
+        return $query->whereNull('deleted_at');
+    }
 
     public function members()
     {
         return $this->hasOne(Members::class, 'user_id', 'id');
     }
 
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(Roles::class, 'role_users', 'user_id', 'role_id');
+    }
+
+    public static function search($search_str)
+    {
+        $results = DB::table('users')
+            ->select('users.id')
+            ->join('members', 'members.user_id', '=', 'users.id')
+            ->whereNull('users.deleted_at')
+            ->whereNull('members.deleted_at')
+            ->where(function ($query) use ($search_str) {
+                $query->orWhere('users.email', 'like', "{$search_str}%");
+                $query->orWhere('members.first_name', 'like', "{$search_str}%");
+                $query->orWhere('members.last_name', 'like', "{$search_str}%");
+            });
+
+        $data = $ids = [];
+
+        if ($results->count()) {
+            foreach ($results->get() as $result) {
+                $ids[] = $result->id;
+            }
+
+            $data = User::whereIn('id', $ids);
+        }
+
+        return count($data) ? $data : null;
     }
 }

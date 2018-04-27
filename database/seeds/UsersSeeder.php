@@ -56,7 +56,7 @@ class UsersSeeder extends Seeder
         Members::create([
             'user_id'    => $user->id,
             'first_name' => 'John',
-            'last_name'  => 'Smith',
+            'last_name'  => 'Doe',
             'is_active'  => 1
         ]);
 
@@ -66,5 +66,12 @@ class UsersSeeder extends Seeder
         ]);
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 4]);
+
+        Members::create([
+            'user_id'    => $user->id,
+            'first_name' => 'Jane',
+            'last_name'  => 'Smith',
+            'is_active'  => 1
+        ]);
     }
 }

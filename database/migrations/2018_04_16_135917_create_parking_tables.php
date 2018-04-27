@@ -30,6 +30,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['airport_name', 'country_id']);
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('carparks', function (Blueprint $table) {
@@ -49,6 +50,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['name', 'country_id']);
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('subcategories', function (Blueprint $table) {
@@ -57,6 +59,8 @@ class CreateParkingTables extends Migration
             $table->integer('subcategory_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('products', function (Blueprint $table) {
@@ -70,6 +74,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index('carpark_id');
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('product_airports', function (Blueprint $table) {
@@ -80,6 +85,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['product_id', 'airport_id']);
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('prices', function (Blueprint $table) {
@@ -95,6 +101,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['product_id', 'category_id']);
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('services', function (Blueprint $table) {
@@ -105,6 +112,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['product_id', 'service_id']);
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('carpark_services', function (Blueprint $table) {
@@ -114,6 +122,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index('service_name');
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('price_categories', function (Blueprint $table) {
@@ -123,6 +132,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index('category_name');
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('countries', function (Blueprint $table) {
@@ -130,6 +140,8 @@ class CreateParkingTables extends Migration
             $table->string('prefix', 5);
             $table->string('country', 50);
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
 
         Schema::create('members', function (Blueprint $table) {
@@ -140,6 +152,8 @@ class CreateParkingTables extends Migration
             $table->tinyInteger('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -150,15 +164,16 @@ class CreateParkingTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('airports');
-        Schema::dropIfExists('carparks');
         Schema::dropIfExists('subcategories');
-        Schema::dropIfExists('products');
         Schema::dropIfExists('prices');
         Schema::dropIfExists('services');
         Schema::dropIfExists('carpark_services');
         Schema::dropIfExists('price_categories');
+        Schema::dropIfExists('product_airports');
         Schema::dropIfExists('countries');
         Schema::dropIfExists('members');
+        Schema::dropIfExists('airports');
+        Schema::dropIfExists('carparks');
+        Schema::dropIfExists('products');
     }
 }
