@@ -6,7 +6,7 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        @include('common.flash');
+        @include('common.flash')
 
         <p class="login-box-msg">Sign in to start your session</p>
 

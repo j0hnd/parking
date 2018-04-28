@@ -43,28 +43,30 @@ class UsersController extends Controller
                 $form_user['password'] = $temporary_password;
 
                 if ($user = Sentinel::register($form_user)) {
+                    // create member info
                     Members::create([
-                        'user_id'   => $user->id,
-                        'fist_name' => $form_member['first_name'],
-                        'last_name' => $form_member['last_name'],
-                        'is_active' => 1
+                        'user_id'    => $user->id,
+                        'first_name' => $form_member['first_name'],
+                        'last_name'  => $form_member['last_name'],
+                        'is_active'  => 1
                     ]);
+
+                    // assign role to a user
+                    $role = Sentinel::findRoleById($form_user['role_id']);
+                    $role->users()->attach($user);
 
                     Mail::to($form_user['email'])->send(new TemporaryPassword(['password' => $temporary_password]));
 
-                    dd('xxx 2');
                     DB::commit();
 
                     return redirect('/admin/users')->with('success', 'New user has been added');
                 } else {
                     DB::rollback();
-                    dd('xxx 2');
 
                     return back()->with('error', 'Error in adding new user');
                 }
 
             } else {
-                dd('xxx 3');
                 DB::rollback();
 
                 return back()->with('error', 'Invalid request');
