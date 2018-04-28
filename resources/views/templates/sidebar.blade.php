@@ -29,11 +29,14 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">HEADER</li>
-            <!-- Optionally, you can add icons to the links -->
+            <li class="active"><a href="{{ url('/admin/dashboard') }}"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a></li>
+            @if(in_array($user->roles[0]->slug, ['adminstrator', 'vendor', 'travel agent']))
             <li class="active"><a href="{{ url('/admin/airport') }}"><i class="fa fa-plane"></i> <span>Airports</span></a></li>
             <li class="active"><a href="{{ url('/admin/carpark') }}"><i class="fa fa-building "></i> <span>Carparks</span></a></li>
             <li class="active"><a href="{{ url('/admin/product') }}"><i class="fa fa-list"></i> <span>Products</span></a></li>
-            
+            @endif
+
+            @if($user->roles[0]->slug == 'administrator')
             <li class="header">Settings</li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Settings</span>
@@ -45,6 +48,7 @@
                     <li><a href="{{ url('/admin/users') }}">Users</a></li>
                 </ul>
             </li>
+            @endif
         </ul>
         <!-- /.sidebar-menu -->
     </section>

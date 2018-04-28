@@ -14,6 +14,8 @@ class UsersSeeder extends Seeder
     public function run()
     {
         User::truncate();
+        Members::truncate();
+
         DB::table('role_users')->truncate();
 
         $user = Sentinel::registerAndActivate([
