@@ -124,7 +124,7 @@ class UsersController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $user = Sentinel::getUser();
+                $user = (isset($request->id)) ? User::findOrFail($request->id) : Sentinel::getUser();
 
                 $form_user   = $request->except(['_token', 'first_name', 'last_name', 'password', 'confirm_password']);
                 $form_member = $request->only(['first_name', 'last_name']);
@@ -167,5 +167,13 @@ class UsersController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        $roles = Roles::all();
+        $page_title = "Profile of ".$user->members->first_name." ".$user->members->last_name;
+        return view('app.User.edit', compact('roles', 'page_title', 'user'));
     }
 }

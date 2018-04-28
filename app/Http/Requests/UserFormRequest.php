@@ -34,8 +34,10 @@ class UserFormRequest extends FormRequest
         if (!empty($input['id'])) {
             $user = User::find($input['id']);
             $rules['email'] = 'required|email|unique:users,email,'.$user->id;
-            $rules['password'] = 'required|string|min:4|max:12';
-            $rules['confirm_passwod'] = 'same:password';
+            if (!empty($input['password'])) {
+                $rules['password'] = 'string|min:4|max:12';
+                $rules['confirm_passwod'] = 'same:password';
+            }
         } else {
             $rules['email'] = 'required|email|unique:users,email';
         }
