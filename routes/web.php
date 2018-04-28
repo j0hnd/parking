@@ -35,4 +35,5 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::resource('users', 'UsersController')->except(['update', 'destroy', 'show']);
     Route::post('/users/search', 'UsersController@search');
+    Route::post('/users/{id}/delete', 'UsersController@delete');
 });

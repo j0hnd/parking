@@ -19,7 +19,7 @@ class User extends EloquentUser implements UserInterface
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'permissions', 'last_login', 'is_active', 'remember_token'
+        'email', 'password', 'permissions', 'last_login', 'is_active', 'remember_token', 'deleted_at'
     ];
 
     protected $guarded = ['user_id'];

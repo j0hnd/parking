@@ -66,3 +66,26 @@
         </div>
     </div>
 @stop
+
+@section('scripts')
+<script type="text/javascript">
+$(function () {
+    $(document).on('click', '#toggle-delete', function (e) {
+        var id = $(this).data('id');
+        if (confirm('Delete the selected user?')) {
+            $.ajax({
+                url: '/admin/users/' + id + '/delete',
+                type: 'post',
+                data: { _token: '{{ csrf_token() }}' },
+                dataType: 'json',
+                success: function (response) {
+                    if (response) {
+                        window.location = '/admin/users';
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
+@stop

@@ -101,4 +101,14 @@ class UsersController extends Controller
             abort(404, $e->getMessage());
         }
     }
+
+    public function delete($id)
+    {
+        $response = ['success' => false];
+        if (User::findOrFail($id)->update(['deleted_at' => date('Y-m-d H:i:s')])) {
+            $response = ['success' => true];
+        }
+
+        return response()->json($response);
+    }
 }
