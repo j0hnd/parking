@@ -33,8 +33,7 @@ class UsersController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-
-                $form_user = $request->except(['_token', 'first_name', 'last_name']);
+                $form_user   = $request->except(['_token', 'first_name', 'last_name']);
                 $form_member = $request->only(['first_name', 'last_name']);
 
                 DB::beginTransaction();
@@ -42,7 +41,7 @@ class UsersController extends Controller
                 $temporary_password = str_random(8);
                 $form_user['password'] = $temporary_password;
 
-                if ($user = Sentinel::register($form_user)) {
+                if ($user = Sentinel::registerAndActivate($form_user)) {
                     // create member info
                     Members::create([
                         'user_id'    => $user->id,
@@ -110,5 +109,50 @@ class UsersController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function profile()
+    {
+        $user = Sentinel::getUser();
+        $roles = Roles::all();
+        $page_title = "Profile of ".$user->members->first_name." ".$user->members->last_name;
+        return view('app.User.profile', compact('roles', 'page_title'));
+    }
+
+    public function update(UserFormRequest $request)
+    {
+        try {
+
+            if ($request->isMethod('post')) {
+                $user = Sentinel::getUser();
+
+                $form_user   = $request->except(['_token', 'first_name', 'last_name', 'password', 'confirm_password']);
+                $form_member = $request->only(['first_name', 'last_name']);
+
+                if ($user->update($form_user)) {
+                    // update member details
+                    $user->members->update($form_member);
+
+                    // check if role is still the same
+                    if ($user->roles[0]->id != $form_user['role_id']) {
+                        $role = Sentinel::findRoleByName($user->roles[0]->name);
+                        $role->users()->detach($user);
+
+                        // attach user to new role
+                        $role = Sentinel::findRoleById($form_user['role_id']);
+                        $role->users()->attach($user);
+                    }
+
+                    return redirect('/admin/users')->with('success', 'User details has been updated');
+                } else {
+                    return back()->with('error', 'Error in updating user details');
+                }
+            } else {
+                return back()->with('error', 'Invalid request');
+            }
+
+        } catch (\Exception $e) {
+            abort(404, $e->getMessage());
+        }
     }
 }
