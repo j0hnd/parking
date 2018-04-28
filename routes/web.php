@@ -38,4 +38,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/users/search', 'UsersController@search');
     Route::post('/users/update', 'UsersController@update');
     Route::post('/users/{id}/delete', 'UsersController@delete');
+    Route::post('/users/{id}/reset', 'UsersController@reset');
 });

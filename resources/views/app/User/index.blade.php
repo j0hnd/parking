@@ -42,8 +42,9 @@
                                 <td>{{ $reg->roles[0]->name }}</td>
                                 <td>{{ $reg->created_at->format('m/d/Y') }}</td>
                                 <td>
-                                    <a href="{{ url('/admin/users/'.$reg->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                    <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $reg->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    <a href="{{ url('/admin/users/'.$reg->id.'/edit') }}" class="btn bg-maroon btn-flat" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                    <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" title="Delete {{ $reg->members->first_name }} {{ $reg->members->last_name }}" data-id="{{ $reg->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    <button type="button" id="toggle-reset" class="btn bg-navy btn-flat" title="Reset Password" data-id="{{ $reg->id }}"><i class="fa fa-rotate-left" aria-hidden="true"></i></button>
                                 </td>
                             </tr>
                             @endforeach
@@ -81,6 +82,22 @@ $(function () {
                 success: function (response) {
                     if (response) {
                         window.location = '/admin/users';
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#toggle-reset', function (e) {
+        var id = $(this).data('id');
+        if (confirm("Reset selected user's password?")) {
+            $.ajax({
+                url: '/admin/users/' + id + '/reset',
+                type: 'post',
+                data: { _token: '{{ csrf_token() }}' },
+                dataType: 'json',
+                success: function (response) {
+                    if (response) {
                     }
                 }
             });

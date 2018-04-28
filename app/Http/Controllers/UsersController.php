@@ -155,4 +155,17 @@ class UsersController extends Controller
             abort(404, $e->getMessage());
         }
     }
+
+    public function reset($id)
+    {
+        $response = ['success' => false];
+        $temporary_password = str_random(8);
+        $user = User::findOrFail($id);
+        if ($user->update(['password' => $temporary_password])) {
+            Mail::to($user->email)->send(new TemporaryPassword(['password' => $temporary_password]));
+            $response = ['success' => true];
+        }
+
+        return response()->json($response);
+    }
 }
