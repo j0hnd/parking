@@ -34,6 +34,7 @@
             <li class="active"><a href="{{ url('/admin/airport') }}"><i class="fa fa-plane"></i> <span>Airports</span></a></li>
             <li class="active"><a href="{{ url('/admin/carpark') }}"><i class="fa fa-building "></i> <span>Carparks</span></a></li>
             <li class="active"><a href="{{ url('/admin/product') }}"><i class="fa fa-list"></i> <span>Products</span></a></li>
+            <li class="active"><a href="{{ url('/admin/booking') }}"><i class="fa fa-calendar"></i> <span>Bookings</span></a></li>
             @endif
 
             @if($user->roles[0]->slug == 'administrator')
