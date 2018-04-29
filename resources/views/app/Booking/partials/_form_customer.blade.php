@@ -1,12 +1,15 @@
 <div class="row">
     <div class="search-container">
         <div class="col-xs-12">
-            <div class="input-group input-group-sm">
-                <input type="text" name="search" class="form-control pull-right" placeholder="Search Customer">
-
-                <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                </div>
+            <div class="form-group">
+                <select class="form-control" id="search-customer">
+                    <option value="" readonly></option>
+                    @if($customers->count())
+                        @foreach ($customers->get() as $customer) {
+                        <option value="{{ $customer->id }}">{{ $customer->last_name }}, {{ $customer->first_name }}</option>
+                        @endforeach
+                    @endif
+                </select>
             </div>
         </div>
 
@@ -21,7 +24,7 @@
                 <label class="col-sm-2 control-label">First Name</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" name="first_name" placeholder="First Name" autocomplete="off">
+                    <input type="text" class="form-control" id="first-name" name="first_name" placeholder="First Name" autocomplete="off">
                 </div>
             </div>
 
@@ -29,7 +32,7 @@
                 <label class="col-sm-2 control-label">Last Name</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" name="last_name" placeholder="Last Name" autocomplete="off">
+                    <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Last Name" autocomplete="off">
                 </div>
             </div>
 
@@ -37,7 +40,7 @@
                 <label class="col-sm-2 control-label">Email Address</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" name="email" placeholder="Email Address" autocomplete="off">
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" autocomplete="off">
                 </div>
             </div>
 
@@ -45,7 +48,7 @@
                 <label class="col-sm-2 control-label">Mobile No.</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" name="mobile_no" placeholder="Mobile No." autocomplete="off">
+                    <input type="text" class="form-control" id="mobile-no" name="mobile_no" placeholder="Mobile No." autocomplete="off">
                 </div>
             </div>
         </div>

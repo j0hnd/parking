@@ -63,12 +63,16 @@ desired effect
 
   <!-- jQuery 3 -->
   <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+  <!-- jQuery UI -->
+  <script src="{{ asset('bower_components/jquery-ui/jQuery-ui.min.js') }}"></script>
   <!-- Bootstrap 3.3.7 -->
   <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
   <!-- AdminLTE App -->
   <script src="{{ asset('bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
   <!-- Select2 -->
   <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
+  {{-- Bootstratp Datepicker --}}
+  <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <!-- Bootstrap WYSIHTML -->
   <script src="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>
   @yield('scripts')

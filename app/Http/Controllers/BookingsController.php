@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bookings;
 use App\Models\Products;
+use App\Models\Customers;
 use App\Http\Requests\BookingFormRequest;
 
 class BookingsController extends Controller
@@ -18,7 +19,8 @@ class BookingsController extends Controller
     public function create()
     {
         $page_title = "Create Booking";
-        $products = Products::active()->orderBy('created_at', 'desc');
-        return view('app.Booking.create', compact('page_title', 'products'));
+        $products   = Products::active()->orderBy('created_at', 'desc');
+        $customers  = Customers::active()->orderBy('last_name', 'asc');
+        return view('app.Booking.create', compact('page_title', 'products', 'customers'));
     }
 }

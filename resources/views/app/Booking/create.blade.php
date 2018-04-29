@@ -24,6 +24,8 @@
                             <div class="box-body">
                                 <!-- form start -->
                                 @include('app.Booking.partials._form_customer')
+
+                                <input type="hidden" name="customer_id" id="customer-id">
                             </div>
                         </div>
 
@@ -52,6 +54,37 @@ $(function () {
         $('.new-customer-container').addClass('hidden');
         $('.search-container').removeClass('hidden');
     });
+
+    $(document).on('change', '#search-customer', function (e) {
+        var custID = $(this).val();
+        $.ajax({
+            url: '/admin/customer/search',
+            data: { id: custID },
+            dataType: 'json',
+            success: function (response) {
+                $('.new-customer-container').removeClass('hidden');
+                $('.search-container').addClass('hidden');
+
+                $('#customer-id').val(response.id);
+                $('#first-name').val(response.first_name);
+                $('#last-name').val(response.first_name);
+                $('#email').val(response.email);
+                $('#mobile-no').val(response.mobile_no);
+            }
+        });
+    });
+
+    $("#search-customer").select2({
+        placeholder: '-- Customer --'
+    });
+
+    $('#drop-off-at').datepicker({
+        autoclose: true
+    })
+
+    $('#return-at').datepicker({
+        autoclose: true
+    })
 });
 </script>
 @stop
