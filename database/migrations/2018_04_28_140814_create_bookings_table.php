@@ -32,7 +32,7 @@ class CreateBookingsTable extends Migration
             $table->integer('customer_id');
             $table->integer('product_id');
             $table->integer('price_id');
-            $table->string('order_title', 50);
+            $table->string('order_title', 255);
             $table->float('price_value');
             $table->float('revenue_value');
             $table->datetime('drop_off_at');

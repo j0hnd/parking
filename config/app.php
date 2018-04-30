@@ -214,4 +214,5 @@ return [
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
     ],
 
+    'item_per_page' => env('PER_PAGE')
 ];

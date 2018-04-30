@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="search-container">
+    <div class="search-container {{ (isset($booking->customers)) ? "hidden" : "" }}">
         <div class="col-xs-12">
             <div class="form-group">
                 <label class="col-sm-2 control-label">Search Customer</label>
@@ -22,13 +22,17 @@
         </div>
     </div>
 
-    <div class="new-customer-container hidden">
+    <div class="new-customer-container {{ (isset($booking->customers)) ? "" : "hidden" }}">
         <div class="col-xs-12">
             <div class="form-group">
                 <label class="col-sm-2 control-label">First Name</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="first-name" name="first_name" placeholder="First Name" autocomplete="off">
+                    <input type="text" class="form-control" id="first-name"
+                           name="first_name"
+                           placeholder="First Name"
+                           value="{{ isset($booking->customers) ? $booking->customers->first_name : "" }}"
+                           autocomplete="off">
                 </div>
             </div>
 
@@ -36,7 +40,11 @@
                 <label class="col-sm-2 control-label">Last Name</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="last-name" name="last_name" placeholder="Last Name" autocomplete="off">
+                    <input type="text" class="form-control" id="last-name"
+                           name="last_name"
+                           placeholder="Last Name"
+                           value="{{ isset($booking->customers) ? $booking->customers->last_name : "" }}"
+                           autocomplete="off">
                 </div>
             </div>
 
@@ -44,7 +52,11 @@
                 <label class="col-sm-2 control-label">Email Address</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email Address" autocomplete="off">
+                    <input type="text" class="form-control" id="email"
+                           name="email"
+                           placeholder="Email Address"
+                           value="{{ isset($booking->customers) ? $booking->customers->email : "" }}"
+                           autocomplete="off">
                 </div>
             </div>
 
@@ -52,7 +64,11 @@
                 <label class="col-sm-2 control-label">Mobile No.</label>
 
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="mobile-no" name="mobile_no" placeholder="Mobile No." autocomplete="off">
+                    <input type="text" class="form-control" id="mobile-no"
+                           name="mobile_no"
+                           placeholder="Mobile No."
+                           value="{{ isset($booking->customers) ? $booking->customers->mobile_no : "" }}"
+                           autocomplete="off">
                 </div>
             </div>
         </div>

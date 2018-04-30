@@ -7,7 +7,16 @@
                 <option value="" readonly>-- Order Title --</option>
                 @if(!is_null($products_list))
                     @foreach($products_list as $product)
-                    <option value="{{ $product['order_id'] }}">{{ $product['product_name'] }}</option>
+                        @if(isset($booking))
+                            @php($order_id = $booking->product_id.";".$booking->price_id)
+                            @if($order_id == $product['order_id'])
+                            <option value="{{ $product['order_id'] }}" selected>{{ $product['product_name'] }}</option>
+                            @else
+                            <option value="{{ $product['order_id'] }}">{{ $product['product_name'] }}</option>
+                            @endif
+                        @else
+                        <option value="{{ $product['order_id'] }}">{{ $product['product_name'] }}</option>
+                        @endif
                     @endforeach
                 @endif
             </select>
@@ -18,7 +27,10 @@
         <label class="col-sm-2 control-label">Flight No. <small>(Departure)</small> </label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="flight_no_going" placeholder="Flight No." autocomplete="off">
+            <input type="text" class="form-control" name="flight_no_going"
+                   placeholder="Flight No."
+                   value="{{ isset($booking) ? $booking->flight_no_going : "" }}"
+                   autocomplete="off">
         </div>
     </div>
 
@@ -26,7 +38,10 @@
         <label class="col-sm-2 control-label">Flight No. <small>(Arrival)</small> </label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="flight_no_return" placeholder="Flight No." autocomplete="off">
+            <input type="text" class="form-control" name="flight_no_return"
+                   placeholder="Flight No."
+                   value="{{ isset($booking) ? $booking->flight_no_return : "" }}"
+                   autocomplete="off">
         </div>
     </div>
 
@@ -46,7 +61,16 @@
                 <option value="" readonly>-- Vechile Make --</option>
                 @if(count($vehicle_make))
                     @foreach($vehicle_make as $i => $vm)
-                    <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                        @if(isset($booking))
+                            @if($booking->vehicle_make == $vm['value'])
+                            <option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+                            @else
+                            <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                            @endif
+                        @else
+                        <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                        @endif
+
                     @endforeach
                 @endif
             </select>
@@ -57,7 +81,17 @@
         <label class="col-sm-2 control-label">Model</label>
 
         <div class="col-sm-9">
-            <select class="form-control" name="vehicle_model" id="vehicle-model"> </select>
+            <select class="form-control" name="vehicle_model" id="vehicle-model">
+                @if(isset($booking))
+                    @foreach($vehicle_models as $model)
+                        @if($model['value'] == $booking->vehicle_model)
+                        <option value="{{ $model['value'] }}" selected>{{ $model['title'] }}</option>
+                        @else
+                        <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                        @endif
+                    @endforeach
+                @endif
+            </select>
         </div>
     </div>
 
@@ -65,7 +99,10 @@
         <label class="col-sm-2 control-label">Price Value (£)</label>
 
         <div class="col-sm-5">
-            <input type="text" class="form-control" id="price-value" name="price_value" placeholder="Price Value" autocomplete="off">
+            <input type="text" class="form-control" id="price-value" name="price_value"
+                   placeholder="Price Value"
+                   value="{{ isset($booking) ? $booking->price_value : "" }}"
+                   autocomplete="off">
         </div>
     </div>
 
@@ -74,7 +111,11 @@
         <label class="col-sm-2 control-label">Revenue Value (£)</label>
 
         <div class="col-sm-5">
-            <input type="text" class="form-control" id="revenue-share" name="revenue_value" placeholder="Revenue Value" autocomplete="off" readonly>
+            <input type="text" class="form-control" id="revenue-share" name="revenue_value"
+                   placeholder="Revenue Value"
+                   autocomplete="off"
+                   value="{{ isset($booking) ? $booking->revenue_value : "" }}"
+                   readonly>
         </div>
     </div>
     @endif
@@ -83,7 +124,10 @@
         <label class="col-sm-2 control-label">Drop Off:</label>
 
         <div class="col-sm-5">
-            <input type="text" id="drop-off-at" class="form-control" name="drop_off_at" placeholder="Drop Off" autocomplete="off">
+            <input type="text" id="drop-off-at" class="form-control" name="drop_off_at"
+                   placeholder="Drop Off"
+                   value="{{ isset($booking) ? $booking->drop_off_at->format('m/d/Y') : "" }}"
+                   autocomplete="off">
         </div>
     </div>
 
@@ -91,7 +135,10 @@
         <label class="col-sm-2 control-label">Return Date</label>
 
         <div class="col-sm-5">
-            <input type="text" id="return-at" class="form-control" name="return_at" placeholder="Return Date" autocomplete="off">
+            <input type="text" id="return-at" class="form-control" name="return_at"
+                   placeholder="Return Date"
+                   value="{{ isset($booking) ? $booking->return_at->format('m/d/Y') : "" }}"
+                   autocomplete="off">
         </div>
     </div>
 </div>
