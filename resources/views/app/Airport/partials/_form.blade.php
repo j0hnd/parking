@@ -96,7 +96,23 @@
 
         <div class="col-sm-6">
             <select name="subcategory[]" id="subcategory" class="form-control" multiple="multiple">
-                @if($subcategories->count())
+                <option value="" readonly>-- Sub-Category --</option>
+                @if($airports->count())
+                    @foreach($airports->get() as $_airport)
+                        @if(isset($airport))
+                            @if($_airport->id != $airport->id)
+                                @if(in_array($_airport->id, $subcategories) == true)
+                                <option value="{{ $_airport->id }}" selected>{{ $_airport->airport_name }}</option>
+                                @else
+                                <option value="{{ $_airport->id }}">{{ $_airport->airport_name }}</option>
+                                @endif
+                            @endif
+                        @else
+                        <option value="{{ $_airport->id }}">{{ $_airport->airport_name }}</option>
+                        @endif
+                    @endforeach
+                @endif
+                {{-- @if(count($subcategories))
                     @foreach($subcategories->get() as $sub)
                         @if(isset($airport))
                             @if($sub->id == $airport->id)
@@ -108,7 +124,7 @@
                         <option value="{{ $sub->id }}">{{ $sub->airport_name }}</option>
                         @endif
                     @endforeach
-                @endif
+                @endif --}}
             </select>
         </div>
     </div>

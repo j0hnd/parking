@@ -23,9 +23,9 @@ class AirportsController extends Controller
     public function create()
     {
         $countries = Countries::all();
-        $subcategories = Airports::select(['id', 'airport_name'])->orderBy('created_at', 'desc');
         $page_title = "Add Airport";
-        return view('app.Airport.create', compact('countries', 'subcategories', 'page_title'));
+        $airports = Airports::active();
+        return view('app.Airport.create', compact('countries', 'airports', 'page_title'));
     }
 
     public function store(AirportRequestForm $request)
@@ -56,9 +56,10 @@ class AirportsController extends Controller
                     $subcategories = $request->get('subcategory');
                     if (count($subcategories)) {
                         foreach ($subcategories as $sub) {
-                            Subcategories::insert([
-                                'airport_id' => $airport->id,
-                                'subcategory_id' => $sub
+                            $airport->subcategories()->attach($airport->id, [
+                                'subcategory_id' => $sub,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
                             ]);
                         }
                     }
@@ -85,10 +86,19 @@ class AirportsController extends Controller
 
     public function edit($id)
     {
-        $airport = Airports::findOrFail($id);
+        $airport   = Airports::findOrFail($id);
+        $airports  = Airports::active();
         $countries = Countries::all();
+
+        $subcategories = [];
         $page_title = "Edit ".$airport->airport_name;
-        return view('app.Airport.edit', compact('countries', 'page_title', 'airport'));
+
+        if (count($airport->subcategories)) {
+            foreach ($airport->subcategories as $sub) {
+                $subcategories[] = $sub->id;
+            }
+        }
+        return view('app.Airport.edit', compact('countries', 'page_title', 'airport', 'airports', 'subcategories'));
     }
 
     public function update(AirportRequestForm $request)
@@ -96,7 +106,8 @@ class AirportsController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->except(['_token', 'id']);
+                $form = $request->except(['_token', 'id', 'subcategory']);
+                $sub_category = $request->get('subcategory');
                 $id = $request->get('id');
                 $current = Carbon::now();
                 $path = 'uploads/airports/' . $current->format('Y-m-d');
@@ -110,6 +121,19 @@ class AirportsController extends Controller
 
                         if ($image->move($image_path, $filename)) {
                             Airports::where('id', $airport->id)->update(['image' => $image_path."/".$filename]);
+                        }
+                    }
+
+                    if (count($sub_category)) {
+                        $airport->subcategories()->detach();
+                        Subcategories::where('airport_id', $airport->id)->delete();
+
+                        foreach ($sub_category as $sub) {
+                            $airport->subcategories()->attach($airport->id, [
+                                'subcategory_id' => $sub,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
+                            ]);
                         }
                     }
 

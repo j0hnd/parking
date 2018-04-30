@@ -23,12 +23,17 @@ class Airports extends BaseModel
         'deleted_at'
     ];
 
-    protected $with = ['country'];
+    protected $with = ['country', 'subcategories'];
 
 
     public function country()
     {
         return $this->hasOne(Countries::class, 'id', 'country_id');
+    }
+
+    public function subcategories()
+    {
+        return $this->belongsToMany(Airports::class, 'subcategories', 'airport_id', 'subcategory_id');
     }
 
 //    public function product()
