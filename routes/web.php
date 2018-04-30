@@ -11,6 +11,7 @@
 |
 */
 
+Route::get('/admin', 'DashboardController@index');
 Route::get('/', 'Auth\LoginController@login');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
@@ -18,7 +19,7 @@ Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('log
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');
-
+    
     Route::resource('airport', 'AirportsController')->except(['update', 'destroy', 'show']);
     Route::post('/airport/update', 'AirportsController@update');
     Route::post('/airport/{id}/delete', 'AirportsController@delete');

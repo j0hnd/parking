@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookingFormRequest;
 use App\Models\Bookings;
 use App\Models\Products;
 use App\Models\Customers;
-use App\Http\Requests\BookingFormRequest;
+use DB;
+use Carbon\Carbon;
 
 class BookingsController extends Controller
 {
@@ -18,9 +20,98 @@ class BookingsController extends Controller
 
     public function create()
     {
-        $page_title = "Create Booking";
-        $products   = Products::active()->orderBy('created_at', 'desc');
-        $customers  = Customers::active()->orderBy('last_name', 'asc');
-        return view('app.Booking.create', compact('page_title', 'products', 'customers'));
+        $page_title    = "Create Booking";
+        $products_list = null;
+        $customers     = Customers::active()->orderBy('last_name', 'asc');
+        $products      = Products::active()->orderBy('created_at', 'desc');
+        if ($products->count()) {
+            foreach ($products->get() as $productIndex => $product) {
+                foreach ($product->airport as $i => $airport) {
+                    foreach ($product->prices as $prices) {
+                        if (!empty($prices->price_year)) {
+                            $duration = $prices->price_year;
+                        } else if (!empty($prices->price_month)) {
+                            $duration = $prices->price_month;
+                        } else {
+                            $duration = $prices->price_start_day." - ".$prices->price_end_day;
+                        }
+
+                        $products_list[] = [
+                            'order_id'     => $product->id.";".$prices->id,
+                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [".$duration." - £".$prices->price_value."]"
+                        ];
+                    }
+                }
+            }
+        }
+
+        return view('app.Booking.create', compact('page_title', 'products', 'customers', 'products_list'));
+    }
+
+    public function store(BookingFormRequest $request)
+    {
+        try {
+
+            if ($request->isMethod('post')) {
+                $form_booking = $request->only([
+                    'order_title_str',
+                    'order_title',
+                    'flight_no_going',
+                    'flight_no_return',
+                    'car_registration_no',
+                    'vehicle_make',
+                    'car_model' ,
+                    'price_value',
+                    'revenue_value',
+                    'drop_off_at',
+                    'return_at'
+                ]);
+
+                $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
+
+                // extract product id and price id
+                $order = explode(';', $form_booking['order_title']);
+
+                $form_booking['order_title'] = $form_booking['order_title_str'];
+                $form_booking['booking_id']  = Bookings::generate_booking_id();
+                $form_booking['product_id']  = $order[0];
+                $form_booking['price_id']    = $order[1];
+
+                $drop_off_at = new Carbon($form_booking['drop_off_at']);
+                $return_at   = new Carbon($form_booking['return_at']);
+
+                $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d');
+                $form_booking['return_at']   = $return_at->format('Y-m-d');
+
+                DB::beginTransaction();
+
+                if (empty($form_customer['customer_id'])) {
+                    $customer = Customers::create($form_customer);
+                } else {
+                    $customer = Customers::findOrFail($form_customer['customer_id']);
+                }
+
+                $form_booking['customer_id'] = $customer->id;
+
+                if ($booking = Bookings::create($form_booking)) {
+                    DB::commit();
+
+                    return redirect('/admin/booking')->with('success', 'Booking is saved.');
+                } else {
+                    return back()->withError('Unable to save booking');
+                }
+            } else {
+                return back()->withError('Unable to save, invalid request');
+            }
+
+        } catch (Exception $e) {
+            abort(404, $e->getMessage());
+        }
+    }
+
+    public function edit($id)
+    {
+        $booking = Bookings::findOrFail($id);
+        return view('app.Booking.edit', compact('booking'));
     }
 }

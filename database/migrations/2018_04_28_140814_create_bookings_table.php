@@ -30,6 +30,8 @@ class CreateBookingsTable extends Migration
             $table->increments('id');
             $table->string('booking_id', 30)->unique();
             $table->integer('customer_id');
+            $table->integer('product_id');
+            $table->integer('price_id');
             $table->string('order_title', 50);
             $table->float('price_value');
             $table->float('revenue_value');
@@ -43,7 +45,7 @@ class CreateBookingsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['booking_id', 'customer_id']);
+            $table->index(['booking_id', 'customer_id', 'product_id', 'price_id']);
         });
     }
 

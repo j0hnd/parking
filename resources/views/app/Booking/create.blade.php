@@ -30,12 +30,14 @@
                         </div>
 
                         {{ csrf_field() }}
-                    </form>
-                </div>
 
-                <div class="box-footer">
-                    <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
-                    <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                            <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
+                        </div>
+
+                        <input type="hidden" name="order_title_str" id="order-title-str">
+                    </form>
                 </div>
             </div>
         </div>
@@ -72,6 +74,14 @@ $(function () {
                 $('#mobile-no').val(response.mobile_no);
             }
         });
+    });
+
+    $(document).on('change', '#order-title', function () {
+        $('#order-title-str').val($("#order-title option:selected").text());
+    });
+
+    $("#order-title").select2({
+        placeholder: '-- Order Title --'
     });
 
     $("#search-customer").select2({

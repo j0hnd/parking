@@ -1,5 +1,20 @@
 <div class="box-body">
     <div class="form-group">
+        <label class="col-sm-2 control-label">Order Title</label>
+
+        <div class="col-sm-9">
+            <select class="form-control" id="order-title" name="order_title">
+                <option value="" readonly>-- Order Title --</option>
+                @if(!is_null($products_list))
+                    @foreach($products_list as $product)
+                    <option value="{{ $product['order_id'] }}">{{ $product['product_name'] }}</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">Flight No. <small>(Departure)</small> </label>
 
         <div class="col-sm-9">

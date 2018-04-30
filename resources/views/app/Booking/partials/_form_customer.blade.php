@@ -2,19 +2,23 @@
     <div class="search-container">
         <div class="col-xs-12">
             <div class="form-group">
-                <select class="form-control" id="search-customer">
-                    <option value="" readonly></option>
-                    @if($customers->count())
-                        @foreach ($customers->get() as $customer) {
-                        <option value="{{ $customer->id }}">{{ $customer->last_name }}, {{ $customer->first_name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-            </div>
-        </div>
+                <label class="col-sm-2 control-label">Search Customer</label>
 
-        <div class="col-xs-12 pull-right margin-top10">
-            <button type="button" id="toggle-new-customer" class="btn btn-link pull-right">New Customer</button>
+                <div class="col-sm-10">
+                    <select class="form-control" id="search-customer">
+                        <option value="" readonly></option>
+                        @if($customers->count())
+                            @foreach ($customers->get() as $customer) {
+                            <option value="{{ $customer->id }}">{{ $customer->last_name }}, {{ $customer->first_name }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+
+                <div class="col-sm-9 pull-right margin-top10">
+                    <button type="button" id="toggle-new-customer" class="btn btn-link pull-right">New Customer</button>
+                </div>
+            </div>
         </div>
     </div>
 
