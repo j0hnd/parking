@@ -11,9 +11,9 @@
                 <!-- /.box-header -->
 
                 @if(isset($product))
-                    @php($action_url = "/admin/product/update")
+                    @php($action_url = url("/admin/product/update"))
                 @else
-                    @php($action_url = "/admin/product")
+                    @php($action_url = url("/admin/product"))
                 @endif
 
                 <!-- form start -->
