@@ -17,7 +17,7 @@ class UsersController extends Controller
     public function index()
     {
         $page_title = "List of Users";
-        $registered_users = User::active()->orderBy('created_at', 'desc')->paginate(15);
+        $registered_users = User::active()->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
         return view('app.User.index', compact('page_title', 'registered_users'));
     }
 
@@ -85,7 +85,7 @@ class UsersController extends Controller
                 $result = User::search($form['search']);
                 if (!is_null($result)) {
                     $page_title = "List of Users";
-                    $registered_users = $result->paginate(15);
+                    $registered_users = $result->paginate(config('app.item_per_page'));
 
                     return view('app.User.index', compact('registered_users', 'page_title'));
                 } else {

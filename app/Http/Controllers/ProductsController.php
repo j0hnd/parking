@@ -20,7 +20,7 @@ class ProductsController extends Controller
     public function index()
     {
         $page_title = 'Product Listing';
-        $products = Products::active()->paginate(15);
+        $products = Products::active()->paginate(config('app.item_per_page'));
         return view('app.Product.index', compact('page_title', 'products'));
     }
 

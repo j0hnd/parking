@@ -15,7 +15,7 @@ class AirportsController extends Controller
 {
     public function index()
     {
-        $airports = Airports::active()->orderBy('airport_name', 'asc')->paginate(15);
+        $airports = Airports::active()->orderBy('airport_name', 'asc')->paginate(config('app.item_per_page'));
         $page_title = "Currently Listed Airports";
         return view('app.Airport.index', compact('airports', 'page_title'));
     }
@@ -145,7 +145,7 @@ class AirportsController extends Controller
                 $result = Airports::search($form['search']);
                 if (!is_null($result)) {
                     $page_title = "Currently Listed Airports";
-                    $airports = $result->paginate(15);
+                    $airports = $result->paginate(config('app.item_per_page'));
 
                     return view('app.Airport.index', compact('airports', 'page_title'));
                 } else {

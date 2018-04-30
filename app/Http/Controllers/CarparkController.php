@@ -12,7 +12,7 @@ class CarparkController extends Controller
 {
     public function index()
     {
-        $carparks = Carpark::active()->orderBy('name', 'asc')->paginate(15);
+        $carparks = Carpark::active()->orderBy('name', 'asc')->paginate(config('app.item_per_page'));
         $page_title = "Currently Listed Carparks";
         return view('app.Carpark.index', compact('carparks', 'page_title'));
     }
@@ -121,7 +121,7 @@ class CarparkController extends Controller
                 $result = Carpark::search($form['search']);
                 if (!is_null($result)) {
                     $page_title = "Currently Listed Carparks";
-                    $carparks = $result->paginate(15);
+                    $carparks = $result->paginate(config('app.item_per_page'));
 
                     return view('app.Carpark.index', compact('carparks', 'page_title'));
                 } else {
