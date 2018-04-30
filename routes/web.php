@@ -19,7 +19,7 @@ Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('log
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');
-    
+
     Route::resource('airport', 'AirportsController')->except(['update', 'destroy', 'show']);
     Route::post('/airport/update', 'AirportsController@update');
     Route::post('/airport/{id}/delete', 'AirportsController@delete');
@@ -43,4 +43,6 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::resource('booking', 'BookingsController')->except(['update', 'destroy', 'show']);
     Route::get('/customer/search', 'CustomersController@get_customer');
+
+    Route::get('/get/price', 'PricesController@get_price');
 });

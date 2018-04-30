@@ -72,6 +72,9 @@ class BookingsController extends Controller
                 // extract product id and price id
                 $order = explode(';', $form_booking['order_title']);
 
+                // validate product
+                $product = Products::findOrFail($order[0]);
+
                 $form_booking['order_title'] = $form_booking['order_title_str'];
                 $form_booking['booking_id']  = Bookings::generate_booking_id();
                 $form_booking['product_id']  = $order[0];
@@ -82,6 +85,8 @@ class BookingsController extends Controller
 
                 $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d');
                 $form_booking['return_at']   = $return_at->format('Y-m-d');
+
+                $form_booking['revenue_value'] = number_format($form_booking['price_value'] * ($product->revenue_share / 100), 2);
 
                 DB::beginTransaction();
 

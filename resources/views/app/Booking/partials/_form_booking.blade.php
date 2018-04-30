@@ -55,20 +55,22 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Price Value</label>
+        <label class="col-sm-2 control-label">Price Value (£)</label>
 
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="price_value" placeholder="Price Value" autocomplete="off">
+            <input type="text" class="form-control" id="price-value" name="price_value" placeholder="Price Value" autocomplete="off">
         </div>
     </div>
 
+    @if($user->roles[0]->slug == 'administrator')
     <div class="form-group">
-        <label class="col-sm-2 control-label">Revenue Value</label>
+        <label class="col-sm-2 control-label">Revenue Value (£)</label>
 
         <div class="col-sm-5">
-            <input type="text" class="form-control" name="revenue_value" placeholder="Revenue Value" autocomplete="off">
+            <input type="text" class="form-control" id="revenue-share" name="revenue_value" placeholder="Revenue Value" autocomplete="off" readonly>
         </div>
     </div>
+    @endif
 
     <div class="form-group">
         <label class="col-sm-2 control-label">Drop Off:</label>
