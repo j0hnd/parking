@@ -8,13 +8,14 @@ use App\Models\Products;
 use App\Models\Customers;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class BookingsController extends Controller
 {
     public function index()
     {
         $page_title = "Bookings List";
-        $bookings = Bookings::active()->orderBy('created_at', 'desc')->paginate(15);
+        $bookings = Bookings::active()->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
         return view('app.Booking.index', compact('page_title', 'bookings'));
     }
 
@@ -24,6 +25,8 @@ class BookingsController extends Controller
         $products_list = null;
         $customers     = Customers::active()->orderBy('last_name', 'asc');
         $products      = Products::active()->orderBy('created_at', 'desc');
+        $vehicle_make  = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
+
         if ($products->count()) {
             foreach ($products->get() as $productIndex => $product) {
                 foreach ($product->airport as $i => $airport) {
@@ -45,7 +48,7 @@ class BookingsController extends Controller
             }
         }
 
-        return view('app.Booking.create', compact('page_title', 'products', 'customers', 'products_list'));
+        return view('app.Booking.create', compact('page_title', 'products', 'customers', 'products_list', 'vehicle_make'));
     }
 
     public function store(BookingFormRequest $request)
@@ -118,5 +121,20 @@ class BookingsController extends Controller
     {
         $booking = Bookings::findOrFail($id);
         return view('app.Booking.edit', compact('booking'));
+    }
+
+    public function get_vehicle_models(Request $request)
+    {
+        $vehicle_make = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
+        $model_str = "";
+        if ($vehicle_make[$request->index]) {
+            $models = $vehicle_make[$request->index]['models'];
+
+            foreach ($models as $model) {
+                $model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
+            }
+        }
+
+        return response()->json(['options' => $model_str]);
     }
 }

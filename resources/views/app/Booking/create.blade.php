@@ -47,6 +47,10 @@
 @section('scripts')
 <script type="text/javascript">
 $(function () {
+    // console.log(dvlaInfo('HZ13 WDD', function (response) {
+    //     return response;
+    // }));
+
     $(document).on('click', '#toggle-new-customer', function (e) {
         $('.new-customer-container').removeClass('hidden');
         $('.search-container').addClass('hidden');
@@ -99,12 +103,32 @@ $(function () {
         });
     });
 
+    $(document).on('change', '#vehicle-make', function () {
+        var index = $("#vehicle-make option:selected").data('index');
+        var make = $(this).val();
+
+        $.ajax({
+            url: '/admin/get/vehicle/model',
+            data: { make: make, index: index },
+            dataType: 'json',
+            success: function (response) {
+                $('#vehicle-model')
+                    .empty()
+                    .append(response.options);
+            }
+        });
+    });
+
     $("#order-title").select2({
         placeholder: '-- Order Title --'
     });
 
     $("#search-customer").select2({
         placeholder: '-- Customer --'
+    });
+
+    $("#vehicle-make").select2({
+        placeholder: '-- Vehicle Make --'
     });
 
     $('#drop-off-at').datepicker({

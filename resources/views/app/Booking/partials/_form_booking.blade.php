@@ -42,7 +42,14 @@
         <label class="col-sm-2 control-label">Vehicle Make</label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="vehicle_make" placeholder="Vehicle Make" autocomplete="off">
+            <select class="form-control" id="vehicle-make" name="vehicle_make">
+                <option value="" readonly>-- Vechile Make --</option>
+                @if(count($vehicle_make))
+                    @foreach($vehicle_make as $i => $vm)
+                    <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                    @endforeach
+                @endif
+            </select>
         </div>
     </div>
 
@@ -50,7 +57,7 @@
         <label class="col-sm-2 control-label">Model</label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="car_model" placeholder="Model" autocomplete="off">
+            <select class="form-control" name="vehicle_model" id="vehicle-model"> </select>
         </div>
     </div>
 

@@ -45,4 +45,5 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/customer/search', 'CustomersController@get_customer');
 
     Route::get('/get/price', 'PricesController@get_price');
+    Route::get('/get/vehicle/model', 'BookingsController@get_vehicle_models');
 });
