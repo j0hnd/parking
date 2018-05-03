@@ -75,6 +75,7 @@ desired effect
   <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
   <!-- Bootstrap WYSIHTML -->
   <script src="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>
+  {{-- custom scripts --}}
   @yield('scripts')
 
   <!-- Optionally, you can add Slimscroll and FastClick plugins.

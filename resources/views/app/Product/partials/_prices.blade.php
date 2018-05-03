@@ -78,7 +78,13 @@
                                 @endforeach
                             </select>
                         </td>
-                        <td><input type="number" name="prices[price_value][5][]" class="form-control" placeholder="Price Value" value="{{ $prices->price_value }}"></td>
+                        <td>
+                            <input type="text" name="prices[price_value][5][]"
+                                   class="form-control price-value"
+                                   placeholder="Price Value"
+                                   maxlength="4"
+                                   value="{{ $prices->price_value }}">
+                       </td>
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
@@ -135,7 +141,13 @@
                                 @endforeach
                             </select>
                         </td>
-                        <td><input type="number" name="prices[price_value][5][]" class="form-control" placeholder="Price Value" value="0"></td>
+                        <td>
+                            <input type="text" name="prices[price_value][5][]"
+                                   class="form-control price-value"
+                                   placeholder="Price Value"
+                                   maxlength="4"
+                                   value="0">
+                        </td>
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">

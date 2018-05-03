@@ -49,6 +49,11 @@
             var row_limit = 15;
             var row_count = '{{ $row_count }}';
 
+            // $('.price-value').inputmask({ 'mask': '9{1,4}' });
+            $(document).on('keyup', '.price-value', function (e) {
+                $(this).val($(this).val().replace(/[^0-9]/g, ''));
+            });
+
             $(document).on('click', '#toggle-create-row', function () {
                 var src = $('tbody tr:first').clone();
                 if (row_count < row_limit) {
