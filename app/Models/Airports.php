@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Tools\Countries;
+use App\Models\Tools\Subcategories;
 use DB;
 
 class Airports extends BaseModel
@@ -33,7 +34,9 @@ class Airports extends BaseModel
 
     public function subcategories()
     {
-        return $this->belongsToMany(Airports::class, 'subcategories', 'airport_id', 'subcategory_id');
+        return $this->hasMany(Subcategories::class, 'airport_id', 'id');
+        // return $this->belongsTo(Subcategories::class, 'id', 'airport_id');
+        // return $this->belongsToMany(Airports::class, 'subcategories', 'airport_id', 'subcategory_id');
     }
 
 //    public function product()

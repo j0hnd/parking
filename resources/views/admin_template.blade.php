@@ -71,8 +71,9 @@ desired effect
   <script src="{{ asset('bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
   <!-- Select2 -->
   <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
-  {{-- Bootstratp Datepicker --}}
+  {{-- Bootstratp Datepicker and Timepicker --}}
   <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ asset('bower_components/bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
   <!-- Bootstrap WYSIHTML -->
   <script src="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>
   {{-- custom scripts --}}

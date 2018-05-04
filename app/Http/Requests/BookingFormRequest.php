@@ -24,10 +24,10 @@ class BookingFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_title' => 'required',
-            'price_value' => 'required',
-            'drop_off_at' => 'required|date',
-            'return_at'   => 'required|date'
+            'order_title'    => 'required',
+            'price_value'    => 'required',
+            'drop_off_date'  => 'date',
+            'return_at_date' => 'date'
         ];
     }
 }

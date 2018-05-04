@@ -31,7 +31,10 @@
     <script type="text/javascript">
         $(function(){
             $('#countries').select2({ placeholder: '-- Country --' });
-            $('#subcategory').select2({ placeholder: '-- SubCategory --' });
+            $('#subcategory').select2({
+                placeholder: '-- SubCategory --',
+                tags: true
+            });
         });
     </script>
 @stop

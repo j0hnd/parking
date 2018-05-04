@@ -24,8 +24,7 @@ class AirportsController extends Controller
     {
         $countries = Countries::all();
         $page_title = "Add Airport";
-        $airports = Airports::active();
-        return view('app.Airport.create', compact('countries', 'airports', 'page_title'));
+        return view('app.Airport.create', compact('countries', 'page_title'));
     }
 
     public function store(AirportRequestForm $request)
@@ -56,8 +55,13 @@ class AirportsController extends Controller
                     $subcategories = $request->get('subcategory');
                     if (count($subcategories)) {
                         foreach ($subcategories as $sub) {
-                            $airport->subcategories()->attach($airport->id, [
-                                'subcategory_id' => $sub,
+                            Subcategories::updateOrCreate([
+                                'airport_id' => $airport->id,
+                                'subcategory_name' => $sub
+                            ],
+                            [
+                                'airport_id' => $airport->id,
+                                'subcategory_name' => $sub,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
                             ]);
@@ -95,9 +99,10 @@ class AirportsController extends Controller
 
         if (count($airport->subcategories)) {
             foreach ($airport->subcategories as $sub) {
-                $subcategories[] = $sub->id;
+                $subcategories[] = $sub->subcategory_name;
             }
         }
+
         return view('app.Airport.edit', compact('countries', 'page_title', 'airport', 'airports', 'subcategories'));
     }
 
@@ -125,15 +130,13 @@ class AirportsController extends Controller
                     }
 
                     if (count($sub_category)) {
-                        $airport->subcategories()->detach();
-                        Subcategories::where('airport_id', $airport->id)->delete();
-
                         foreach ($sub_category as $sub) {
-                            $airport->subcategories()->attach($airport->id, [
-                                'subcategory_id' => $sub,
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                            ]);
+                            Subcategories::updateOrCreate(
+                                ['airport_id' => $airport->id, 'subcategory_name' => $sub],
+                                ['airport_id' => $airport->id,
+                                    'subcategory_name' => $sub,
+                                    'updated_at' => Carbon::now()]
+                            );
                         }
                     }
 

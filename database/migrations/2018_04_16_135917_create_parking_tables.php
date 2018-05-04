@@ -56,10 +56,11 @@ class CreateParkingTables extends Migration
         Schema::create('subcategories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('airport_id');
-            $table->integer('subcategory_id');
+            $table->string('subcategory_name', 100);
             $table->softDeletes();
             $table->timestamps();
 
+            $table->index(['airport_id', 'subcategory_name']);
             $table->engine = 'InnoDB';
         });
 

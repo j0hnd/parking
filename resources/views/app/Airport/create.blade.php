@@ -30,7 +30,10 @@
 <script type="text/javascript">
     $(function(){
         $('#carpark-id').select2({ placeholder: '-- Carpark --' });
-        $('#subcategory').select2({ placeholder: '-- SubCategory --' });
+        $('#subcategory').select2({
+            placeholder: '-- SubCategory --',
+            tags: true
+        });
         $('#countries').select2({ placeholder: '-- Countries --' });
     });
 </script>

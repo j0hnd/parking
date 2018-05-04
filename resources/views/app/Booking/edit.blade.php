@@ -62,7 +62,7 @@ $(function () {
     $(document).on('change', '#search-customer', function (e) {
         var custID = $(this).val();
         $.ajax({
-            url: '/admin/customer/search',
+            url: '{{ url('/admin/customer/search') }}',
             data: { id: custID },
             dataType: 'json',
             success: function (response) {
@@ -83,7 +83,7 @@ $(function () {
         var revenue_value = 0;
         $('#order-title-str').val($("#order-title option:selected").text());
         $.ajax({
-            url: '/admin/get/price',
+            url: '{{ url('/admin/get/price') }}',
             data: { product_id: ref[0], price_id: ref[1] },
             dataType: 'json',
             success: function (response) {
@@ -106,7 +106,7 @@ $(function () {
         var make = $(this).val();
 
         $.ajax({
-            url: '/admin/get/vehicle/model',
+            url: '{{ url('/admin/get/vehicle/model') }}',
             data: { make: make, index: index },
             dataType: 'json',
             success: function (response) {
