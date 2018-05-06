@@ -14,7 +14,7 @@
                     @include('app.Airport.partials._form', compact('airport'))
 
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                        <button type="button" class="btn btn-default pull-right toggle-cancel" data-back="{{ url('/admin/airport') }}" style="margin-left: 7px;">Cancel</button>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Update</button>
                     </div>
                     <!-- /.box-footer -->

@@ -14,7 +14,7 @@
                     @include('app.Carpark.partials._form', compact('carpark'))
 
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                        <button type="button" class="btn btn-default pull-right toggle-cancel" data-back="{{ url('/admin/carpark') }}" style="margin-left: 7px;">Cancel</button>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Update</button>
                     </div>
                     <!-- /.box-footer -->

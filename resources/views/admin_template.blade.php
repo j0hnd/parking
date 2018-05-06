@@ -76,6 +76,8 @@ desired effect
   <script src="{{ asset('bower_components/bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
   <!-- Bootstrap WYSIHTML -->
   <script src="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>
+  {{-- common scripts --}}
+  <script src="{{ asset('js/common.js') }}"></script>
   {{-- custom scripts --}}
   @yield('scripts')
 

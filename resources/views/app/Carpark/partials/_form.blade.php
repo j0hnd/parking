@@ -95,9 +95,11 @@
         <label class="col-sm-2 control-label">Upload Image</label>
 
         <div class="col-sm-6">
-            <input type="file" class="form-control" name="image">
+            <input type="file" class="form-control margin-bottom10" name="image">
             @if(!empty($carpark->image))
-            <a href="{{ URL::asset($carpark->image) }}" target="_blank">View Image</a>
+            <a href="{{ URL::asset($carpark->image) }}" target="_blank">
+                <img src="{{ asset($carpark->image) }}" style="max-width: 30%" alt="Carpark Image">
+            </a>
             @endif
         </div>
     </div>

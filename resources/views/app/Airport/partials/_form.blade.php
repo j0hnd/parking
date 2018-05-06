@@ -97,7 +97,7 @@
         <div class="col-sm-6">
             <select name="subcategory[]" id="subcategory" class="form-control" multiple="multiple">
                 <option value="" readonly>-- Sub-Category --</option>
-                @if(count($subcategories))
+                @if(isset($subcategories))
                     @foreach($subcategories as $subcategoery)
                     <option value="{{ $subcategoery }}" selected>{{ $subcategoery }}</option>
                     @endforeach
@@ -110,9 +110,11 @@
         <label class="col-sm-2 control-label">Upload Image</label>
 
         <div class="col-sm-6">
-            <input type="file" class="form-control" name="image">
+            <input type="file" class="form-control margin-bottom10" name="image">
             @if(!empty($airport->image))
-            <a href="{{ URL::asset($airport->image) }}" target="_blank">View Image</a>
+            <a href="{{ URL::asset($airport->image) }}" target="_blank">
+                <img src="{{ asset($airport->image) }}" style="max-width: 30%" alt="Airport Image">
+            </a>
             @endif
         </div>
     </div>
