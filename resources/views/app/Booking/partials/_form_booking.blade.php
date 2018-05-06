@@ -78,7 +78,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Model</label>
+        <label class="col-sm-2 control-label">Vehicle Model</label>
 
         <div class="col-sm-9">
             <select class="form-control" name="vehicle_model" id="vehicle-model">
@@ -92,6 +92,17 @@
                     @endforeach
                 @endif
             </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Vehicle Color</label>
+
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="vehicle_color"
+                   placeholder="Vehicle Color"
+                   value="{{ isset($booking) ? $booking->vehicle_color : "" }}"
+                   autocomplete="off">
         </div>
     </div>
 

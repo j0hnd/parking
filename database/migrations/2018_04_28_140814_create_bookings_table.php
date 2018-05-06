@@ -42,6 +42,7 @@ class CreateBookingsTable extends Migration
             $table->string('car_registration_no', 100)->nullable();
             $table->string('vehicle_make', 100)->nullable();
             $table->string('vehicle_model',50)->nullable();
+            $table->string('vehicle_color',20)->nullable();
             $table->softDeletes();
             $table->timestamps();
 
