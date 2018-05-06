@@ -119,6 +119,7 @@ class CreateParkingTables extends Migration
         Schema::create('carpark_services', function (Blueprint $table) {
             $table->increments('id');
             $table->string('service_name', 30);
+            $table->string('icon', 50)->nullable();
             $table->softDeletes();
             $table->timestamps();
 
