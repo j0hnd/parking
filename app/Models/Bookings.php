@@ -35,15 +35,13 @@ class Bookings extends BaseModel
         return $this->belongsTo(Customers::class, 'customer_id', 'id');
     }
 
-    public static function generate_booking_id()
+    public static function generate_booking_id($booking_id)
     {
-        $booking = DB::table('bookings')->orderBy('created_at', 'desc')->first();
-        if (is_null($booking)) {
-            $reference_no = str_pad(1, 6, '0', STR_PAD_LEFT);
-        } else {
-            $reference_no = str_pad(($booking->id + 1), 6, '0', STR_PAD_LEFT);
+        if (is_null($booking_id) or empty($booking_id) or $booking_id == "") {
+            return null;
         }
 
+        $reference_no = str_pad(($booking_id), 6, '0', STR_PAD_LEFT);
         return "CPC-".date('m')."-".$reference_no;
     }
 }

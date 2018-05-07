@@ -137,11 +137,11 @@
         <div class="col-sm-5">
             <input type="text" id="drop-off-date" class="form-control" name="drop_off_date"
                    placeholder="Drop Off"
-                   value=""
+                   value="{{ isset($booking) ? $booking->drop_off_at->format('m/d/Y') : "" }}"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-                <input id="drop-off-time" type="text" class="form-control input-small" name="drop_off_time">
+                <input id="drop-off-time" type="text" class="form-control input-small" name="drop_off_time" value="{{ isset($booking) ? $booking->drop_off_at->format('h:i A') : "" }}">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
         </div>
@@ -157,7 +157,7 @@
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-               <input id="return-at-time" type="text" class="form-control input-small" name="return_at_time">
+               <input id="return-at-time" type="text" class="form-control input-small" name="return_at_time" value="{{ isset($booking) ? $booking->return_at->format('h:i A') : "" }}">
                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
         </div>

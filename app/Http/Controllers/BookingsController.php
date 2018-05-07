@@ -81,7 +81,7 @@ class BookingsController extends Controller
                 $product = Products::findOrFail($order[0]);
 
                 $form_booking['order_title'] = $form_booking['order_title_str'];
-                $form_booking['booking_id']  = Bookings::generate_booking_id();
+                // $form_booking['booking_id']  = Bookings::generate_booking_id();
                 $form_booking['product_id']  = $order[0];
                 $form_booking['price_id']    = $order[1];
 
@@ -109,14 +109,22 @@ class BookingsController extends Controller
                 $form_booking['customer_id'] = $customer->id;
 
                 if ($booking = Bookings::create($form_booking)) {
+                    $booking_id = Bookings::generate_booking_id($booking->id);
+                    $booking_id = null;
+                    if (is_null($booking_id)) {
+                        return back()->withErrors(['error' => 'Error in generating Booking ID']);
+                    }
+
+                    Bookings::findOrFail($booking->id)->update(['booking_id' => $booking_id]);
+
                     DB::commit();
 
                     return redirect('/admin/booking')->with('success', 'Booking is saved');
                 } else {
-                    return back()->withError('Unable to save booking');
+                    return back()->withErrors(['error' => 'Unable to save booking']);
                 }
             } else {
-                return back()->withError('Unable to save, invalid request');
+                return back()->withErrors(['error' => 'Unable to save, invalid request']);
             }
 
         } catch (Exception $e) {
@@ -192,8 +200,10 @@ class BookingsController extends Controller
                     'vehicle_model' ,
                     'price_value',
                     'revenue_value',
-                    'drop_off_at',
-                    'return_at'
+                    'drop_off_date',
+                    'return_at_date',
+                    'drop_off_time',
+                    'return_at_time'
                 ]);
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
@@ -205,17 +215,21 @@ class BookingsController extends Controller
                 $product = Products::findOrFail($order[0]);
 
                 $form_booking['order_title'] = $form_booking['order_title_str'];
-                $form_booking['booking_id']  = Bookings::generate_booking_id();
                 $form_booking['product_id']  = $order[0];
                 $form_booking['price_id']    = $order[1];
 
-                $drop_off_at = new Carbon($form_booking['drop_off_at']);
-                $return_at   = new Carbon($form_booking['return_at']);
+                $drop_off_at = new Carbon($form_booking['drop_off_date']);
+                $return_at   = new Carbon($form_booking['return_at_date']);
 
-                $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d');
-                $form_booking['return_at']   = $return_at->format('Y-m-d');
+                $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['drop_off_time']));
+                $form_booking['return_at']   = $return_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['return_at_time']));
 
                 $form_booking['revenue_value'] = number_format($form_booking['price_value'] * ($product->revenue_share / 100), 2);
+
+                unset($form_booking['drop_off_date']);
+                unset($form_booking['drop_off_time']);
+                unset($form_booking['return_at_date']);
+                unset($form_booking['return_at_time']);
 
                 DB::beginTransaction();
 
@@ -228,10 +242,10 @@ class BookingsController extends Controller
 
                     return redirect('/admin/booking')->with('success', 'Booking has been updated');
                 } else {
-                    return back()->withError('Unable to update booking');
+                    return back()->withErrors(['error' => 'Unable to update booking']);
                 }
             } else {
-                return back()->withError('Unable to update, invalid request');
+                return back()->withErrors(['error' => 'Unable to update, invalid request']);
             }
 
         } catch (Exception $e) {
