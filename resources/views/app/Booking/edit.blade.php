@@ -129,11 +129,14 @@ $(function () {
         placeholder: '-- Vehicle Make --'
     });
 
-    $('#drop-off-at').datepicker({
+    $('#drop-off-date').datepicker({
         autoclose: true
     })
 
-    $('#return-at').datepicker({
+    $('#drop-off-time').timepicker();
+    $('#return-at-time').timepicker();
+
+    $('#return-at-date').datepicker({
         autoclose: true
     })
 });

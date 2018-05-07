@@ -157,6 +157,23 @@ class CreateParkingTables extends Migration
 
             $table->engine = 'InnoDB';
         });
+
+        Schema::create('companies', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('company_name', 100);
+            $table->string('phone_no', 20);
+            $table->string('mobile_no', 20);
+            $table->string('email', 100);
+            $table->string('vat_no', 20);
+            $table->string('company_reg', 20);
+            $table->string('insurance_policy', 200);
+            $table->string('park_mark', 200);
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->engine = 'InnoDB';
+            $table->index(['company_name']);
+        });
     }
 
     /**
@@ -177,5 +194,6 @@ class CreateParkingTables extends Migration
         Schema::dropIfExists('airports');
         Schema::dropIfExists('carparks');
         Schema::dropIfExists('products');
+        Schema::dropIfExists('companies');
     }
 }
