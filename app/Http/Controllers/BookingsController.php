@@ -110,7 +110,6 @@ class BookingsController extends Controller
 
                 if ($booking = Bookings::create($form_booking)) {
                     $booking_id = Bookings::generate_booking_id($booking->id);
-                    $booking_id = null;
                     if (is_null($booking_id)) {
                         return back()->withErrors(['error' => 'Error in generating Booking ID']);
                     }
