@@ -44,4 +44,32 @@ class Bookings extends BaseModel
         $reference_no = str_pad(($booking_id), 6, '0', STR_PAD_LEFT);
         return "CPC-".date('m')."-".$reference_no;
     }
+
+    public static function search($search_str)
+    {
+        $result = DB::table('bookings')
+                    ->select('bookings.id')
+                    ->join('customers', 'customers.id', '=', 'bookings.customer_id')
+                    ->whereNull('bookings.deleted_at')
+                    ->where(function ($query) use ($search_str) {
+                        $query->orWhere('bookings.booking_id', 'like', "{$search_str}%");
+                        $query->orWhere('bookings.order_title', 'like', "{$search_str}%");
+                        $query->orWhere('bookings.flight_no_going', 'like', "{$search_str}%");
+                        $query->orWhere('bookings.flight_no_return', 'like', "{$search_str}%");
+                        $query->orWhere('bookings.vehicle_make', 'like', "{$search_str}%");
+                        $query->orWhere('bookings.vehicle_model', 'like', "{$search_str}%");
+                        $query->orWhere('bookings.vehicle_color', 'like', "{$search_str}%");
+                        $query->orWhere('customers.first_name', 'like', "{$search_str}%");
+                        $query->orWhere('customers.last_name', 'like', "{$search_str}%");
+                        $query->orWhere('customers.email', 'like', "{$search_str}%");
+                    });
+
+        if ($result->count()) {
+            foreach ($result->get() as $item) {
+                $booking_ids[] = $item->id;
+            }
+        }
+
+        return isset($booking_ids) ? $booking_ids : null;
+    }
 }

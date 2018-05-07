@@ -252,4 +252,27 @@ class BookingsController extends Controller
             abort(404, $e->getMessage());
         }
     }
+
+    public function search(Request $request)
+    {
+        try {
+            if ($request->isMethod('post')) {
+                $form = $request->except('_token');
+                $result = Bookings::search($form['search']);
+                if (!is_null($result)) {
+                    $page_title = "Current Bookings";
+                    $bookings = Bookings::wherein('id', $result)->paginate(config('app.item_per_page'));
+
+                    return view('app.Booking.index', compact('bookings', 'page_title'));
+                } else {
+                    return redirect('/admin/booking')->withErrors(['error' => 'No booking found']);
+                }
+
+            } else {
+                return redirect('/admin/booking')->withErrors(['error' => 'Invalid request']);
+            }
+        } catch (\Exception $e) {
+            abort(404, $e->getMessage());
+        }
+    }
 }

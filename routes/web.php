@@ -42,8 +42,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/users/{id}/reset', 'UsersController@reset');
 
     Route::resource('booking', 'BookingsController')->except(['update', 'destroy', 'show']);
-    Route::get('/customer/search', 'CustomersController@get_customer');
+    Route::post('/booking/search', 'BookingsController@search');
     Route::post('/booking/update', 'BookingsController@update');
+    Route::get('/customer/search', 'CustomersController@get_customer');
 
     Route::get('/get/price', 'PricesController@get_price');
     Route::get('/get/vehicle/model', 'BookingsController@get_vehicle_models');
