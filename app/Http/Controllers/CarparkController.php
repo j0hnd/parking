@@ -50,6 +50,28 @@ class CarparkController extends Controller
                     // save company details
                     if ($company = Companies::create($company_form)) {
                         Carpark::where('id', $carpark->id)->update(['company_id' => $company->id]);
+
+                        // upload insurance policy
+                        if ($request->hasFile('insurance_policy')) {
+                            $policy = \Request::file('insurance_policy');
+                            $filename   = $policy->getClientOriginalName();
+                            $image_path = "{$path}/".$carpark->id;
+
+                            if ($policy->move($image_path, $filename)) {
+                                Companies::where('id', $company->id)->update(['insurance_policy' => $image_path."/".$filename]);
+                            }
+                        }
+
+                        // uplaod park mark
+                        if ($request->hasFile('park_mark')) {
+                            $park_mark = \Request::file('park_mark');
+                            $filename   = $park_mark->getClientOriginalName();
+                            $image_path = "{$path}/".$carpark->id;
+
+                            if ($park_mark->move($image_path, $filename)) {
+                                Companies::where('id', $company->id)->update(['park_mark' => $image_path."/".$filename]);
+                            }
+                        }
                     } else {
                         DB::rollback();
                         return back()->withErrors(['error' => 'Error in linking company into carpark']);
@@ -84,13 +106,15 @@ class CarparkController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->except(['_token', 'id', 'image']);
+                $carpark_form = $request->only(['name', 'description', 'address', 'address2', 'city', 'county_state', 'country_id', 'zipcode', 'longitude', 'latitude']);
+                $company_form = $request->only(['company_name', 'email', 'phone_no', 'mobile_no', 'vat_no', 'company_reg']);
                 $id = $request->get('id');
                 $current = Carbon::now();
                 $path = 'uploads/carparks/' . $current->format('Y-m-d');
                 $carpark = Carpark::findOrFail($id);
+                $company = Companies::findOrFail($carpark->company_id);
 
-                if ($carpark->update($form)) {
+                if ($carpark->update($carpark_form)) {
                     if ($request->hasFile('image')) {
                         $image = \Request::file('image');
                         $filename   = $image->getClientOriginalName();
@@ -101,15 +125,41 @@ class CarparkController extends Controller
                         }
                     }
 
+                    // save company details
+                    if ($company->update($company_form)) {
+                        // upload insurance policy
+                        if ($request->hasFile('insurance_policy')) {
+                            $policy = \Request::file('insurance_policy');
+                            $filename   = $policy->getClientOriginalName();
+                            $image_path = "{$path}/".$carpark->id;
+
+                            if ($policy->move($image_path, $filename)) {
+                                Companies::where('id', $company->id)->update(['insurance_policy' => $image_path."/".$filename]);
+                            }
+                        }
+
+                        // uplaod park mark
+                        if ($request->hasFile('park_mark')) {
+                            $park_mark = \Request::file('park_mark');
+                            $filename   = $park_mark->getClientOriginalName();
+                            $image_path = "{$path}/".$carpark->id;
+
+                            if ($park_mark->move($image_path, $filename)) {
+                                Companies::where('id', $company->id)->update(['park_mark' => $image_path."/".$filename]);
+                            }
+                        }
+                    }
+
                     return redirect('/admin/carpark')->with('success', 'Carpark details has been updated');
                 } else {
-                    return back()->with('error', 'Error in updating carpark details');
+                    return back()->withErrors(['error' => 'Error in updating carpark details']);
                 }
             } else {
-                return back()->with('error', 'Invalid request');
+                return back()->withErrors(['error' => 'Invalid request']);
             }
 
         } catch (\Exception $e) {
+            dd($e);
             abort(404, $e->getMessage());
         }
     }

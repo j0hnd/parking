@@ -51,7 +51,12 @@
 
     <div class="col-sm-5">
         <input type="file" class="form-control margin-bottom10" name="insurance_policy">
-        <small>Upload image of insurance policy</small>
+        <small class="margin-bottom10">Upload image of insurance policy</small><br>
+        @if(!empty($carpark->company->insurance_policy))
+        <a href="{{ URL::asset($carpark->company->insurance_policy) }}" target="_blank">
+            <img src="{{ asset($carpark->company->insurance_policy) }}" style="max-width: 30%" alt="Carpark Image">
+        </a>
+        @endif
     </div>
 </div>
 
@@ -60,6 +65,11 @@
 
     <div class="col-sm-5">
         <input type="file" class="form-control margin-bottom10" name="park_mark">
-        <small>Upload image of park mark</small>
+        <small>Upload image of park mark</small><br>
+        @if(!empty($carpark->company->park_mark))
+        <a href="{{ URL::asset($carpark->company->park_mark) }}" target="_blank" >
+            <img src="{{ asset($carpark->company->park_mark) }}" style="max-width: 30%" alt="Carpark Image">
+        </a>
+        @endif
     </div>
 </div>
