@@ -26,6 +26,7 @@
                         <tbody>
                         <tr>
                             <th>Carpark Name</th>
+                            <th>Company</th>
                             <th>City</th>
                             <th>County/State</th>
                             <th></th>
@@ -34,6 +35,7 @@
                             @foreach($carparks as $carpark)
                                 <tr>
                                     <td>{{ $carpark->name }}</td>
+                                    <td>{{ $carpark->company->company_name }}</td>
                                     <td>{{ $carpark->city }}</td>
                                     <td>{{ $carpark->county_state }}</td>
                                     <td>
@@ -44,14 +46,14 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="4" class="text-center">No carpark listed</td>
+                                <td colspan="5" class="text-center">No carpark listed</td>
                             </tr>
                         @endif
                         </tbody>
                         @if(count($carparks))
                             <tfoot>
                             <tr>
-                                <td colspan="4" style="padding-right: 20px; text-align: right;">{{ $carparks->links() }}</td>
+                                <td colspan="5" style="padding-right: 20px; text-align: right;">{{ $carparks->links() }}</td>
                             </tr>
                             </tfoot>
                         @endif

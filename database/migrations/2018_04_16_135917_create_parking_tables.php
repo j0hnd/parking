@@ -35,6 +35,7 @@ class CreateParkingTables extends Migration
 
         Schema::create('carparks', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('company_id')->nullable();
             $table->string('name', 100)->unique();
             $table->text('description')->nullable();
             $table->string('address', 50);
@@ -49,7 +50,7 @@ class CreateParkingTables extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['name', 'country_id']);
+            $table->index(['name', 'company_id', 'country_id']);
             $table->engine = 'InnoDB';
         });
 
@@ -161,13 +162,13 @@ class CreateParkingTables extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('company_name', 100);
-            $table->string('phone_no', 20);
-            $table->string('mobile_no', 20);
+            $table->string('phone_no', 20)->nullable();
+            $table->string('mobile_no', 20)->nullable();
             $table->string('email', 100);
-            $table->string('vat_no', 20);
-            $table->string('company_reg', 20);
-            $table->string('insurance_policy', 200);
-            $table->string('park_mark', 200);
+            $table->string('vat_no', 20)->nullable();
+            $table->string('company_reg', 100)->nullable();
+            $table->string('insurance_policy', 200)->nullable();
+            $table->string('park_mark', 200)->nullable();
             $table->softDeletes();
             $table->timestamps();
 

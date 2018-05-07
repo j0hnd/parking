@@ -22,7 +22,7 @@ class Carpark extends BaseModel
         'deleted_at'
     ];
 
-    protected $with = ['country'];
+    protected $with = ['country', 'company'];
 
 
     public function country()
@@ -30,12 +30,20 @@ class Carpark extends BaseModel
         return $this->hasOne(Countries::class, 'id', 'country_id');
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Companies::class, 'company_id', 'id');
+    }
+
     public static function search($search_str)
     {
         $result = DB::table('carparks')
             ->join('countries', 'countries.id', '=', 'carparks.country_id')
+            ->join('companies', 'companies.id', '=', 'carparks.company_id')
             ->whereNull('carparks.deleted_at')
+            ->whereNull('companies.deleted_at')
             ->where(function ($query) use ($search_str) {
+                $query->orWhere('companies.company_name', 'like', "{$search_str}%");
                 $query->orWhere('carparks.name', 'like', "{$search_str}%");
                 $query->orWhere('carparks.city', 'like', "{$search_str}%");
                 $query->orWhere('carparks.county_state', 'like', "{$search_str}%");

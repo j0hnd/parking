@@ -31,7 +31,9 @@ class CarparkFormRequest extends FormRequest
             'city' => 'required|string',
             'county_state' => 'required|string',
             'zipcode' => 'required',
-            'country_id' => 'required'
+            'country_id' => 'required',
+            'company_name' => 'required|string',
+            'email' => 'required|email'
         ];
 
         if (!empty($input['id'])) {

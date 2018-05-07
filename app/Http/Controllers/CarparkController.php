@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CarparkFormRequest;
 use App\Models\Carpark;
+use App\Models\Companies;
 use App\Models\Tools\Countries;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -30,10 +31,11 @@ class CarparkController extends Controller
 
             if ($request->isMethod('post')) {
 
-                $form = $request->except('_token');
+                $carpark_form = $request->only(['name', 'description', 'address', 'address2', 'city', 'county_state', 'country_id', 'zipcode', 'longitude', 'latitude']);
+                $company_form = $request->only(['company_name', 'email', 'phone_no', 'mobile_no', 'vat_no', 'company_reg']);
                 $current = Carbon::now();
 
-                if ($carpark = Carpark::create($form)) {
+                if ($carpark = Carpark::create($carpark_form)) {
                     $path = 'uploads/carparks/' . $current->format('Y-m-d');
                     if ($request->hasFile('image')) {
                         $image = \Request::file('image');
@@ -45,13 +47,23 @@ class CarparkController extends Controller
                         }
                     }
 
+                    // save company details
+                    if ($company = Companies::create($company_form)) {
+                        Carpark::where('id', $carpark->id)->update(['company_id' => $company->id]);
+                    } else {
+                        DB::rollback();
+                        return back()->withErrors(['error' => 'Error in linking company into carpark']);
+                    }
+
                     return redirect('/admin/carpark')->with('success', 'New carpark has been added');
                 } else {
-                    return back()->with('error', 'Error in adding new carpark');
+                    DB::rollback();
+                    return back()->withErrors(['error' => 'Error in adding new carpark']);
                 }
 
             } else {
-                return back()->with('error', 'Invalid request');
+                DB::rollback();
+                return back()->withErrors(['error' => 'Invalid request']);
             }
 
         } catch (\Exception $e) {
