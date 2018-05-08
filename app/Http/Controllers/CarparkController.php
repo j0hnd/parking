@@ -6,6 +6,7 @@ use App\Http\Requests\CarparkFormRequest;
 use App\Models\Carpark;
 use App\Models\Companies;
 use App\Models\Tools\Countries;
+use App\Models\Tools\CompanyHouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -71,6 +72,13 @@ class CarparkController extends Controller
                             if ($park_mark->move($image_path, $filename)) {
                                 Companies::where('id', $company->id)->update(['park_mark' => $image_path."/".$filename]);
                             }
+                        }
+
+                        // guery company details in company house api
+                        $api = new CompanyHouse();
+                        $info = $api->getCompany($company_form['company_name']);
+                        if ($info['success'] and count($info['body'])) {
+                            $api->save($company->id, $company->company_name, $info['body']);
                         }
                     } else {
                         DB::rollback();

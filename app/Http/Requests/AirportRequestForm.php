@@ -26,6 +26,7 @@ class AirportRequestForm extends FormRequest
     {
         $input = $this->all();
         $rules = [
+            'airport_code' => 'string|min:3'
             'description' => 'string',
             'address' => 'required|string',
             'city' => 'required|string',

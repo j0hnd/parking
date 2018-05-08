@@ -214,5 +214,7 @@ return [
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
     ],
 
-    'item_per_page' => env('PER_PAGE')
+    'item_per_page' => env('PER_PAGE'),
+    'company_house_api_key' => env('COMPANY_HOUSE_API_KEY'),
+    'company_house_api_url' => env('COMPANY_HOUSE_API_URL')
 ];

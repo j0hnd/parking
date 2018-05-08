@@ -92,6 +92,14 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2 control-label">Airport Code</label>
+
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="airport_code" placeholder="Airport Code" autocomplete="off" value="{{ isset($airport->airport_code) ? $airport->airport_code : "" }}">
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">Sub-Category</label>
 
         <div class="col-sm-6">

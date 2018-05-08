@@ -10,6 +10,7 @@ class Airports extends BaseModel
 {
     protected $fillable = [
         'airport_name',
+        'airport_code',
         'description',
         'address',
         'address2',

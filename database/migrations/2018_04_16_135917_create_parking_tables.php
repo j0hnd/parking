@@ -16,6 +16,7 @@ class CreateParkingTables extends Migration
         Schema::create('airports', function (Blueprint $table) {
             $table->increments('id');
             $table->string('airport_name', 100)->unique();
+            $table->string('airport_code', 4)->unique();
             $table->text('description')->nullable();
             $table->string('address', 50);
             $table->string('address2', 50)->nullable();
@@ -174,6 +175,17 @@ class CreateParkingTables extends Migration
 
             $table->engine = 'InnoDB';
             $table->index(['company_name']);
+        });
+
+        Schema::create('company_details', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('company_id');
+            $table->string('meta_key', 50);
+            $table->string('meta_value', 255);
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->index(['company_id', 'meta_key']);
         });
     }
 
