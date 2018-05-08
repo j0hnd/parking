@@ -14,7 +14,6 @@ class CompanyHouse
     protected $uri;
 
     private $company_fields = [
-        'address_snippet',
         'address',
         'description',
         'company_type',
