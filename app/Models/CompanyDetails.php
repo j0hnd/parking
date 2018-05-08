@@ -4,7 +4,7 @@ namespace App\Models;
 
 class CompanyDetails extends BaseModel
 {
-    protected $fillable = ['company_id', 'meta_key', 'meta_value'];
+    protected $fillable = ['company_id', 'parent_id', 'meta_key', 'meta_value'];
 
     // protected $with = ['company'];
     //

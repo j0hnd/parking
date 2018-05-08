@@ -180,6 +180,7 @@ class CreateParkingTables extends Migration
         Schema::create('company_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('company_id');
+            $table->integer('parent_id')->default(0)->nullable();
             $table->string('meta_key', 50);
             $table->string('meta_value', 255);
             $table->softDeletes();

@@ -22,6 +22,13 @@ class CompanyHouse
         'company_status'
     ];
 
+    private $officers_field = [
+        'name',
+        'officer_role',
+        'occupation',
+        'appointed_on'
+    ];
+
     public function __construct()
     {
         $this->client  = new Client();
@@ -29,12 +36,12 @@ class CompanyHouse
         $this->uri     = config('app.company_house_api_url');
     }
 
-    public function getCompany($company_name)
+    public function get($end_point)
     {
         $response = ['success' => false];
 
         try {
-            $result = $this->client->get($this->uri . '/search/companies?q='.$company_name, [
+            $result = $this->client->get($this->uri . $end_point, [
                 'headers' => [
                     'Authorization' => $this->api_key
                 ]
@@ -52,12 +59,10 @@ class CompanyHouse
         return $response;
     }
 
-    public function save($company_id, $company_name, $data)
+    public function setCompany($company_id, $company_name, $data)
     {
         foreach ($data as $details) {
             foreach ($details as $key => $value) {
-                var_dump(preg_match("/".strtolower($company_name)."/", strtolower($details['title'])).", ".$details['title'].", ".$company_name);
-
                 if (strtolower($details['title']) == strtolower($company_name) or preg_match("/".strtolower($company_name)."/", strtolower($details['title'])) == 1) {
                     if (in_array($key, $this->company_fields) == true) {
                         if (is_array($value)) {
@@ -75,6 +80,35 @@ class CompanyHouse
                                 'meta_value' => $value
                             ]);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public function setOfficers($company_id, $data)
+    {
+        $parent_id = null;
+
+        foreach ($data as $details) {
+            foreach ($details as $key => $value) {
+                if (in_array($key, $this->officers_field) == true) {
+                    if ($key == 'name') {
+                        $officer = CompanyDetails::create([
+                            'company_id' => $company_id,
+                            'parent_id' => 0,
+                            'meta_key' => $key,
+                            'meta_value' => $value
+                        ]);
+
+                        $parent_id = $officer->id;
+                    } else {
+                        $officer = CompanyDetails::create([
+                            'company_id' => $company_id,
+                            'parent_id' => $parent_id,
+                            'meta_key' => $key,
+                            'meta_value' => $value
+                        ]);
                     }
                 }
             }

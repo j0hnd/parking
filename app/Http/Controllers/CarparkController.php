@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CarparkFormRequest;
 use App\Models\Carpark;
 use App\Models\Companies;
+use App\Models\CompanyDetails;
 use App\Models\Tools\Countries;
 use App\Models\Tools\CompanyHouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use DB;
 
 class CarparkController extends Controller
 {
@@ -35,6 +37,8 @@ class CarparkController extends Controller
                 $carpark_form = $request->only(['name', 'description', 'address', 'address2', 'city', 'county_state', 'country_id', 'zipcode', 'longitude', 'latitude']);
                 $company_form = $request->only(['company_name', 'email', 'phone_no', 'mobile_no', 'vat_no', 'company_reg']);
                 $current = Carbon::now();
+
+                DB::beginTransaction();
 
                 if ($carpark = Carpark::create($carpark_form)) {
                     $path = 'uploads/carparks/' . $current->format('Y-m-d');
@@ -74,12 +78,23 @@ class CarparkController extends Controller
                             }
                         }
 
-                        // guery company details in company house api
+                        // initialize company house api
                         $api = new CompanyHouse();
-                        $info = $api->getCompany($company_form['company_name']);
+
+                        // guery company details in company house api
+                        $info = $api->get('/search/companies?q='.$company_form['company_name']);
                         if ($info['success'] and count($info['body'])) {
-                            $api->save($company->id, $company->company_name, $info['body']);
+                            $api->setCompany($company->id, $company->company_name, $info['body']);
                         }
+
+                        $company_detals = CompanyDetails::where(['company_id' => $company->id, 'meta_key' => 'company_number'])->first();
+                        if ($company_detals) {
+                            $officers = $api->get('/company/'.$company_detals->meta_value.'/officers');
+                            $api->setOfficers($company->id, $officers['body']);
+                        }
+
+                        DB::commit();
+
                     } else {
                         DB::rollback();
                         return back()->withErrors(['error' => 'Error in linking company into carpark']);
@@ -97,6 +112,7 @@ class CarparkController extends Controller
             }
 
         } catch (\Exception $e) {
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -167,7 +183,6 @@ class CarparkController extends Controller
             }
 
         } catch (\Exception $e) {
-            dd($e);
             abort(404, $e->getMessage());
         }
     }

@@ -79,16 +79,20 @@
 
     <div class="col-md-5">
         <h5>Company Details</h5>
-        @if(count($carpark->company->company_details))
-            @foreach($carpark->company->company_details as $details)
-            <div class="form-group">
-                <label class="col-sm-3 control-label">{{ ucwords(str_replace('_', ' ', $details['meta_key'])) }}</label>
+        @if(isset($carpark))
+            @if(count($carpark->company->company_details))
+                @foreach($carpark->company->company_details as $details)
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ ucwords(str_replace('_', ' ', $details['meta_key'])) }}</label>
 
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" value="{{ $details['meta_value'] }}" disabled>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" value="{{ $details['meta_value'] }}" disabled>
+                    </div>
                 </div>
-            </div>
-            @endforeach
+                @endforeach
+            @else
+            <p>No details pulled from third party tool</p>
+            @endif
         @else
         <p>No details pulled from third party tool</p>
         @endif
