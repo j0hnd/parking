@@ -167,6 +167,9 @@ class CreateParkingTables extends Migration
             $table->string('mobile_no', 20)->nullable();
             $table->string('email', 100);
             $table->string('vat_no', 20)->nullable();
+            $table->string('poc_name', 100)->nullable();
+            $table->string('poc_contact_no', 20)->nullable();
+            $table->string('poc_contact_email', 100)->nullable();
             $table->string('company_reg', 100)->nullable();
             $table->string('insurance_policy', 200)->nullable();
             $table->string('park_mark', 200)->nullable();

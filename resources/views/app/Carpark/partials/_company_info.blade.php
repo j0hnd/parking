@@ -75,6 +75,33 @@
                 @endif
             </div>
         </div>
+
+        <fieldset>
+            <label>Contact Person</label>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Name</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="poc_name" placeholder="Contact Person Name" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->poc_name : "" }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Email</label>
+
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="poc_contact_email" placeholder="Email" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->poc_contact_email : "" }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Phone No./Mobile No.</label>
+
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" name="poc_contact_no" placeholder="Contact No." autocomplete="off" value="{{ isset($carpark) ? $carpark->company->poc_contact_no : "" }}">
+                </div>
+            </div>
+        </fieldset>
     </div>
 
     <div class="col-md-5">

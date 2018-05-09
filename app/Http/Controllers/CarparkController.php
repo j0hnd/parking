@@ -33,9 +33,31 @@ class CarparkController extends Controller
         try {
 
             if ($request->isMethod('post')) {
+                $carpark_form = $request->only([
+                    'name',
+                    'description',
+                    'address',
+                    'address2',
+                    'city',
+                    'county_state',
+                    'country_id',
+                    'zipcode',
+                    'longitude',
+                    'latitude'
+                ]);
 
-                $carpark_form = $request->only(['name', 'description', 'address', 'address2', 'city', 'county_state', 'country_id', 'zipcode', 'longitude', 'latitude']);
-                $company_form = $request->only(['company_name', 'email', 'phone_no', 'mobile_no', 'vat_no', 'company_reg']);
+                $company_form = $request->only([
+                    'company_name',
+                    'email',
+                    'phone_no',
+                    'mobile_no',
+                    'vat_no',
+                    'company_reg',
+                    'poc_name',
+                    'poc_contact_no',
+                    'poc_contact_email'
+                ]);
+
                 $current = Carbon::now();
 
                 DB::beginTransaction();
@@ -112,7 +134,6 @@ class CarparkController extends Controller
             }
 
         } catch (\Exception $e) {
-            dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -130,8 +151,31 @@ class CarparkController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $carpark_form = $request->only(['name', 'description', 'address', 'address2', 'city', 'county_state', 'country_id', 'zipcode', 'longitude', 'latitude']);
-                $company_form = $request->only(['company_name', 'email', 'phone_no', 'mobile_no', 'vat_no', 'company_reg']);
+                $carpark_form = $request->only([
+                    'name',
+                    'description',
+                    'address',
+                    'address2',
+                    'city',
+                    'county_state',
+                    'country_id',
+                    'zipcode',
+                    'longitude',
+                    'latitude'
+                ]);
+
+                $company_form = $request->only([
+                    'company_name',
+                    'email',
+                    'phone_no',
+                    'mobile_no',
+                    'vat_no',
+                    'company_reg',
+                    'poc_name',
+                    'poc_contact_no',
+                    'poc_contact_email'
+                ]);
+                
                 $id = $request->get('id');
                 $current = Carbon::now();
                 $path = 'uploads/carparks/' . $current->format('Y-m-d');
