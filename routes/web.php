@@ -49,3 +49,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/get/price', 'PricesController@get_price');
     Route::get('/get/vehicle/model', 'BookingsController@get_vehicle_models');
 });
+
+Route::group(['prefix' => 'autocomplete'], function () {
+    Route::get('/company/{company_name}', 'AutoCompleteController@company');
+});

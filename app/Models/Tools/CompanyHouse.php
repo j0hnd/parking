@@ -29,6 +29,9 @@ class CompanyHouse
         'appointed_on'
     ];
 
+    public $is_raw = false;
+
+
     public function __construct()
     {
         $this->client  = new Client();
@@ -49,7 +52,11 @@ class CompanyHouse
 
             if ($result->getStatusCode() == 200) {
                 $body = json_decode($result->getBody(), true);
-                $response = ['success' => true, 'body' => $body['items']];
+                if ($this->is_raw === false) {
+                    $body = $body['items'];
+                }
+
+                $response = ['success' => true, 'body' => $body];
             }
 
         } catch (Exception $e) {
