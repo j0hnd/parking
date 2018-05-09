@@ -32,7 +32,8 @@ class AirportRequestForm extends FormRequest
             'city' => 'required|string',
             'county_state' => 'required|string',
             'zipcode' => 'required',
-            'country_id' => 'required'
+            'country_id' => 'required',
+            'image' => 'mimetypes:image/*'
         ];
 
         if (!empty($input['id'])) {

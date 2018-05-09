@@ -48,36 +48,49 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Insurance Policy</label>
+        <fieldset>
+            <h4>Documents</h4>
+            <p class="bg-warning padding-10 text-center">Supported files: JPEG, JPG, PNG, GIF and PDF</p>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Insurance Policy</label>
 
-            <div class="col-sm-5">
-                <input type="file" class="form-control margin-bottom10" name="insurance_policy">
-                <small class="margin-bottom10">Upload image of insurance policy</small><br>
-                @if(!empty($carpark->company->insurance_policy))
-                <a href="{{ URL::asset($carpark->company->insurance_policy) }}" target="_blank">
-                    <img src="{{ asset($carpark->company->insurance_policy) }}" style="max-width: 30%" alt="Carpark Image">
-                </a>
-                @endif
+                <div class="col-sm-5">
+                    <input type="file" class="form-control margin-bottom10" name="insurance_policy">
+                    @if(!empty($carpark->company->insurance_policy))
+                        @php($file_type = explode('.', $carpark->company->insurance_policy))
+                        <a href="{{ URL::asset($carpark->company->insurance_policy) }}" target="_blank">
+                            @if($file_type[1] == 'pdf')
+                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            @else
+                            <img src="{{ asset($carpark->company->insurance_policy) }}" style="max-width: 30%" alt="Carpark Image">
+                            @endif
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">Park Mark</label>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Park Mark</label>
 
-            <div class="col-sm-5">
-                <input type="file" class="form-control margin-bottom10" name="park_mark">
-                <small>Upload image of park mark</small><br>
-                @if(!empty($carpark->company->park_mark))
-                <a href="{{ URL::asset($carpark->company->park_mark) }}" target="_blank" >
-                    <img src="{{ asset($carpark->company->park_mark) }}" style="max-width: 30%" alt="Carpark Image">
-                </a>
-                @endif
+                <div class="col-sm-5">
+                    <input type="file" class="form-control margin-bottom10" name="park_mark">
+                    @if(!empty($carpark->company->park_mark))
+                    <a href="{{ URL::asset($carpark->company->park_mark) }}" target="_blank" >
+                        @php($file_type = explode('.', $carpark->company->park_mark))
+                        @if($file_type[1] == 'pdf')
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        @else
+                        <img src="{{ asset($carpark->company->park_mark) }}" style="max-width: 30%" alt="Carpark Image">
+                        @endif
+                    </a>
+                    @endif
+                </div>
             </div>
-        </div>
+        </fieldset>
+
 
         <fieldset>
-            <label>Contact Person</label>
+            <h4>Contact Person</h4>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Name</label>
 
@@ -105,7 +118,7 @@
     </div>
 
     <div class="col-md-5">
-        <h5>Company Details</h5>
+        <h4 class="bg-info padding-10 text-center">Company Details</h4>
         @if(isset($carpark))
             @if(count($carpark->company->company_details))
                 @foreach($carpark->company->company_details as $details)

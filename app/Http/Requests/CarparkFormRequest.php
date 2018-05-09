@@ -34,8 +34,11 @@ class CarparkFormRequest extends FormRequest
             'country_id' => 'required',
             'company_name' => 'required|string',
             'email' => 'required|email',
-            'poc_name' => 'string|min:2'
-            'poc_contact_email' => 'email'
+            'image' => 'mimetypes:image/*',
+            'poc_name' => 'string',
+            'poc_contact_email' => 'email',
+            'park_mark' => 'mimetypes:image/*,application/pdf',
+            'insurance_policy' => 'mimetypes:image/*,application/pdf'
         ];
 
         if (!empty($input['id'])) {

@@ -28,7 +28,7 @@ class CarparkController extends Controller
         return view('app.Carpark.create', compact('countries', 'page_title'));
     }
 
-    public function store(Request $request)
+    public function store(CarparkFormRequest $request)
     {
         try {
 
@@ -149,7 +149,6 @@ class CarparkController extends Controller
     public function update(CarparkFormRequest $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $carpark_form = $request->only([
                     'name',
@@ -175,7 +174,7 @@ class CarparkController extends Controller
                     'poc_contact_no',
                     'poc_contact_email'
                 ]);
-                
+
                 $id = $request->get('id');
                 $current = Carbon::now();
                 $path = 'uploads/carparks/' . $current->format('Y-m-d');
@@ -227,6 +226,7 @@ class CarparkController extends Controller
             }
 
         } catch (\Exception $e) {
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
