@@ -117,6 +117,24 @@ $(function () {
         });
     });
 
+    $(document).on('change', '#vehicle-make', function () {
+        $('#vehicle-model').removeClass('hidden');
+        $('#other-vehicle-model').val('');
+        $('#other-vehicle-model').addClass('hidden');
+    });
+
+    $(document).on('change', '#vehicle-model', function () {
+        var txt = $("#vehicle-model option:selected").text();
+        if (txt.indexOf('Other') != -1) {
+            $(this).addClass('hidden');
+            $('#other-vehicle-model').removeClass('hidden');
+            $('#other-vehicle-model').focus();
+        } else {
+            $(this).removeClass('hidden');
+            $('#other-vehicle-model').addClass('hidden');
+        }
+    });
+
     $("#order-title").select2({
         placeholder: '-- Order Title --'
     });

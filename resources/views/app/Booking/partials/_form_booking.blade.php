@@ -92,6 +92,7 @@
                     @endforeach
                 @endif
             </select>
+            <input type="text" class="form-control hidden" id="other-vehicle-model" placeholder="Vehicle Model" name="vehicle_model" autocomplete="off">
         </div>
     </div>
 
