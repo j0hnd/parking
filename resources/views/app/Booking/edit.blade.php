@@ -135,14 +135,26 @@ $(function () {
         }
     });
 
-    // var vehicle_model_found = $('#vehicle-model-found').val();
-    // if (vehicle_model_found == 0) {
-    //     $('#vehicle-model').addClass('hidden');
-    //     $('#other-vehicle-model').removeClass('hidden');
-    // } else {
-    //     $('#vehicle-model').removeClass('hidden');
-    //     $('#other-vehicle-model').addClass('hidden');
-    // }
+    $(document).on('change', '#price-value', function () {
+        var orderID = $('#order-title').val().split(';');
+
+        $.ajax({
+            url: '{{ url('/autocomplete/product/revenue/share/') }}' + '/' + orderID[0],
+            type: 'post',
+            data: { price: $(this).val(), _token: '{{ csrf_token() }}' },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#revenue-share').prop('readonly', false);
+                    $('#revenue-share').val(response.data);
+                    $('#revenue-share').prop('readonly', true);
+                } else {
+                    $('revenue-share').val('0.00');
+                }
+            }
+        });
+    });
+
 
     $("#order-title").select2({
         placeholder: '-- Order Title --'

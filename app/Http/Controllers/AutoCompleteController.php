@@ -4,34 +4,59 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tools\CompanyHouse;
+use App\Models\Products;
 
 class AutoCompleteController extends Controller
 {
     protected $items_per_page = 100;
 
+    public function get_revenue_share(Request $request)
+    {
+        $response = ['success' => false];
+
+        try {
+            $product = Products::findOrFail($request->product_id);
+            $price = $request->get('price');
+            $revenue_share = number_format($price * ($product->revenue_share / 100), 2);
+
+            $response = ['success' => true, 'data' => $revenue_share];
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+
+        return response()->json($response);
+    }
 
     public function company(Request $request)
     {
+        $response = ['success' => false];
         $companies = [];
 
-        for ($i = 0; $i <= 3; $i++) {
-            $result = $this->get_results($request->company_name, $i);
+        try {
+            for ($i = 0; $i <= 3; $i++) {
+                $result = $this->get_results($request->company_name, $i);
 
-            if ($result['success'] and count($result['body'])) {
+                if ($result['success'] and count($result['body'])) {
 
-                if (isset($result['body']['items'])) {
-                    $items = $result['body']['items'];
-                } else {
-                    $items = $result['body'];
-                }
+                    if (isset($result['body']['items'])) {
+                        $items = $result['body']['items'];
+                    } else {
+                        $items = $result['body'];
+                    }
 
-                foreach ($items as $item) {
-                    $companies[] = $item['title'];
+                    foreach ($items as $item) {
+                        $companies[] = $item['title'];
+                    }
                 }
             }
+
+            $response = ['success' => true, 'data' => $companies];
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
         }
 
-        return response()->json($companies);
+
+        return response()->json($response);
     }
 
     private function get_results($company_name, $start_index = 0)

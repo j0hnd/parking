@@ -52,4 +52,5 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::group(['prefix' => 'autocomplete'], function () {
     Route::get('/company/{company_name}', 'AutoCompleteController@company');
+    Route::post('/product/revenue/share/{product_id}', 'AutoCompleteController@get_revenue_share');
 });
