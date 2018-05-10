@@ -20,7 +20,8 @@ class Bookings extends BaseModel
         'flight_no_return',
         'car_registration_no',
         'vehicle_make',
-        'vehicle_model'
+        'vehicle_model',
+        'vehicle_color'
     ];
 
     protected $dates = ['drop_off_at', 'return_at', 'deleted_at'];

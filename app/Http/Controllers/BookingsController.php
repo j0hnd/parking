@@ -69,7 +69,8 @@ class BookingsController extends Controller
                     'drop_off_date',
                     'return_at_date',
                     'drop_off_time',
-                    'return_at_time'
+                    'return_at_time',
+                    'other_vehicle_model'
                 ]);
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
@@ -84,6 +85,12 @@ class BookingsController extends Controller
                 // $form_booking['booking_id']  = Bookings::generate_booking_id();
                 $form_booking['product_id']  = $order[0];
                 $form_booking['price_id']    = $order[1];
+
+                if (!empty($form_booking['other_vehicle_model'])) {
+                    $form_booking['vehicle_model'] = $form_booking['other_vehicle_model'];
+                }
+
+                unset($form_booking['other_vehicle_model']);
 
                 $drop_off_at = new Carbon($form_booking['drop_off_date']);
                 $return_at   = new Carbon($form_booking['return_at_date']);
@@ -140,6 +147,14 @@ class BookingsController extends Controller
         $products      = Products::active()->orderBy('created_at', 'desc');
         $vehicle_make  = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
 
+        if (count($vehicle_make)) {
+            foreach ($vehicle_make as $make) {
+                $vehicle_make_name[] = $make['value'];
+            }
+        } else {
+            $vehicle_make_name = null;
+        }
+
         $vehicle_make_key = array_search($booking->vehicle_make, array_column($vehicle_make, 'value'));
         $vehicle_models = $vehicle_make[$vehicle_make_key]['models'];
 
@@ -164,7 +179,7 @@ class BookingsController extends Controller
             }
         }
 
-        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models'));
+        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name'));
     }
 
     public function get_vehicle_models(Request $request)
@@ -196,13 +211,15 @@ class BookingsController extends Controller
                     'flight_no_return',
                     'car_registration_no',
                     'vehicle_make',
-                    'vehicle_model' ,
+                    'vehicle_model',
+                    'vehicle_color',
                     'price_value',
                     'revenue_value',
                     'drop_off_date',
                     'return_at_date',
                     'drop_off_time',
-                    'return_at_time'
+                    'return_at_time',
+                    'other_vehicle_model'
                 ]);
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
@@ -216,6 +233,12 @@ class BookingsController extends Controller
                 $form_booking['order_title'] = $form_booking['order_title_str'];
                 $form_booking['product_id']  = $order[0];
                 $form_booking['price_id']    = $order[1];
+
+                if (!empty($form_booking['other_vehicle_model'])) {
+                    $form_booking['vehicle_model'] = $form_booking['other_vehicle_model'];
+                }
+
+                unset($form_booking['other_vehicle_model']);
 
                 $drop_off_at = new Carbon($form_booking['drop_off_date']);
                 $return_at   = new Carbon($form_booking['return_at_date']);

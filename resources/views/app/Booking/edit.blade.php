@@ -135,6 +135,15 @@ $(function () {
         }
     });
 
+    // var vehicle_model_found = $('#vehicle-model-found').val();
+    // if (vehicle_model_found == 0) {
+    //     $('#vehicle-model').addClass('hidden');
+    //     $('#other-vehicle-model').removeClass('hidden');
+    // } else {
+    //     $('#vehicle-model').removeClass('hidden');
+    //     $('#other-vehicle-model').addClass('hidden');
+    // }
+
     $("#order-title").select2({
         placeholder: '-- Order Title --'
     });
