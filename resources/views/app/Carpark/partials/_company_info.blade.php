@@ -3,8 +3,13 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Company Name</label>
 
-            <div class="col-sm-9">
-                <input type="text" class="form-control" name="company_name" placeholder="Company Name" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->company_name : "" }}">
+            <div id="company-name-wrapper" class="col-sm-9">
+                <input type="text" class="form-control"
+                       id="company-name"
+                       name="company_name"
+                       placeholder="Company Name"
+                       {{-- autocomplete="off" --}}
+                       value="{{ isset($carpark) ? $carpark->company->company_name : "" }}">
             </div>
         </div>
 

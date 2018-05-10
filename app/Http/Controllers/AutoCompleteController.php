@@ -33,8 +33,9 @@ class AutoCompleteController extends Controller
         $companies = [];
 
         try {
-            for ($i = 0; $i <= 3; $i++) {
-                $result = $this->get_results($request->company_name, $i);
+            $company_name = $request->get('term');
+            for ($i = 0; $i <= 1; $i++) {
+                $result = $this->get_results($company_name, $i);
 
                 if ($result['success'] and count($result['body'])) {
 
@@ -45,18 +46,17 @@ class AutoCompleteController extends Controller
                     }
 
                     foreach ($items as $item) {
-                        $companies[] = $item['title'];
+                        $companies['items'][] = ['name' => $item['title']];
                     }
                 }
             }
 
-            $response = ['success' => true, 'data' => $companies];
+            // $response = ['success' => true, 'data' => $companies];
         } catch (Exception $e) {
             $response['message'] = $e->getMessage();
         }
 
-
-        return response()->json($response);
+        return response()->json($companies);
     }
 
     private function get_results($company_name, $start_index = 0)
