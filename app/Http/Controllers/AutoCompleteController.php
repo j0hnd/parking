@@ -34,7 +34,7 @@ class AutoCompleteController extends Controller
 
         try {
             $company_name = $request->get('term');
-            for ($i = 0; $i <= 3; $i++) {
+            for ($i = 0; $i <= 1; $i++) {
                 $result = $this->get_results($company_name, $i);
 
                 if ($result['success'] and count($result['body'])) {
