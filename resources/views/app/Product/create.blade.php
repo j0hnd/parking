@@ -46,19 +46,22 @@
             $('#on_arrival').wysihtml5();
             $('#on_return').wysihtml5();
 
+            $('.overrides').daterangepicker({
+                autoclose: true
+            });
+
             var row_limit = 15;
             var row_count = '{{ $row_count }}';
 
-            // $('.price-value').inputmask({ 'mask': '9{1,4}' });
             $(document).on('keyup', '.price-value', function (e) {
                 $(this).val($(this).val().replace(/[^0-9]/g, ''));
             });
 
             $(document).on('click', '#toggle-create-row', function () {
-                var src = $('tbody tr:first').clone();
+                var src = $('#first-row').clone();
                 if (row_count < row_limit) {
                     src.find('input').val(0);
-                    $('#price-form-wrapper').append(src);
+                    $('#prices-container').append(src);
                     row_count++;
                 } else {
                     alert("You can only add "+ row_limit +" price category variance.");
@@ -74,11 +77,6 @@
                     row.remove();
                 }
             });
-
-            // $(document).on('blur', '.price-month', function () {
-            //     var el = $(this);
-            //
-            // });
         });
     </script>
 @stop

@@ -9,8 +9,7 @@ class Prices extends BaseModel
     protected $fillable = [
         'product_id',
         'category_id',
-        'price_start_day',
-        'price_end_day',
+        'no_of_days',
         'price_month',
         'price_year',
         'price_value'
