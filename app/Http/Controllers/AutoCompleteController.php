@@ -71,6 +71,6 @@ class AutoCompleteController extends Controller
         }
 
         $api = new CompanyHouse();
-        return $api->get('/search/companies?q='.$company_name.'&items_per_page='.$this->items_per_page.'&start_index='.$start_index);
+        return $api->get(config('company_house_api_url').'/search/companies?q='.$company_name.'&items_per_page='.$this->items_per_page.'&start_index='.$start_index);
     }
 }
