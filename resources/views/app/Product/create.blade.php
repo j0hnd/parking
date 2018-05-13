@@ -46,9 +46,7 @@
             $('#on_arrival').wysihtml5();
             $('#on_return').wysihtml5();
 
-            $('.overrides').daterangepicker({
-                autoclose: true
-            });
+            $('.overrides').daterangepicker();
 
             var row_limit = 15;
             var row_count = '{{ $row_count }}';

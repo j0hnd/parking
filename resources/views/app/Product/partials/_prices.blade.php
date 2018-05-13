@@ -8,14 +8,14 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right overrides" name="override['dates']">
+                    <input type="text" class="form-control pull-right overrides" name="override_dates">
                 </div>
                 <small>Date</small>
             </div>
 
             <div class="col-md-1">
                 <div class="input-group">
-                    <input type="text" class="form-control pull-right text-right" name="override['price']" value="0">
+                    <input type="text" class="form-control pull-right text-right" name="override_price" value="0">
                 </div>
                 <small>Price Per Day</small>
             </div>
@@ -49,7 +49,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="no_of_days">
+                <select class="form-control" name="pricesp[no_of_days][1][]">
                     <option value="" readonly>-- No. of days --</option>
                     @for($i=1; $i<=31; $i++)
                         @if($price->no_of_days == $i)
@@ -61,7 +61,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select name="prices[price_month][3][]" class="form-control price_month" id="">
+                <select name="prices[price_month][2][]" class="form-control price_month" id="">
                     <option value="" readonly>-- Months --</option>
                     @foreach ($months as $month)
                         @if($month == $prices->price_month)
@@ -73,7 +73,7 @@
                 </select>
             </div>
             <div class="col-md-1">
-                <select name="prices[price_year][4][]" class="form-control price_year" id="">
+                <select name="prices[price_year][3][]" class="form-control price_year" id="">
                     <option value="" readonly>-- Years --</option>
                     @foreach ($years as $year)
                         @if($year == $prices->price_year)
@@ -85,7 +85,7 @@
                 </select>
             </div>
             <div class="col-md-1">
-                <input type="text" name="prices[price_value][5][]"
+                <input type="text" name="prices[price_value][4][]"
                        class="form-control price-value"
                        placeholder="Price Value"
                        maxlength="4"
@@ -116,7 +116,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="no_of_days">
+                <select class="form-control" name="prices[no_of_days][1][]">
                     <option value="" readonly>-- No. of days --</option>
                     @for($i=1; $i<=31; $i++)
                     <option value="{{ $i }}">{{ $i }}</option>
@@ -124,7 +124,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select name="prices[price_month][3][]" class="form-control price_month" id="">
+                <select name="prices[price_month][2][]" class="form-control price_month" id="">
                     <option value="" readonly>-- Months --</option>
                     @foreach ($months as $month)
                     <option value="{{ $month }}">{{ $month }}</option>
@@ -132,7 +132,7 @@
                 </select>
             </div>
             <div class="col-md-1">
-                <select name="prices[price_year][4][]" class="form-control price_year" id="">
+                <select name="prices[price_year][3][]" class="form-control price_year" id="">
                     <option value="" readonly>-- Years --</option>
                     @foreach ($years as $year)
                         <option value="{{ $year }}">{{ $year }}</option>
@@ -140,7 +140,7 @@
                 </select>
             </div>
             <div class="col-md-1">
-                <input type="text" name="prices[price_value][5][]"
+                <input type="text" name="prices[price_value][4][]"
                        class="form-control price-value text-right"
                        placeholder="Price Value"
                        maxlength="4"
