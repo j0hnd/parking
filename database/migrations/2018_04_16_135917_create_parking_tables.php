@@ -73,6 +73,8 @@ class CreateParkingTables extends Migration
             $table->text('on_arrival');
             $table->text('on_return');
             $table->float('revenue_share')->default(0);
+            $table->string('override_dates', 30)->nullabel();
+            $table->integer('override_price')->nullabel();
             $table->softDeletes();
             $table->timestamps();
 
@@ -95,8 +97,7 @@ class CreateParkingTables extends Migration
             $table->increments('id');
             $table->integer('product_id');
             $table->integer('category_id');
-            $table->string('price_start_day', 20)->nullable();
-            $table->string('price_end_day', 20)->nullable();
+            $table->integer('no_of_days')->nullable();
             $table->string('price_month', 20)->nullable();
             $table->string('price_year', 20)->nullable();
             $table->float('price_value')->nullable();
@@ -212,5 +213,6 @@ class CreateParkingTables extends Migration
         Schema::dropIfExists('carparks');
         Schema::dropIfExists('products');
         Schema::dropIfExists('companies');
+        Schema::dropIfExists('company_details');
     }
 }
