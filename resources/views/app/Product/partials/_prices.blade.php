@@ -8,14 +8,14 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right overrides" name="override_dates">
+                    <input type="text" class="form-control pull-right overrides" name="override_dates" value="{{ isset($product) ? $product->override_dates : "" }}">
                 </div>
                 <small>Date</small>
             </div>
 
             <div class="col-md-1">
                 <div class="input-group">
-                    <input type="text" class="form-control pull-right text-right" name="override_price" value="0">
+                    <input type="text" class="form-control pull-right text-right" name="override_price" value="{{ isset($product) ? $product->override_price : "0" }}">
                 </div>
                 <small>Price Per Day</small>
             </div>
@@ -49,10 +49,10 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="pricesp[no_of_days][1][]">
+                <select class="form-control" name="prices[no_of_days][1][]">
                     <option value="" readonly>-- No. of days --</option>
                     @for($i=1; $i<=31; $i++)
-                        @if($price->no_of_days == $i)
+                        @if($prices->no_of_days == $i)
                         <option value="{{ $i }}" selected>{{ $i }}</option>
                         @else
                         <option value="{{ $i }}">{{ $i }}</option>

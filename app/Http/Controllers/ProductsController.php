@@ -90,7 +90,7 @@ class ProductsController extends Controller
                                         'no_of_days'      => $form['prices']['no_of_days'][1][$i],
                                         'price_month'     => $form['prices']['price_month'][2][$i],
                                         'price_year'      => $form['prices']['price_year'][3][$i],
-                                        'price_value'     => $form['prices']['price_value'][4][$i],
+                                        'price_value'     => $form['prices']['price_value'][4][$i]
                                     ];
                                 }
                             }
@@ -120,7 +120,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e->getMessage());
+            abort(404, $e->getMessage());
         }
     }
 
@@ -189,15 +189,17 @@ class ProductsController extends Controller
 
             if ($request->isMethod('post')) {
                 $product = Products::findOrFail($request->product_id);
-                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services']);
+                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'override_dates', 'override_price']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
-                $product->carpark_id    = $form['carpark_id'];
-                $product->description   = $form['description'];
-                $product->on_arrival    = $form['on_arrival'];
-                $product->on_return     = $form['on_return'];
-                $product->revenue_share = $form['revenue_share'];
+                $product->carpark_id     = $form['carpark_id'];
+                $product->description    = $form['description'];
+                $product->on_arrival     = $form['on_arrival'];
+                $product->on_return      = $form['on_return'];
+                $product->revenue_share  = $form['revenue_share'];
+                $product->override_dates = $form['override_dates'];
+                $product->override_price = $form['override_price'];
 
                 if ($product->save()) {
                     // update airports
@@ -226,11 +228,10 @@ class ProductsController extends Controller
                                     $prices_form[$i] = [
                                         'product_id'      => $product->id,
                                         'category_id'     => $form['prices']['category_id'][0][$i],
-                                        'price_start_day' => $form['prices']['price_start_day'][1][$i],
-                                        'price_end_day'   => $form['prices']['price_end_day'][2][$i],
-                                        'price_month'     => $form['prices']['price_month'][3][$i],
-                                        'price_year'      => $form['prices']['price_year'][4][$i],
-                                        'price_value'     => $form['prices']['price_value'][5][$i],
+                                        'no_of_days'      => $form['prices']['no_of_days'][1][$i],
+                                        'price_month'     => $form['prices']['price_month'][2][$i],
+                                        'price_year'      => $form['prices']['price_year'][3][$i],
+                                        'price_value'     => $form['prices']['price_value'][4][$i]
                                     ];
                                 }
                             }
@@ -263,6 +264,7 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
+            abort(404, $e->getMessage());
         }
     }
 }
