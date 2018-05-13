@@ -64,7 +64,7 @@ desired effect
   <!-- jQuery 3 -->
   <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
   <!-- jQuery UI -->
-  <script src="{{ asset('bower_components/jquery-ui/jQuery-ui.min.js') }}"></script>
+  <script src="{{ asset('bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
   {{-- moment --}}
   <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
   <!-- Bootstrap 3.3.7 -->
