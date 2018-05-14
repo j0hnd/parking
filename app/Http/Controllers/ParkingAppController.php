@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Airports;
+use App\Models\Tools\Common;
 use Illuminate\Http\Request;
 
 class ParkingAppController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
     public function index()
     {
-        return true;
+        $airports = Airports::active()->get();
+        $time_intervals = Common::get_times(date('H:i'), '+5 minutes');
+        return view('parking-app', compact('airports', 'time_intervals'));
     }
 }
