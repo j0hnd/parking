@@ -12,7 +12,9 @@
 */
 
 Route::get('/admin', 'DashboardController@index');
-Route::get('/', 'Auth\LoginController@login');
+Route::get('/', function () {
+    return view('parking-app');
+});
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 
