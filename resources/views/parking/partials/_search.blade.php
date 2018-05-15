@@ -4,7 +4,7 @@
             <i><img src="{{ asset('/img/plane-mini.png') }}"></i> Airport <br/>
             <select class="form-control-sm" style="width:100%">
                 <option value="" readonly>-- Airports --</option>
-                @if(count($airports))
+                @if(isset($airports))
                     @foreach($airports as $airport)
                     <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
                     @endforeach
@@ -17,7 +17,11 @@
         </div>
         <div class="col-md-1 input3">
             <br>
-            <select class="form-control-sm" name="search[drop-off-time]">{!! $time_intervals !!}</select>
+            <select class="form-control-sm" name="search[drop-off-time]">
+                @if(isset($time_interval))
+                {!! $time_intervals !!}
+                @endif
+            </select>
         </div>
         <div class="col-md-2 input4">
             <i><img src="{{ asset('img/calendar.png') }}"></i> Return at <br/>
@@ -25,7 +29,11 @@
         </div>
         <div class="col-md-1 input5">
             <br>
-            <select class="form-control-sm" name="search[return-at-time]">{!! $time_intervals !!}</select>
+            <select class="form-control-sm" name="search[return-at-time]">
+                @if(isset($time_interval))
+                {!! $time_intervals !!}
+                @endif
+            </select>
         </div>
         <div class="col-md-3 input6">
             <button type="submit" class="btn btn-primary btn-sm"><i><img src="{{ asset('/img/search.png') }}"/></i> Search Car Park</button>
