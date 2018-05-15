@@ -26,6 +26,9 @@ class ParkingAppController extends Controller
             // $form = $request->except(['_token']);
         }
 
-        return view('parking.search');
+        $airports = Airports::active()->get();
+        $time_intervals = Common::get_times(date('H:i'), '+5 minutes');
+
+        return view('parking.search', compact('airports', 'time_intervals'));
     }
 }

@@ -97,7 +97,7 @@
 .input3{
     position: relative;
     left: 0%;
-    margin-top: 24px;
+    /*margin-top: 24px;*/
 }
 .input4{
     position: relative;
@@ -105,7 +105,7 @@
 }
 .input5{
     position: relative;
-    margin-top: 24px;
+    /*margin-top: 24px;*/
     margin-left: 62px;
 }
 .input6{

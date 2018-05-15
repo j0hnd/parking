@@ -18,7 +18,7 @@
         <div class="col-md-1 input3">
             <br>
             <select class="form-control-sm" name="search[drop-off-time]">
-                @if(isset($time_interval))
+                @if(isset($time_intervals))
                 {!! $time_intervals !!}
                 @endif
             </select>
@@ -30,7 +30,7 @@
         <div class="col-md-1 input5">
             <br>
             <select class="form-control-sm" name="search[return-at-time]">
-                @if(isset($time_interval))
+                @if(isset($time_intervals))
                 {!! $time_intervals !!}
                 @endif
             </select>
