@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductFormRequest;
 use App\Models\Airports;
 use App\Models\Carpark;
+use App\Models\Overrides;
 use App\Models\ProductAirports;
 use App\Models\Products;
 use App\Models\Services;
@@ -67,7 +68,7 @@ class ProductsController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'override_dates', 'override_price']);
+                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'overrides']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -96,8 +97,26 @@ class ProductsController extends Controller
                             }
                         }
 
-                        foreach ($prices_form as $form) {
-                            Prices::create($form);
+                        foreach ($prices_form as $pform) {
+                            Prices::create($pform);
+                        }
+                    }
+
+                    if (isset($form['overrides'])) {
+                        foreach ($form['overrides'] as $overrides) {
+                            foreach ($overrides as $key => $values) {
+                                foreach ($values as $i => $val) {
+                                    $override_form[$i] = [
+                                        'product_id'     => $products->id,
+                                        'override_dates' => $form['overrides']['override_dates'][0][$i],
+                                        'override_price' => $form['overrides']['override_price'][1][$i]
+                                    ];
+                                }
+                            }
+                        }
+
+                        foreach ($override_form as $oform) {
+                            Overrides::create($oform);
                         }
                     }
 

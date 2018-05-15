@@ -67,7 +67,29 @@
             });
 
             $(document).on('click', '#toggle-remove-row', function () {
-                var row = $(this).closest('tr');
+                var row = $(this).parent().parent().parent();
+                if (row_count == 1) {
+                    alert('Unable to delete this last row.');
+                } else {
+                    row_count--;
+                    row.remove();
+                }
+            });
+
+            $(document).on('click', '.toggle-create-override-row', function () {
+                var src = $('#override-wrapper').clone();
+                if (row_count < row_limit) {
+                    src.find('input').val(0);
+                    $('#override-container').append(src);
+                    $('.overrides').daterangepicker();
+                    row_count++;
+                } else {
+                    alert("You can only add "+ row_limit +" override variance.");
+                }
+            });
+
+            $(document).on('click', '.toggle-remove-override-row', function () {
+                var row = $(this).parent().parent().parent();
                 if (row_count == 1) {
                     alert('Unable to delete this last row.');
                 } else {

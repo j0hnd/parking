@@ -73,8 +73,6 @@ class CreateParkingTables extends Migration
             $table->text('on_arrival');
             $table->text('on_return');
             $table->float('revenue_share')->default(0);
-            $table->string('override_dates', 30)->nullabel();
-            $table->integer('override_price')->nullabel();
             $table->softDeletes();
             $table->timestamps();
 
@@ -105,6 +103,18 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['product_id', 'category_id']);
+            $table->engine = 'InnoDB';
+        });
+
+        Schema::create('overrides', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('product_id');
+            $table->string('override_dates', 30)->nullabel();
+            $table->integer('override_price')->nullabel();
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->index(['product_id']);
             $table->engine = 'InnoDB';
         });
 

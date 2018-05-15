@@ -14,14 +14,12 @@ class Products extends BaseModel
         'on_arrival',
         'on_return',
         'revenue_share',
-        'override_dates',
-        'override_price',
         'deleted_at'
     ];
 
-    protected $guarded = ['carpark_id'];
+    protected $guarded = ['carpark_id', 'revenue_share'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services', 'prices'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides'];
 
 
     public function carpark()
@@ -42,6 +40,10 @@ class Products extends BaseModel
     public function prices()
     {
         return $this->hasMany(Prices::class, 'product_id', 'id');
-        // return $this->belongsToMany(PriceCategories::class, 'prices', 'product_id', 'category_id');
+    }
+
+    public function overrides()
+    {
+        return $this->hasMany(Overrides::class, 'product_id', 'id');
     }
 }

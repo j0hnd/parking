@@ -1,24 +1,70 @@
 <div id="prices-container" class="row">
     <div class="row margin-left10 margin-right10 margin-bottom15 padding-10 bg-info">
-        <div class="col-md-12 padding-bottom10">
+        <div id="override-container">
             <h4>Override Price Per Day</h4>
-            <div class="col-md-3">
-
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
+            @if(isset($product->overrides))
+                @foreach($product->overrides as $override)
+                <div id="override-wrapper" class="col-md-12 padding-bottom10">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right overrides" name="overrides[override_dates][0][]" value="{{ $override->override_dates }}">
+                        </div>
+                        <small>Date</small>
                     </div>
-                    <input type="text" class="form-control pull-right overrides" name="override_dates" value="{{ isset($product) ? $product->override_dates : "" }}">
-                </div>
-                <small>Date</small>
-            </div>
 
-            <div class="col-md-1">
-                <div class="input-group">
-                    <input type="text" class="form-control pull-right text-right" name="override_price" value="{{ isset($product) ? $product->override_price : "0" }}">
+                    <div class="col-md-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control pull-right text-right" name="overrides[override_price][1][]" value="{{ $override->override_price }}">
+                        </div>
+                        <small>Price Per Day</small>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success btn-flat toggle-create-override-row">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-warning btn-flat toggle-remove-override-row">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <small>Price Per Day</small>
+                @endforeach
+            @else
+            <div id="override-wrapper" class="col-md-12 padding-bottom10">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" class="form-control pull-right overrides" name="overrides[override_dates][0][]">
+                    </div>
+                    <small>Date</small>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="input-group">
+                        <input type="text" class="form-control pull-right text-right" name="overrides[override_price][1][]" value="0">
+                    </div>
+                    <small>Price Per Day</small>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success btn-flat toggle-create-override-row">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning btn-flat toggle-remove-override-row">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
+            @endif
         </div>
     </div>
 
@@ -39,7 +85,7 @@
                     @if($priceCategories->count())
                         <option value="">-- Select Price Category --</option>
                         @foreach($priceCategories->get() as $price)
-                            @if($price->id == $prices->id)
+                            @if($price->id == $prices->category_id)
                             <option value="{{ $price->id }}" selected>{{ $price->category_name }}</option>
                             @else
                             <option value="{{ $price->id }}">{{ $price->category_name }}</option>
@@ -49,7 +95,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="prices[no_of_days][1][]">
+                <select class="form-control" name="pricesp[no_of_days][1][]">
                     <option value="" readonly>-- No. of days --</option>
                     @for($i=1; $i<=31; $i++)
                         @if($prices->no_of_days == $i)
@@ -159,170 +205,3 @@
         </div>
     @endif
 </div>
-
-
-{{-- <div class="row">
-    <div class="col-md-12">
-        <table class="table table-primary">
-            <thead>
-                <tr>
-                    <td colspan="5"></td>
-                    <td class="text-center bg-teal" colspan="2"> <h4>Override Per Day</h4> </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th style="width:30%">Price Category</th>
-                    <th style="width:10%">No. Of Days</th>
-                    <th style="width:10%">Price Month</th>
-                    <th style="width:7%">Price Year</th>
-                    <th style="width:7%">Price Value</th>
-                    <th style="width:20%" class="text-center bg-teal">Date</th>
-                    <th style="width:7%" class="text-center bg-teal">Price Value</th>
-                    <th style="width:%"></th>
-                </tr>
-            </thead>
-            <tbody id="price-form-wrapper">
-                @if(isset($product->prices))
-                    @foreach($product->prices as $prices)
-                    <tr>
-                        <td>
-                            <select name="prices[category_id][0][]" class="form-control">
-                                @if($priceCategories->count())
-                                    <option value="">-- Select Price Category --</option>
-                                    @foreach($priceCategories->get() as $price)
-                                        @if($price->id == $prices->id)
-                                        <option value="{{ $price->id }}" selected>{{ $price->category_name }}</option>
-                                        @else
-                                        <option value="{{ $price->id }}">{{ $price->category_name }}</option>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-control" name="no_of_days">
-                                <option value="" readonly>-- No. of days --</option>
-                                @for($i=1; $i<=31; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </td>
-                        <td>
-                            <select name="prices[price_month][3][]" class="form-control price_month" id="">
-                                <option value="" readonly>-- Months --</option>
-                                @foreach ($months as $month)
-                                    @if($month == $prices->price_month)
-                                    <option value="{{ $month }}" selected>{{ $month }}</option>
-                                    @else
-                                    <option value="{{ $month }}">{{ $month }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <select name="prices[price_year][4][]" class="form-control price_year" id="">
-                                <option value="" readonly>-- Years --</option>
-                                @foreach ($years as $year)
-                                    @if($year == $prices->price_year)
-                                    <option value="{{ $year }}" selected>{{ $year }}</option>
-                                    @else
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" name="prices[price_value][5][]"
-                                   class="form-control price-value"
-                                   placeholder="Price Value"
-                                   maxlength="4"
-                                   value="{{ $prices->price_value }}">
-                       </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row">
-                                    <i class="fa fa-trash-o"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td>
-                            <select name="prices[category_id][0][]" class="form-control">
-                                @if($priceCategories->count())
-                                    <option value="">-- Category --</option>
-                                    @foreach($priceCategories->get() as $price)
-                                    <option value="{{ $price->id }}">{{ $price->category_name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                            <input type="hidden" name="prices[override][date]" class="override-dates">
-                            <input type="hidden" name="prices[override][price]" class="override-price">
-                        </td>
-                        <td>
-                            <select class="form-control" name="no_of_days">
-                                <option value="" readonly>-- No. of days --</option>
-                                @for($i=1; $i<=31; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </td>
-                        <td>
-                            <select name="prices[price_month][3][]" class="form-control price_month" id="">
-                                <option value="" readonly>-- Months --</option>
-                                @foreach ($months as $month)
-                                    <option value="{{ $month }}">{{ $month }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <select name="prices[price_year][4][]" class="form-control price_year" id="">
-                                <option value="" readonly>-- Years --</option>
-                                @foreach ($years as $year)
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" name="prices[price_value][5][]"
-                                   class="form-control price-value"
-                                   placeholder="Price Value"
-                                   maxlength="4"
-                                   value="0">
-                        </td>
-                        <td class="bg-teal">
-                            <div class="col-md-12 col-xs-12">
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right overrides" name="ovrride['dates']">
-                                </div>
-                            </div>
-                        </td>
-                        <td class="bg-teal">
-                            <div class="input-group">
-                                <input type="text" class="form-control pull-right" name="ovrride['price']" value="0">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row">
-                                    <i class="fa fa-trash-o"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
-    </div>
-</div> --}}
