@@ -2,6 +2,39 @@
     <div class="row margin-left10 margin-right10 margin-bottom15 padding-10 bg-info">
         <div id="override-container">
             <h4>Override Price Per Day</h4>
+            @if(isset($product->overrides))
+                @foreach($product->overrides as $override)
+                <div id="override-wrapper" class="col-md-12 padding-bottom10">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right overrides" name="overrides[override_dates][0][]" value="{{ $override->override_dates }}">
+                        </div>
+                        <small>Date</small>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control pull-right text-right" name="overrides[override_price][1][]" value="{{ $override->override_price }}">
+                        </div>
+                        <small>Price Per Day</small>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success btn-flat toggle-create-override-row">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-warning btn-flat toggle-remove-override-row">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            @else
             <div id="override-wrapper" class="col-md-12 padding-bottom10">
                 <div class="col-md-3">
                     <div class="input-group">
@@ -31,7 +64,7 @@
                     </div>
                 </div>
             </div>
-
+            @endif
         </div>
     </div>
 
@@ -52,7 +85,7 @@
                     @if($priceCategories->count())
                         <option value="">-- Select Price Category --</option>
                         @foreach($priceCategories->get() as $price)
-                            @if($price->id == $prices->id)
+                            @if($price->id == $prices->category_id)
                             <option value="{{ $price->id }}" selected>{{ $price->category_name }}</option>
                             @else
                             <option value="{{ $price->id }}">{{ $price->category_name }}</option>
@@ -65,7 +98,7 @@
                 <select class="form-control" name="pricesp[no_of_days][1][]">
                     <option value="" readonly>-- No. of days --</option>
                     @for($i=1; $i<=31; $i++)
-                        @if($price->no_of_days == $i)
+                        @if($prices->no_of_days == $i)
                         <option value="{{ $i }}" selected>{{ $i }}</option>
                         @else
                         <option value="{{ $i }}">{{ $i }}</option>

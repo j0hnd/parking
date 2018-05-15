@@ -14,12 +14,10 @@ class Products extends BaseModel
         'on_arrival',
         'on_return',
         'revenue_share',
-        'override_dates',
-        'override_price',
         'deleted_at'
     ];
 
-    protected $guarded = ['carpark_id'];
+    protected $guarded = ['carpark_id', 'revenue_share'];
 
     protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides'];
 

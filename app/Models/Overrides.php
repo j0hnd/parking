@@ -8,11 +8,11 @@ class Overrides extends BaseModel
 
     protected $guarded = ['product_id'];
 
-    protected $with = ['products'];
+//    protected $with = ['products'];
 
 
-    public function products()
-    {
-        return $this->belongsTo(Products::class, 'product_id', 'id');
-    }
+//    public function products()
+//    {
+//        return $this->belongsTo(Products::class, 'id', 'product_id');
+//    }
 }
