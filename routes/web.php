@@ -16,7 +16,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 
 Route::get('/', 'ParkingAppController@index');
-Route::post('/search', 'ParkingAppController@index')->name('search');
+Route::post('/search', 'ParkingAppController@search');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');

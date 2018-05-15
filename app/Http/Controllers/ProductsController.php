@@ -67,7 +67,7 @@ class ProductsController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'override_dates', 'override_price']);
+                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'overrides']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();

@@ -21,7 +21,7 @@ class Products extends BaseModel
 
     protected $guarded = ['carpark_id'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services', 'prices'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides'];
 
 
     public function carpark()
@@ -42,6 +42,10 @@ class Products extends BaseModel
     public function prices()
     {
         return $this->hasMany(Prices::class, 'product_id', 'id');
-        // return $this->belongsToMany(PriceCategories::class, 'prices', 'product_id', 'category_id');
+    }
+
+    public function overrides()
+    {
+        return $this->hasMany(Overrides::class, 'product_id', 'id');
     }
 }
