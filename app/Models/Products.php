@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
+use Carbon\Carbon;
 
 class Products extends BaseModel
 {
@@ -45,5 +46,55 @@ class Products extends BaseModel
     public function overrides()
     {
         return $this->hasMany(Overrides::class, 'product_id', 'id');
+    }
+
+    public static function search($data)
+    {
+        $products = null;
+
+        try {
+            // get airports
+            $product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
+            if ($product_airports->count()) {
+
+                // get number of days between the dates in the search parameters
+                $begin = Carbon::parse($data['search']['drop-off-date']);
+                $no_days = $begin->diffInDays($data['search']['return-at-date']);
+
+                if ($no_days === 0) {
+                    $no_days = 1;
+                }
+
+                foreach ($product_airports->get() as $airport) {
+                    $product = self::findOrFail($airport->product_id);
+                    if (count($product)) {
+                        foreach ($product->prices as $price) {
+                            if ($no_days <= $price->no_of_days) {
+                                $products[] = [
+                                    'product_id' => $product->id,
+                                    'prices' => $product->prices,
+                                    'overrides' => $product->overrides
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            abort(404, $e->getMessage());
+        }
+
+        return $products;
+    }
+
+    public static function prepare_data($products)
+    {
+        if (count($products) == 0) {
+            return null;
+        }
+
+        foreach ($products as $product) {
+            dd($product['prices']);
+        }
     }
 }

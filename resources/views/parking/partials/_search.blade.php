@@ -2,7 +2,7 @@
     <div class="row book-box">
         <div class="col-md-3 input1">
             <i><img src="{{ asset('/img/plane-mini.png') }}"></i> Airport <br/>
-            <select class="form-control-sm" style="width:100%">
+            <select class="form-control-sm" name="search[airport]" style="width:100%">
                 <option value="" readonly>-- Airports --</option>
                 @if(isset($airports))
                     @foreach($airports as $airport)

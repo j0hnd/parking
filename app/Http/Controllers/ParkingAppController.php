@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Airports;
+use App\Models\Products;
 use App\Models\Tools\Common;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,9 @@ class ParkingAppController extends Controller
     public function search(Request $request)
     {
         if ($request->isMethod('post')) {
-            // $form = $request->except(['_token']);
+             $form = $request->except(['_token']);
+             $products = Products::search($form);
+             dd(Products::prepare_data($products));
         }
 
         $airports = Airports::active()->get();
