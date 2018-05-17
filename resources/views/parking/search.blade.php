@@ -2,6 +2,7 @@
 
 @section('css')
 <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
+<link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
 @stop
 
 @section('main-content')
@@ -34,9 +35,12 @@
 
     <div class="container park-search">
         <div class="row">
-            @for($i = 1; $i <= 12; $i++)
-                @include('parking.partials._cards')
-            @endfor
+            @include('parking.partials._cards')
         </div>
     </div>
+@stop
+
+@section('js')
+<script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
 @stop

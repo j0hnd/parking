@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
+use Carbon\Carbon;
 
 class Products extends BaseModel
 {
@@ -45,5 +46,85 @@ class Products extends BaseModel
     public function overrides()
     {
         return $this->hasMany(Overrides::class, 'product_id', 'id');
+    }
+
+    public static function search($data)
+    {
+        $products = null;
+
+        try {
+            // get airports
+            $product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
+            if ($product_airports->count()) {
+
+                // get number of days between the dates in the search parameters
+                $begin = Carbon::parse($data['search']['drop-off-date']);
+                $no_days = $begin->diffInDays($data['search']['return-at-date']);
+
+                if ($no_days === 0) {
+                    $no_days = 1;
+                }
+
+                foreach ($product_airports->get() as $airport) {
+                    $product = self::findOrFail($airport->product_id);
+                    if (count($product)) {
+                        foreach ($product->prices as $price) {
+                            if ($no_days == $price->no_of_days) {
+                                $products[] = [
+                                    'product_id' => $product->id,
+									'carpark' => $product->carpark->name,
+									'image' => $product->carpark->image,
+                                    'prices' => $product->prices,
+                                    'overrides' => $product->overrides,
+									'services' => $product->carpark_services
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            abort(404, $e->getMessage());
+        }
+
+        return $products;
+    }
+
+    public static function prepare_data($products)
+    {
+        try {
+            if (count($products) == 0) {
+                return null;
+            }
+
+			$i = 0;
+            foreach ($products as $product) {
+                foreach ($product['prices'] as $price) {
+                    if (empty($price->month) and empty($price->year)) {
+                        $category = PriceCategories::findOrFail($price->category_id);
+                        $results[$i] = [
+                            'product_id' => $product['product_id'],
+							'carpark_name' => $product['carpark'],
+							'image' => $product['image'],
+                            'category' => $category->category_name,
+							'price' => $price->price_value
+                        ];
+                    }
+                }
+
+                foreach ($product['services'] as $services) {
+                	$carpark_services[] = ['name' => $services->service_name, 'icon' => $services->icon];
+				}
+
+				$results[$i]['services'] = $carpark_services;
+                unset($carpark_services);
+
+                $i++;
+            }
+        } catch (\Exception $e) {
+            dd($e);
+        }
+
+        return $results;
     }
 }
