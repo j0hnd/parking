@@ -1,10 +1,10 @@
 /* START NAVBAR */
-
-.navbar-dark{
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+.navbar-light{
     background-color: transparent;
 
 }
-.bg-dark {
+.bg-light{
     background-color: transparent !important;
 }
 .navbar{
@@ -16,17 +16,17 @@
     right: 0;
     z-index: 1;
 }
-.navbar-dark .navbar-nav .nav-link{
+.navbar-light .navbar-nav .nav-link{
     color: #000;
     font-family: "Montserrat";
     font-size: 14px;
     font-weight: 500;
 }
 
-.navbar-dark .navbar-nav .active{
+.navbar-light .navbar-nav .active{
     color: #27b2e0 !important;
 }
-.navbar-dark .navbar-nav .nav-link:hover
+.navbar-light .navbar-nav .nav-link:hover
 {
     color: #27b2e0;
 }
@@ -45,10 +45,13 @@
 
 /* END NAVBAR */
 /* START 2nd NAVBAR */
+.navbar-2-mobile{
+    display: none;
+}
 .navbar-2{
     position: relative;
     background-color: #27b2e0 !important;
-    padding: 50px 0 50px 0;
+    padding: 50px 0 40px 0;
 
 }
 .book-box{
@@ -63,7 +66,7 @@
 .active-2{
     position: relative;
     background-color: #005e7d;
-    padding: 30px 30px 29px 30px;
+    padding: 30px 30px 32px 30px;
 
 }
 .not-active{
@@ -76,6 +79,7 @@
 .ul-pos{
     position: absolute;
     top: 1%;
+    margin-left: 135px;
 }
 /* END 2nd NAVBAR */
 /* START HEADER */
@@ -97,7 +101,7 @@
 .input3{
     position: relative;
     left: 0%;
-    /*margin-top: 24px;*/
+    margin-top: 24px;
 }
 .input4{
     position: relative;
@@ -105,7 +109,7 @@
 }
 .input5{
     position: relative;
-    /*margin-top: 24px;*/
+    margin-top: 24px;
     margin-left: 62px;
 }
 .input6{
@@ -150,12 +154,50 @@
     border-style: solid;
     margin: 20px 0 20px 0;
     background-color: #fff;
+    padding: 10px 0 10px 0;
 }
 .card-in{
     text-align: center;
 }
 .card-icon{
     margin-left: 11px;
+}
+.tooltip-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-icon .tooltip-text {
+    visibility: hidden;
+    width: 150px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px 5px 10px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 0%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-icon .tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  transparent transparent #555 transparent;
+}
+
+.tooltip-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 hr{
     border: .5px solid #005e7d;
@@ -174,7 +216,7 @@ hr{
     margin:0;
 }
 .card-title2{
-    font-size: 18px;
+    font-size: 17px;
     font-family: "Montserrat";
     color: rgb(0, 94, 125);
     font-weight: bold;
@@ -192,7 +234,7 @@ hr{
     font-weight: 500;
 }
 .price{
-    font-size: 45px;
+    font-size: 35px;
     font-family: "Montserrat";
     color: rgb(226, 99, 2);
     font-weight: 600;
@@ -202,7 +244,7 @@ hr{
     margin:0;
 }
 .book-now{
-    font-size: 23px;
+    font-size: 15px;
     font-family: "Montserrat";
     color: rgb(255, 255, 255);
     font-weight: bold;
@@ -222,20 +264,109 @@ hr{
     margin-bottom: 12px;
 }
 .more{
-    font-size: 14px;
+    font-size: 10px;
     font-family: "Montserrat";
     color: rgb(39, 178, 224);
     text-transform: uppercase;
     line-height: 1.887;
     position: relative;
+    margin-left: 10px;
 }
 .more:hover{
     text-decoration: none;
     color: #ffe000;
+
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 2000;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 55%;
+    position: relative;
+    transition: all 2s ease-in-out;
+    top: 20%;
+
+}
+
+.popup h1 {
+    margin-top: 0;
+    color: rgb(61, 76, 91);
+    font-family: "Roboto";
+    font-size: 50;
+    font-weight: 300;
+}
+.close3 {
+    position: absolute;
+    bottom: 75%;
+    left: 97%;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none !important;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    background: #003345;
+    padding: 0px 12px 2px 12px;
+
+}
+.popup .close3:hover {
+    color: #0797cc;
+
+}
+
+.card-border > .plus:before {
+    float: right !important;
+    font-family: FontAwesome;
+    content:"\f068";
+    padding-right: 5px;
+    font-size: 10px;
+    color: rgb(39, 178, 224);
+    position: relative;
+    top: 7px;
+    margin-right: 10px;
+}
+.card-border > .plus.collapsed:before {
+    float: right !important;
+    content:"\f067";
+}
+.card-border > .plus:hover,
+.card-border > .plus:active,
+.card-border > .plus:focus  {
+    text-decoration:none;
+}
+.collapsable-text{
+    font-size: 14px;
+    font-family: "Montserrat";
+    color: rgb(0, 94, 125);
+    margin: 0 10px 0 10px;
+}
+.collapsable-title{
+    margin: 10px 10px 0 10px;
+    font-size: 17px;
+    font-family: "Montserrat";
+    color: rgb(0, 94, 125);
+    font-weight: bold;
 }
 /* END MAIN CONTENT */
-
-
 /* START FOOTER */
 footer{
     background-color: #1c1c1c;
@@ -301,3 +432,156 @@ footer{
 }
 
 /* END FOOTER */
+/* START MOBILE */
+@media only screen and (max-width:700px){
+
+
+    .vl{
+        display: none;
+    }
+    .navbar-light .navbar-toggler {
+        position: relative;
+        color: #fff !important;
+        border-color: #1d2124 !important;
+        left: 70%;
+
+    }
+    .navbar{
+        position: absolute;
+        margin-top: 12px;
+        display: block;
+        float: left;
+        left: 50%;
+        background-color: #fff !important;
+
+    }
+    .navbar-brand{
+        position: absolute;
+        right: 40%;
+    }
+    .navbar-light .navbar-nav .nav-link {
+        margin-top: 10px;
+    }
+    .navbar-2{
+        display: none;
+    }
+    .navbar-2-mobile{
+        display: inline;
+    }
+    .navbar-2-mobile ul{
+        background-color: #27b2e0;
+        padding: 14px 0px 18px 30px;
+        position: relative;
+        margin-bottom: 0rem !important;
+    }
+    .active-2-mobile{
+        background-color: #005e7d;
+        display: inline;
+        padding: 17px 6px 22px 10px;
+
+    }
+    .not-active-2-mobile{
+        display: inline;
+        padding: 17px 6px 22px 10px;
+
+    }
+    .not-active-2-mobile:hover{
+        background-color: #005e7d;
+
+    }
+    .navbar-2-mobile ul li a{
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .foot-col2-sub{
+        text-align: left;
+        margin-left: 10px;
+    }
+    .foot-col2{
+        text-align: left;
+    }
+    .col3-align {
+        position: relative;
+        left: 0%;
+    }
+    .input1{
+        position: relative;
+        height: 35px;
+        top: 3px;
+        margin-bottom: 24px;
+    }
+    .input2{
+        position: relative;
+        right: 0%;
+    }
+    .input3{
+        position: relative;
+        left: 0%;
+        margin-top: 10px;
+    }
+    .input4{
+        position: relative;
+        left: 0%;
+    }
+    .input5{
+        position: relative;
+        left: 0%;
+        margin-top: 10px;
+        margin-left: 0;
+    }
+    .input6{
+        position: relative;
+    }
+    .btn-primary{
+        position: relative;
+        left: 0%;
+        width: 200px;
+        height: 35px;
+        border-radius: 2px;
+        background-color: #27b2e0;
+        color: #fff;
+        border: 1px #27b2e0;
+        margin-top: 10px;
+    }
+    .book-box{
+        margin-top: 0px;
+        background-color: transparent !important;
+        padding: 20px 10px 20px 10px;
+        color: #fff;
+        font-family: "Montserrat";
+        letter-spacing: 1px;
+        text-align: center;
+        position: relative;
+
+    }
+    .park-search {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    #header{
+        padding-bottom: 40px;
+    }
+
+    .filter {
+        margin-left: 22px;
+        top: 78%;
+        left: 0%;
+        margin-top: 0px;
+        position: relative;
+        font-size: 14px;
+    }
+    .mobile-align{
+        margin-top: 20px;
+        text-align: center;
+    }
+    .popup{
+        width: 90%;
+        top: 10%;
+    }
+    .close3 {
+        bottom: 84%;
+        left: 90%;
+    }
+}
+/* END MOBILE */

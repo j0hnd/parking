@@ -97,9 +97,8 @@ class Products extends BaseModel
                 return null;
             }
 
+			$i = 0;
             foreach ($products as $product) {
-				$i = 0;
-
                 foreach ($product['prices'] as $price) {
                     if (empty($price->month) and empty($price->year)) {
                         $category = PriceCategories::findOrFail($price->category_id);
@@ -114,11 +113,13 @@ class Products extends BaseModel
                 }
 
                 foreach ($product['services'] as $services) {
-                	$carpark_services[] = $services->service_name;
+                	$carpark_services[] = ['name' => $services->service_name, 'icon' => $services->icon];
 				}
 
 				$results[$i]['services'] = $carpark_services;
+                unset($carpark_services);
 
+                $i++;
             }
         } catch (\Exception $e) {
             dd($e);
