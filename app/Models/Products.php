@@ -72,6 +72,8 @@ class Products extends BaseModel
                             if ($no_days == $price->no_of_days) {
                                 $products[] = [
                                     'product_id' => $product->id,
+									'carpark' => $product->carpark->name,
+									'image' => $product->carpark->image,
                                     'prices' => $product->prices,
                                     'overrides' => $product->overrides,
 									'services' => $product->carpark_services
@@ -103,6 +105,8 @@ class Products extends BaseModel
                         $category = PriceCategories::findOrFail($price->category_id);
                         $results[$i] = [
                             'product_id' => $product['product_id'],
+							'carpark_name' => $product['carpark'],
+							'image' => $product['image'],
                             'category' => $category->category_name,
 							'price' => $price->price_value
                         ];
