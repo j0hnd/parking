@@ -26,12 +26,12 @@ class ParkingAppController extends Controller
         if ($request->isMethod('post')) {
              $form = $request->except(['_token']);
              $products = Products::search($form);
-             dd(Products::prepare_data($products));
+             $results = Products::prepare_data($products);
         }
 
         $airports = Airports::active()->get();
         $time_intervals = Common::get_times(date('H:i'), '+5 minutes');
 
-        return view('parking.search', compact('airports', 'time_intervals'));
+        return view('parking.search', compact('airports', 'time_intervals', 'results'));
     }
 }

@@ -69,11 +69,12 @@ class Products extends BaseModel
                     $product = self::findOrFail($airport->product_id);
                     if (count($product)) {
                         foreach ($product->prices as $price) {
-                            if ($no_days <= $price->no_of_days) {
+                            if ($no_days == $price->no_of_days) {
                                 $products[] = [
                                     'product_id' => $product->id,
                                     'prices' => $product->prices,
-                                    'overrides' => $product->overrides
+                                    'overrides' => $product->overrides,
+									'services' => $product->carpark_services
                                 ];
                             }
                         }
@@ -89,12 +90,36 @@ class Products extends BaseModel
 
     public static function prepare_data($products)
     {
-        if (count($products) == 0) {
-            return null;
+        try {
+            if (count($products) == 0) {
+                return null;
+            }
+
+            foreach ($products as $product) {
+				$i = 0;
+
+                foreach ($product['prices'] as $price) {
+                    if (empty($price->month) and empty($price->year)) {
+                        $category = PriceCategories::findOrFail($price->category_id);
+                        $results[$i] = [
+                            'product_id' => $product['product_id'],
+                            'category' => $category->category_name,
+							'price' => $price->price_value
+                        ];
+                    }
+                }
+
+                foreach ($product['services'] as $services) {
+                	$carpark_services[] = $services->service_name;
+				}
+
+				$results[$i]['services'] = $carpark_services;
+
+            }
+        } catch (\Exception $e) {
+            dd($e);
         }
 
-        foreach ($products as $product) {
-            dd($product['prices']);
-        }
+        return $results;
     }
 }
