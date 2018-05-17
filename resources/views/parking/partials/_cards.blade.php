@@ -7,7 +7,7 @@
                     @foreach($result['services'] as $service)
                         <div class="tooltip-icon">
                             <span class="card-icon"><i class="fa {{ trim($service['icon']) }}"></i></span>
-                            <span class="tooltip-text">{{ $service['name    '] }}</span>
+                            <span class="tooltip-text">{{ $service['name'] }}</span>
                         </div>
                     @endforeach
                 @endif
