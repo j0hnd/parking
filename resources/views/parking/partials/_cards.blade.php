@@ -22,7 +22,7 @@
                 @endif
 
                 <p class="price">£{{ $result['price'] }}</p>
-                <a href="#" class="book-now" data-id="{{ $result['product_id'] }}" data-price="{{ $result['price'] }}">BOOK NOW</a><br/>
+                <a href="{{ url('/payment') }}" class="book-now" data-id="{{ $result['product_id'] }}" data-price="{{ $result['price'] }}">BOOK NOW</a><br/>
                 <img src="{{ asset('/img/star-like.png') }}" class="star"><br/>
             </div>
             <a href="popup{{ $result['product_id'] }}" class="more"><i><img src="{{ asset('/img/booking/info.png') }}"></i> MORE INFO</a>

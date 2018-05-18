@@ -1,0 +1,507 @@
+/* START NAVBAR */
+body{
+    position: relative;
+}
+
+.navbar-light{
+    background-color: transparent;
+
+}
+.bg-light{
+    background-color: transparent !important;
+}
+.navbar{
+    position: absolute;
+    left: 43%;
+    transform: translateX(-1%);
+    background-color: none;
+    margin: 30px 0 0 0;
+    right: 0;
+    z-index: 1;
+}
+.navbar-light .navbar-nav .nav-link{
+    color: #000;
+    font-family: "Montserrat";
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.navbar-light .navbar-nav .active{
+    color: #27b2e0 !important;
+}
+.navbar-light .navbar-nav .nav-link:hover
+{
+    color: #27b2e0;
+}
+.vl {
+    border-left: 2px solid #000;
+    height: 25px;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-top: 5px;
+}
+.navbar-brand{
+    position: absolute;
+    right: 123%;
+    top:0;
+}
+
+/* END NAVBAR */
+/* START 2nd NAVBAR */
+.navbar-2-mobile{
+    display: none;
+}
+.navbar-2{
+    position: relative;
+    background-color: #27b2e0 !important;
+    padding: 50px 0 50px 0;
+
+}
+.book-box{
+    padding: 20px 80px 40px 20px;
+    color: #fff;
+    font-family: "Montserrat";
+    letter-spacing: 1px;
+}
+.link-2{
+    color: #fff !important;
+}
+.active-2{
+    position: relative;
+    background-color: #005e7d;
+    padding: 30px 30px 32px 30px;
+
+}
+.not-active{
+    padding: 30px 30px 29px 30px;
+
+}
+.not-active:hover{
+    background-color: #005e7d;
+}
+.ul-pos{
+    position: absolute;
+    top: 1%;
+    margin-left: 135px;
+}
+/* END 2nd NAVBAR */
+/* START PAYMENT WIZARD */
+.wizard > .steps .number {
+    display: none;
+}
+.edit-search{
+    color: rgb(82, 82, 82);
+}
+.edit-search:hover{
+    color: #2184be;
+    text-decoration:none;
+}
+.steps{
+
+    position: relative;
+    left: 0%;
+}
+.full-wizard{
+    background-color: #ecf3f9;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: "Montserrat";
+    color: rgb(82, 82, 82);
+}
+.tab-1{
+    position: absolute;
+    top: 0;
+    padding: 18px 0px 14px 1px;
+    background-color: #9dc8e2;
+    border-radius: 5px;
+    color: #fff;
+    margin-left: 10px;
+}
+.tab-1:hover{
+    background-color: #2184be;
+}
+.air2{
+    position: relative;
+    left: -13%;
+}
+.air3{
+    position: relative;
+    left: -10%;
+}
+.content{
+    background-color: #ecf3f9 !important;
+}
+.wizard > .content > .body {
+    float: left;
+    position: relative !important;
+    width: 100% !important;
+    height: 95% !important;
+    padding: 0 !important;
+}
+.wizard-content{
+    background-color: #fff;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.form-check-label{
+    position: relative;
+    left: 7%;
+    top: 55%;
+}
+.form-control{
+    font-size: 13px;
+}
+label
+{
+    font-size: 14px !important;
+}
+.credit{
+    text-align: right;
+}
+.actions{
+    margin-bottom: 20px;
+}
+.receipt{
+    background-color: #fff;
+    padding: 20px 20px 20px 20px;
+
+}
+.receipt-img{
+    width: 100%;
+}
+.align-rec-img
+{
+    text-align: center;
+}
+.receipt-align{
+    text-align: right;
+}
+.receipt-name{
+    color: #005e7d;
+    font-weight: 600;
+}
+.total{
+    color: #eb6802;
+    font-weight: 600;
+}
+.app-full{
+    width: 120%;
+    position: relative;
+    right: 10%
+}
+.affix {
+    top: 20px;
+    z-index: 9999 !important;
+}
+
+#payment_choice-t-1{
+    text-decoration: none !important;
+}
+.tabcontrol > .content {
+    background-color: #fff !important;
+    height: 38em !important;
+
+}
+.wizard > .content > .body ul > li {
+    display: inline-block !important;
+}
+#payment_wizard-t-0{
+    position: relative;
+    left: 100%;
+}
+#payment_wizard-t-1{
+    position: relative;
+    left: 100%;
+}
+#payment_wizard-t-2{
+    position: relative;
+    left: 100%;
+}
+.paypal{
+    position: relative;
+    top: -42%;
+}
+.paypal-details{
+    padding: 20px 0 20px 0;
+    background-color: #2997D8;
+    color:#fff;
+    font-family: "Montserrat";
+    border-radius: 23px;
+    text-align: center;
+}
+.paypal-details:after{
+    content: "";
+    position: absolute;
+    top: 44%;
+    left: 47%;
+    margin-left: -5px;
+    border-width: 20px;
+    border-style: solid;
+    border-color: #2997D8 transparent transparent transparent;
+}
+.paypal-button{
+    padding: 8px 200px 12px 200px;
+    background-color: #253B80;
+    font-family: Verdana, sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    color: #fff;
+    font-size: 30px;
+    border-radius: 8px;
+}
+.paypal-button:hover{
+    background-color: #1F2F5E;
+    text-decoration: none;
+    color: #fff;
+}
+.paypal-img{
+    width: 8%;
+}
+.paypal-align{
+    text-align: center;
+    position: relative;
+    top: 50%;
+}
+/* END PAYMENT WIZARD */
+/* START SIDEBAR */
+#sidebar.affix-top, #sidemenu.affix {
+    position: static;
+}
+#sidebar.affix-bottom {
+    position: relative;
+}
+#sidemenu .nav-link.active,
+#sidemenu .nav-link:hover,
+#sidemenu .nav-link:focus{
+    color: #111;
+    border-bottom: 1px #000 dashed;
+}
+/* END SIDEBAR */
+
+/* START FOOTER */
+footer{
+    background-color: #1c1c1c;
+    padding: 50px 0 30px 0;
+    bottom: 0;
+    position: relative;
+}
+.foot-col2{
+    font-size: 35px;
+    font-family: "Montserrat";
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: center;
+    position: relative;
+    letter-spacing: 10px;
+    left: 2%;
+
+}
+.foot-col1{
+    font-size: 14px;
+    font-family: "Montserrat";
+    color: rgb(255, 255, 255);
+    line-height: 1.2;
+    text-align: left;
+    position: relative;
+    left: 2%;
+}
+.foot-col2-sub{
+    font-size: 15px;
+    font-family: "Montserrat";
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: center;
+    position: relative;
+    letter-spacing: 4px;
+    bottom: 10%;
+
+}
+.foot-col3{
+    font-size: 16px;
+    font-family: "Montserrat";
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    line-height: 1.2;
+    text-align: left;
+    position: relative;
+    letter-spacing: 3px;
+    margin-left: 37px;
+}
+.info{
+    font-size: 14px;
+    font-family: "Montserrat";
+    color: rgb(255, 255, 255);
+    line-height: 1.2;
+    position: relative;
+}
+.col3-align{
+    position: relative;
+    left: 5%;
+}
+
+/* END FOOTER */
+/* START MOBILE */
+@media only screen and (max-width:700px){
+    .app-full{
+        width: 50%;
+        position: relative;
+        right: 5%
+    }
+
+    .vl{
+        display: none;
+    }
+    .navbar-light .navbar-toggler {
+        position: relative;
+        color: #fff !important;
+        border-color: #1d2124 !important;
+        left: 70%;
+
+    }
+    .navbar{
+        position: absolute;
+        margin-top: 12px;
+        display: block;
+        float: left;
+        left: 50%;
+        background-color: #fff !important;
+
+    }
+    .navbar-brand{
+        position: absolute;
+        right: 40%;
+    }
+    .navbar-light .navbar-nav .nav-link {
+        margin-top: 10px;
+    }
+    .navbar-2{
+        display: none;
+    }
+    .navbar-2-mobile{
+        display: inline;
+    }
+    .navbar-2-mobile ul{
+        background-color: #27b2e0;
+        padding: 14px 0px 18px 30px;
+        position: relative;
+        margin-bottom: 0rem !important;
+    }
+    .active-2-mobile{
+        background-color: #005e7d;
+        display: inline;
+        padding: 17px 8px 21px 8px;
+
+    }
+    .not-active-2-mobile{
+        display: inline;
+        padding: 17px 8px 21px 8px;
+
+    }
+    .not-active-2-mobile:hover{
+        background-color: #005e7d;
+
+    }
+    .navbar-2-mobile ul li a{
+        color: #fff;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .full-wizard {
+
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .air1{
+        display: none;
+    }
+    .air2{
+        display: none;
+    }
+    .air3{
+        display: none;
+    }
+    .air4{
+        display: none;
+    }
+    .title-tab{
+        display: none;
+    }
+    #payment_wizard-t-0{
+        font-size: 12px !important;
+    }
+    #payment_wizard-t-1{
+        font-size: 12px !important;
+    }
+    #payment_wizard-t-2{
+        font-size: 12px !important;
+    }
+    .tab-1 {
+        padding: 13px 5px 11px 1px;
+        color: #fff;
+        margin-left: -3px;
+        font-size: 12px;
+    }
+    .foot-col2-sub{
+        text-align: left;
+        margin-left: 10px;
+    }
+    .foot-col2{
+        text-align: left;
+    }
+    .col3-align {
+        position: relative;
+        left: 0%;
+    }
+    #payment_choice-t-0{
+        font-size: 14px;
+    }
+    #payment_choice-t-1{
+        font-size: 14px;
+    }
+    .credit-card{
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    .tabcontrol > .content {
+        height: 50em !important;
+
+    }
+    .paypal{
+        position: relative;
+        top: -17%;
+    }
+    .paypal-details {
+        position: relative;
+        left: 2%;
+        padding: 20px 10px 20px 10px;
+        border-radius: 30px;
+        text-align: center;
+        font-size: 14px;
+    }
+    .paypal-details:after {
+        content: "";
+        position: absolute;
+        top: 95%;
+        left: 47%;
+        margin-left: -5px;
+        border-width: 20px;
+    }
+    .paypal-button {
+        padding: 5px 50px 5px 50px;
+        font-size: 23px;
+    }
+}
+@media (min-width: 768px) {
+    #sidebar.affix {
+        position: fixed;
+        top: 40px;
+    }
+}
+
+/* END MOBILE */
+/* END MOBILE */

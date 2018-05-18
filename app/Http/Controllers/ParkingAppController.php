@@ -34,4 +34,9 @@ class ParkingAppController extends Controller
 
         return view('parking.search', compact('airports', 'time_intervals', 'results'));
     }
+
+    public function payment()
+	{
+		return view('parking.payment');
+	}
 }
