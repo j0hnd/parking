@@ -4,7 +4,7 @@
     </button>
     <div class="collapse navbar-collapse text-center" id="navbarsExample11">
         <ul class="navbar-nav">
-            <li class="nav-item"> <a class="nav-link" href="#">Member Login</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('/member/login') }}">Member Login</a> </li>
             <li> <div class="vl"></div> </li>
             <li class="nav-item"> <a class="nav-link" href="#">Contact Us</a> </li>
             <li> <div class="vl"></div> </li>

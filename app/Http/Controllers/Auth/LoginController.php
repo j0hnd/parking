@@ -66,6 +66,11 @@ class LoginController extends Controller
         }
     }
 
+    public function login_member()
+	{
+		return view('member-portal.login	');
+	}
+
     public function logout(Request $request)
     {
         if (Sentinel::logout()) {
