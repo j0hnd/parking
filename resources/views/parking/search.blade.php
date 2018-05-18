@@ -6,7 +6,7 @@
 @stop
 
 @section('main-content')
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark" data-toggle="affix">
+    <nav class="navbar navbar-expand-sm navbar" data-toggle="affix">
         <a href="index.html"> <img src="{{ asset('/img/logo.png') }}" class="navbar-brand"></a>
         @include('parking.templates.nav2')
     </nav>

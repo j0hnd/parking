@@ -10,7 +10,10 @@ use App\Models\Tools\Countries;
 use App\Models\Tools\CompanyHouse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManagerStatic as Image;
 use DB;
+
 
 class CarparkController extends Controller
 {
@@ -69,9 +72,23 @@ class CarparkController extends Controller
                         $filename   = $image->getClientOriginalName();
                         $image_path = "{$path}/".$carpark->id;
 
-                        if ($image->move($image_path, $filename)) {
-                            Carpark::where('id', $carpark->id)->update(['image' => $image_path."/".$filename]);
-                        }
+						// check if upload folder is existing, if not create it
+						if (!File::exists(public_path($path))) {
+							File::makeDirectory(public_path($path));
+						}
+
+						if (!File::exists(public_path($image_path))) {
+							File::makeDirectory(public_path($image_path));
+						}
+
+						$image_resize = Image::make($image->getRealPath());
+						$image_resize->resize(219, 129);
+//						$image_resize->resize(219, null, function ($constraint) {
+//							$constraint->aspectRatio();
+//						});
+
+						$image_resize->save(public_path("{$image_path}/{$filename}"));
+						Carpark::where('id', $carpark->id)->update(['image' => $image_path."/".$filename]);
                     }
 
                     // save company details
@@ -187,9 +204,23 @@ class CarparkController extends Controller
                         $filename   = $image->getClientOriginalName();
                         $image_path = "{$path}/".$carpark->id;
 
-                        if ($image->move($image_path, $filename)) {
-                            Carpark::where('id', $carpark->id)->update(['image' => $image_path."/".$filename]);
-                        }
+                        // check if upload folder is existing, if not create it
+                        if (!File::exists(public_path($path))) {
+							File::makeDirectory(public_path($path));
+						}
+
+						if (!File::exists(public_path($image_path))) {
+							File::makeDirectory(public_path($image_path));
+						}
+
+						$image_resize = Image::make($image->getRealPath());
+                        $image_resize->resize(219, 129);
+//						$image_resize->resize(219, null, function ($constraint) {
+//							$constraint->aspectRatio();
+//						});
+
+						$image_resize->save(public_path("{$image_path}/{$filename}"));
+						Carpark::where('id', $carpark->id)->update(['image' => $image_path."/".$filename]);
                     }
 
                     // save company details
