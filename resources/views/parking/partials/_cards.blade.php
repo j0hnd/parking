@@ -21,7 +21,12 @@
                 <img src="{{ asset($result['image']) }}" class="card-img">
                 @endif
 
-                <p class="price">£{{ $result['price'] }}</p>
+                @php
+                    $price = number_format($result['price'], 2);
+                    $price = str_replace('.00', '', $price);
+                @endphp
+
+                <p class="price">£{{ $price }}</p>
                 <a href="{{ url('/payment') }}" class="book-now" data-id="{{ $result['product_id'] }}" data-price="{{ $result['price'] }}">BOOK NOW</a><br/>
                 <img src="{{ asset('/img/star-like.png') }}" class="star"><br/>
             </div>
