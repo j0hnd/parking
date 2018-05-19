@@ -3,68 +3,21 @@
 @section('css')
 	<link href="{{ asset('/css/payment.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
-
-	{{-- Bootstrap datepicker --}}
-	{{--<link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>--}}
 @stop
 
 @section('main-content')
 	<main>
 		<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
 			<a href="index.html"> <img src="img/logo.png" class="navbar-brand"></a>
-			<div class="mx-auto d-sm-flex d-block flex-sm-nowrap">
-
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse text-center" id="navbarsExample11">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class="nav-link" href="contact-us.html">Contact Us</a>
-						</li>
-						<li>
-							<div class="vl"></div>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Membership</a>
-						</li>
-						<li>
-							<div class="vl"></div>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Live Chat</a>
-
-						</li>
-						<li>
-							<div class="vl"></div>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Airport Parking</a>
-						</li>
-					</ul>
-
-				</div>
-
-			</div>
-
+			@include('parking.templates.nav2')
 		</nav>
+
 		<br/><br/><br/><br/><br/>
+
 		<nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-			<ul class="navbar-nav ul-pos">
-				<li class="nav-item active-2">
-					<a class="nav-link link-2" href="#">Airport</a>
-				</li>
-				<li class="nav-item not-active">
-					<a class="nav-link link-2" href="#">Meet & Greet</a>
-				</li>
-				<li class="nav-item not-active">
-					<a class="nav-link link-2" href="#">On Airport</a>
-				</li>
-				<li class="nav-item not-active">
-					<a class="nav-link link-2" href="#">Off Airport</a>
-				</li>
-			</ul>
+			@include('parking.templates.nav3')
 		</nav>
+
 		<div class="navbar-2-mobile">
 			<ul>
 				<li class="active-2-mobile">
@@ -93,63 +46,49 @@
 			</div>
 			<div class="row">
 				<div class="col-md-8">
-					<a href="airport-search.html"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="img/booking/airplane1.png" class="air1"></p></a>
+					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="img/booking/airplane1.png" class="air1"></p></a>
 					<form id="payment_wizard">
-						<h3>Payment<img src="img/booking/airplane2.png" class="air2"></h3>
+						<h3>Payment<img src="{{ asset('img/booking/airplane2.png') }}" class="air2"></h3>
 						<section>
 							<div class="container wizard-content">
 								<div class="row">
 									<div class="col-md-12">
-										<i><img src="img/booking/person.png"> Details</i>
+										<i><img src="{{ asset('/img/booking/person.png') }}"> Details</i>
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
-										<label>
-											First Name:
-										</label>
+										<label>First Name:</label>
 										<input type="text" name="firstname" class="form-control">
 									</div>
 									<div class="col-md-6">
-										<label>
-											Last Name:
-										</label>
+										<label>Last Name:</label>
 										<input type="text" name="lastname" class="form-control">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
-										<label>
-											Email Address:
-										</label>
+										<label>Email Address:</label>
 										<input type="text" name="email" class="form-control">
 
 									</div>
 									<div class="col-md-6">
-										<label>
-											Confirm Email Address:
-										</label>
+										<label>Confirm Email Address:</label>
 										<input type="text" name="confirm_email" class="form-control">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
-										<label>
-											Area Code:
-										</label>
+										<label>Area Code:</label>
 										<select class="form-control">
-											<option>
-												(+44) United Kingdom
-											</option>
+											<option>(+44) United Kingdom</option>
 										</select>
 									</div>
 									<div class="col-md-6">
-										<label>
-											Phone Number:
-										</label>
+										<label>Phone Number:</label>
 										<input type="text" name="phone" class="form-control">
 									</div>
 								</div>
@@ -180,25 +119,19 @@
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
-										<label>
-											Vehicle Registration:
-										</label>
+										<label>Vehicle Registration:</label>
 										<input type="text" name="registration" class="form-control">
 
 									</div>
 									<div class="col-md-6">
-										<label>
-											Vehicle Model:
-										</label>
+										<label>Vehicle Model:</label>
 										<input type="text" name="model" class="form-control">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-12">
-										<label>
-											Vehicle Color:
-										</label>
+										<label>Vehicle Color:</label>
 										<input type="text" name="car-color" class="form-control">
 									</div>
 								</div>
@@ -210,7 +143,7 @@
 									<div class="container">
 										<div class="row">
 											<div class="col-md-6">
-												<i><img src="img/booking/wallet.png"> Payment Details</i>
+												<i><img src="{{ asset('/img/booking/wallet.png') }}"> Payment Details</i>
 											</div>
 											<div class="col-md-6 credit">
 												<i><img src="img/booking/credit-card.png" class="credit-card"></i>
@@ -219,10 +152,7 @@
 										<br/>
 										<div class="row">
 											<div class="col-md-12">
-
-												<label>
-													Name On Card:
-												</label>
+												<label>Name On Card:</label>
 												<input type="text" name="card_name" class="form-control">
 
 											</div>
@@ -230,39 +160,26 @@
 										<br/>
 										<div class="row">
 											<div class="col-md-12">
-
-												<label>
-													Card Number:
-												</label>
+												<label>Card Number:</label>
 												<input type="text" name="card_number" class="form-control">
-
 											</div>
 										</div>
 										<br/>
 										<div class="row">
 											<div class="col-md-6">
-												<label>
-													Expiration Date:
-												</label>
+												<label>Expiration Date:</label>
 												<input type="text" name="expiration" class="form-control">
-
 											</div>
 											<div class="col-md-6">
-												<label>
-													CV Code:
-												</label>
+												<label>CV Code:</label>
 												<input type="text" name="cv_code" class="form-control">
 											</div>
 										</div>
 										<br/>
 										<div class="row">
 											<div class="col-md-12">
-
-												<label>
-													Coupon Code:
-												</label>
+												<label>Coupon Code:</label>
 												<input type="text" name="coupon" class="form-control">
-
 											</div>
 										</div>
 										<br/>
@@ -277,10 +194,10 @@
 									<div class="container">
 										<div class="row">
 											<div class="col-md-6">
-												<i><img src="img/booking/wallet.png"> Payment Details</i>
+												<i><img src="{{ asset('/img/booking/wallet.png') }}"> Payment Details</i>
 											</div>
 											<div class="col-md-6 credit">
-												<i><img src="img/booking/paypal.png" class="paypal"></i>
+												<i><img src="{{ asset('/img/booking/paypal.png') }}" class="paypal"></i>
 											</div>
 										</div>
 										<div class="row paypal-align">
@@ -292,18 +209,15 @@
 										</div>
 									</div>
 								</fieldset>
-
 							</div>
 							<br/>
 						</section>
-						<h3>Details<img src="img/booking/airplane3.png" class="air3"></h3>
-						<section>
-							<p>Try 2</p>
-						</section>
-						<h3>Takeoff!<img src="img/booking/airport4.png" class="air4"></h3>
-						<section>
-							<p>Try 3</p>
-						</section>
+
+						<h3>Details<img src="{{ asset('/img/booking/airplane3.png') }}" class="air3"></h3>
+						<section><p>Try 2</p></section>
+
+						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
+						<section><p>Try 3</p></section>
 					</form>
 				</div>
 
@@ -312,7 +226,7 @@
 						<div class="container receipt">
 							<div class="row align-rec-img">
 								<div class="col-md-12">
-									<img src="img/booking/parking.png" class="receipt-img">
+									<img src="{{ asset('/img/booking/parking.png') }}" class="receipt-img">
 									<br/>
 									<hr>
 								</div>
@@ -370,12 +284,11 @@
 						<div class="container">
 							<div class="row">
 								<div class="col-md-6">
-									<img src="img/booking/app-store.png" class="app-full">
+									<img src="{{ asset('/img/booking/app-store.png') }}" class="app-full">
 								</div>
 								<div class="col-md-6">
-									<img src="img/booking/google-play.png" class="app-full">
+									<img src="{{ asset('/img/booking/google-play.png') }}" class="app-full">
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -386,8 +299,7 @@
 @stop
 
 @section('js')
-	{{--<script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>--}}
-	<script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
-	<script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
 @stop

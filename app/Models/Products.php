@@ -91,6 +91,7 @@ class Products extends BaseModel
                                     'product_id' => $product->id,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
+									'price_id' => $price->id,
                                     'prices' => $price,
                                     'overrides' => $override_price,
 									'services' => $product->carpark_services
@@ -100,6 +101,7 @@ class Products extends BaseModel
 									'product_id' => $product->id,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
+									'price_id' => $price->id,
 									'prices' => $price,
 									'overrides' => $override_price,
 									'services' => $product->carpark_services
@@ -109,6 +111,7 @@ class Products extends BaseModel
 									'product_id' => $product->id,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
+									'price_id' => $price->id,
 									'prices' => $price,
 									'overrides' => $override_price,
 									'services' => $product->carpark_services
@@ -142,6 +145,7 @@ class Products extends BaseModel
 				$category = PriceCategories::findOrFail($price->category_id);
 				$results[$i] = [
 					'product_id' => $product['product_id'],
+					'price_id' => $product['price_id'],
 					'carpark_name' => $product['carpark'],
 					'image' => $product['image'],
 					'category' => $category->category_name,
@@ -159,7 +163,6 @@ class Products extends BaseModel
                 $i++;
             }
         } catch (\Exception $e) {
-        	dd($e);
             abort(404, $e->getMessage());
         }
 
