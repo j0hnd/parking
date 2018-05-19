@@ -19,20 +19,7 @@
 		</nav>
 
 		<div class="navbar-2-mobile">
-			<ul>
-				<li class="active-2-mobile">
-					<a href="#">Airport</a>
-				</li>
-				<li class="not-active-2-mobile">
-					<a href="#">Meet & Greet</a>
-				</li>
-				<li class="not-active-2-mobile">
-					<a href="#">On Airport</a>
-				</li>
-				<li class="not-active-2-mobile">
-					<a href="#">Off Airport</a>
-				</li>
-			</ul>
+			@include('parking.templates.nav3-mobile')
 		</div>
 
 		<div class="container full-wizard">
