@@ -208,7 +208,7 @@ class ProductsController extends Controller
 
             if ($request->isMethod('post')) {
                 $product = Products::findOrFail($request->product_id);
-                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'override_dates', 'override_price']);
+                $form = $request->only(['carpark_id' , 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'overrides']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -217,8 +217,6 @@ class ProductsController extends Controller
                 $product->on_arrival     = $form['on_arrival'];
                 $product->on_return      = $form['on_return'];
                 $product->revenue_share  = $form['revenue_share'];
-                $product->override_dates = $form['override_dates'];
-                $product->override_price = $form['override_price'];
 
                 if ($product->save()) {
                     // update airports
@@ -246,11 +244,11 @@ class ProductsController extends Controller
                                 foreach ($values as $i => $val) {
                                     $prices_form[$i] = [
                                         'product_id'      => $product->id,
-                                        'category_id'     => $form['prices']['category_id'][0][$i],
-                                        'no_of_days'      => $form['prices']['no_of_days'][1][$i],
-                                        'price_month'     => $form['prices']['price_month'][2][$i],
-                                        'price_year'      => $form['prices']['price_year'][3][$i],
-                                        'price_value'     => $form['prices']['price_value'][4][$i]
+										'category_id'     => $form['prices']['category_id'][0][$i],
+										'no_of_days'      => isset($form['prices']['no_of_days'][1][$i]) ? $form['prices']['no_of_days'][1][$i] : null,
+										'price_month'     => $form['prices']['price_month'][2][$i],
+										'price_year'      => $form['prices']['price_year'][3][$i],
+										'price_value'     => $form['prices']['price_value'][4][$i]
                                     ];
                                 }
                             }
@@ -260,6 +258,26 @@ class ProductsController extends Controller
                             Prices::create($form);
                         }
                     }
+
+					if (isset($form['overrides'])) {
+                    	Overrides::where('product_id', $product->id)->delete();
+
+						foreach ($form['overrides'] as $overrides) {
+							foreach ($overrides as $key => $values) {
+								foreach ($values as $i => $val) {
+									$override_form[$i] = [
+										'product_id'     => $product->id,
+										'override_dates' => $form['overrides']['override_dates'][0][$i],
+										'override_price' => $form['overrides']['override_price'][1][$i]
+									];
+								}
+							}
+						}
+
+						foreach ($override_form as $oform) {
+							Overrides::create($oform);
+						}
+					}
 
                     // update services
                     if (isset($form['services'])) {

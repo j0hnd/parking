@@ -95,7 +95,7 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select class="form-control" name="pricesp[no_of_days][1][]">
+                <select class="form-control" name="prices[no_of_days][1][]">
                     <option value="" readonly>-- No. of days --</option>
                     @for($i=1; $i<=31; $i++)
                         @if($prices->no_of_days == $i)

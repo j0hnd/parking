@@ -65,25 +65,48 @@ class Products extends BaseModel
                     $no_days = 1;
                 }
 
+                $i = 0;
+
                 foreach ($product_airports->get() as $airport) {
-                    $product = self::findOrFail($airport->product_id);
+                    $product = Products::findOrFail($airport->product_id);
                     if (count($product)) {
                         foreach ($product->prices as $price) {
-                            if ($no_days == $price->no_of_days) {
-                                $products[] = [
+                            if ($no_days === $price->no_of_days and is_null($price->price_month) and is_null($price->price_year)) {
+                                $products[$i] = [
                                     'product_id' => $product->id,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
-                                    'prices' => $product->prices,
+                                    'prices' => $price,
                                     'overrides' => $product->overrides,
 									'services' => $product->carpark_services
                                 ];
-                            }
+							} elseif ($no_days !== $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date']))) {
+								$products[$i] = [
+									'product_id' => $product->id,
+									'carpark' => $product->carpark->name,
+									'image' => $product->carpark->image,
+									'prices' => $price,
+									'overrides' => $product->overrides,
+									'services' => $product->carpark_services
+								];
+							} elseif ($no_days !== $price->no_of_days and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+								$products[$i] = [
+									'product_id' => $product->id,
+									'carpark' => $product->carpark->name,
+									'image' => $product->carpark->image,
+									'prices' => $price,
+									'overrides' => $product->overrides,
+									'services' => $product->carpark_services
+								];
+							}
+
+							$i++;
                         }
                     }
                 }
             }
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
 
@@ -99,19 +122,18 @@ class Products extends BaseModel
 
 			$i = 0;
             foreach ($products as $product) {
-                foreach ($product['prices'] as $price) {
-                    if (empty($price->month) and empty($price->year)) {
-                        $category = PriceCategories::findOrFail($price->category_id);
-                        $results[$i] = [
-                            'product_id' => $product['product_id'],
-							'carpark_name' => $product['carpark'],
-							'image' => $product['image'],
-                            'category' => $category->category_name,
-							'price' => $price->price_value
-                        ];
-                    }
-                }
+            	// prepare prices
+				$price = $product['prices'];
+				$category = PriceCategories::findOrFail($price->category_id);
+				$results[$i] = [
+					'product_id' => $product['product_id'],
+					'carpark_name' => $product['carpark'],
+					'image' => $product['image'],
+					'category' => $category->category_name,
+					'price' => $price->price_value
+				];
 
+                // prepare linked carpark services
                 foreach ($product['services'] as $services) {
                 	$carpark_services[] = ['name' => $services->service_name, 'icon' => $services->icon];
 				}
@@ -122,7 +144,7 @@ class Products extends BaseModel
                 $i++;
             }
         } catch (\Exception $e) {
-            dd($e);
+            abort(404, $e->getMessage());
         }
 
         return $results;
