@@ -254,8 +254,8 @@ class ProductsController extends Controller
                             }
                         }
 
-                        foreach ($prices_form as $form) {
-                            Prices::create($form);
+                        foreach ($prices_form as $pform) {
+                            Prices::create($pform);
                         }
                     }
 
