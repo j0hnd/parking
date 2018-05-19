@@ -14,12 +14,7 @@
     <br/><br/><br/><br/><br/>
 
     <nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-        <ul class="navbar-nav ul-pos" style="margin-left: 135px; position: absolute;">
-            <li class="nav-item active-2"><a class="nav-link link-2" href="#">Airport</a></li>
-            <li class="nav-item not-active"><a class="nav-link link-2" href="#">Meet & Greet</a></li>
-            <li class="nav-item not-active"><a class="nav-link link-2" href="#">On Airport</a></li>
-            <li class="nav-item not-active"><a class="nav-link link-2" href="#">Off Airport</a></li>
-        </ul>
+        @include('parking.templates.nav3')
     </nav>
 
     <header id="header">
@@ -43,4 +38,5 @@
 @section('js')
 <script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
 @stop
