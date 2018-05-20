@@ -1,5 +1,6 @@
 $(function () {
     $(document).on('click', '.toggle-book-now', function (e) {
-        var ids = $(this).data('id').split(':');
+        var id = $(this).data('id');
+        $('#product-'+id).submit();
     });
 });

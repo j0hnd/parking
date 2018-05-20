@@ -8,7 +8,7 @@
 @section('main-content')
 	<main>
 		<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
-			<a href="index.html"> <img src="img/logo.png" class="navbar-brand"></a>
+			<a href="{{ url('/') }}"> <img src="img/logo.png" class="navbar-brand"></a>
 			@include('parking.templates.nav2')
 		</nav>
 
@@ -25,7 +25,7 @@
 		<div class="container full-wizard">
 			<div class="row">
 				<div class="col-md-8">
-					<a href="airport-search.html" class="edit-search"><i class="fas fa-angle-left"></i> EDIT YOUR SEARCH</a>
+					<a href="{{ url('/') }}" class="edit-search"><i class="fas fa-angle-left"></i> EDIT YOUR SEARCH</a>
 				</div>
 				<div class="col-md-4" id="top">
 					<p>Lorem ipsum dolor sit amet, consectetur.</p>
@@ -33,7 +33,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-8">
-					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="img/booking/airplane1.png" class="air1"></p></a>
+					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="{{ asset('/img/booking/airplane1.png') }}" class="air1"></p></a>
 					<form id="payment_wizard">
 						<h3>Payment<img src="{{ asset('img/booking/airplane2.png') }}" class="air2"></h3>
 						<section>
@@ -228,7 +228,7 @@
 									<p>From Date</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">01/12/18</p>
+									<p class="receipt-align">{{ $drop_off_date }}</p>
 								</div>
 							</div>
 							<div class="row">
@@ -236,7 +236,7 @@
 									<p>To Date</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">01/12/18</p>
+									<p class="receipt-align">{{ $return_at_date }}</p>
 								</div>
 							</div>
 							<hr>
@@ -245,7 +245,7 @@
 									<p class="receipt-name">AIRPORT NAME</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">€ 50.00</p>
+									<p class="receipt-align">£{{ $price_value }}</p>
 								</div>
 							</div>
 							<hr>
@@ -254,7 +254,7 @@
 									<p class="receipt-name">BOOKING FEE</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">€ 1.99</p>
+									<p class="receipt-align">£{{ $booking_fee }}</p>
 								</div>
 							</div>
 							<hr>
@@ -263,7 +263,12 @@
 									<p>TOTAL PRICE</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align total">€ 50.00</p>
+									@php
+										$total = $price_value + $booking_fee;
+										$total = number_format($total, 2);
+										$total = str_replace('.00', '', $total);
+									@endphp
+									<p class="receipt-align total">£{{ $total }}</p>
 								</div>
 							</div>
 						</div>

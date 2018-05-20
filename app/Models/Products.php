@@ -93,6 +93,8 @@ class Products extends BaseModel
 									'image' => $product->carpark->image,
 									'price_id' => $price->id,
                                     'prices' => $price,
+									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
                                     'overrides' => $override_price,
 									'services' => $product->carpark_services
                                 ];
@@ -103,6 +105,8 @@ class Products extends BaseModel
 									'image' => $product->carpark->image,
 									'price_id' => $price->id,
 									'prices' => $price,
+									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
 									'overrides' => $override_price,
 									'services' => $product->carpark_services
 								];
@@ -113,6 +117,8 @@ class Products extends BaseModel
 									'image' => $product->carpark->image,
 									'price_id' => $price->id,
 									'prices' => $price,
+									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
 									'overrides' => $override_price,
 									'services' => $product->carpark_services
 								];
@@ -149,7 +155,9 @@ class Products extends BaseModel
 					'carpark_name' => $product['carpark'],
 					'image' => $product['image'],
 					'category' => $category->category_name,
-					'price' => is_null($product['overrides']) ? $product['prices']->price_value : ($product['prices']->price_value * $product['overrides'])
+					'price' => is_null($product['overrides']) ? $product['prices']->price_value : ($product['prices']->price_value * $product['overrides']),
+					'drop_off' => $product['drop_off'],
+					'return_at' => $product['return_at']
 				];
 
                 // prepare linked carpark services
