@@ -245,6 +245,10 @@
 									<p class="receipt-name">AIRPORT NAME</p>
 								</div>
 								<div class="col-md-6">
+									@php
+										$price_value = number_format($price_value, 2);
+										$price_value = str_replace('.00', '', $price_value);
+									@endphp
 									<p class="receipt-align">£{{ $price_value }}</p>
 								</div>
 							</div>
