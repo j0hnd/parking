@@ -268,6 +268,7 @@
 								</div>
 								<div class="col-md-6">
 									@php
+										$price_value = str_replace(',', '', $price_value);
 										$total = $price_value + $booking_fee;
 										$total = number_format($total, 2);
 										$total = str_replace('.00', '', $total);
