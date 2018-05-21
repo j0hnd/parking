@@ -131,4 +131,17 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
     titleMain.slick('slickPlay');
     titleMain2.slick('slickPlay');
     titleMain3.slick('slickPlay');
-}
+};
+$(document).ready(function() {
+        $(window).scroll(function() {
+          if($(this).scrollTop() > 50) { 
+              $('.navbar').addClass('solid');
+              $('nav').removeClass('bg-dark');
+              $('.Vl').removeClass('vl');
+          } else {
+              $('.navbar').removeClass('solid');
+              $('nav').addClass('bg-dark');
+              $('.Vl').addClass('vl');
+          }
+        });
+});

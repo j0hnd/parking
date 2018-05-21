@@ -1,7 +1,7 @@
 <form action="{{ url('/search') }}" method="post">
     <div class="row book-box">
         <div class="col-md-3 input1">
-            <i><img src="{{ asset('/img/plane-mini.png') }}"></i> Airport <br/>
+            <div class="home-label"><i><img src="{{ asset('/img/plane-mini.png') }}"></i> Airport <br/></div>
             <select class="form-control-sm" name="search[airport]" style="width:100%">
                 <option value="" readonly>-- Airports --</option>
                 @if(isset($airports))
@@ -12,11 +12,11 @@
             </select>
         </div>
         <div class="col-md-2 input2">
-            <i><img src="{{ asset('/img/calendar.png') }}"></i> Drop off <br/>
+           <div class="home-label"> <i><img src="{{ asset('/img/calendar.png') }}"></i> Drop off <br/></div>
             <input type='text' name="search[drop-off-date]" class="form-control-sm datepicker" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y') }}"></input>
         </div>
         <div class="col-md-1 input3">
-            <br>
+            <div class="home-label"><br></div>
             <select class="form-control-sm" name="search[drop-off-time]">
                 @if(isset($time_intervals))
                 {!! $time_intervals !!}
@@ -24,11 +24,11 @@
             </select>
         </div>
         <div class="col-md-2 input4">
-            <i><img src="{{ asset('img/calendar.png') }}"></i> Return at <br/>
+            <div class="home-label"><i><img src="{{ asset('img/calendar.png') }}"></i> Return at<br/></div>
             <input type='text' name="search[return-at-date]" class="form-control-sm datepicker" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y') }}"></input>
         </div>
         <div class="col-md-1 input5">
-            <br>
+           <div class="home-label"><br></div>
             <select class="form-control-sm" name="search[return-at-time]">
                 @if(isset($time_intervals))
                 {!! $time_intervals !!}
