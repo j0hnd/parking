@@ -275,8 +275,8 @@ margin-top: 24px;
   text-align: center;
   position: relative;
   font-weight: 500;
-  right: 4%;
-  margin-bottom: 90px;
+  right: 5%;
+  margin-bottom: 50px;
 }
 .layer4-header{
   font-size: 28px;
@@ -612,6 +612,14 @@ button.btn.btn-primary.btn-sm{
 .navbar.solid{
   display: none;
 }
+#layer3{
+    height: 100vh;
+
+  }
+
+  .layer4-title{
+  right: 1%;
+}
 }
 @media only screen and (max-width:376px){
 
@@ -628,10 +636,6 @@ button.btn.btn-primary.btn-sm{
 .header-sub{
   font-size: 17px;
     letter-spacing: 6px;
-  }
-#layer3{
-    height: 100vh;
-
   }
 
 }

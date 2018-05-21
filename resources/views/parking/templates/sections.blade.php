@@ -29,7 +29,7 @@
     <div class="container layer4-align">
         <div class="row">
             <div class="col-md-12">
-                <p class="layer4-title">Lorem Ipsum</p>
+                <p class="layer4-title">Types of Parking We Provide</p>
             </div>
         </div>
         <div class="row layer4-align2">
