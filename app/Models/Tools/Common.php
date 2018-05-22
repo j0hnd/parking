@@ -10,7 +10,7 @@ class Common
      *
      * @return string List of times
      */
-    public static function get_times( $default = '19:00', $interval = '+30 minutes' )
+    public static function get_times($default = '19:00', $interval = '+30 minutes', $selected = "")
     {
         $output = '';
 
@@ -19,9 +19,14 @@ class Common
 
         while ( $current <= $end ) {
             $time = date( 'H:i', $current );
-            $sel = ( $time == $default ) ? ' selected' : '';
 
-            $output .= "<option value=\"{$time}\"{$sel}>" . date( 'H:i', $current ) .'</option>';
+            if (empty($selected)) {
+				$sel = ( $time == $default ) ? ' selected' : '';
+			} else {
+				$sel = ( $time == $selected ) ? ' selected' : '';
+			}
+
+			$output .= "<option value=\"{$time}\"{$sel}>" . date( 'H:i', $current ) .'</option>';
             $current = strtotime( $interval, $current );
         }
 
