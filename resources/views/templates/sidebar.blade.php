@@ -47,6 +47,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ url('/admin/users') }}">Users</a></li>
+                    <li><a href="{{ url('/admin/fees') }}">Fees</a></li>
                 </ul>
             </li>
             @endif
