@@ -83,13 +83,13 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" name="sms" checked>
+											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms" value="{{ $sms_confirmation_fee->amount }}" checked>
 											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" name="cancellation">
+											<input type="checkbox" class="form-check-input" id="cancellation" name="cancellation" value="{{ $cancellation_waiver->amount }}">
 											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
@@ -274,7 +274,7 @@
 										$total = number_format($total, 2);
 										$total = str_replace('.00', '', $total);
 									@endphp
-									<p class="receipt-align total">£{{ $total }}</p>
+									<p class="receipt-align total" id="total" data-value="{{ $total }}">£{{ $total }}</p>
 								</div>
 							</div>
 						</div>
@@ -297,7 +297,7 @@
 @stop
 
 @section('js')
-	<script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script				>
+<script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
