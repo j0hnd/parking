@@ -11,7 +11,7 @@
 
 @section('main-content')
 	
-	 <div id="myNav" class="overlay">
+	 <div id="mobileNav" class="overlay">
 	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 	  <div class="overlay-content">
 	    <a href="#">Member Login</a>

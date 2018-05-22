@@ -116,6 +116,12 @@ margin-top: 24px;
   font-weight: 500;
 }
 
+.time-width{
+  width: 210%;
+}
+.date-width{
+  width: 130%
+}
 
 .v-scroll{
   text-align: center;
