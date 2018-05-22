@@ -26,4 +26,42 @@ $(document).ready(function(){
         titleTemplate: "#title#",
         cssClass: "tabcontrol"
     });
+
+    $(document).on('click', '#sms-fee', function () {
+        var total = $('#total').text().substr(1);
+        if ($(this).is(':checked')) {
+            total = parseFloat(total) + parseFloat($(this).val());
+        } else {
+            if ($('#total').data('value') < total) {
+                total = parseFloat(total) - parseFloat($(this).val());
+            }
+        }
+
+        $('#total').text('£'+total.toLocaleString());
+    });
+
+    $(document).on('click', '#cancellation', function () {
+        var total = $('#total').text().substr(1);
+        if ($(this).is(':checked')) {
+            total = parseFloat(total) + parseFloat($(this).val());
+        } else {
+            if ($('#total').data('value') < total) {
+                total = parseFloat(total) - parseFloat($(this).val());
+            }
+        }
+
+        $('#total').text('£'+total.toLocaleString());
+    });
+
+    if ($('#sms-fee').is(':checked')) {
+        var total = $('#total').text().substr(1);
+        total = parseFloat(total) + parseFloat($('#sms-fee').val());
+        $('#total').text('£'+total.toLocaleString());
+    }
+
+    if ($('#cancellation').is(':checked')) {
+        var total = $('#total').text().substr(1);
+        total = parseFloat(total) + parseFloat($('#cancellation').val());
+        $('#total').text('£'+total.toLocaleString());
+    }
 });
