@@ -20,8 +20,9 @@ class ParkingAppController extends Controller
     public function index()
     {
         $airports = Airports::active()->get();
-        $time_intervals = Common::get_times(date('H:i'), '+5 minutes');
-        return view('parking.index', compact('airports', 'time_intervals'));
+		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+        return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval'));
     }
 
     public function search(Request $request)
@@ -38,8 +39,6 @@ class ParkingAppController extends Controller
         	$drop_off_time = "";
         	$return_at_time = "";
 		}
-
-
 
         $airports = Airports::active()->get();
         $drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes', $drop_off_time);
