@@ -89,6 +89,8 @@ class Products extends BaseModel
                             if ($no_days === $price->no_of_days and is_null($price->price_month) and is_null($price->price_year)) {
                                 $products[$i] = [
                                     'product_id' => $product->id,
+									'airport_id' => $airport->airport_id,
+									'airport_name' => $airport->airport_name,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
 									'price_id' => $price->id,
@@ -101,6 +103,8 @@ class Products extends BaseModel
 							} elseif ($no_days !== $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
 									'product_id' => $product->id,
+									'airport_id' => $airport->airport_id,
+									'airport_name' => $airport->airport_name,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
 									'price_id' => $price->id,
@@ -113,6 +117,8 @@ class Products extends BaseModel
 							} elseif ($no_days !== $price->no_of_days and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
 									'product_id' => $product->id,
+									'airport_id' => $airport->airport_id,
+									'airport_name' => $airport->airport_name,
 									'carpark' => $product->carpark->name,
 									'image' => $product->carpark->image,
 									'price_id' => $price->id,
@@ -151,6 +157,8 @@ class Products extends BaseModel
 				$category = PriceCategories::findOrFail($price->category_id);
 				$results[$i] = [
 					'product_id' => $product['product_id'],
+					'airport_id' => $product['airport_id'],
+					'airport_name' => $product['airport_name'],
 					'price_id' => $product['price_id'],
 					'carpark_name' => $product['carpark'],
 					'image' => $product['image'],

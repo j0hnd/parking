@@ -34,7 +34,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="{{ asset('/img/booking/airplane1.png') }}" class="air1"></p></a>
-					<form id="payment_wizard">
+					<form id="payment_wizard" data-parsley-validate="">
 						<h3>Payment<img src="{{ asset('img/booking/airplane2.png') }}" class="air2"></h3>
 						<section>
 							<div class="container wizard-content">
@@ -47,11 +47,11 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>First Name:</label>
-										<input type="text" name="firstname" class="form-control">
+										<input type="text" name="firstname" class="form-control" required="">
 									</div>
 									<div class="col-md-6">
 										<label>Last Name:</label>
-										<input type="text" name="lastname" class="form-control">
+										<input type="text" name="lastname" class="form-control" required="">
 									</div>
 								</div>
 								<br/>
@@ -84,13 +84,13 @@
 									<div class="col-md-6">
 										<label class="form-check-label">
 											<input type="checkbox" class="form-check-input" name="sms" checked>
-											SMS Confirmation + £0.49
+											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
 										<label class="form-check-label">
 											<input type="checkbox" class="form-check-input" name="cancellation">
-											Cancellation Waiver + £1.99
+											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
 								</div>
@@ -228,7 +228,7 @@
 									<p>From Date</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">{{ $drop_off_date }}</p>
+									<p class="receipt-align">{{ $drop_off_date }} {{ $drop_off_time }}</p>
 								</div>
 							</div>
 							<div class="row">
@@ -236,13 +236,14 @@
 									<p>To Date</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">{{ $return_at_date }}</p>
+									<p class="receipt-align">{{ $return_at_date }} {{ $return_at_time }}</p>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
 								<div class="col-md-6">
-									<p class="receipt-name">AIRPORT NAME</p>
+									<p class="receipt-name">{{ $airport->airport_name }}</p>
+									<p class="h6">{{ $price->categories->category_name }}</p>
 								</div>
 								<div class="col-md-6">
 									@php
@@ -258,7 +259,7 @@
 									<p class="receipt-name">BOOKING FEE</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">£{{ $booking_fee }}</p>
+									<p class="receipt-align">£{{ $booking_fee->amount }}</p>
 								</div>
 							</div>
 							<hr>
@@ -269,7 +270,7 @@
 								<div class="col-md-6">
 									@php
 										$price_value = str_replace(',', '', $price_value);
-										$total = $price_value + $booking_fee;
+										$total = $price_value + $booking_fee->amount;
 										$total = number_format($total, 2);
 										$total = str_replace('.00', '', $total);
 									@endphp
@@ -296,7 +297,19 @@
 @stop
 
 @section('js')
-<script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script				>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+$(function () {
+	// $('#payment_wizard').parsley().on('field:validated', function() {
+	// 	var ok = $('.parsley-error').length === 0;
+	// 	// $('.bs-callout-info').toggleClass('hidden', !ok);
+	// 	// $('.bs-callout-warning').toggleClass('hidden', ok);
+	// })
+	// .on('form:submit', function() {
+	// 	return false; // Don't submit form for this demo
+	// });
+});
+</script>
 @stop

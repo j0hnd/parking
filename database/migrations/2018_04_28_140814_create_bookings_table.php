@@ -22,6 +22,8 @@ class CreateBookingsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
+			$table->engine = 'InnoDB';
+
             $table->index(['first_name', 'last_name']);
             $table->index('email');
         });
@@ -45,6 +47,8 @@ class CreateBookingsTable extends Migration
             $table->string('vehicle_color',20)->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+			$table->engine = 'InnoDB';
 
             $table->index(['booking_id', 'customer_id', 'product_id', 'price_id']);
         });

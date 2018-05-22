@@ -1,5 +1,10 @@
 # Airport Parking System
 
+## Requirements
+1. PHP 7.1 or higher
+2. MySQL 5.7
+3. Laravel 5.6 or higher
+
 ## Installation
 1. git clone the project
 2. __chmod 777 -R__ your storage and bootstrap/cache folders
