@@ -57,13 +57,13 @@
 
             $(document).on('click', '#toggle-create-row', function () {
                 var src = $('#first-row').clone();
-                if (row_count < row_limit) {
+                // if (row_count < row_limit) {
                     src.find('input').val(0);
                     $('#prices-container').append(src);
                     row_count++;
-                } else {
-                    alert("You can only add "+ row_limit +" price category variance.");
-                }
+                // } else {
+                //    alert("You can only add "+ row_limit +" price category variance.");
+                //}
             });
 
             $(document).on('click', '#toggle-remove-row', function () {
