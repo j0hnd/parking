@@ -145,3 +145,12 @@ $(document).ready(function() {
           }
         });
 });
+ function openNav() {
+      document.getElementById("mobileNav").style.width = "100%";
+      $('.nav-icon').hide();
+      }
+      function closeNav() {
+      document.getElementById("mobileNav").style.width = "0%";
+      $('.nav-icon').show();
+      
+      }
