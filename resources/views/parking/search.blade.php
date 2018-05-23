@@ -10,14 +10,14 @@
  <div id="mobileNav" class="overlay-nav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
-        <a href="#">Member Login</a>
         <a href="#">Contact Us</a>
-        <a href="#">Chat</a>
-        <a href="#">Airport</a>
+        <a href="#">Membership</a>
+        <a href="#">Live Chat</a>
+        <a href="#">Airport Parking</a>
       </div>
     </div>
     <nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
-        <a href="{{ url('/') }}"> <img src="{{ asset('/img/logo.png') }}" class="navbar-brand"></a>
+        <a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo.png') }}" class="navbar-brand"></a>
         @include('parking.templates.nav2')
         <span class="nav-icon" onclick="openNav()">&#9776;</span>
     </nav>

@@ -39,15 +39,16 @@
 }
 .navbar-brand{
     position: absolute;
-    right: 123%;
-    top:0;
+    right: 120%;
+    top: -28px;
+    width:40%;
 }
 .navbar.solid {
   background-color: #fff !important;
   transition: background-color 1s ease 0s;
   margin: 0 0 0 0;
   width: 100%;
-  padding: 20px 0 20px 0;
+  padding: 10px 0 10px 0;
   left: 1%;
   -webkit-box-shadow: 0 1px 20px 0 #000;
   -moz-box-shadow: 0 1px 20px 0 #000;
@@ -55,7 +56,7 @@
 }
 .navbar.solid .navbar-nav{
   position: relative;
-  left: 26%;
+  left: 7%;
 }
 .navbar.solid .navbar-nav > .nav-item > .nav-link {
   transition: color 1s ease 0s;
@@ -66,7 +67,9 @@
    }
    .navbar.solid .navbar-brand{
     position: relative !important;
-    left: 48%;
+    left: 21%;
+    width: 60%;
+    top: 10%;
    }
 .overlay-nav{
   display: none;
@@ -490,14 +493,14 @@ footer{
     transition: 0.5s;
 }
 .nav-icon{
-  display: block;
-  position: absolute;
-  top: -8px;
-  cursor: pointer !important;
-  color: #000;
-  text-align: right;
-  font-size: 35px;
-  right: 10%;
+    display: block;
+    position: absolute;
+    top: 18px;
+    cursor: pointer !important;
+    color: #000;
+    text-align: right;
+    font-size: 35px;
+    right: 17%;
 }
 .remove-nav-icon{
   display: none;
@@ -526,7 +529,7 @@ footer{
 
 .overlay-nav .closebtn {
     position: absolute;
-    top: -11px;
+    top: -2px;
     right: 24px;
     font-size: 60px;
 }
@@ -536,34 +539,37 @@ footer{
 .navbar-nav{
   display: none;
 }
-  .card-img{
-    width: 100%;
-    height: 203px;
-}
+    .app-full{
+        width: 50%;
+        position: relative;
+        right: 5%
+    }
 
-  .vl{
-    display: none;
-  }
-  .navbar-light .navbar-toggler {
-    position: relative;
-    color: #fff !important;
-    border-color: #1d2124 !important;
-    left: 70%;
+    .vl{
+        display: none;
+    }
+    .navbar-light .navbar-toggler {
+        position: relative;
+        color: #fff !important;
+        border-color: #1d2124 !important;
+        left: 70%;
 
-}
- .navbar{
-    position: absolute;
-    margin-top: 12px;
-    display: block;
-    float: left;
-    left: 50%;
-    background-color: #fff !important;
+    }
+    .navbar{
+        position: absolute;
+        margin-top: 12px;
+        display: block;
+        float: left;
+        left: 50%;
+        background-color: #fff !important;
 
-      }
-  .navbar-brand{
-    position: absolute;
-    right: 40%;
-}
+    }
+    .navbar-brand{
+        position: absolute;
+        right: 46%;
+        top: -10px;
+        width: 150%;
+    }
 .navbar-light .navbar-nav .nav-link {
   margin-top: 10px;
   }

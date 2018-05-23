@@ -7,8 +7,7 @@
 <div class="container book">
     <div class="row">
         <div class="col-md-12 main-header">
-            <h1 class="header">AIRPORT</h1>
-            <p class="header-sub">PARKING SYSTEM</p>
+            <img src="img/header-logo.png" class="header-logo">
         </div>
     </div>
     @include('parking.partials._search')
