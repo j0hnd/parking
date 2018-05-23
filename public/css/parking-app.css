@@ -122,6 +122,9 @@ margin-top: 24px;
 .date-width{
   width: 130%
 }
+.air-width{
+  width: 100% !important;
+}
 
 .v-scroll{
   text-align: center;
