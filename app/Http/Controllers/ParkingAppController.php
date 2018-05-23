@@ -20,22 +20,31 @@ class ParkingAppController extends Controller
     public function index()
     {
         $airports = Airports::active()->get();
-        $time_intervals = Common::get_times(date('H:i'), '+5 minutes');
-        return view('parking.index', compact('airports', 'time_intervals'));
+		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+        return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval'));
     }
 
     public function search(Request $request)
     {
+    	$form = null;
+
         if ($request->isMethod('post')) {
-             $form = $request->except(['_token']);
-             $products = Products::search($form);
-             $results = Products::prepare_data($products);
-        }
+			$form = $request->except(['_token']);
+			$products = Products::search($form);
+			$results = Products::prepare_data($products);
+			$drop_off_time = $form['search']['drop-off-time'];
+			$return_at_time = $form['search']['return-at-time'];
+        } else {
+        	$drop_off_time = "";
+        	$return_at_time = "";
+		}
 
         $airports = Airports::active()->get();
-        $time_intervals = Common::get_times(date('H:i'), '+5 minutes');
+        $drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes', $drop_off_time);
+        $return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes', $return_at_time);
 
-        return view('parking.search', compact('airports', 'time_intervals', 'results'));
+        return view('parking.search', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'results', 'form'));
     }
 
     public function payment(Request $request)

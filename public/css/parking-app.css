@@ -679,6 +679,9 @@ text-align: left;
 .datepicker {
     width: 80%;
 }
+.air-width{
+  width: 80% !important;
+}
 select.form-control-sm{
   width: 80% !important;
 }
