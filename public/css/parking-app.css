@@ -683,7 +683,7 @@ text-align: left;
     width: 80%;
 }
 .air-width{
-  width: 80% !important;
+  width: 100% !important;
 }
 select.form-control-sm{
   width: 80% !important;
