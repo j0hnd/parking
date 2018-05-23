@@ -8,7 +8,7 @@
     background-color: transparent !important;
 }
 .navbar{
-    position: absolute;
+    position: fixed;
     left: 43%;
     transform: translateX(-1%);
     background-color: none;
@@ -42,23 +42,55 @@
     right: 123%;
     top:0;
 }
+.navbar.solid {
+  background-color: #fff !important;
+  transition: background-color 1s ease 0s;
+  margin: 0 0 0 0;
+  width: 100%;
+  padding: 20px 0 20px 0;
+  left: 1%;
+  -webkit-box-shadow: 0 1px 20px 0 #000;
+  -moz-box-shadow: 0 1px 20px 0 #000;
+  box-shadow: 0 1px 20px 0 #000;
+}
+.navbar.solid .navbar-nav{
+  position: relative;
+  left: 26%;
+}
+.navbar.solid .navbar-nav > .nav-item > .nav-link {
+  transition: color 1s ease 0s;
+  margin: 0 25px 0 25px;
+}
+.navbar.solid .navbar-nav > .nav-item > .nav-link:hover {
+  border: 2px solid #27b2e0;
+   }
+   .navbar.solid .navbar-brand{
+    position: relative !important;
+    left: 48%;
+   }
+.overlay-nav{
+  display: none;
+}
+.nav-icon{
+  display: none;
+}
 
 /* END NAVBAR */
 /* START 2nd NAVBAR */
 .navbar-2-mobile{
-    display: none;
+  display: none;
 }
 .navbar-2{
-    position: relative;
-    background-color: #27b2e0 !important;
-    padding: 50px 0 40px 0;
+position: relative;
+background-color: #27b2e0 !important;
+padding: 50px 0 40px 0;
 
 }
 .book-box{
-    padding: 20px 80px 40px 20px;
-    color: #fff;
-    font-family: "Montserrat";
-    letter-spacing: 1px;
+  padding: 20px 80px 40px 20px;
+  color: #fff;
+  font-family: "Montserrat";
+  letter-spacing: 1px;
 }
 .link-2{
     color: #fff !important;
@@ -71,7 +103,7 @@
 }
 .not-active{
     padding: 30px 30px 29px 30px;
-
+   
 }
 .not-active:hover{
     background-color: #005e7d;
@@ -90,45 +122,55 @@
 
 }
 .input1{
-    position: relative;
-    height: 35px;
-    top: 3px;
+position: relative;
+height: 35px;
+top: 3px;
 }
 .input2{
-    position: relative;
-    right: 2%;
+position: relative;
+right: 2%;
 }
 .input3{
-    position: relative;
-    left: 0%;
-    /*margin-top: 24px;*/
+position: relative;
+left: 0%;
+margin-top: 0px;
 }
 .input4{
-    position: relative;
-    left: 4%;
+position: relative;
+left: 4%;
 }
 .input5{
-    position: relative;
-    /*margin-top: 24px;*/
-    margin-left: 62px;
+position: relative;
+margin-top: 0px;
+margin-left: 62px;
 }
 .input6{
-    position: relative;
+position: relative;
 }
 .btn-primary{
-    position: absolute;
-    left: 346%;
-    bottom: 0;
-    width: 200px;
-    height: 35px;
-    border-radius: 2px;
-    background-color: #27b2e0;
-    color: #fff;
-    border: 1px #27b2e0;
-    margin-top: 24px;
+position: absolute;
+left: 346%;
+bottom: 0;
+width: 200px;
+height: 35px;
+border-radius: 2px;
+background-color: #27b2e0;
+color: #fff;
+border: 1px #27b2e0;
+margin-top: 24px;
 }
 .btn-primary:hover{
-    font-weight: 500;
+  font-weight: 500;
+}
+
+.time-width{
+  width: 210%;
+}
+.date-width{
+  width: 130%
+}
+.air-width{
+  width: 100%;
 }
 .filter{
     position: relative;
@@ -161,7 +203,6 @@
 }
 .card-icon{
     margin-left: 11px;
-    color: #005e7d;
 }
 .tooltip-icon {
     position: relative;
@@ -201,64 +242,64 @@
     opacity: 1;
 }
 hr{
-    border: .5px solid #005e7d;
-    width: 90%;
+   border: .5px solid #005e7d;
+   width: 90%;
 }
 .card-img{
     width: 100%;
     height: 150px;
 }
 .card-title{
-    font-size: 20px;
-    font-family: "Montserrat";
-    color: rgb(0, 94, 125);
-    font-weight: bold;
-    line-height: 1.2;
-    position: relative;
-    margin:0;
+  font-size: 20px;
+  font-family: "Montserrat";
+  color: rgb(0, 94, 125);
+  font-weight: bold;
+  line-height: 1.2;
+  position: relative;
+  margin:0;
 }
 .card-title2{
-    font-size: 17px;
-    font-family: "Montserrat";
-    color: rgb(0, 94, 125);
-    font-weight: bold;
-    line-height: 1.2;
-    position: relative;
-    margin:0;
+  font-size: 17px;
+  font-family: "Montserrat";
+  color: rgb(0, 94, 125);
+  font-weight: bold;
+  line-height: 1.2;
+  position: relative;
+  margin:0;
 }
 .card-sub{
-    font-size: 14px;
-    font-family: "Montserrat";
-    color: rgb(0, 94, 125);
-    line-height: 1.2;
-    text-align: center;
-    position: relative;
-    font-weight: 500;
+  font-size: 14px;
+  font-family: "Montserrat";
+  color: rgb(0, 94, 125);
+  line-height: 1.2;
+  text-align: center;
+  position: relative;
+  font-weight: 500;
 }
 .price{
-    font-size: 35px;
-    font-family: "Montserrat";
-    color: rgb(226, 99, 2);
-    font-weight: 600;
-    line-height: 1.817;
-    position: relative;
-    letter-spacing: 5px;
-    margin:0;
+  font-size: 35px;
+  font-family: "Montserrat";
+  color: rgb(226, 99, 2);
+  font-weight: 600;
+  line-height: 1.817;
+  position: relative;
+  letter-spacing: 5px;
+  margin:0;
 }
 .book-now{
-    font-size: 15px;
-    font-family: "Montserrat";
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    line-height: 1.6;
-    position: relative;
-    padding: 10px 15px 10px 22px;
-    background-color: #00a651;
-    letter-spacing: 3px;
+  font-size: 15px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  line-height: 1.6;
+  position: relative;
+  padding: 10px 15px 10px 22px;
+  background-color: #00a651;
+  letter-spacing: 3px;
 }
 .book-now:hover{
-    color: #ffe000;
-    text-decoration: none;
+  color: #ffe000;
+  text-decoration: none;
 }
 .star{
     width: 70%;
@@ -266,13 +307,13 @@ hr{
     margin-bottom: 12px;
 }
 .more{
-    font-size: 10px;
-    font-family: "Montserrat";
-    color: rgb(39, 178, 224);
-    text-transform: uppercase;
-    line-height: 1.887;
-    position: relative;
-    margin-left: 10px;
+  font-size: 10px;
+  font-family: "Montserrat";
+  color: rgb(39, 178, 224);
+  text-transform: uppercase;
+  line-height: 1.887;
+  position: relative;
+  margin-left: 10px;
 }
 .more:hover{
     text-decoration: none;
@@ -280,58 +321,58 @@ hr{
 
 }
 .overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    transition: opacity 500ms;
-    visibility: hidden;
-    opacity: 0;
-    z-index: 2000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 2000;
 }
 .overlay:target {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }
 
 .popup {
-    margin: 70px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 5px;
-    width: 55%;
-    position: relative;
-    transition: all 2s ease-in-out;
-    top: 20%;
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 55%;
+  position: relative;
+  transition: all 2s ease-in-out;
+  top: 20%;
 
 }
 
 .popup h1 {
-    margin-top: 0;
-    color: rgb(61, 76, 91);
-    font-family: "Roboto";
-    font-size: 50;
-    font-weight: 300;
+  margin-top: 0;
+  color: rgb(61, 76, 91);
+  font-family: "Roboto";
+  font-size: 50;
+  font-weight: 300;
 }
 .close3 {
-    position: absolute;
-    bottom: 75%;
-    left: 97%;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none !important;
-    color: #fff;
-    border: 2px solid #fff;
-    border-radius: 25px;
-    background: #003345;
-    padding: 0px 12px 2px 12px;
+  position: absolute;
+  bottom: 75%;
+  left: 97%;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none !important;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  background: #003345;
+  padding: 0px 12px 2px 12px;
 
 }
 .popup .close3:hover {
-    color: #0797cc;
+  color: #0797cc;
 
 }
 
@@ -344,249 +385,327 @@ hr{
     color: rgb(39, 178, 224);
     position: relative;
     top: 7px;
-    margin-right: 10px;
+     margin-right: 10px;
 }
 .card-border > .plus.collapsed:before {
     float: right !important;
     content:"\f067";
 }
-.card-border > .plus:hover,
-.card-border > .plus:active,
+.card-border > .plus:hover, 
+.card-border > .plus:active, 
 .card-border > .plus:focus  {
     text-decoration:none;
 }
 .collapsable-text{
-    font-size: 14px;
-    font-family: "Montserrat";
-    color: rgb(0, 94, 125);
-    margin: 0 10px 0 10px;
+  font-size: 14px;
+  font-family: "Montserrat";
+  color: rgb(0, 94, 125);
+  margin: 0 10px 0 10px;
 }
 .collapsable-title{
-    margin: 10px 10px 0 10px;
-    font-size: 17px;
-    font-family: "Montserrat";
-    color: rgb(0, 94, 125);
-    font-weight: bold;
+   margin: 10px 10px 0 10px;
+  font-size: 17px;
+  font-family: "Montserrat";
+  color: rgb(0, 94, 125);
+  font-weight: bold;
 }
 /* END MAIN CONTENT */
 /* START FOOTER */
 footer{
-    background-color: #1c1c1c;
-    padding: 50px 0 30px 0;
-    bottom: 0;
-    position: relative;
+  background-color: #1c1c1c;
+  padding: 50px 0 30px 0;
+  bottom: 0;
+  position: relative;
 }
 .foot-col2{
-    font-size: 35px;
-    font-family: "Montserrat";
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    text-transform: uppercase;
-    line-height: 1.2;
-    text-align: center;
-    position: relative;
-    letter-spacing: 10px;
-    left: 2%;
+  font-size: 35px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  position: relative;
+  letter-spacing: 10px;
+  left: 2%;
 
 }
 .foot-col1{
-    font-size: 14px;
-    font-family: "Montserrat";
-    color: rgb(255, 255, 255);
-    line-height: 1.2;
-    text-align: left;
-    position: relative;
-    left: 2%;
+  font-size: 14px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  text-align: left;
+  position: relative;
+  left: 2%;
 }
 .foot-col2-sub{
-    font-size: 15px;
-    font-family: "Montserrat";
-    color: rgb(255, 255, 255);
-    text-transform: uppercase;
-    line-height: 1.2;
-    text-align: center;
-    position: relative;
-    letter-spacing: 4px;
-    bottom: 10%;
+  font-size: 15px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  position: relative;
+  letter-spacing: 4px;
+  bottom: 10%;
 
 }
 .foot-col3{
-    font-size: 16px;
-    font-family: "Montserrat";
-    color: rgb(255, 255, 255);
-    text-transform: uppercase;
-    line-height: 1.2;
-    text-align: left;
-    position: relative;
-    letter-spacing: 3px;
-    margin-left: 37px;
+  font-size: 16px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: left;
+  position: relative;
+  letter-spacing: 3px;
+  margin-left: 37px;
 }
 .info{
-    font-size: 14px;
-    font-family: "Montserrat";
-    color: rgb(255, 255, 255);
-    line-height: 1.2;
-    position: relative;
+  font-size: 14px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  position: relative;
 }
 .col3-align{
-    position: relative;
-    left: 5%;
+  position: relative;
+  left: 5%;
 }
 
 /* END FOOTER */
 /* START MOBILE */
 @media only screen and (max-width:700px){
-    .card-img{
-        width: 100%;
-        height: 203px;
-    }
+  .overlay-nav {
+    display: block;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: #005e7d;
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+.nav-icon{
+  display: block;
+  position: absolute;
+  top: -8px;
+  cursor: pointer !important;
+  color: #000;
+  text-align: right;
+  font-size: 35px;
+  right: 10%;
+}
+.remove-nav-icon{
+  display: none;
+}
 
-    .vl{
-        display: none;
-    }
-    .navbar-light .navbar-toggler {
-        position: relative;
-        color: #fff !important;
-        border-color: #1d2124 !important;
-        left: 70%;
+.overlay-content {
+    position: relative;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+}
 
-    }
-    .navbar{
-        position: absolute;
-        margin-top: 12px;
-        display: block;
-        float: left;
-        left: 50%;
-        background-color: #fff !important;
+.overlay-nav a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+}
 
-    }
-    .navbar-brand{
-        position: absolute;
-        right: 40%;
-    }
-    .navbar-light .navbar-nav .nav-link {
-        margin-top: 10px;
-    }
-    .navbar-2{
-        display: none;
-    }
-    .navbar-2-mobile{
-        display: inline;
-    }
-    .navbar-2-mobile ul{
-        background-color: #27b2e0;
-        padding: 14px 0px 18px 30px;
-        position: relative;
-        margin-bottom: 0rem !important;
-    }
-    .active-2-mobile{
-        background-color: #005e7d;
-        display: inline;
-        padding: 17px 6px 22px 10px;
+.overlay-nav a:hover, .overlay-nav a:focus {
+    color: #000033;
+}
 
-    }
-    .not-active-2-mobile{
-        display: inline;
-        padding: 17px 6px 22px 10px;
+.overlay-nav .closebtn {
+    position: absolute;
+    top: -11px;
+    right: 24px;
+    font-size: 60px;
+}
+.navbar.solid{
+  display: none;
+}
+.navbar-nav{
+  display: none;
+}
+  .card-img{
+    width: 100%;
+    height: 203px;
+}
 
-    }
-    .not-active-2-mobile:hover{
-        background-color: #005e7d;
+  .vl{
+    display: none;
+  }
+  .navbar-light .navbar-toggler {
+    position: relative;
+    color: #fff !important;
+    border-color: #1d2124 !important;
+    left: 70%;
 
-    }
-    .navbar-2-mobile ul li a{
-        color: #fff;
-        font-size: 14px;
-        text-decoration: none;
-    }
-    .foot-col2-sub{
-        text-align: left;
-        margin-left: 10px;
-    }
-    .foot-col2{
-        text-align: left;
-    }
-    .col3-align {
-        position: relative;
-        left: 0%;
-    }
-    .input1{
-        position: relative;
-        height: 35px;
-        top: 3px;
-        margin-bottom: 24px;
-    }
-    .input2{
-        position: relative;
-        right: 0%;
-    }
-    .input3{
-        position: relative;
-        left: 0%;
-        /*margin-top: 10px;*/
-    }
-    .input4{
-        position: relative;
-        left: 0%;
-    }
-    .input5{
-        position: relative;
-        left: 0%;
-        /*margin-top: 10px;*/
-        margin-left: 0;
-    }
-    .input6{
-        position: relative;
-    }
-    .btn-primary{
-        position: relative;
-        left: 0%;
-        width: 200px;
-        height: 35px;
-        border-radius: 2px;
-        background-color: #27b2e0;
-        color: #fff;
-        border: 1px #27b2e0;
-        margin-top: 10px;
-    }
-    .book-box{
-        margin-top: 0px;
-        background-color: transparent !important;
-        padding: 20px 10px 20px 10px;
-        color: #fff;
-        font-family: "Montserrat";
-        letter-spacing: 1px;
-        text-align: center;
-        position: relative;
+}
+ .navbar{
+    position: absolute;
+    margin-top: 12px;
+    display: block;
+    float: left;
+    left: 50%;
+    background-color: #fff !important;
 
-    }
-    .park-search {
-        margin-top: 0px;
-        margin-bottom: 0px;
-    }
-    #header{
-        padding-bottom: 40px;
-    }
+      }
+  .navbar-brand{
+    position: absolute;
+    right: 40%;
+}
+.navbar-light .navbar-nav .nav-link {
+  margin-top: 10px;
+  }
+  .navbar-2{
+    display: none;
+}
+.navbar-2-mobile{
+  display: inline;
+}
+.navbar-2-mobile ul{
+  background-color: #27b2e0;
+  padding: 14px 0px 18px 0px;
+  position: relative;
+  margin-bottom: 0rem !important;
+}
+.active-2-mobile{
+  background-color: #005e7d;
+  display: inline;
+  padding: 17px 11px 22px 11px;
 
-    .filter {
-        margin-left: 22px;
-        top: 78%;
-        left: 0%;
-        margin-top: 0px;
-        position: relative;
-        font-size: 14px;
-    }
-    .mobile-align{
-        margin-top: 20px;
-        text-align: center;
-    }
-    .popup{
-        width: 90%;
-        top: 10%;
-    }
-    .close3 {
-        bottom: 84%;
-        left: 90%;
-    }
+}
+.not-active-2-mobile{
+  display: inline;
+  padding: 17px 11px 22px 11px;
+
+}
+.not-active-2-mobile:hover{
+ background-color: #005e7d;
+ 
+} 
+.navbar-2-mobile ul li a{
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+}
+.foot-col2-sub{
+text-align: left;
+margin-left: 10px;
+  }
+  .foot-col2{
+text-align: left;
+  }
+  .col3-align {
+    position: relative;
+    left: 0%;
+}
+.input1{
+position: relative;
+height: 35px;
+top: 3px;
+margin-bottom: 0px;
+}
+.input2{
+position: relative;
+right: 0%;
+margin-top: 5px;
+}
+.input3{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input4{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input5{
+position: relative;
+left: 0%;
+margin-top: 5px;
+margin-left: 0;
+}
+.input6{
+position: relative;
+}
+.btn-primary{
+position: relative;
+left: 0%;
+width: 200px;
+height: 35px;
+border-radius: 2px;
+background-color: #27b2e0;
+color: #fff;
+border: 1px #27b2e0;
+margin-top: 10px;
+}
+.book-box{
+  margin-top: 20px;
+  background-color: transparent !important;
+  padding: 20px 10px 20px 10px;
+  color: #fff;
+  font-family: "Montserrat";
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+  bottom: 30px;
+ 
+}
+.home-label{
+  display: none;
+}
+.datepicker {
+    width: 80%;
+}
+.air-width{
+  width: 80%;
+}
+select.form-control-sm{
+  width: 80% !important;
+}
+button.btn.btn-primary.btn-sm{
+  width: 80%;
+}
+.park-search {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+#header{
+  padding-bottom: 40px;
+  padding-top: 20px;
+}
+
+.filter {
+    margin-left: 22px;
+    top: 78%;
+    left: 0%;
+    margin-top: 0px;
+    position: relative;
+    font-size: 14px;
+}
+.mobile-align{
+  margin-top: 20px;
+  text-align: center;
+}
+ .popup{
+    width: 90%;
+    top: 10%;
+  }
+  .close3 {
+      bottom: 84%;
+    left: 90%;
+}
 }
 /* END MOBILE */

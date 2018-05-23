@@ -387,19 +387,19 @@ footer{
     }
     .navbar-2-mobile ul{
         background-color: #27b2e0;
-        padding: 14px 0px 18px 30px;
+        padding: 14px 0px 18px 0px;
         position: relative;
         margin-bottom: 0rem !important;
     }
     .active-2-mobile{
         background-color: #005e7d;
         display: inline;
-        padding: 17px 8px 21px 8px;
+        padding: 17px 8px 21px 6px;
 
     }
     .not-active-2-mobile{
         display: inline;
-        padding: 17px 8px 21px 8px;
+        padding: 17px 8px 21px 6px;
 
     }
     .not-active-2-mobile:hover{

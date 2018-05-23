@@ -51,10 +51,6 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::get('/get/price', 'PricesController@get_price');
     Route::get('/get/vehicle/model', 'BookingsController@get_vehicle_models');
-
-	Route::resource('fees', 'FeesController')->except(['update', 'destroy', 'show']);
-	Route::post('/fees/update', 'FeesController@update');
-	Route::post('/fees/{id}/delete', 'FeesController@delete');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {
