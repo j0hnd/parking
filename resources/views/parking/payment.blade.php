@@ -1,8 +1,14 @@
 @extends('parking-app')
 
 @section('css')
+	<link href="{{ asset('/bower_components/form.validation/dist/css/formValidation.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/payment.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
+	<style type="text/css">
+		.help-block {
+			color: #a94442 !important;
+		}
+	</style>
 @stop
 
 @section('main-content')
@@ -36,7 +42,7 @@
 					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="{{ asset('/img/booking/airplane1.png') }}" class="air1"></p></a>
 					<form id="payment_wizard" data-parsley-validate="">
 						<h3>Payment<img src="{{ asset('img/booking/airplane2.png') }}" class="air2"></h3>
-						<section>
+						<section data-step="0">
 							<div class="container wizard-content">
 								<div class="row">
 									<div class="col-md-12">
@@ -47,11 +53,11 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>First Name:</label>
-										<input type="text" name="firstname" class="form-control" required="">
+										<input type="text" name="firstname" class="form-control" data-validation="required">
 									</div>
 									<div class="col-md-6">
 										<label>Last Name:</label>
-										<input type="text" name="lastname" class="form-control" required="">
+										<input type="text" name="lastname" class="form-control" data-validation="required">
 									</div>
 								</div>
 								<br/>
@@ -70,8 +76,8 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>Area Code:</label>
-										<select class="form-control">
-											<option>(+44) United Kingdom</option>
+										<select class="form-control" name="country_code">
+											<option value="GB">(+44) United Kingdom</option>
 										</select>
 									</div>
 									<div class="col-md-6">
@@ -201,10 +207,10 @@
 						</section>
 
 						<h3>Details<img src="{{ asset('/img/booking/airplane3.png') }}" class="air3"></h3>
-						<section><p>Try 2</p></section>
+						<section data-step="1"><p>Try 2</p></section>
 
 						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
-						<section><p>Try 3</p></section>
+						<section data-step="2"><p>Try 3</p></section>
 					</form>
 				</div>
 
@@ -297,19 +303,9 @@
 @stop
 
 @section('js')
+<script src="{{ asset('/bower_components/form.validation/dist/js/formValidation.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/bower_components/form.validation/dist/js/framework/bootstrap.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
-<script type="text/javascript">
-$(function () {
-	// $('#payment_wizard').parsley().on('field:validated', function() {
-	// 	var ok = $('.parsley-error').length === 0;
-	// 	// $('.bs-callout-info').toggleClass('hidden', !ok);
-	// 	// $('.bs-callout-warning').toggleClass('hidden', ok);
-	// })
-	// .on('form:submit', function() {
-	// 	return false; // Don't submit form for this demo
-	// });
-});
-</script>
 @stop
