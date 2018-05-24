@@ -78,6 +78,16 @@
 .nav-icon{
   display: none;
 }
+.dropdown-item {
+  font-family: "Montserrat" !important;
+}
+.dropdown-item:hover {
+  color: #27b2e0 !important;
+}
+.navbar-expand-sm .navbar-nav .dropdown-menu {
+    position: absolute !important;
+    left: 16%;
+}
 
 /* END NAVBAR */
 /* START 2nd NAVBAR */

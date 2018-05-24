@@ -19,7 +19,7 @@
 		<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
 			<a href="{{ url('/') }}"> <img src="img/header-logo.png" class="navbar-brand"></a>
 			@include('parking.templates.nav2')
-			 <span class="nav-icon" onclick="openNav()">&#9776;</span>
+			 <span class="nav-icon" onclick="openNav()"><i class="fas fa-bars"></i></span>
 		</nav>
 
 		<br/><br/><br/><br/><br/>

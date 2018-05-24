@@ -208,6 +208,16 @@ margin-top: 24px;
 .navbar.solid .navbar-nav > .nav-item > .nav-link:hover {
   border: 2px solid #27b2e0;
    }
+   .dropdown-item {
+  font-family: "Montserrat" !important;
+}
+.dropdown-item:hover {
+  color: #27b2e0 !important;
+}
+.navbar-expand-sm .navbar-nav .dropdown-menu {
+    position: absolute !important;
+    left: 33%;
+}
 
 /* END NAVBAR */
 

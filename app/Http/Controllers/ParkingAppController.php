@@ -87,4 +87,11 @@ class ParkingAppController extends Controller
 
 		return redirect('/');
 	}
+	public function terms(){
+		return view ('parking.terms');
+	}
+	public function privacy(){
+		return view ('parking.privacy');
+	}
+
 }
