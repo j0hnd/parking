@@ -9,6 +9,8 @@ use App\Models\Tools\Fees;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Srmklive\PayPal\Facades\PayPal;
+use DB;
 
 class ParkingAppController extends Controller
 {
@@ -80,11 +82,44 @@ class ParkingAppController extends Controller
 					'return_at_date',
 					'return_at_time'
 				));
+			} else {
+				dd($request->all());
 			}
 		} catch (\Exception $e) {
-			dd($e);
+			abort(404, $e->getMessage());
 		}
 
 		return redirect('/');
+	}
+
+	public function paypal(Request $request)
+	{
+		try {
+
+			$form = $request->only(['product', 'total']);
+			$data['items'] = [
+				[
+					'name' => $form['product'],
+					'price' => $form['total'],
+					'qty' => 1
+				]
+			];
+
+			$id = DB::getPdo()->lastInsertId();
+			$id++;
+
+			$data['invoice_id'] = $id;
+			$data['invoice_description'] = "Order #{$id} Invoice";
+			$data['return_url'] = url('/payment');
+			$data['cancel_url'] = url('/payment');
+			$data['total'] = $form['total'];
+
+			$provider = PayPal::setProvider('express_checkout');
+			$response = $provider->setExpressCheckout($data);
+
+			dd($response);
+		} catch (\Exception $e) {
+			dd($e);
+		}
 	}
 }
