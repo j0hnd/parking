@@ -187,3 +187,36 @@ $(document).ready(function(){
         $('#total').text('£'+total.toLocaleString());
     }
 });
+$(document).ready(function() {
+        $(window).scroll(function() {
+          if($(this).scrollTop() > 50) { 
+              $('.navbar').addClass('solid');
+              $('#sidebar').addClass('sidebar-mar');
+              $('nav').removeClass('bg-dark');
+              $('.Vl').removeClass('vl');
+          } else {
+              $('.navbar').removeClass('solid');
+              $('nav').addClass('bg-dark');
+              $('.Vl').addClass('vl');
+              $('#sidebar').removeClass('sidebar-mar');
+          }
+        });
+});
+$(document).ready(function() {
+        $(window).scroll(function() {
+          if($(this).scrollTop() > 250) { 
+              $('#sidebar').addClass('sidebar-mar');
+          } else {
+              $('#sidebar').removeClass('sidebar-mar');
+          }
+        });
+});
+ function openNav() {
+      document.getElementById("mobileNav").style.width = "100%";
+      $('.nav-icon').hide();
+      }
+      function closeNav() {
+      document.getElementById("mobileNav").style.width = "0%";
+      $('.nav-icon').show();
+      
+      }
