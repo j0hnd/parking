@@ -8,6 +8,10 @@
  */
 
 define('LARAVEL_START', microtime(true));
+defined('CURL_SSLVERSION_DEFAULT') || define('CURL_SSLVERSION_DEFAULT', 0);
+defined('CURL_SSLVERSION_TLSv1')   || define('CURL_SSLVERSION_TLSv1', 1);
+defined('CURL_SSLVERSION_SSLv2')   || define('CURL_SSLVERSION_SSLv2', 2);
+defined('CURL_SSLVERSION_SSLv3')   || define('CURL_SSLVERSION_SSLv3', 3);
 
 /*
 |--------------------------------------------------------------------------
