@@ -14,9 +14,14 @@ use DB;
 
 class ParkingAppController extends Controller
 {
+	private $provider;
+
+
     public function __construct()
     {
         $this->middleware('guest');
+		$this->provider = PayPal::setProvider('express_checkout');
+		$this->provider->setApiCredentials(config('paypal'));
     }
 
     public function index()
@@ -83,7 +88,15 @@ class ParkingAppController extends Controller
 					'return_at_time'
 				));
 			} else {
-				dd($request->all());
+				$paypal_response = $request->all();
+				$response = $this->provider->getExpressCheckoutDetails($paypal_response['token']);
+				if ($response['ACK'] == 'Success') {
+
+					// TODO: save details to booking
+
+				} else {
+					return back()->withErrors(['errors' => 'Payment unsuccessful.']);
+				}
 			}
 		} catch (\Exception $e) {
 			abort(404, $e->getMessage());
@@ -95,7 +108,6 @@ class ParkingAppController extends Controller
 	public function paypal(Request $request)
 	{
 		try {
-
 			$form = $request->only(['product', 'total']);
 			$data['items'] = [
 				[
@@ -114,12 +126,15 @@ class ParkingAppController extends Controller
 			$data['cancel_url'] = url('/payment');
 			$data['total'] = $form['total'];
 
-			$provider = PayPal::setProvider('express_checkout');
-			$response = $provider->setExpressCheckout($data);
+			$response = $this->provider->setExpressCheckout($data);
 
-			dd($response);
+			if (!is_null($response['paypal_link'])) {
+				return redirect($response['paypal_link']);
+			} else {
+				return back()->withErrors(['errors' => 'Unable to get a response from paypal']);
+			}
 		} catch (\Exception $e) {
-			dd($e);
+			abort(404, $e->getMessage());
 		}
 	}
 }
