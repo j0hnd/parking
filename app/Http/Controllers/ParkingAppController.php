@@ -89,13 +89,15 @@ class ParkingAppController extends Controller
 				));
 			} else {
 				$paypal_response = $request->all();
-				$response = $this->provider->getExpressCheckoutDetails($paypal_response['token']);
-				if ($response['ACK'] == 'Success') {
+				if (isset($paypal_response['token'])) {
+					$response = $this->provider->getExpressCheckoutDetails($paypal_response['token']);
+					if ($response['ACK'] == 'Success') {
 
-					// TODO: save details to booking
+						// TODO: save details to booking
 
-				} else {
-					return back()->withErrors(['errors' => 'Payment unsuccessful.']);
+					} else {
+						return back()->withErrors(['errors' => 'Payment unsuccessful.']);
+					}
 				}
 			}
 		} catch (\Exception $e) {
