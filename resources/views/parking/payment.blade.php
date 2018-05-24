@@ -207,7 +207,13 @@
 											<div class="col-md-12">
 												<p class="paypal-details">A pop-up window will appear for PayPal login <br/>when you proceed with PayPal </p>
 												<br/><br/>
-												<a href="#" class="paypal-button"><i class="fab fa-paypal"></i> PayPal</a>
+												<a href="javascript:void(0)" id="toggle-paypal" class="paypal-button"><i class="fab fa-paypal"></i> PayPal</a>
+												@php
+													$price_value = str_replace(',', '', $price_value);
+													$total = $price_value + $booking_fee->amount;
+													$total = number_format($total, 2);
+													$total = str_replace('.00', '', $total);
+												@endphp
 											</div>
 										</div>
 									</div>
@@ -221,6 +227,12 @@
 
 						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
 						<section data-step="2"><p>Try 3</p></section>
+					</form>
+
+					<form id="order-form" action="{{ url('/paypal') }}" method="post">
+						<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">
+						<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">
+						{{ csrf_field() }}
 					</form>
 				</div>
 
@@ -284,12 +296,6 @@
 									<p>TOTAL PRICE</p>
 								</div>
 								<div class="col-md-6">
-									@php
-										$price_value = str_replace(',', '', $price_value);
-										$total = $price_value + $booking_fee->amount;
-										$total = number_format($total, 2);
-										$total = str_replace('.00', '', $total);
-									@endphp
 									<p class="receipt-align total" id="total" data-value="{{ $total }}">£{{ $total }}</p>
 								</div>
 							</div>

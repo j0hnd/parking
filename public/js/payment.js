@@ -160,6 +160,7 @@ $(document).ready(function(){
         }
 
         $('#total').text('£'+total.toLocaleString());
+        $('#total-amount').val(total.toLocaleString());
     });
 
     $(document).on('click', '#cancellation', function () {
@@ -173,18 +174,25 @@ $(document).ready(function(){
         }
 
         $('#total').text('£'+total.toLocaleString());
+        $('#total-amount').val(total.toLocaleString());
+    });
+
+    $(document).on('click', '#toggle-paypal', function () {
+        $('#order-form').submit();
     });
 
     if ($('#sms-fee').is(':checked')) {
         var total = $('#total').text().substr(1);
         total = parseFloat(total) + parseFloat($('#sms-fee').val());
         $('#total').text('£'+total.toLocaleString());
+        $('#total-amount').val(total.toLocaleString());
     }
 
     if ($('#cancellation').is(':checked')) {
         var total = $('#total').text().substr(1);
         total = parseFloat(total) + parseFloat($('#cancellation').val());
         $('#total').text('£'+total.toLocaleString());
+        $('#total-amount').val(total.toLocaleString());
     }
 });
 $(document).ready(function() {
