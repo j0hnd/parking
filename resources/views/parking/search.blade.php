@@ -7,16 +7,30 @@
 @stop
 
 @section('main-content')
-    <nav class="navbar navbar-expand-sm navbar" data-toggle="affix">
-        <a href="index.html"> <img src="{{ asset('/img/logo.png') }}" class="navbar-brand"></a>
+ <div id="mobileNav" class="overlay-nav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="#">Contact Us</a>
+        <a href="#">Membership</a>
+        <a href="#">Live Chat</a>
+        <a href="#">Airport Parking</a>
+      </div>
+    </div>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
+        <a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo.png') }}" class="navbar-brand"></a>
         @include('parking.templates.nav2')
+        <span class="nav-icon" onclick="openNav()">&#9776;</span>
     </nav>
+
 
     <br/><br/><br/><br/><br/>
 
     <nav class="navbar-expand-lg navbar-light bg-light navbar-2">
         @include('parking.templates.nav3')
     </nav>
+    <div class="navbar-2-mobile">
+            @include('parking.templates.nav3-mobile')
+        </div>
 
     <header id="header">
         <div class="container book">
