@@ -29,10 +29,10 @@
             <div class="col-md-4 footer-con">
                 <ul>
                     <li>
-                        <a href="/terms" class="link-con">Term and Condition</a>
+                        <a href="/terms" class="link-con terms">Term and Condition</a>
                     </li>
                     <li>
-                        <a href="/privacy" class="link-con">Privacy Policy</a>
+                        <a href="/privacy" class="link-con privacy">Privacy Policy</a>
                     </li>
                 </ul>
             </div>

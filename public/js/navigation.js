@@ -22,4 +22,6 @@ $(document).ready(function() {
       }
       $(document).ready(function(){
      $('.contact').addClass('active');
+     $('.terms').addClass('active-term');
+     $('.privacy').addClass('active-privacy');
     });
