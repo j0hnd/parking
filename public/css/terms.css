@@ -47,7 +47,7 @@
   transition: background-color 1s ease 0s;
   margin: 0 0 0 0;
   width: 100%;
-  padding: 10px 0 10px 0;
+  padding: 5px 0 5px 0;
   left: 1%;
   -webkit-box-shadow: 0 1px 20px 0 #000;
   -moz-box-shadow: 0 1px 20px 0 #000;
@@ -67,8 +67,8 @@
    }
    .navbar.solid .navbar-brand{
     position: relative !important;
-    left: 21%;
-    width: 60%;
+    left: 30%;
+    width: 40%;
     top: 10%;
    }
 .overlay-nav{
@@ -191,13 +191,9 @@ hr{
 }
 .banner-percent{
   text-align: center;
-  font-size: 8px;
+  font-size: 60px;
   font-family: "Montserrat";
   color: rgb(235, 104, 2);
-  line-height: 3.414;
-  -moz-transform: matrix( 6.26900911278695,0,0,6.15502712891812,0,0);
-  -webkit-transform: matrix( 6.26900911278695,0,0,6.15502712891812,0,0);
-  -ms-transform: matrix( 6.26900911278695,0,0,6.15502712891812,0,0);
   margin-top: 30px;
 }
 .banner-con{
@@ -288,6 +284,21 @@ footer{
 .col3-align{
   position: relative;
   left: 5%;
+}
+.footer-con{
+  color: #fff;
+
+}
+.link-con{
+  text-decoration: none;
+  color: #fff;
+  font-family: "Montserrat";
+  font-size: 15px;
+}
+.link-con:hover{
+  text-decoration: none;
+  color: #27b2e0;
+
 }
 
 /* END FOOTER */
@@ -430,5 +441,11 @@ text-align: left;
     position: relative;
     left: 0%;
 }
+.side-banner{
+  margin-top: 25px;
+  position: relative;
+  right: 0%;
+}
+
 }
 /* END MOBILE */

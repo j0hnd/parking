@@ -24,5 +24,18 @@
                 </div>
             </div>
         </div>
+        <hr style="color: #fff; background-color: #fff; height: 2px; width: 100%; border: #fff;">
+        <div class="row">
+            <div class="col-md-4 footer-con">
+                <ul>
+                    <li>
+                        <a href="/terms" class="link-con">Term and Condition</a>
+                    </li>
+                    <li>
+                        <a href="/privacy" class="link-con">Privacy Policy</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </footer>

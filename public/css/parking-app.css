@@ -508,7 +508,21 @@ footer{
   position: relative;
   left: 5%;
 }
+.footer-con{
+  color: #fff;
 
+}
+.link-con{
+  text-decoration: none;
+  color: #fff;
+  font-family: "Montserrat";
+  font-size: 15px;
+}
+.link-con:hover{
+  text-decoration: none;
+  color: #27b2e0;
+
+}
 /* END FOOTER */
 
 /* START MOBILE */

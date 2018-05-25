@@ -9,7 +9,7 @@
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
         <a href="#">Contact Us</a>
-        <a href="#">Membership</a>
+        <a href="#">Login</a>
         <a href="#">Live Chat</a>
         <a href="#">Airport Parking</a>
       </div>
@@ -60,7 +60,7 @@
 								<li class="term-li">The “booking” refers to the specific service(s) purchased by the customer
 								<li class="term-li">The “date of departure” refers to the date of the outward flight.
 								</li>
-								<li style="text-align: left;" class="term-li">“Onsite products” refers to those products specifically referred to as onsite products throughout the company’s website https://www.mytravelcompared.com/
+								<li style="text-align: left;" class="term-li">“Onsite products” refers to those products specifically referred to as onsite products throughout the company’s website www.mytravelcompared.com/
 								</li>
 							</ul>
 							<p class="term-t">The Company’s Liability</p>

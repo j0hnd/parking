@@ -11,7 +11,7 @@
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
         <a href="#">Contact Us</a>
-        <a href="#">Membership</a>
+        <a href="#">Login</a>
         <a href="#">Live Chat</a>
         <a href="#">Airport Parking</a>
       </div>
