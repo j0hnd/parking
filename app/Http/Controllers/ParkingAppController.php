@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Airports;
 use App\Models\Bookings;
+use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
@@ -94,9 +95,25 @@ class ParkingAppController extends Controller
 					$response = $this->provider->getExpressCheckoutDetails($paypal_response['token']);
 					if ($response['ACK'] == 'Success') {
 
-						// TODO: save details to booking
-						if (session()->has('booking')) {
-							dd(session('bookings'));
+						// TODO: create bookings
+						if ($request->session()->has('bookings')) {
+							$booking_data = session('bookings');
+
+							// save customer information
+							$customer['first_name'] = $booking_data['firstname'];
+							$customer['last_name'] = $booking_data['lastname'];
+							$customer['email'] = $booking_data['email'];
+							$customer['mobile_no'] = $booking_data['phone'];
+							$customer_id = Customers::create($customer);
+
+							// save booking data
+							$bookings['order_title'] = $booking_data['product'];
+							$bookings['sms_confirmation_fee'] = $booking_data['sms'];
+							$bookings['cancellation_fee'] = $booking_data['cancellation'];
+
+							if ($bid = Bookings::create($bookings)) {
+
+							}
 						} else {
 							return back()->withErrors(['errors' => 'Unable to find booking information']);
 						}
@@ -138,7 +155,7 @@ class ParkingAppController extends Controller
 			$response = $this->provider->setExpressCheckout($data);
 
 			if (!is_null($response['paypal_link'])) {
-				session()->put('bookings', $form);
+				$request->session()->put('bookings', $form);
 				return redirect($response['paypal_link']);
 			} else {
 				return back()->withErrors(['errors' => 'Unable to get a response from paypal']);
