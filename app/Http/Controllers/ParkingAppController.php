@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Airports;
+use App\Models\Bookings;
 use App\Models\Products;
 use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
@@ -94,7 +95,11 @@ class ParkingAppController extends Controller
 					if ($response['ACK'] == 'Success') {
 
 						// TODO: save details to booking
-
+						if (session()->has('booking')) {
+							dd(session('bookings'));
+						} else {
+							return back()->withErrors(['errors' => 'Unable to find booking information']);
+						}
 					} else {
 						return back()->withErrors(['errors' => 'Payment unsuccessful.']);
 					}
@@ -110,7 +115,9 @@ class ParkingAppController extends Controller
 	public function paypal(Request $request)
 	{
 		try {
-			$form = $request->only(['product', 'total']);
+			// $form = $request->only(['product', 'total']);
+			$form = $request->except(['_token']);
+
 			$data['items'] = [
 				[
 					'name' => $form['product'],
@@ -131,6 +138,7 @@ class ParkingAppController extends Controller
 			$response = $this->provider->setExpressCheckout($data);
 
 			if (!is_null($response['paypal_link'])) {
+				session()->put('bookings', $form);
 				return redirect($response['paypal_link']);
 			} else {
 				return back()->withErrors(['errors' => 'Unable to get a response from paypal']);
