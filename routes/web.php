@@ -17,6 +17,7 @@ Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('log
 
 Route::get('/', 'ParkingAppController@index');
 Route::get('/member/login', 'Auth\LoginController@login_member');
+Route::post('/paypal', 'ParkingAppController@paypal');
 Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
 Route::match(['get', 'post'], '/payment', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');

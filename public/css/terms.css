@@ -303,6 +303,23 @@ footer{
 .active-term{
   color: #27b2e0;
 }
+.footer-con ul{
+  overflow: hidden;
+  position: relative;
+  left: -12%;
+}
+.footer-con ul li{
+  display: inline;
+}
+.footer-con ul li .fl{
+  display: inline;
+}
+.fl{
+   border-left: 2px solid #fff;
+    height: 25px;
+    margin-right: 16px;
+    margin-left: 10px
+}
 
 /* END FOOTER */
 

@@ -32,6 +32,9 @@
                         <a href="/terms" class="link-con terms">Term and Condition</a>
                     </li>
                     <li>
+                        <div class="fl"></div>
+                    </li>
+                    <li>
                         <a href="/privacy" class="link-con privacy">Privacy Policy</a>
                     </li>
                 </ul>

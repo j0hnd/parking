@@ -1,8 +1,14 @@
 @extends('parking-app')
 
 @section('css')
+	<link href="{{ asset('/bower_components/form.validation/dist/css/formValidation.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/payment.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
+	<style type="text/css">
+		.help-block {
+			color: #a94442 !important;
+		}
+	</style>
 @stop
 
 @section('main-content')
@@ -44,9 +50,9 @@
 			<div class="row">
 				<div class="col-md-8">
 					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="{{ asset('/img/booking/airplane1.png') }}" class="air1"></p></a>
-					<form id="payment_wizard" data-parsley-validate="">
+					<form id="payment_wizard" action="{{ url('/paypal') }}" method="post">
 						<h3>Payment<img src="{{ asset('img/booking/airplane2.png') }}" class="air2"></h3>
-						<section>
+						<section data-step="0">
 							<div class="container wizard-content">
 								<div class="row">
 									<div class="col-md-12">
@@ -57,18 +63,18 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>First Name:</label>
-										<input type="text" name="firstname" class="form-control" required="">
+										<input type="text" id="firstname-src" name="firstname" class="form-control" data-validation="required">
 									</div>
 									<div class="col-md-6">
 										<label>Last Name:</label>
-										<input type="text" name="lastname" class="form-control" required="">
+										<input type="text" id="lastname-src" name="lastname" class="form-control" data-validation="required">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
 										<label>Email Address:</label>
-										<input type="text" name="email" class="form-control">
+										<input type="text" id="email-src" name="email" class="form-control">
 
 									</div>
 									<div class="col-md-6">
@@ -80,26 +86,26 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>Area Code:</label>
-										<select class="form-control">
-											<option>(+44) United Kingdom</option>
+										<select class="form-control" name="country_code">
+											<option value="GB">(+44) United Kingdom</option>
 										</select>
 									</div>
 									<div class="col-md-6">
 										<label>Phone Number:</label>
-										<input type="text" name="phone" class="form-control">
+										<input type="text" id="phone-src" name="phone" class="form-control">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms" value="{{ $sms_confirmation_fee->amount }}" checked>
+											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" checked>
 											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="cancellation" name="cancellation" value="{{ $cancellation_waiver->amount }}">
+											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}">
 											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
@@ -201,7 +207,13 @@
 											<div class="col-md-12">
 												<p class="paypal-details">A pop-up window will appear for PayPal login <br/>when you proceed with PayPal </p>
 												<br/><br/>
-												<a href="#" class="paypal-button"><i class="fab fa-paypal"></i> PayPal</a>
+												<a href="javascript:void(0)" id="toggle-paypal" class="paypal-button"><i class="fab fa-paypal"></i> PayPal</a>
+												@php
+													$price_value = str_replace(',', '', $price_value);
+													$total = $price_value + $booking_fee->amount;
+													$total = number_format($total, 2);
+													$total = str_replace('.00', '', $total);
+												@endphp
 											</div>
 										</div>
 									</div>
@@ -211,10 +223,28 @@
 						</section>
 
 						<h3>Details<img src="{{ asset('/img/booking/airplane3.png') }}" class="air3"></h3>
-						<section><p>Try 2</p></section>
+						<section data-step="1">
+
+						</section>
 
 						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
-						<section><p>Try 3</p></section>
+						<section data-step="2"><p>Try 3</p></section>
+
+						{{--<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">--}}
+						{{--<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">--}}
+						{{--{{ csrf_field() }}--}}
+					</form>
+
+					<form id="order-form" action="{{ url('/paypal') }}" method="post">
+						<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">
+						<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">
+						<input type="hidden" id="firstname" name="firstname" />
+						<input type="hidden" id="lastname" name="lastname" />
+						<input type="hidden" id="email" name="email" />
+						<input type="hidden" id="phoneno" name="phoneno" />
+						<input type="hidden" id="sms" name="sms">
+						<input type="hidden" id="cancellation" name="cancellation">
+						{{ csrf_field() }}
 					</form>
 				</div>
 
@@ -278,12 +308,6 @@
 									<p>TOTAL PRICE</p>
 								</div>
 								<div class="col-md-6">
-									@php
-										$price_value = str_replace(',', '', $price_value);
-										$total = $price_value + $booking_fee->amount;
-										$total = number_format($total, 2);
-										$total = str_replace('.00', '', $total);
-									@endphp
 									<p class="receipt-align total" id="total" data-value="{{ $total }}">£{{ $total }}</p>
 								</div>
 							</div>
@@ -307,19 +331,9 @@
 @stop
 
 @section('js')
+<script src="{{ asset('/bower_components/form.validation/dist/js/formValidation.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/bower_components/form.validation/dist/js/framework/bootstrap.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
-<script type="text/javascript">
-$(function () {
-	// $('#payment_wizard').parsley().on('field:validated', function() {
-	// 	var ok = $('.parsley-error').length === 0;
-	// 	// $('.bs-callout-info').toggleClass('hidden', !ok);
-	// 	// $('.bs-callout-warning').toggleClass('hidden', ok);
-	// })
-	// .on('form:submit', function() {
-	// 	return false; // Don't submit form for this demo
-	// });
-});
-</script>
 @stop

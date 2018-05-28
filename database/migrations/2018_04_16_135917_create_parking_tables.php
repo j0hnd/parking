@@ -201,6 +201,7 @@ class CreateParkingTables extends Migration
             $table->timestamps();
 
             $table->index(['company_id', 'meta_key']);
+			$table->engine = 'InnoDB';
         });
     }
 
