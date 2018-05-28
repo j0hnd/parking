@@ -28,13 +28,18 @@ class Bookings extends BaseModel
 
     protected $guarded = ['booking_id'];
 
-    protected $with = ['customers'];
+    protected $with = ['customers', 'booking_details'];
 
 
     public function customers()
     {
         return $this->belongsTo(Customers::class, 'customer_id', 'id');
     }
+
+    public function booking_details()
+	{
+		return $this->hasOne(BookingDetails::class, 'booking_id', 'id');
+	}
 
     public static function generate_booking_id($booking_id)
     {

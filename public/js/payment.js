@@ -178,6 +178,12 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '#toggle-paypal', function () {
+        $('#firstname').val($('#firstname-src').val());
+        $('#lastname').val($('#lastname-src').val());
+        $('#email').val($('#email-src').val());
+        $('#phoneno').val($('#phone-src').val());
+        $('#sms').val($('#sms-fee').val());
+        $('#cancellation').val($('#cancellation-fee').val());
         $('#order-form').submit();
     });
 

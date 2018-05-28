@@ -17,7 +17,7 @@
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
         <a href="#">Contact Us</a>
-        <a href="#">Membership</a>
+        <a href="#">Login</a>
         <a href="#">Live Chat</a>
         <a href="#">Airport Parking</a>
       </div>
@@ -25,7 +25,7 @@
 		<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
 			<a href="{{ url('/') }}"> <img src="img/header-logo.png" class="navbar-brand"></a>
 			@include('parking.templates.nav2')
-			 <span class="nav-icon" onclick="openNav()">&#9776;</span>
+			 <span class="nav-icon" onclick="openNav()"><i class="fas fa-bars"></i></span>
 		</nav>
 
 		<br/><br/><br/><br/><br/>
@@ -50,7 +50,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<a href="{{ url('/') }}"><p class="tab-1">&nbsp;&nbsp;Find Parking<br/><img src="{{ asset('/img/booking/airplane1.png') }}" class="air1"></p></a>
-					<form id="payment_wizard" data-parsley-validate="">
+					<form id="payment_wizard" action="{{ url('/paypal') }}" method="post">
 						<h3>Payment<img src="{{ asset('img/booking/airplane2.png') }}" class="air2"></h3>
 						<section data-step="0">
 							<div class="container wizard-content">
@@ -63,18 +63,18 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>First Name:</label>
-										<input type="text" name="firstname" class="form-control" data-validation="required">
+										<input type="text" id="firstname-src" name="firstname" class="form-control" data-validation="required">
 									</div>
 									<div class="col-md-6">
 										<label>Last Name:</label>
-										<input type="text" name="lastname" class="form-control" data-validation="required">
+										<input type="text" id="lastname-src" name="lastname" class="form-control" data-validation="required">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
 										<label>Email Address:</label>
-										<input type="text" name="email" class="form-control">
+										<input type="text" id="email-src" name="email" class="form-control">
 
 									</div>
 									<div class="col-md-6">
@@ -92,20 +92,20 @@
 									</div>
 									<div class="col-md-6">
 										<label>Phone Number:</label>
-										<input type="text" name="phone" class="form-control">
+										<input type="text" id="phone-src" name="phone" class="form-control">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms" value="{{ $sms_confirmation_fee->amount }}" checked>
+											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" checked>
 											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="cancellation" name="cancellation" value="{{ $cancellation_waiver->amount }}">
+											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}">
 											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
@@ -223,15 +223,27 @@
 						</section>
 
 						<h3>Details<img src="{{ asset('/img/booking/airplane3.png') }}" class="air3"></h3>
-						<section data-step="1"><p>Try 2</p></section>
+						<section data-step="1">
+
+						</section>
 
 						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
 						<section data-step="2"><p>Try 3</p></section>
+
+						{{--<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">--}}
+						{{--<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">--}}
+						{{--{{ csrf_field() }}--}}
 					</form>
 
 					<form id="order-form" action="{{ url('/paypal') }}" method="post">
 						<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">
 						<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">
+						<input type="hidden" id="firstname" name="firstname" />
+						<input type="hidden" id="lastname" name="lastname" />
+						<input type="hidden" id="email" name="email" />
+						<input type="hidden" id="phoneno" name="phoneno" />
+						<input type="hidden" id="sms" name="sms">
+						<input type="hidden" id="cancellation" name="cancellation">
 						{{ csrf_field() }}
 					</form>
 				</div>

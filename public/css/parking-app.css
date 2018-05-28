@@ -208,6 +208,16 @@ margin-top: 24px;
 .navbar.solid .navbar-nav > .nav-item > .nav-link:hover {
   border: 2px solid #27b2e0;
    }
+   .dropdown-item {
+  font-family: "Montserrat" !important;
+}
+.dropdown-item:hover {
+  color: #27b2e0 !important;
+}
+.navbar-expand-sm .navbar-nav .dropdown-menu {
+    position: absolute !important;
+    left: 33%;
+}
 
 /* END NAVBAR */
 
@@ -498,7 +508,38 @@ footer{
   position: relative;
   left: 5%;
 }
+.footer-con{
+  color: #fff;
 
+}
+.link-con{
+  text-decoration: none;
+  color: #fff;
+  font-family: "Montserrat";
+  font-size: 15px;
+}
+.link-con:hover{
+  text-decoration: none;
+  color: #27b2e0;
+
+}
+.footer-con ul{
+  overflow: hidden;
+  position: relative;
+  left: -12%;
+}
+.footer-con ul li{
+  display: inline;
+}
+.footer-con ul li .fl{
+  display: inline;
+}
+.fl{
+   border-left: 2px solid #fff;
+    height: 25px;
+    margin-right: 16px;
+    margin-left: 10px
+}
 /* END FOOTER */
 
 /* START MOBILE */
