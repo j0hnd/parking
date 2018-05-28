@@ -136,7 +136,7 @@ class ParkingAppController extends Controller
 		return view ('parking.privacy');
 	}
 
-}
+
 
 
 	public function paypal(Request $request)
