@@ -129,15 +129,15 @@ class ParkingAppController extends Controller
 		return redirect('/');
 	}
 
-	public function terms(){
+	public function terms()
+	{
 		return view ('parking.terms');
 	}
-	public function privacy(){
+
+	public function privacy()
+	{
 		return view ('parking.privacy');
 	}
-
-}
-
 
 	public function paypal(Request $request)
 	{
