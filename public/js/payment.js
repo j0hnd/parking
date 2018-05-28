@@ -163,7 +163,8 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
     });
 
-    $(document).on('click', '#cancellation', function () {
+    $(document).on('click', '#cancellation-fee', function () {
+        console.log('xxx');
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
             total = parseFloat(total) + parseFloat($(this).val());

@@ -237,6 +237,7 @@
 
 					<form id="order-form" action="{{ url('/paypal') }}" method="post">
 						<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">
+						<input type="hidden" id="ids" name="ids"  value="{{ $product->id }}:{{ $price->id }}">
 						<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">
 						<input type="hidden" id="firstname" name="firstname" />
 						<input type="hidden" id="lastname" name="lastname" />
@@ -268,7 +269,7 @@
 									<p>From Date</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">{{ $drop_off_date }} {{ $drop_off_time }}</p>
+									<p class="receipt-align">{{ $drop_off_date }}</p>
 								</div>
 							</div>
 							<div class="row">
@@ -276,7 +277,7 @@
 									<p>To Date</p>
 								</div>
 								<div class="col-md-6">
-									<p class="receipt-align">{{ $return_at_date }} {{ $return_at_time }}</p>
+									<p class="receipt-align">{{ $return_at_date }}</p>
 								</div>
 							</div>
 							<hr>

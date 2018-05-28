@@ -19,9 +19,10 @@ Route::get('/', 'ParkingAppController@index');
 Route::get('/member/login', 'Auth\LoginController@login_member');
 Route::post('/paypal', 'ParkingAppController@paypal');
 Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
-Route::match(['get', 'post'], '/payment', 'ParkingAppController@payment');
+Route::match(['get', 'post'], '/payment/{token?}', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
+Route::get('/payment/success', 'ParkingAppController@payment_success');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');
