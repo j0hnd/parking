@@ -15,9 +15,14 @@ class CreateTableSessions extends Migration
     {
 		Schema::create('sessions', function($table) {
 			$table->string('session_id', 255)->primary();
+			$table->string('request_id', 255);
+			$table->integer('booking_id')->nullable();
+			$table->json('requests')->nullable();
+			$table->json('response')->nullable();
 			$table->softDeletes();
 			$table->timestamps();
 
+			$table->index(['booking_id']);
 			$table->engine = 'InnoDB';
 		});
     }

@@ -31,6 +31,10 @@ class ParkingAppController extends Controller
 
     public function index()
     {
+    	if (session()->has('sess_id')) {
+    		session()->forget('sess_id');
+		}
+
         $airports = Airports::active()->get();
 		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
 		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
@@ -63,18 +67,24 @@ class ParkingAppController extends Controller
 	{
 		if ($request->isMethod('post') || isset($request->token)) {
 			$form = $request->only(['products', 'drop_off', 'return_at']);
+			$token = null;
+			$details = null;
 
-
-			// Sessions::active()->orderBy('created_at', 'desc')->first();
-			// $cache_key = 'request.'.$request->session()->getId();
-
-			if (Cache::has('booking')) {
-				$form = Cache::get('booking');
+			if (isset($request->token)) {
+				$sessions = Sessions::where('session_id', session('sess_id'))->first();
+				$details = json_decode($sessions->response, true);
+				$form = json_decode($sessions->requests, true);
+				$token = $request->token;
 			} else {
-				Cache::put('booking', $form);
+				if (!session()->has('sess_id')) {
+					$sessions = Sessions::create(['request_id' => session()->getId(), 'requests' => json_encode($form)]);
+					if ($sessions) {
+						$request->session()->put('sess_id', $sessions->session_id);
+					} else {
+						dd('error!');
+					}
+				}
 			}
-
-			 dd(Cache::has('booking'));
 
 			list($index, $product_id, $airport_id, $price_id, $price_value) = explode(':', $form['products']);
 			list($drop_off_date, $drop_off_time) = explode(" ", $form['drop_off']);
@@ -99,7 +109,9 @@ class ParkingAppController extends Controller
 				'drop_off_date',
 				'drop_off_time',
 				'return_at_date',
-				'return_at_time'
+				'return_at_time',
+				'token',
+				'details'
 			));
 		}
 	}
@@ -115,8 +127,12 @@ class ParkingAppController extends Controller
 		if (isset($paypal_response['token'])) {
 			$response = $this->provider->getExpressCheckoutDetails($paypal_response['token']);
 			if ($response['ACK'] == 'Success') {
-				if ($request->session()->has('bookings')) {
-					$booking_data = session('bookings');
+				if ($request->session()->has('sess_id')) {
+					$sess_id = session('sess_id');
+
+					$session = Sessions::findOrFail($sess_id);
+					$booking_data = $session->requests;
+
 					list($product_id, $price_id) = explode(':', $booking_data['ids']);
 
 					DB::beginTransaction();
@@ -300,12 +316,18 @@ class ParkingAppController extends Controller
 			$response = $this->provider->setExpressCheckout($data);
 
 			if (!is_null($response['paypal_link'])) {
-				$request->session()->put('bookings', $form);
-				return redirect($response['paypal_link']);
+				if ($request->session()->has('sess_id')) {
+					if (Sessions::where('session_id', session('sess_id'))->update(['booking_id' => $id, 'response' => json_encode($form)])) {
+						return redirect($response['paypal_link']);
+					}
+				}
+
+				return back()->withErrors(['errors' => 'Unable to create session.']);
 			} else {
 				return back()->withErrors(['errors' => 'Unable to get a response from paypal']);
 			}
 		} catch (\Exception $e) {
+			dd($e);
 			abort(404, $e->getMessage());
 		}
 	}

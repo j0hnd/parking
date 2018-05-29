@@ -13,17 +13,17 @@
 
 @section('main-content')
 	<main>
-		 <div id="mobileNav" class="overlay-nav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <div class="overlay-content">
-        <a href="#">Contact Us</a>
-        <a href="#">Login</a>
-        <a href="#">Live Chat</a>
-        <a href="#">Airport Parking</a>
-      </div>
-    </div>
+		<div id="mobileNav" class="overlay-nav">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<div class="overlay-content">
+				<a href="#">Contact Us</a>
+				<a href="#">Login</a>
+				<a href="#">Live Chat</a>
+				<a href="#">Airport Parking</a>
+			</div>
+		</div>
 		<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
-			<a href="{{ url('/') }}"> <img src="img/header-logo.png" class="navbar-brand"></a>
+			<a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo.png') }}" class="navbar-brand"></a>
 			@include('parking.templates.nav2')
 			 <span class="nav-icon" onclick="openNav()"><i class="fas fa-bars"></i></span>
 		</nav>
@@ -63,23 +63,23 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>First Name:</label>
-										<input type="text" id="firstname-src" name="firstname" class="form-control" data-validation="required">
+										<input type="text" id="firstname-src" name="firstname" class="form-control" data-validation="required" value="{{ is_null($details) ? "" : $details['firstname'] }}">
 									</div>
 									<div class="col-md-6">
 										<label>Last Name:</label>
-										<input type="text" id="lastname-src" name="lastname" class="form-control" data-validation="required">
+										<input type="text" id="lastname-src" name="lastname" class="form-control" data-validation="required" value="{{ is_null($details) ? "" : $details['lastname'] }}">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
 										<label>Email Address:</label>
-										<input type="text" id="email-src" name="email" class="form-control">
+										<input type="text" id="email-src" name="email" class="form-control" value="{{ is_null($details) ? "" : $details['email'] }}">
 
 									</div>
 									<div class="col-md-6">
 										<label>Confirm Email Address:</label>
-										<input type="text" name="confirm_email" class="form-control">
+										<input type="text" name="confirm_email" class="form-control" value="{{ is_null($details) ? "" : $details['email'] }}">
 									</div>
 								</div>
 								<br/>
@@ -92,20 +92,20 @@
 									</div>
 									<div class="col-md-6">
 										<label>Phone Number:</label>
-										<input type="text" id="phone-src" name="phone" class="form-control">
+										<input type="text" id="phone-src" name="phone" class="form-control"  value="{{ is_null($details) ? "" : $details['phoneno'] }}">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" checked>
+											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" {{ isset($details['sms']) ? 'checked' : '' }}>
 											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}">
+											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}" {{ isset($details['cancellation']) ? 'checked' : '' }}>
 											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
@@ -115,7 +115,7 @@
 								<br/>
 								<div class="row">
 									<div class="col-md-12">
-										<i><img src="img/booking/wheel.png"> Vehicle Details</i>
+										<i><img src="{{ asset('/img/booking/wheel.png') }}"> Vehicle Details</i>
 									</div>
 
 								</div>
@@ -149,7 +149,7 @@
 												<i><img src="{{ asset('/img/booking/wallet.png') }}"> Payment Details</i>
 											</div>
 											<div class="col-md-6 credit">
-												<i><img src="img/booking/credit-card.png" class="credit-card"></i>
+												<i><img src="{{ asset('/img/booking/credit-card.png') }}" class="credit-card"></i>
 											</div>
 										</div>
 										<br/>
