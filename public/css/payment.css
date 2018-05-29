@@ -166,7 +166,7 @@ body{
     border-radius: 5px;
     color: #fff;
     margin-left: 10px;
-    z-index: 2000;
+    z-index: 1999;
 }
 .tab-1:hover{
     background-color: #2184be;
