@@ -135,6 +135,9 @@ class ParkingAppController extends Controller
 	public function privacy(){
 		return view ('parking.privacy');
 	}
+	public function contact(){
+		return view ('parking.contact');
+	}
 
 
 
