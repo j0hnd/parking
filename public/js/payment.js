@@ -178,13 +178,17 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
     });
 
-    $(document).on('click', '#toggle-paypal', function () {
+    $(document).on('click', '#toggle-paypal', function (e) {
+        e.preventDefault();
         $('#firstname').val($('#firstname-src').val());
         $('#lastname').val($('#lastname-src').val());
         $('#email').val($('#email-src').val());
         $('#phoneno').val($('#phone-src').val());
         $('#sms').val($('#sms-fee').val());
         $('#cancellation').val($('#cancellation-fee').val());
+        $('#car-registration-no').val($('#car-registration-no-src').val());
+        $('#vehicle-color').val($('#vehicle-color-src').val());
+        $('#vehicle-model').val($('#vehicle-model-src').val());
         $('#order-form').submit();
     });
 
@@ -202,21 +206,23 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
     }
 });
+
 $(document).ready(function() {
-        $(window).scroll(function() {
-          if($(this).scrollTop() > 50) { 
-              $('.navbar').addClass('solid');
-              $('#sidebar').addClass('sidebar-mar');
-              $('nav').removeClass('bg-dark');
-              $('.Vl').removeClass('vl');
-          } else {
-              $('.navbar').removeClass('solid');
-              $('nav').addClass('bg-dark');
-              $('.Vl').addClass('vl');
-              $('#sidebar').removeClass('sidebar-mar');
-          }
-        });
+    $(window).scroll(function() {
+      if($(this).scrollTop() > 50) {
+          $('.navbar').addClass('solid');
+          $('#sidebar').addClass('sidebar-mar');
+          $('nav').removeClass('bg-dark');
+          $('.Vl').removeClass('vl');
+      } else {
+          $('.navbar').removeClass('solid');
+          $('nav').addClass('bg-dark');
+          $('.Vl').addClass('vl');
+          $('#sidebar').removeClass('sidebar-mar');
+      }
+    });
 });
+
 $(document).ready(function() {
         $(window).scroll(function() {
           if($(this).scrollTop() > 250) { 

@@ -127,19 +127,19 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>Vehicle Registration:</label>
-										<input type="text" name="registration" class="form-control">
+										<input type="text" id="car-registration-no-src" name="car_registration_no" class="form-control" value="{{ is_null($details) ? "" : $details['car_registration_no'] }}">
 
 									</div>
 									<div class="col-md-6">
 										<label>Vehicle Model:</label>
-										<input type="text" name="model" class="form-control">
+										<input type="text" id="vehicle-model-src" name="vehicle_model" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_model'] }}">
 									</div>
 								</div>
 								<br/>
 								<div class="row">
 									<div class="col-md-12">
 										<label>Vehicle Color:</label>
-										<input type="text" name="car-color" class="form-control">
+										<input type="text" id="vehicle-color-src" name="vehicle_color" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_color'] }}">
 									</div>
 								</div>
 							</div>
@@ -339,7 +339,24 @@
 						<input type="hidden" id="phoneno" name="phoneno" />
 						<input type="hidden" id="sms" name="sms">
 						<input type="hidden" id="cancellation" name="cancellation">
+						<input type="hidden" id="booking-fee" name="booking_fee" value="{{ $booking_fee->amount }}">
+						<input type="hidden" id="car-registration-no" name="car_registration_no">
+						<input type="hidden" id="vehicle-model" name="vehicle_model">
+						<input type="hidden" id="vehicle-color" name="vehicle_color">
 						{{ csrf_field() }}
+					</form>
+
+					<form id="booking-details-form" action="{{ url('/') }}" method="post">
+						<input type="hidden" id="drop_off_at" name="drop_off_at">
+						<input type="hidden" id="return_at" name="return_at">
+						<input type="hidden" id="flight_no_going" name="flight_no_going">
+						<input type="hidden" id="flight_no_return" name="flight_no_return">
+						<input type="hidden" id="vehicle_make" name="vehicle_make">
+						<input type="hidden" id="vehicle_model" name="vehicle_model">
+						<input type="hidden" id="vehicle_color" name="vehicle_color">
+						<input type="hidden" id="no_of_passengers_in_vehicle" name="no_of_passengers_in_vehicle">
+						<input type="hidden" id="with_oversize_baggage" name="with_oversize_baggage">
+						<input type="hidden" id="with_children_pwd" name="with_children_pwd">
 					</form>
 				</div>
 
