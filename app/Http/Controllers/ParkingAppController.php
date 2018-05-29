@@ -69,6 +69,7 @@ class ParkingAppController extends Controller
 			$form = $request->only(['products', 'drop_off', 'return_at']);
 			$token = null;
 			$details = null;
+			$form = null;
 
 			if (isset($request->token)) {
 				$sessions = Sessions::where('session_id', session('sess_id'))->first();
@@ -98,6 +99,9 @@ class ParkingAppController extends Controller
 			$sms_confirmation_fee = Fees::active()->where('fee_name', 'sms_confirmation_fee')->first();
 			$cancellation_waiver  = Fees::active()->where('fee_name', 'cancellation_waiver')->first();
 
+			$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+			$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+
 			return view('parking.payment', compact(
 				'product',
 				'airport',
@@ -111,7 +115,10 @@ class ParkingAppController extends Controller
 				'return_at_date',
 				'return_at_time',
 				'token',
-				'details'
+				'details',
+				'form',
+				'drop_off_time_interval',
+				'return_at_time_interval'
 			));
 		}
 	}

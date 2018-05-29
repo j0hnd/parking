@@ -2,11 +2,15 @@
 
 @section('css')
 	<link href="{{ asset('/bower_components/form.validation/dist/css/formValidation.css') }}" rel="stylesheet">
+	<link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/payment.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
 	<style type="text/css">
 		.help-block {
 			color: #a94442 !important;
+		}
+		.datepicker {
+			height: 35px !important;
 		}
 	</style>
 @stop
@@ -141,6 +145,7 @@
 							</div>
 							<br/>
 							<div id="payment_choice">
+								@if(is_null($details))
 								<h4>Credit / Debit Card</h4>
 								<fieldset>
 									<div class="container">
@@ -192,6 +197,7 @@
 										</p>
 									</div>
 								</fieldset>
+
 								<h4>PayPal</h4>
 								<fieldset>
 									<div class="container">
@@ -208,31 +214,119 @@
 												<p class="paypal-details">A pop-up window will appear for PayPal login <br/>when you proceed with PayPal </p>
 												<br/><br/>
 												<a href="javascript:void(0)" id="toggle-paypal" class="paypal-button"><i class="fab fa-paypal"></i> PayPal</a>
-												@php
-													$price_value = str_replace(',', '', $price_value);
-													$total = $price_value + $booking_fee->amount;
-													$total = number_format($total, 2);
-													$total = str_replace('.00', '', $total);
-												@endphp
 											</div>
 										</div>
 									</div>
 								</fieldset>
+								@else
+								<div class="row">
+									<div class="col-md-12 text-center">
+										<h4>Payment Confirmed!</h4>
+									</div>
+								</div>
+								@endif
+
+								@php
+									$price_value = str_replace(',', '', $price_value);
+									$total = $price_value + $booking_fee->amount;
+									$total = number_format($total, 2);
+									$total = str_replace('.00', '', $total);
+								@endphp
 							</div>
 							<br/>
 						</section>
 
 						<h3>Details<img src="{{ asset('/img/booking/airplane3.png') }}" class="air3"></h3>
 						<section data-step="1">
+							@if(!is_null($form))
+								@php
+									list($drop_off_date, $drop_off_time) = explode(' ', $form['drop_off']);
+									list($return_at_date, $return_at_time) = explode(' ', $form['return_at']);
+								@endphp
+							@else
+								@php
+									$drop_off_date = '';
+									$drop_off_time = '';
+									$return_at_date = '';
+									$return_at_time = '';
+								@endphp
+							@endif
 
+							<div class="container wizard-content">
+								<div class="row">
+									<div class="col-md-12">
+										<i><img src="{{ asset('/img/booking/person.png') }}"> Booking Details</i>
+									</div>
+								</div>
+								<br/>
+								<div class="row">
+									<div class="col-md-4">
+										<label>Drop Off Date:</label>
+										<input type="text" id="drop-off-date-src" name="drop_off_date" class="form-control datepicker" value="{{ $drop_off_date }}" data-validation="required">
+									</div>
+									<div class="col-md-2">
+										<label>Time:</label>
+										<select class="form-control" name="drop_off_time" data-validation="required">
+											@if(isset($drop_off_time_interval))
+												{!! $drop_off_time_interval !!}
+											@endif
+										</select>
+									</div>
+
+									<div class="col-md-4">
+										<label>Return Date:</label>
+										<input type="text" id="return-at-date-src" name="return_at_date" class="form-control datepicker" value="{{ $return_at_date }}" data-validation="required">
+									</div>
+									<div class="col-md-2">
+										<label>Time:</label>
+										<select class="form-control" name="return_at_time" data-validation="required">
+											@if(isset($return_at_time_interval))
+												{!! $return_at_time_interval !!}
+											@endif
+										</select>
+									</div>
+								</div>
+								<br/>
+
+								<div class="row">
+									<div class="col-md-6">
+										<label>Flight No. (Departure):</label>
+										<input type="text" id="departure-src" name="flight_no_going" class="form-control" data-validation="required">
+									</div>
+									<div class="col-md-6">
+										<label>Flight No. (Arrival):</label>
+										<input type="text" id="arrival-src" name="flight_no_return" class="form-control" data-validation="required">
+									</div>
+								</div>
+								<br/>
+
+								<br/>
+								<div class="row">
+									<div class="col-md-6">
+										<label>No. of passengers in vehicle</label>
+										<input type="text" id="no_of_passengers_in_vehicle-src" name="no_of_passengers_in_vehicle" class="form-control" data-validation="required">
+									</div>
+									<div class="col-md-6">
+										<div class="col-md-12">
+											<label class="form-check-label">
+												<input type="checkbox" class="form-check-input" name="with_oversize_baggage">
+												Travelling with sports or oversize baggage
+											</label>
+										</div>
+										<div class="col-md-12">
+											<label class="form-check-label">
+												<input type="checkbox" class="form-check-input" name="with_children_pwd">
+												Travelling with children or disabled passengers
+											</label>
+										</div>
+									</div>
+								</div>
+								<br/>
+							</div>
 						</section>
 
 						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
 						<section data-step="2"><p>Try 3</p></section>
-
-						{{--<input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">--}}
-						{{--<input type="hidden" id="total-amount" name="total"  value="{{ $total }}">--}}
-						{{--{{ csrf_field() }}--}}
 					</form>
 
 					<form id="order-form" action="{{ url('/paypal') }}" method="post">
@@ -334,7 +428,13 @@
 @section('js')
 <script src="{{ asset('/bower_components/form.validation/dist/js/formValidation.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/bower_components/form.validation/dist/js/framework/bootstrap.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.datepicker').datepicker();
+    });
+</script>
 @stop
