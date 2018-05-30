@@ -202,7 +202,7 @@ $(document).ready(function(){
         headerTag: "h4",
         bodyTag: "fieldset",
         transitionEffect: "slideLeft",
-        enableFinishButton: false,
+        enableFinishButton: true,
         enablePagination: false,
         enableAllSteps: true,
         titleTemplate: "#title#",

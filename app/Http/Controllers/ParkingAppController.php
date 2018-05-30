@@ -13,10 +13,9 @@ use App\Models\Tools\Prices;
 use App\Models\Tools\Sessions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
 use Srmklive\PayPal\Facades\PayPal;
 use DB;
+
 
 class ParkingAppController extends Controller
 {
@@ -153,11 +152,16 @@ class ParkingAppController extends Controller
 					DB::beginTransaction();
 
 					// save customer information
-					$customer['first_name'] = $booking_data['firstname'];
-					$customer['last_name'] = $booking_data['lastname'];
-					$customer['email'] = $booking_data['email'];
-					$customer['mobile_no'] = $booking_data['phoneno'];
-					$customer = Customers::create($customer);
+					$customer_obj = Customers::where('email', $booking_data['email']);
+					if ($customer_obj->count()) {
+						$customer = $customer_obj->first();
+					} else {
+						$customer['first_name'] = $booking_data['firstname'];
+						$customer['last_name'] = $booking_data['lastname'];
+						$customer['email'] = $booking_data['email'];
+						$customer['mobile_no'] = $booking_data['phoneno'];
+						$customer = Customers::create($customer);
+					}
 
 					// save booking data
 					$products = Products::findOrFail($product_id);
@@ -185,7 +189,6 @@ class ParkingAppController extends Controller
 						$request->session()->put('bid', $booking->id);
 
 						return redirect('/payment/token=' . $paypal_response['token']);
-//						return redirect('/payment/' . Hash::make($paypal_response['token']));
 					} else {
 						DB::rollback();
 						dd('1');
@@ -253,8 +256,14 @@ class ParkingAppController extends Controller
 				]
 			];
 
-			$id = Bookings::select('id')->orderBy('id', 'desc')->first();
-			$id++;
+			$booking = Bookings::select('id')->orderBy('id', 'desc')->first();
+			if ($booking) {
+				$id = $booking->id;
+				$id++;
+			} else {
+				$id = 1;
+			}
+
 
 			$data['invoice_id'] = $id;
 			$data['invoice_description'] = "Order #{$id} Invoice";

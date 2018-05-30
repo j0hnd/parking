@@ -220,8 +220,9 @@
 								</fieldset>
 								@else
 								<div class="row">
-									<div class="col-md-12 text-center">
-										<h4>Payment Confirmed!</h4>
+									<div class="col-md-12 text-center padding-top30">
+										<h4>Thank you! Your payment is confirmed.</h4>
+										<p>Please continue and complete the details of your booking.</p>
 									</div>
 								</div>
 								@endif
