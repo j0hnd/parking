@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Airports;
+use App\Models\BookingDetails;
 use App\Models\Bookings;
 use App\Models\Customers;
 use App\Models\Products;
@@ -98,8 +99,10 @@ class ParkingAppController extends Controller
 			$sms_confirmation_fee = Fees::active()->where('fee_name', 'sms_confirmation_fee')->first();
 			$cancellation_waiver  = Fees::active()->where('fee_name', 'cancellation_waiver')->first();
 
-			$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+			$drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes');
 			$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+
+			$booking_id = session('bid');
 
 			return view('parking.payment', compact(
 				'product',
@@ -117,7 +120,8 @@ class ParkingAppController extends Controller
 				'details',
 				'form',
 				'drop_off_time_interval',
-				'return_at_time_interval'
+				'return_at_time_interval',
+				'booking_id'
 			));
 		}
 
@@ -178,7 +182,7 @@ class ParkingAppController extends Controller
 					if (!empty($booking)) {
 						Bookings::findOrFail($booking->id)->update(['booking_id' => Bookings::generate_booking_id($booking->id)]);
 						DB::commit();
-						session('bid', $booking->id);
+						$request->session()->put('bid', $booking->id);
 
 						return redirect('/payment/token=' . $paypal_response['token']);
 //						return redirect('/payment/' . Hash::make($paypal_response['token']));
@@ -191,6 +195,38 @@ class ParkingAppController extends Controller
 		} else {
 			dd('xx');
 			abort(502);
+		}
+	}
+
+	public function update_booking_details(Request $request)
+	{
+		if ($request->isMethod('post')) {
+			$form = $request->except(['_token']);
+			$booking = Bookings::findOrFail($form['bid']);
+			if ($booking) {
+				$drop_off = Carbon::createFromTimestamp(strtotime($form['drop_off_at']));
+				$return_at = Carbon::createFromTimestamp(strtotime($form['return_at']));
+
+				$update = [
+					'drop_off_at' => $drop_off->format('Y-m-d H:i'),
+					'return_at' => $return_at->format('Y-m-d H:i'),
+					'flight_no_going' => $form['flight_no_going'],
+					'flight_no_return' => $form['flight_no_return']
+				];
+
+				Bookings::where('id', $booking->id)->update($update);
+
+				$details = [
+					'booking_id' => $form['bid'],
+					'no_of_passengers_in_vehicle' => $form['no_of_passengers_in_vehicle'],
+					'with_oversize_baggage' => $form['with_oversize_baggage'],
+					'with_children_pwd' => $form['with_children_pwd'],
+				];
+
+				BookingDetails::create($details);
+
+				return response()->json(['success' => true]);
+			}
 		}
 	}
 
@@ -217,7 +253,7 @@ class ParkingAppController extends Controller
 				]
 			];
 
-			$id = DB::getPdo()->lastInsertId();
+			$id = Bookings::select('id')->orderBy('id', 'desc')->first();
 			$id++;
 
 			$data['invoice_id'] = $id;

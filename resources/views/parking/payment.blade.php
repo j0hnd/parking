@@ -266,7 +266,7 @@
 									</div>
 									<div class="col-md-2">
 										<label>Time:</label>
-										<select class="form-control" name="drop_off_time" data-validation="required">
+										<select class="form-control" id="drop-off-time-src" name="drop_off_time" data-validation="required">
 											@if(isset($drop_off_time_interval))
 												{!! $drop_off_time_interval !!}
 											@endif
@@ -279,7 +279,7 @@
 									</div>
 									<div class="col-md-2">
 										<label>Time:</label>
-										<select class="form-control" name="return_at_time" data-validation="required">
+										<select class="form-control" id="return-at-time-src" name="return_at_time" data-validation="required">
 											@if(isset($return_at_time_interval))
 												{!! $return_at_time_interval !!}
 											@endif
@@ -304,18 +304,18 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>No. of passengers in vehicle</label>
-										<input type="text" id="no_of_passengers_in_vehicle-src" name="no_of_passengers_in_vehicle" class="form-control" data-validation="required">
+										<input type="text" id="no-of-passengers-in-vehicle-src" name="no_of_passengers_in_vehicle" class="form-control" data-validation="required">
 									</div>
 									<div class="col-md-6">
 										<div class="col-md-12">
 											<label class="form-check-label">
-												<input type="checkbox" class="form-check-input" name="with_oversize_baggage">
+												<input type="checkbox" class="form-check-input" id="with-oversize-baggage" name="with_oversize_baggage">
 												Travelling with sports or oversize baggage
 											</label>
 										</div>
 										<div class="col-md-12">
 											<label class="form-check-label">
-												<input type="checkbox" class="form-check-input" name="with_children_pwd">
+												<input type="checkbox" class="form-check-input" id="with-children-pwd" name="with_children_pwd">
 												Travelling with children or disabled passengers
 											</label>
 										</div>
@@ -346,17 +346,16 @@
 						{{ csrf_field() }}
 					</form>
 
-					<form id="booking-details-form" action="{{ url('/') }}" method="post">
+					<form id="booking-details-form" data-url="{{ url('/booking/details/'. $booking_id .'/update') }}">
 						<input type="hidden" id="drop_off_at" name="drop_off_at">
 						<input type="hidden" id="return_at" name="return_at">
 						<input type="hidden" id="flight_no_going" name="flight_no_going">
 						<input type="hidden" id="flight_no_return" name="flight_no_return">
-						<input type="hidden" id="vehicle_make" name="vehicle_make">
-						<input type="hidden" id="vehicle_model" name="vehicle_model">
-						<input type="hidden" id="vehicle_color" name="vehicle_color">
 						<input type="hidden" id="no_of_passengers_in_vehicle" name="no_of_passengers_in_vehicle">
 						<input type="hidden" id="with_oversize_baggage" name="with_oversize_baggage">
 						<input type="hidden" id="with_children_pwd" name="with_children_pwd">
+						<input type="hidden" name="bid" value="{{ $booking_id }}">
+						{{ csrf_field() }}
 					</form>
 				</div>
 

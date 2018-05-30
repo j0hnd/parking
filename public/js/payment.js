@@ -20,17 +20,41 @@ $(document).ready(function(){
 
             // The current step container
             $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
-            console.log($container);
 
             // Validate the container
             fv.validateContainer($container);
 
             var isValidStep = fv.isValidContainer($container);
-            console.log(isValidStep);
 
             if (isValidStep === false || isValidStep === null) {
                 // Do not jump to the next step
                 return false;
+            }
+
+            if (currentIndex == 1) {
+                var url = $('#booking-details-form').data('url');
+
+                $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
+                $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
+                $('#flight_no_going').val($('#departure-src').val());
+                $('#flight_no_return').val($('#arrival-src').val());
+                $('#no_of_passengers_in_vehicle').val($('#no-of-passengers-in-vehicle-src').val());
+
+                var with_oversize_baggage = $('#with-oversize-baggage').is('checked') ? 1 : 0;
+                var with_children_pwd = $('#with-children-pwd').is('checked') ? 1 : 0;
+
+                $('#with_oversize_baggage').val(with_oversize_baggage);
+                $('#with_children_pwd').val(with_children_pwd);
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: $('#booking-details-form').serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+
+                    }
+                });
             }
 
             return true;
