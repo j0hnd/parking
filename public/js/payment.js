@@ -22,11 +22,11 @@ $(document).ready(function(){
             $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
             console.log($container);
 
-
             // Validate the container
             fv.validateContainer($container);
 
             var isValidStep = fv.isValidContainer($container);
+            console.log(isValidStep);
 
             if (isValidStep === false || isValidStep === null) {
                 // Do not jump to the next step
@@ -134,6 +134,42 @@ $(document).ready(function(){
                         message: 'The value is not a valid credit card expiration date'
                     }
                 }
+            },
+            drop_off_date: {
+                validators: {
+                    notEmpty: {
+                        message: 'The drop off date is a required field'
+                    },
+                    date: {
+                        format: 'MM/DD/YYYY',
+                        message: 'The value is not a valid date'
+                    }
+                }
+            },
+            return_at_date: {
+                validators: {
+                    notEmpty: {
+                        message: 'The return at date is a required field'
+                    },
+                    date: {
+                        format: 'MM/DD/YYYY',
+                        message: 'The value is not a valid date'
+                    }
+                }
+            },
+            flight_no_going: {
+                validators: {
+                    notEmpty: {
+                        message: 'The departure flight no is a required field'
+                    }
+                }
+            },
+            flight_no_return: {
+                validators: {
+                    notEmpty: {
+                        message: 'The arrival flight no is a required field'
+                    }
+                }
             }
         }
     });
@@ -224,20 +260,22 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-        $(window).scroll(function() {
-          if($(this).scrollTop() > 250) { 
-              $('#sidebar').addClass('sidebar-mar');
-          } else {
-              $('#sidebar').removeClass('sidebar-mar');
-          }
-        });
+    $(window).scroll(function() {
+      if($(this).scrollTop() > 250) {
+          $('#sidebar').addClass('sidebar-mar');
+      } else {
+          $('#sidebar').removeClass('sidebar-mar');
+      }
+    });
 });
- function openNav() {
-      document.getElementById("mobileNav").style.width = "100%";
-      $('.nav-icon').hide();
-      }
-      function closeNav() {
-      document.getElementById("mobileNav").style.width = "0%";
-      $('.nav-icon').show();
-      
-      }
+
+function openNav() {
+    document.getElementById("mobileNav").style.width = "100%";
+    $('.nav-icon').hide();
+}
+
+function closeNav() {
+    document.getElementById("mobileNav").style.width = "0%";
+    $('.nav-icon').show();
+
+}
