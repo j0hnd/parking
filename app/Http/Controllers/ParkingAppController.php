@@ -120,9 +120,11 @@ class ParkingAppController extends Controller
 				'return_at_time_interval'
 			));
 		}
+
+		dd('error');
 	}
 
-	public function payment_success(Request $request)
+	public function paypal_success(Request $request)
 	{
 		$paypal_response = $request->all();
 
@@ -136,9 +138,12 @@ class ParkingAppController extends Controller
 				if ($request->session()->has('sess_id')) {
 					$sess_id = session('sess_id');
 
-					$session = Sessions::findOrFail($sess_id);
-					$booking_data = $session->requests;
+					$session = Sessions::where('session_id', $sess_id)->first();
+					$others = json_decode($session->requests, true);
+					$booking_data = json_decode($session->response, true);
 
+					list($drop_date, $drop_time) = explode(' ', $others['drop_off']);
+					list($return_date, $return_time) = explode(' ', $others['return_at']);
 					list($product_id, $price_id) = explode(':', $booking_data['ids']);
 
 					DB::beginTransaction();
@@ -161,19 +166,22 @@ class ParkingAppController extends Controller
 					$bookings['price_value'] = $booking_data['total'];
 					$bookings['revenue_value'] = $revenue_value;
 					$bookings['sms_confirmation_fee'] = $booking_data['sms'];
-					$bookings['cancellation_fee'] = $booking_data['cancellation'];
-					$bookings['booking_fee'] = $booking_data['booking_fee'];
-					$bookings['drop_off_at'] = Carbon::now();
-					$bookings['return_at'] = Carbon::now();
+					$bookings['cancellation_waiver'] = $booking_data['cancellation'];
+					$bookings['booking_fees'] = $booking_data['booking_fee'];
+					$bookings['car_registration_no'] = $booking_data['car_registration_no'];
+					$bookings['vehicle_model'] = $booking_data['vehicle_model'];
+					$bookings['vehicle_color'] = $booking_data['vehicle_color'];
+					$bookings['drop_off_at'] = date('Y-m-d H:i:s', strtotime($drop_date));
+					$bookings['return_at'] = date('Y-m-d H:i:s', strtotime($return_date));
 
 					$booking = Bookings::create($bookings);
-					dd($booking);
 					if (!empty($booking)) {
 						Bookings::findOrFail($booking->id)->update(['booking_id' => Bookings::generate_booking_id($booking->id)]);
 						DB::commit();
 						session('bid', $booking->id);
 
-						return redirect('/payment/' . Hash::make($paypal_response['token']));
+						return redirect('/payment/token=' . $paypal_response['token']);
+//						return redirect('/payment/' . Hash::make($paypal_response['token']));
 					} else {
 						DB::rollback();
 						dd('1');
@@ -181,6 +189,7 @@ class ParkingAppController extends Controller
 				}
 			}
 		} else {
+			dd('xx');
 			abort(502);
 		}
 	}
@@ -213,8 +222,8 @@ class ParkingAppController extends Controller
 
 			$data['invoice_id'] = $id;
 			$data['invoice_description'] = "Order #{$id} Invoice";
-			$data['return_url'] = url('/payment/success');
-			$data['cancel_url'] = url('/payment/cancel');
+			$data['return_url'] = url('/paypal/success');
+			$data['cancel_url'] = url('/paypal/cancel');
 			$data['total'] = $form['total'];
 
 			$response = $this->provider->setExpressCheckout($data);
