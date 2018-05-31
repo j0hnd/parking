@@ -81,7 +81,7 @@ class ParkingAppController extends Controller
 					if ($sessions) {
 						$request->session()->put('sess_id', $sessions->session_id);
 					} else {
-						dd('error!');
+						abort(502);
 					}
 				}
 			}
@@ -123,8 +123,6 @@ class ParkingAppController extends Controller
 				'booking_id'
 			));
 		}
-
-		dd('error');
 	}
 
 	public function paypal_success(Request $request)
@@ -191,12 +189,11 @@ class ParkingAppController extends Controller
 						return redirect('/payment/token=' . $paypal_response['token']);
 					} else {
 						DB::rollback();
-						dd('1');
+						abort(502);
 					}
 				}
 			}
 		} else {
-			dd('xx');
 			abort(502);
 		}
 	}
