@@ -17,8 +17,8 @@ class CreateTableSessions extends Migration
 			$table->string('session_id', 255)->primary();
 			$table->string('request_id', 255);
 			$table->integer('booking_id')->nullable();
-			$table->json('requests')->nullable();
-			$table->json('response')->nullable();
+			$table->text('requests')->nullable();
+			$table->text('response')->nullable();
 			$table->softDeletes();
 			$table->timestamps();
 
