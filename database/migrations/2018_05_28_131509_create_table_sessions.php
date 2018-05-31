@@ -14,7 +14,8 @@ class CreateTableSessions extends Migration
     public function up()
     {
 		Schema::create('sessions', function($table) {
-			$table->string('session_id', 255)->primary();
+			$table->increments('id');
+			$table->string('session_id', 255);
 			$table->string('request_id', 255);
 			$table->integer('booking_id')->nullable();
 			$table->text('requests')->nullable();
@@ -22,7 +23,7 @@ class CreateTableSessions extends Migration
 			$table->softDeletes();
 			$table->timestamps();
 
-			$table->index(['booking_id']);
+			$table->index(['session_id', 'booking_id']);
 			$table->engine = 'InnoDB';
 		});
     }
