@@ -226,7 +226,15 @@ class ParkingAppController extends Controller
 					'with_children_pwd' => $form['with_children_pwd'],
 				];
 
-				BookingDetails::create($details);
+				if (BookingDetails::where(['booking_id' => $form['bid']])->count()) {
+					BookingDetails::where(['booking_id' => $form['bid']])->update([
+						'no_of_passengers_in_vehicle' => $form['no_of_passengers_in_vehicle'],
+						'with_oversize_baggage' => $form['with_oversize_baggage'],
+						'with_children_pwd' => $form['with_children_pwd'],
+					]);
+				} else {
+					BookingDetails::create($details);
+				}
 
 				return response()->json(['success' => true]);
 			}
