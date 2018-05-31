@@ -214,7 +214,8 @@ class ParkingAppController extends Controller
 					'return_at' => $return_at->format('Y-m-d H:i'),
 					'flight_no_going' => $form['flight_no_going'],
 					'flight_no_return' => $form['flight_no_return'],
-					'is_paid' => 1
+					'is_paid' => 1,
+					'paid_at' => Carbon::now()
 				];
 
 				Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
