@@ -367,7 +367,7 @@
 						<input type="hidden" id="no_of_passengers_in_vehicle" name="no_of_passengers_in_vehicle">
 						<input type="hidden" id="with_oversize_baggage" name="with_oversize_baggage">
 						<input type="hidden" id="with_children_pwd" name="with_children_pwd">
-						<input type="hidden" name="bid" value="{{ $booking_id }}">
+						<input type="hidden" id="bid" name="bid" value="{{ $booking_id }}">
 						{{ csrf_field() }}
 					</form>
 				</div>

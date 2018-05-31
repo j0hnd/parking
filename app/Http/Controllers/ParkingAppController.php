@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendBookingConfirmation;
 use App\Models\Airports;
 use App\Models\BookingDetails;
 use App\Models\Bookings;
@@ -13,6 +14,7 @@ use App\Models\Tools\Prices;
 use App\Models\Tools\Sessions;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Facades\PayPal;
 use DB;
 
@@ -202,7 +204,7 @@ class ParkingAppController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$form = $request->except(['_token']);
-			$booking = Bookings::findOrFail($form['bid']);
+			$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 			if ($booking) {
 				$drop_off = Carbon::createFromTimestamp(strtotime($form['drop_off_at']));
 				$return_at = Carbon::createFromTimestamp(strtotime($form['return_at']));
@@ -211,10 +213,11 @@ class ParkingAppController extends Controller
 					'drop_off_at' => $drop_off->format('Y-m-d H:i'),
 					'return_at' => $return_at->format('Y-m-d H:i'),
 					'flight_no_going' => $form['flight_no_going'],
-					'flight_no_return' => $form['flight_no_return']
+					'flight_no_return' => $form['flight_no_return'],
+					'is_paid' => 1
 				];
 
-				Bookings::where('id', $booking->id)->update($update);
+				Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
 
 				$details = [
 					'booking_id' => $form['bid'],
@@ -244,6 +247,21 @@ class ParkingAppController extends Controller
 
 		try {
 			if ($request->ajax()) {
+				$bid = $request->get('bid');
+				$booking = Bookings::findOrFail($bid);
+				$customer = Customers::findOrFail($booking->customer_id);
+
+				$mail_data = [
+					'firstname' => $customer->first_name,
+					'order' => $booking->order_title,
+					'drop_off' => $booking->drop_off_at->format('m/d/Y H:i'),
+					'return_at' => $booking->return_at->format('m/d/Y H:i'),
+					'booking_id' => $booking->booking_id
+				];
+
+				// send booking confirmation
+				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
+
 				$sess_id = session('sess_id');
 				Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
 				session()->flush();
@@ -309,7 +327,6 @@ class ParkingAppController extends Controller
 				return back()->withErrors(['errors' => 'Unable to get a response from paypal']);
 			}
 		} catch (\Exception $e) {
-			dd($e);
 			abort(404, $e->getMessage());
 		}
 	}

@@ -91,6 +91,7 @@ $(document).ready(function(){
 
             $.ajax({
                 url: '/booking/destroy',
+                data: { bid: $('#bid').val() },
                 dataType: 'json',
                 success: function (response) {
                     if (response.success) {
