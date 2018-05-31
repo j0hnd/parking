@@ -40,8 +40,8 @@ $(document).ready(function(){
                 $('#flight_no_return').val($('#arrival-src').val());
                 $('#no_of_passengers_in_vehicle').val($('#no-of-passengers-in-vehicle-src').val());
 
-                var with_oversize_baggage = $('#with-oversize-baggage').is('checked') ? 1 : 0;
-                var with_children_pwd = $('#with-children-pwd').is('checked') ? 1 : 0;
+                var with_oversize_baggage = $('#with-oversize-baggage').is(':checked') ? 1 : 0;
+                var with_children_pwd = $('#with-children-pwd').is(':checked') ? 1 : 0;
 
                 $('#with_oversize_baggage').val(with_oversize_baggage);
                 $('#with_children_pwd').val(with_children_pwd);
@@ -52,7 +52,9 @@ $(document).ready(function(){
                     data: $('#booking-details-form').serialize(),
                     dataType: 'json',
                     success: function (response) {
-
+                        if (response.success) {
+                            $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
+                        }
                     }
                 });
             }
@@ -80,6 +82,24 @@ $(document).ready(function(){
 
             // For testing purpose
             // $('#welcomeModal').modal();
+
+            $('body').find('a[href="#previous"]').off('click');
+            $('body').find('a[href="#previous"]').parent().addClass('disabled');
+
+            $('#finish-wrapper').removeClass('d-none');
+            $('#confirmation-wrapper').remove();
+
+            $.ajax({
+                url: '/booking/destroy',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        window.location = '/';
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
         }
     })
     .formValidation({

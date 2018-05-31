@@ -327,7 +327,19 @@
 						</section>
 
 						<h3>Takeoff!<img src="{{ asset('/img/booking/airport4.png') }}" class="air4"></h3>
-						<section data-step="2"><p>Try 3</p></section>
+						<section data-step="2">
+							<div class="container wizard-content">
+								<div class="row">
+									<div id="finish-wrapper" class="col-md-12 text-center d-none" style="font-size: 22px;">
+										<p>Your Booking Reference No. is <span id="booking-id-wrapper"></span></p>
+										<p>You will also be receiving an email for the details of your booking.</p>
+									</div>
+									<div id="confirmation-wrapper" class="col-md-12 text-center" style="font-size: 22px;">
+										<p>Click the <strong>Finish</strong> button if all your details are correct.</p>
+									</div>
+								</div>
+							</div>
+						</section>
 					</form>
 
 					<form id="order-form" action="{{ url('/paypal') }}" method="post">

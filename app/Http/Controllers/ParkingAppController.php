@@ -233,9 +233,28 @@ class ParkingAppController extends Controller
 					BookingDetails::create($details);
 				}
 
-				return response()->json(['success' => true]);
+				return response()->json(['success' => true, 'data' => $booking->booking_id]);
 			}
 		}
+	}
+
+	public function booking_destroy(Request $request)
+	{
+		$response = ['success' => true];
+
+		try {
+			if ($request->ajax()) {
+				$sess_id = session('sess_id');
+				Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
+				session()->flush();
+
+				$response['success'] = true;
+			}
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
 	}
 
 	public function terms()
