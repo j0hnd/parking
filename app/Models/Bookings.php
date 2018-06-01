@@ -44,6 +44,8 @@ class Bookings extends BaseModel
 		return $this->hasOne(BookingDetails::class, 'booking_id', 'id');
 	}
 
+	
+
     public static function generate_booking_id($booking_id)
     {
         if (is_null($booking_id) or empty($booking_id) or $booking_id == "") {

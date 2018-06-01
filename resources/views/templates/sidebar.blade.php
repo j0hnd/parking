@@ -30,14 +30,24 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">HEADER</li>
             <li class="active"><a href="{{ url('/admin/dashboard') }}"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a></li>
-            @if(in_array($user->roles[0]->slug, ['administrator', 'vendor', 'travel agent']))
+            @if($user->roles[0]->slug == 'administrator')
             <li class="active"><a href="{{ url('/admin/airport') }}"><i class="fa fa-plane"></i> <span>Airports</span></a></li>
             <li class="active"><a href="{{ url('/admin/carpark') }}"><i class="fa fa-building "></i> <span>Carparks</span></a></li>
             <li class="active"><a href="{{ url('/admin/product') }}"><i class="fa fa-list"></i> <span>Products</span></a></li>
             <li class="active"><a href="{{ url('/admin/booking') }}"><i class="fa fa-calendar"></i> <span>Bookings</span></a></li>
-            @endif
-
-            @if($user->roles[0]->slug == 'administrator')
+            <li class="header">Reports</li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-link"></i> <span>Reports</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ url('/admin/reports/commissions') }}">Commissions</a></li>
+                    <li><a href="{{ url('/admin/reports/completed/jobs') }}">Completed Jobs</a></li>
+                    <li><a href="{{ url('/admin/reports/companies') }}">Companies</a></li>
+                </ul>
+            </li>
             <li class="header">Settings</li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Settings</span>
