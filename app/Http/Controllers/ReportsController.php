@@ -22,8 +22,7 @@ class ReportsController extends Controller
 
 	public function commissions(Request $request)
 	{
-		$bookings = Bookings::active()->orderBy('created_at', 'desc')->get();
-		dd($bookings);
+		$bookings = Bookings::active()->orderBy('created_at', 'desc')->first();
 
 		return view('app.reports.companies');
 	}
