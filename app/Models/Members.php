@@ -14,8 +14,16 @@ class Members extends Model
 
     public $timestamps = true;
 
+    public $with = ['company'];
+
+
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function company()
+	{
+		return $this->hasOne(Companies::class, 'id', 'company_id');
+	}
 }
