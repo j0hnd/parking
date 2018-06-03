@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bookings;
 use App\Models\Companies;
 use Illuminate\Http\Request;
+use DB;
 
 class ReportsController extends Controller
 {
@@ -33,7 +34,16 @@ class ReportsController extends Controller
 	{
 		$page_title = "Commissions";
 		$vendors = $this->vendors->get();
-		$bookings = Bookings::active()->orderBy('created_at', 'desc')->first();
+
+		if ($request->isMethod('post')) {
+			$form = $request->only(['vendor', 'date']);
+			list($start, $end) = explode(':', $form['date']);
+			$bookings = Bookings::active()
+				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+				->get();
+
+			dd($bookings);
+		}
 
 		return view('app.reports.commissions', [
 			'page_title' => $page_title,
