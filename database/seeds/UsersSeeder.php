@@ -25,6 +25,8 @@ class UsersSeeder extends Seeder
             'password' => "p@rk1ng"
         ]);
 
+		$this->command->info("User admin@parkingapp.com has been added");
+
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 1]);
 
         Members::create([
@@ -39,6 +41,8 @@ class UsersSeeder extends Seeder
             'email' => 'vendor@parkingapp.com',
             'password' => "p@rk1ng"
         ]);
+
+        $this->command->info("User vendor@parkingapp.com has been added");
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 2]);
 
@@ -61,6 +65,8 @@ class UsersSeeder extends Seeder
             'password' => "p@rk1ng"
         ]);
 
+		$this->command->info("User travelagent@parkingapp.com has been added");
+
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 3]);
 
         Members::create([
@@ -74,6 +80,8 @@ class UsersSeeder extends Seeder
             'email' => 'member@parkingapp.com',
             'password' => "p@rk1ng"
         ]);
+
+		$this->command->info("User member@parkingapp.com has been added");
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 4]);
 

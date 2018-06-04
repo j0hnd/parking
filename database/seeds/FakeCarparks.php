@@ -20,8 +20,8 @@ class FakeCarparks extends Seeder
         $company_limit = 10;
         $carpark_limit = 3;
 
-        $city = ['Silvrtown', 'London Borough of Hillingdon', 'Crawley', 'Luton', 'Stansed', 'Southend'];
-        $county = ['London', 'London', 'Gatwick', 'Bedfordshire', 'Essex', 'Essex'];
+        $city = ['Silvertown', 'Longford', 'Crawley', 'Luton', 'Stansed', 'Southend'];
+        $county = ['London', 'Hounslow', 'Gatwick', 'Bedfordshire', 'Essex', 'Essex'];
 
         for ($i = 0; $i <= $company_limit; $i++) {
         	$firstname = $faker->firstName;

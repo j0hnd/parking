@@ -25,10 +25,10 @@ class DefaultAirports extends Seeder
         	[
         		'airport_name' => 'Heathrow Airport',
 				'airport_code' => 'LHR',
-				'address' => 'Longford',
-				'city' => 'London Borough of Hillingdon',
-				'county_state' => 'London',
-				'zipcode' => '',
+				'address' => 'Nelson Road',
+				'city' => 'Longford',
+				'county_state' => 'Hounslow',
+				'zipcode' => 'TW6 2GW',
 				'country_id' => 249
 			],
         	[
