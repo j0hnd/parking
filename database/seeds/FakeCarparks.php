@@ -50,7 +50,7 @@ class FakeCarparks extends Seeder
 
         			$carpark = Carpark::create([
         				'company_id' => $company->id,
-						'name' => $faker->name,
+						'name' => $faker->firstName().'-'.$faker->randomLetter()." Parking",
 						'address' => $faker->streetAddress,
 						'city' => $city[$_i],
 						'county_state' => $county[$_i],
