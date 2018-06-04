@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Members;
+use App\Models\Companies;
 
 class UsersSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class UsersSeeder extends Seeder
     {
         User::truncate();
         Members::truncate();
+        Companies::truncate();
 
         DB::table('role_users')->truncate();
 
@@ -40,8 +42,14 @@ class UsersSeeder extends Seeder
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 2]);
 
+        $company = Companies::create([
+        	'company_name' => 'Vendor Ltd.',
+			'email'        => 'parkingapp@example.com'
+		]);
+
         Members::create([
             'user_id'    => $user->id,
+            'company_id' => $company->id,
             'first_name' => 'Jane',
             'last_name'  => 'Doe',
             'is_active'  => 1
