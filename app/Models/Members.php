@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Members extends Model
 {
-    protected $fillable = ['user_id', 'first_name', 'last_name'];
+    protected $fillable = ['user_id', 'company_id', 'first_name', 'last_name'];
 
     protected $guarded  = ['user_id'];
 
