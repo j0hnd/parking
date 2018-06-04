@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bookings;
 use App\Models\Companies;
+use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
 
@@ -13,16 +14,23 @@ class ReportsController extends Controller
 
 	public function __construct()
 	{
+		$vendors_id  = null;
+		$vendor_list = [];
+
 		parent::__construct();
-		$this->vendors = Companies::active()->orderBy('company_name', 'asc');
-	}
+		$vendors = User::active()->whereHas('roles', function ($query) {
+			$query->where('slug', 'vendor');
+		});
 
+		if ($vendors->count()) {
+			foreach ($vendors->get() as $vendor) {
+				$vendors_id[] = $vendor->members->company_id;
+			}
 
-	public function companies(Request $request)
-	{
-		$page_title = "List of Companies";
-		$companies = Companies::active()->orderBy('company_name', 'asc')->paginate(config('app.item_per_page'));
-		return view('app.reports.companies', compact('page_title', 'companies'));
+			$vendor_list = Companies::active()->whereIn('id', $vendors_id)->orderBy('company_name', 'asc');
+		}
+
+		$this->vendors = $vendor_list;
 	}
 
 	public function completed_jobs(Request $request)
