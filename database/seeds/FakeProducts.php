@@ -58,7 +58,7 @@ class FakeProducts extends Seeder
 							'category_id' => $category->id,
 							'product_id' => $product->id,
 							'no_of_days' => rand(2, 10),
-							'price_value' => mt_rand() / mt_getrandmax()
+							'price_value' => rand(25, 95)
 						]);
 					}
 
@@ -68,8 +68,8 @@ class FakeProducts extends Seeder
 							'category_id' => $category->id,
 							'product_id' => $product->id,
 							'price_month' => rand(1, 12),
-							'price_year' => rand(date('Y'), date('Y') + 5),
-							'price_value' => mt_rand() / mt_getrandmax()
+							'price_year' => rand(date('Y'), date('Y') + 2),
+							'price_value' => rand(25, 95)
 						]);
 					}
 
