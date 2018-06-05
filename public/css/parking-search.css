@@ -55,6 +55,7 @@
   box-shadow: 0 1px 20px 0 #000;
   z-index: 2000;
 }
+
 .navbar.solid .navbar-nav{
   position: relative;
   left: 7%;
