@@ -42,20 +42,29 @@ class ReportsController extends Controller
 	{
 		$page_title = "Commissions";
 		$vendors = $this->vendors->get();
+		$bookings = null;
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date']);
 			list($start, $end) = explode(':', $form['date']);
-			$bookings = Bookings::active()
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-				->get();
-
-			dd($bookings);
+			if (is_null($form['vendor'])) {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->paginate(config('app.item_per_page'));
+			} else {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('vendor_id', $form['vendor']);
+					})
+					->paginate(config('app.item_per_page'));
+			}
 		}
 
 		return view('app.reports.commissions', [
 			'page_title' => $page_title,
-			'vendors'    => $vendors
+			'vendors'    => $vendors,
+			'bookings'   => $bookings
 		]);
 	}
 }

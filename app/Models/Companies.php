@@ -11,7 +11,7 @@ class Companies extends BaseModel
 
     public function carpark()
     {
-        return $this->hasOne(Carpark::class, 'id', 'company_id');
+        return $this->hasMany(Carpark::class, 'id', 'company_id');
     }
 
     public function company_details()
