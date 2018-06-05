@@ -27,7 +27,12 @@
 
 			<div class="col-md-5 text-right margin-top25">
 				<button id="toggle-generate-report" class="btn btn-primary btn-flat">Generate Report</button>
+				@if(count($bookings))
+				<button id="toggle-export-report" class="btn btn-primary btn-flat">Export Report</button>
+				<input type="hidden" name="export" value="1">
+				@else
 				<button id="toggle-export-report" class="btn btn-primary btn-flat disabled" disabled>Export Report</button>
+				@endif
 			</div>
 
 			{{ csrf_field() }}
