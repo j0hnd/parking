@@ -153,6 +153,7 @@ return [
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
 		Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+		Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -215,7 +216,8 @@ return [
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
 		'Image' => Intervention\Image\Facades\Image::class,
-		'PayPal' => Srmklive\PayPal\Facades\PayPal::class
+		'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
+		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
     'item_per_page' => env('PER_PAGE'),

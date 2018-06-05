@@ -10,7 +10,8 @@
 			color: #a94442 !important;
 		}
 		.datepicker {
-			height: 35px !important;
+			padding: 8px !important;
+			z-index: 2002 !important;
 		}
 	</style>
 @stop

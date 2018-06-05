@@ -20,7 +20,7 @@ class Products extends BaseModel
 
     protected $guarded = ['carpark_id', 'revenue_share'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors'];
 
 
     public function carpark()
@@ -47,6 +47,11 @@ class Products extends BaseModel
     {
         return $this->hasMany(Overrides::class, 'product_id', 'id');
     }
+
+    public function vendors()
+	{
+		return $this->hasMany(User::class, 'id', 'vendor_id');
+	}
 
     public static function search($data)
     {

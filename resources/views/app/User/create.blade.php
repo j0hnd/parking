@@ -30,6 +30,14 @@
     <script type="text/javascript">
         $(function(){
             $('#role-id').select2({ placeholder: '-- Roles --' });
+
+            $(document).on('change', '#role-id', function (e) {
+                if ($(this).val() == 2) {
+                    $('#company-info-wrapper').removeClass('hidden');
+                } else {
+                    $('#company-info-wrapper').addClass('hidden');
+                }
+            });
         });
     </script>
 @stop
