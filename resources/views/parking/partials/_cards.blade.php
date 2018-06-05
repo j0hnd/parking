@@ -36,6 +36,7 @@
                     <input type="hidden" name="return_at" value="{{ $result['return_at'] }}">
                 </div>
                 <a href="popup{{ $result['product_id'] }}" class="more"><i><img src="{{ asset('/img/booking/info.png') }}"></i> MORE INFO</a>
+                <br/>
                 <div id="popup{{ $result['product_id'] }}" class="overlay">
                     <div class="popup">
                         <h1>Lorem ipsum dolor sit amet</h1><br/>

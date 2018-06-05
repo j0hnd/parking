@@ -241,10 +241,17 @@ label
     right: 10%
 }
 .affix {
-    top: 20px;
+  
     z-index: 9999 !important;
+    width: 24%;
 }
-
+.side-more{
+    text-decoration: none;
+    padding-bottom: 10px;
+}
+.side-more:hover{
+    text-decoration: none;
+}
 #payment_choice-t-1{
     text-decoration: none !important;
 }
