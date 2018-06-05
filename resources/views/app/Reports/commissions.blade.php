@@ -11,7 +11,6 @@
                     <tr>
                         <th>Booking ID</th>
                         <th>Vendor</th>
-                        <th>Carpark</th>
                         <th>Airport/Parking Type</th>
                         <th class="text-center">Revenue Share</th>
                         <th class="text-center">Revenue Value</th>
@@ -19,12 +18,11 @@
                     </thead>
 
                     <tbody>
-                    @if($bookings)
+                    @if(count($bookings))
                         @foreach($bookings as $booking)
                         <tr id="booking-{{ $booking->id }}">
                             <td>{{ $booking->booking_id }}</td>
-                            <td>{{ $booking->products[0]->vendors[0]->members->company->company_name }}</td>
-                            <td>{{ $booking->products[0]->carpark->name }}</td>
+                            <td>{{ $booking->products[0]->vendors[0]->company_name }}</td>
                             <td>{{ $booking->order_title }}</td>
                             <td class="text-center">{{ $booking->products[0]->revenue_share }}%</td>
                             <td class="text-center">£{{ $booking->revenue_value }}</td>
@@ -32,10 +30,18 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="6" class="text-center">No data found</td>
+                            <td colspan="5" class="text-center bg-red">No data found</td>
                         </tr>
                     @endif
                     </tbody>
+
+                    @if(count($bookings))
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-right">{{ $bookings->links() }}</td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
             </div>
         </div>

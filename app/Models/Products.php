@@ -50,7 +50,7 @@ class Products extends BaseModel
 
     public function vendors()
 	{
-		return $this->hasMany(User::class, 'id', 'vendor_id');
+		return $this->hasMany(Companies::class, 'id', 'vendor_id');
 	}
 
     public static function search($data)
