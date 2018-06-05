@@ -42,6 +42,7 @@ class ReportsController extends Controller
 	{
 		$page_title = "Commissions";
 		$vendors = $this->vendors->get();
+		$bookings = null;
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date']);
@@ -49,13 +50,12 @@ class ReportsController extends Controller
 			$bookings = Bookings::active()
 				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 				->get();
-
-			dd($bookings);
 		}
 
 		return view('app.reports.commissions', [
 			'page_title' => $page_title,
-			'vendors'    => $vendors
+			'vendors'    => $vendors,
+			'bookings'   => $bookings
 		]);
 	}
 }
