@@ -67,8 +67,8 @@ class FakeProducts extends Seeder
 						Prices::create([
 							'category_id' => $category->id,
 							'product_id' => $product->id,
-							'price_month' => rand(1, 12),
-							'price_year' => rand(date('Y'), date('Y') + 2),
+							'price_month' => rand(date('n'), 12),
+							'price_year' => date('Y'),
 							'price_value' => rand(25, 95)
 						]);
 					}
