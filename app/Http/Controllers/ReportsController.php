@@ -35,7 +35,7 @@ class ReportsController extends Controller
 
 	public function completed_jobs(Request $request)
 	{
-		return view('app.reports.companies');
+		return view('app.Reports.completed_jobs');
 	}
 
 	public function commissions(Request $request)
@@ -61,7 +61,7 @@ class ReportsController extends Controller
 			}
 		}
 
-		return view('app.reports.commissions', [
+		return view('app.Reports.commissions', [
 			'page_title' => $page_title,
 			'vendors'    => $vendors,
 			'bookings'   => $bookings
