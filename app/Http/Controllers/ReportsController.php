@@ -4,15 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Bookings;
 use App\Models\Companies;
+use App\Models\User;
 use Illuminate\Http\Request;
+use DB;
 
 class ReportsController extends Controller
 {
-    public function companies(Request $request)
+	private $vendors;
+
+	public function __construct()
 	{
-		$page_title = "List of Companies";
-		$companies = Companies::active()->orderBy('company_name', 'asc')->paginate(config('app.item_per_page'));
-		return view('app.reports.companies', compact('page_title', 'companies'));
+		$vendors_id  = null;
+		$vendor_list = [];
+
+		parent::__construct();
+		$vendors = User::active()->whereHas('roles', function ($query) {
+			$query->where('slug', 'vendor');
+		});
+
+		if ($vendors->count()) {
+			foreach ($vendors->get() as $vendor) {
+				$vendors_id[] = $vendor->members->company_id;
+			}
+
+			$vendor_list = Companies::active()->whereIn('id', $vendors_id)->orderBy('company_name', 'asc');
+		}
+
+		$this->vendors = $vendor_list;
 	}
 
 	public function completed_jobs(Request $request)
@@ -22,9 +40,22 @@ class ReportsController extends Controller
 
 	public function commissions(Request $request)
 	{
-		$bookings = Bookings::active()->orderBy('created_at', 'desc')->get();
-		dd($bookings);
+		$page_title = "Commissions";
+		$vendors = $this->vendors->get();
 
-		return view('app.reports.companies');
+		if ($request->isMethod('post')) {
+			$form = $request->only(['vendor', 'date']);
+			list($start, $end) = explode(':', $form['date']);
+			$bookings = Bookings::active()
+				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+				->get();
+
+			dd($bookings);
+		}
+
+		return view('app.reports.commissions', [
+			'page_title' => $page_title,
+			'vendors'    => $vendors
+		]);
 	}
 }

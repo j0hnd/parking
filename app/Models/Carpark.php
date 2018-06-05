@@ -8,6 +8,7 @@ use DB;
 class Carpark extends BaseModel
 {
     protected $fillable = [
+    	'company_id',
         'name',
         'description',
         'address',
