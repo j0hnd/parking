@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Members;
+use App\Models\Companies;
 
 class UsersSeeder extends Seeder
 {
@@ -15,13 +16,18 @@ class UsersSeeder extends Seeder
     {
         User::truncate();
         Members::truncate();
+        Companies::truncate();
 
         DB::table('role_users')->truncate();
+
+		$faker = Faker\Factory::create();
 
         $user = Sentinel::registerAndActivate([
             'email' => 'admin@parkingapp.com',
             'password' => "p@rk1ng"
         ]);
+
+		$this->command->info("User admin@parkingapp.com has been added");
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 1]);
 
@@ -32,26 +38,36 @@ class UsersSeeder extends Seeder
             'is_active'  => 1
         ]);
 
+        for ($i = 1; $i <= 5; $i++) {
+			$user = Sentinel::registerAndActivate([
+				'email' => 'vendor'.$i.'@parkingapp.com',
+				'password' => "p@rk1ng"
+			]);
 
-        $user = Sentinel::registerAndActivate([
-            'email' => 'vendor@parkingapp.com',
-            'password' => "p@rk1ng"
-        ]);
+			$this->command->info("User vendor".$i."@parkingapp.com has been added");
 
-        DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 2]);
+			DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 2]);
 
-        Members::create([
-            'user_id'    => $user->id,
-            'first_name' => 'Jane',
-            'last_name'  => 'Doe',
-            'is_active'  => 1
-        ]);
+			$company = Companies::create([
+				'company_name' => $faker->company,
+				'email'        => 'vendor'.$i.'@parkingapp-vendor.com'
+			]);
 
+			Members::create([
+				'user_id'    => $user->id,
+				'company_id' => $company->id,
+				'first_name' => $faker->firstName,
+				'last_name'  => $faker->lastName,
+				'is_active'  => 1
+			]);
+		}
 
         $user = Sentinel::registerAndActivate([
             'email' => 'travelagent@parkingapp.com',
             'password' => "p@rk1ng"
         ]);
+
+		$this->command->info("User travelagent@parkingapp.com has been added");
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 3]);
 
@@ -66,6 +82,8 @@ class UsersSeeder extends Seeder
             'email' => 'member@parkingapp.com',
             'password' => "p@rk1ng"
         ]);
+
+		$this->command->info("User member@parkingapp.com has been added");
 
         DB::table('role_users')->insert(['user_id' => $user->id, 'role_id' => 4]);
 

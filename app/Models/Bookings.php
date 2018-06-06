@@ -21,14 +21,17 @@ class Bookings extends BaseModel
         'car_registration_no',
         'vehicle_make',
         'vehicle_model',
-        'vehicle_color'
+        'vehicle_color',
+		'sms_confirmation_fee',
+		'cancellation_waiver',
+		'booking_fees'
     ];
 
     protected $dates = ['drop_off_at', 'return_at', 'deleted_at'];
 
     protected $guarded = ['booking_id'];
 
-    protected $with = ['customers', 'booking_details'];
+    protected $with = ['customers', 'booking_details', 'products'];
 
 
     public function customers()
@@ -39,6 +42,11 @@ class Bookings extends BaseModel
     public function booking_details()
 	{
 		return $this->hasOne(BookingDetails::class, 'booking_id', 'id');
+	}
+
+	public function products()
+	{
+		return $this->hasMany(Products::class, "id", "product_id");
 	}
 
     public static function generate_booking_id($booking_id)

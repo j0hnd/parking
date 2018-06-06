@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TemporaryPassword;
+use App\Models\Companies;
 use App\Models\Members;
 use App\Models\Tools\Roles;
 use App\Models\User;
@@ -34,7 +35,7 @@ class UsersController extends Controller
 
             if ($request->isMethod('post')) {
                 $form_user   = $request->except(['_token', 'first_name', 'last_name']);
-                $form_member = $request->only(['first_name', 'last_name']);
+                $form_member = $request->only(['first_name', 'last_name', 'company']);
 
                 DB::beginTransaction();
 
@@ -42,9 +43,12 @@ class UsersController extends Controller
                 $form_user['password'] = $temporary_password;
 
                 if ($user = Sentinel::registerAndActivate($form_user)) {
+                	$company = Companies::create($form_member['company']);
+
                     // create member info
-                    Members::create([
+                    $member = Members::create([
                         'user_id'    => $user->id,
+                        'company_id' => $company->id,
                         'first_name' => $form_member['first_name'],
                         'last_name'  => $form_member['last_name'],
                         'is_active'  => 1
@@ -72,6 +76,7 @@ class UsersController extends Controller
             }
 
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -171,9 +176,9 @@ class UsersController extends Controller
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
+        $user_info = User::findOrFail($id);
         $roles = Roles::all();
-        $page_title = "Profile of ".$user->members->first_name." ".$user->members->last_name;
-        return view('app.User.edit', compact('roles', 'page_title', 'user'));
+        $page_title = "Profile of ".$user_info->members->first_name." ".$user_info->members->last_name;
+        return view('app.User.edit', compact('roles', 'page_title', 'user_info'));
     }
 }

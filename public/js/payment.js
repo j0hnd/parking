@@ -20,8 +20,6 @@ $(document).ready(function(){
 
             // The current step container
             $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
-            console.log($container);
-
 
             // Validate the container
             fv.validateContainer($container);
@@ -31,6 +29,34 @@ $(document).ready(function(){
             if (isValidStep === false || isValidStep === null) {
                 // Do not jump to the next step
                 return false;
+            }
+
+            if (currentIndex == 1) {
+                var url = $('#booking-details-form').data('url');
+
+                $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
+                $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
+                $('#flight_no_going').val($('#departure-src').val());
+                $('#flight_no_return').val($('#arrival-src').val());
+                $('#no_of_passengers_in_vehicle').val($('#no-of-passengers-in-vehicle-src').val());
+
+                var with_oversize_baggage = $('#with-oversize-baggage').is(':checked') ? 1 : 0;
+                var with_children_pwd = $('#with-children-pwd').is(':checked') ? 1 : 0;
+
+                $('#with_oversize_baggage').val(with_oversize_baggage);
+                $('#with_children_pwd').val(with_children_pwd);
+
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: $('#booking-details-form').serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
+                        }
+                    }
+                });
             }
 
             return true;
@@ -56,6 +82,25 @@ $(document).ready(function(){
 
             // For testing purpose
             // $('#welcomeModal').modal();
+
+            $('body').find('a[href="#previous"]').off('click');
+            $('body').find('a[href="#previous"]').parent().addClass('disabled');
+
+            $('#finish-wrapper').removeClass('d-none');
+            $('#confirmation-wrapper').remove();
+
+            $.ajax({
+                url: '/booking/destroy',
+                data: { bid: $('#bid').val() },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        window.location = '/';
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
         }
     })
     .formValidation({
@@ -134,6 +179,42 @@ $(document).ready(function(){
                         message: 'The value is not a valid credit card expiration date'
                     }
                 }
+            },
+            drop_off_date: {
+                validators: {
+                    notEmpty: {
+                        message: 'The drop off date is a required field'
+                    },
+                    date: {
+                        format: 'MM/DD/YYYY',
+                        message: 'The value is not a valid date'
+                    }
+                }
+            },
+            return_at_date: {
+                validators: {
+                    notEmpty: {
+                        message: 'The return at date is a required field'
+                    },
+                    date: {
+                        format: 'MM/DD/YYYY',
+                        message: 'The value is not a valid date'
+                    }
+                }
+            },
+            flight_no_going: {
+                validators: {
+                    notEmpty: {
+                        message: 'The departure flight no is a required field'
+                    }
+                }
+            },
+            flight_no_return: {
+                validators: {
+                    notEmpty: {
+                        message: 'The arrival flight no is a required field'
+                    }
+                }
             }
         }
     });
@@ -142,7 +223,7 @@ $(document).ready(function(){
         headerTag: "h4",
         bodyTag: "fieldset",
         transitionEffect: "slideLeft",
-        enableFinishButton: false,
+        enableFinishButton: true,
         enablePagination: false,
         enableAllSteps: true,
         titleTemplate: "#title#",
@@ -163,7 +244,8 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
     });
 
-    $(document).on('click', '#cancellation', function () {
+    $(document).on('click', '#cancellation-fee', function () {
+        console.log('xxx');
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
             total = parseFloat(total) + parseFloat($(this).val());
@@ -177,13 +259,17 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
     });
 
-    $(document).on('click', '#toggle-paypal', function () {
+    $(document).on('click', '#toggle-paypal', function (e) {
+        e.preventDefault();
         $('#firstname').val($('#firstname-src').val());
         $('#lastname').val($('#lastname-src').val());
         $('#email').val($('#email-src').val());
         $('#phoneno').val($('#phone-src').val());
         $('#sms').val($('#sms-fee').val());
         $('#cancellation').val($('#cancellation-fee').val());
+        $('#car-registration-no').val($('#car-registration-no-src').val());
+        $('#vehicle-color').val($('#vehicle-color-src').val());
+        $('#vehicle-model').val($('#vehicle-model-src').val());
         $('#order-form').submit();
     });
 
@@ -201,36 +287,40 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
     }
 });
+
 $(document).ready(function() {
-        $(window).scroll(function() {
-          if($(this).scrollTop() > 50) { 
-              $('.navbar').addClass('solid');
-              $('#sidebar').addClass('sidebar-mar');
-              $('nav').removeClass('bg-dark');
-              $('.Vl').removeClass('vl');
-          } else {
-              $('.navbar').removeClass('solid');
-              $('nav').addClass('bg-dark');
-              $('.Vl').addClass('vl');
-              $('#sidebar').removeClass('sidebar-mar');
-          }
-        });
+    $(window).scroll(function() {
+      if($(this).scrollTop() > 50) {
+          $('.navbar').addClass('solid');
+          $('#sidebar').addClass('sidebar-mar');
+          $('nav').removeClass('bg-dark');
+          $('.Vl').removeClass('vl');
+      } else {
+          $('.navbar').removeClass('solid');
+          $('nav').addClass('bg-dark');
+          $('.Vl').addClass('vl');
+          $('#sidebar').removeClass('sidebar-mar');
+      }
+    });
 });
+
 $(document).ready(function() {
-        $(window).scroll(function() {
-          if($(this).scrollTop() > 250) { 
-              $('#sidebar').addClass('sidebar-mar');
-          } else {
-              $('#sidebar').removeClass('sidebar-mar');
-          }
-        });
+    $(window).scroll(function() {
+      if($(this).scrollTop() > 250) {
+          $('#sidebar').addClass('sidebar-mar');
+      } else {
+          $('#sidebar').removeClass('sidebar-mar');
+      }
+    });
 });
- function openNav() {
-      document.getElementById("mobileNav").style.width = "100%";
-      $('.nav-icon').hide();
-      }
-      function closeNav() {
-      document.getElementById("mobileNav").style.width = "0%";
-      $('.nav-icon').show();
-      
-      }
+
+function openNav() {
+    document.getElementById("mobileNav").style.width = "100%";
+    $('.nav-icon').hide();
+}
+
+function closeNav() {
+    document.getElementById("mobileNav").style.width = "0%";
+    $('.nav-icon').show();
+
+}
