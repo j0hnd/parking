@@ -24,11 +24,14 @@ Route::post('/payment', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
 
+
 Route::get('/contact','ParkingAppController@contact');
 
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking_details');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
+
+
 
 
 Route::group(['prefix' => 'admin'], function () {
