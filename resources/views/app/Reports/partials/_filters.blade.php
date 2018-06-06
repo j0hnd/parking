@@ -33,6 +33,9 @@
 				<button id="toggle-generate-report" type="button" class="btn btn-primary btn-flat" data-url="{{ $generate_url }}">Generate Report</button>
 				@if(count($bookings))
 				<button id="toggle-export-report" type="button" class="btn btn-primary btn-flat" data-url="{{ url('/admin/reports/export') }}">Export Report</button>
+				<div class="checkbox">
+					<label><input type="checkbox" name="is_pdf">Export as PDF</label>
+				</div>
 				<input type="hidden" name="export" value="{{ $export }}">
 				@else
 				<button id="toggle-export-report" type="button" class="btn btn-primary btn-flat disabled" disabled>Export Report</button>
