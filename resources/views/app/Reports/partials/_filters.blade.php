@@ -30,7 +30,7 @@
 			</div>
 
 			<div class="col-md-5 text-right margin-top25">
-				<button id="toggle-generate-report" type="button" class="btn btn-primary btn-flat" data-url="{{ url('/admin/reports/commissions') }}">Generate Report</button>
+				<button id="toggle-generate-report" type="button" class="btn btn-primary btn-flat" data-url="{{ $generate_url }}">Generate Report</button>
 				@if(count($bookings))
 				<button id="toggle-export-report" type="button" class="btn btn-primary btn-flat" data-url="{{ url('/admin/reports/export') }}">Export Report</button>
 				<input type="hidden" name="export" value="{{ $export }}">

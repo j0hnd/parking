@@ -39,7 +39,38 @@ class ReportsController extends Controller
 
 	public function completed_jobs(Request $request)
 	{
-		return view('app.Reports.completed_jobs');
+		$page_title = "Completed Jobs";
+		$vendors = $this->vendors->get();
+		$bookings = null;
+		$selected_vendor = null;
+
+		if ($request->isMethod('post')) {
+			$form = $request->only(['vendor', 'date', 'export']);
+			list($start, $end) = explode(':', $form['date']);
+			if (is_null($form['vendor'])) {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
+					->orderBy('return_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			} else {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('vendor_id', $form['vendor']);
+					})
+					->orderBy('return_at', 'desc')
+					->paginate(config('app.item_per_page'));
+
+				$selected_vendor = $form['vendor'];
+			}
+		}
+
+		return view('app.Reports.completed_jobs', [
+			'page_title'      => $page_title,
+			'vendors'         => $vendors,
+			'bookings'        => $bookings,
+			'selected_vendor' => $selected_vendor
+		]);
 	}
 
 	public function commissions(Request $request)
@@ -101,6 +132,9 @@ class ReportsController extends Controller
 					}
 
 					return $excel->download(new Commissions($bookings), $filename);
+					break;
+
+				case "completed_jobs":
 					break;
 			}
 		}
