@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 
 
-class Commissions implements FromCollection, WithMapping, WithHeadings
+class CompletedJobs implements FromCollection, WithMapping, WithHeadings
 {
 	protected $data;
 
@@ -24,8 +24,8 @@ class Commissions implements FromCollection, WithMapping, WithHeadings
 			$data->booking_id,
 			$data->products[0]->vendors[0]->company_name,
 			$data->order_title,
-			$data->products[0]->revenue_share.'%',
-			'£'.$data->revenue_value
+			'£'.number_format($data->price_value, 2),
+			$data->return_at->format('F j, Y')
 		];
 	}
 
@@ -35,8 +35,8 @@ class Commissions implements FromCollection, WithMapping, WithHeadings
 			'Booking ID',
 			'Vendor',
 			'Order',
-			'Revenue Share',
-			'Revenue Value'
+			'Booking Fee',
+			'Expected Date of Completion'
 		];
 	}
 
