@@ -111,19 +111,20 @@ class ReportsController extends Controller
 	public function export(Request $request, Excel $excel)
 	{
 		if ($request->isMethod('post')) {
-			$form = $request->only(['vendor', 'date', 'export']);
+			$form = $request->only(['vendor', 'date', 'export', 'is_pdf']);
 			list($start, $end) = explode(':', $form['date']);
+			$ext = isset($form['is_pdf']) ? "pdf" : "xlsx";
 
 			switch ($form['export']) {
 				case "commissions";
-					$filename = "Commissions-".Carbon::now()->format('Ymd').".xlsx";
+					$filename = "Commissions-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::active()
 						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 						->get();
 
 					if (isset($form['vendor'])) {
 						$company = Companies::findOrFail($form['vendor']);
-						$filename = "Commissions-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".xlsx";
+						$filename = "Commissions-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::active()
 							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
@@ -136,7 +137,7 @@ class ReportsController extends Controller
 					break;
 
 				case "completed_jobs":
-					$filename = "CompletedJobs-".Carbon::now()->format('Ymd').".xlsx";
+					$filename = "CompletedJobs-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::active()
 						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
 						->orderBy('return_at', 'desc')
@@ -144,7 +145,7 @@ class ReportsController extends Controller
 
 					if (isset($form['vendor'])) {
 						$company = CompletedJobs::findOrFail($form['vendor']);
-						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".xlsx";
+						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::active()
 							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
@@ -154,7 +155,7 @@ class ReportsController extends Controller
 							->get();
 					}
 
-					return $excel->download(new CompletedJobs($bookings), $filename);
+					return $excel->download(new CompletedJobs(				$bookings), $filename);
 					break;
 			}
 		}
