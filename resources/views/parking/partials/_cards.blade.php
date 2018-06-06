@@ -1,6 +1,6 @@
 @if(isset($results))
     @foreach($results as $i => $result)
-    <div class="col-md-3">
+    <div class="col-md-5 col-lg-4 col-xl-3">
         <form id="product-{{ $i }}" action="{{ url('/payment') }}" method="post">
             <div class="card-border">
                 <div class="card-in">
