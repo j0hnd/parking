@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="#" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>P</b>BA</span>
+        <span class="logo-mini"><b>A</b>PS</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Parking</b> Booking App</span>
+        <span class="logo-lg"><b>Airport</b> Parking System</span>
     </a>
 
     <!-- Header Navbar -->

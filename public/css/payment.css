@@ -56,7 +56,7 @@ body{
   -webkit-box-shadow: 0 1px 20px 0 #000;
   -moz-box-shadow: 0 1px 20px 0 #000;
   box-shadow: 0 1px 20px 0 #000;
-  z-index: 2000;
+  z-index: 2003;
 }
 .navbar.solid .navbar-nav{
   position: relative;
@@ -166,7 +166,7 @@ body{
     border-radius: 5px;
     color: #fff;
     margin-left: 10px;
-    z-index: 1999;
+    z-index: 2001;
 }
 .tab-1:hover{
     background-color: #2184be;
@@ -241,10 +241,17 @@ label
     right: 10%
 }
 .affix {
-    top: 20px;
+  
     z-index: 9999 !important;
+    width: 24%;
 }
-
+.side-more{
+    text-decoration: none;
+    padding-bottom: 10px;
+}
+.side-more:hover{
+    text-decoration: none;
+}
 #payment_choice-t-1{
     text-decoration: none !important;
 }

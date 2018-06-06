@@ -13,6 +13,7 @@ use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
+use Cartalyst\Sentinel\Sentinel;
 use DB;
 use Illuminate\Http\Request;
 
@@ -72,6 +73,10 @@ class ProductsController extends Controller
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
+
+                $user = Sentinel::getUser();
+                $role = $user->roles()->get();
+				$form['vendor_id'] = ($role[0]->slug == 'vendor') ? $user->id : 0;
 
                 if ($products = Products::create($form)) {
                     foreach ($airports as $airport) {
@@ -300,7 +305,6 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             abort(404, $e->getMessage());
         }
     }
