@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Export\Commissions;
+use App\Export\CompletedJobs;
 use App\Models\Bookings;
 use App\Models\Companies;
 use App\Models\User;
@@ -135,6 +136,25 @@ class ReportsController extends Controller
 					break;
 
 				case "completed_jobs":
+					$filename = "CompletedJobs-".Carbon::now()->format('Ymd').".xlsx";
+					$bookings = Bookings::active()
+						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
+						->orderBy('return_at', 'desc')
+						->get();
+
+					if (isset($form['vendor'])) {
+						$company = CompletedJobs::findOrFail($form['vendor']);
+						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".xlsx";
+						$bookings = Bookings::active()
+							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
+							->whereHas('products', function ($query) use ($form) {
+								$query->where('vendor_id', $form['vendor']);
+							})
+							->orderBy('return_at', 'desc')
+							->get();
+					}
+
+					return $excel->download(new CompletedJobs($bookings), $filename);
 					break;
 			}
 		}
