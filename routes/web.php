@@ -66,9 +66,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/get/price', 'PricesController@get_price');
     Route::get('/get/vehicle/model', 'BookingsController@get_vehicle_models');
 
-    Route::get('/reports/companies', 'ReportsController@companies');
-    Route::get('/reports/completed/jobs', 'ReportsController@completed_jobs');
+    Route::post('/reports/export', 'ReportsController@export');
     Route::match(['get', 'post'], '/reports/commissions', 'ReportsController@commissions');
+    Route::match(['get', 'post'], '/reports/completed/jobs', 'ReportsController@completed_jobs');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {

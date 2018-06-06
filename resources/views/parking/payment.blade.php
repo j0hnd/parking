@@ -434,6 +434,22 @@
 									<p class="receipt-align">£{{ $booking_fee->amount }}</p>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<p class="receipt-name"><small>SMS Confirmation Fee</small></p>
+								</div>
+								<div class="col-md-6">
+									<p class="receipt-align">£<span id="sms-fee-wrapper">0</span></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<p class="receipt-name"><small>Cancellation Waiver</small></p>
+								</div>
+								<div class="col-md-6">
+									<p class="receipt-align">£<span id="cancellation-waiver-wrapper">0</span></p>
+								</div>
+							</div>
 							<hr>
 							<div class="row">
 								<div class="col-md-6">
