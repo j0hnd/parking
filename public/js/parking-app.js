@@ -134,7 +134,7 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
 };
 $(document).ready(function() {
         $(window).scroll(function() {
-          if($(this).scrollTop() > 50) { 
+          if($(this).scrollTop() > 20) { 
               $('.navbar').addClass('solid');
               $('nav').removeClass('bg-dark');
               $('.Vl').removeClass('vl');

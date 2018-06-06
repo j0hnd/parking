@@ -8,7 +8,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
 
-class ReportsController extends Controller
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
+
+
+class ReportsController extends Controller implements FromCollection
 {
 	private $vendors;
 
@@ -33,6 +37,11 @@ class ReportsController extends Controller
 		$this->vendors = $vendor_list;
 	}
 
+	public function collection()
+	{
+		// TODO: Implement collection() method.
+	}
+
 	public function completed_jobs(Request $request)
 	{
 		return view('app.Reports.completed_jobs');
@@ -45,7 +54,7 @@ class ReportsController extends Controller
 		$bookings = null;
 
 		if ($request->isMethod('post')) {
-			$form = $request->only(['vendor', 'date']);
+			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
@@ -58,6 +67,10 @@ class ReportsController extends Controller
 						$query->where('vendor_id', $form['vendor']);
 					})
 					->paginate(config('app.item_per_page'));
+			}
+
+			if (isset($form['export'])) {
+				dd($form);
 			}
 		}
 

@@ -26,6 +26,7 @@ Route::get('/privacy','ParkingAppController@privacy');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking_details');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
+Route::get('/contact','ParkingAppController@contact');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');

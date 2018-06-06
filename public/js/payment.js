@@ -290,7 +290,7 @@ $(document).ready(function(){
 
 $(document).ready(function() {
     $(window).scroll(function() {
-      if($(this).scrollTop() > 50) {
+      if($(this).scrollTop() > 20) {
           $('.navbar').addClass('solid');
           $('#sidebar').addClass('sidebar-mar');
           $('nav').removeClass('bg-dark');

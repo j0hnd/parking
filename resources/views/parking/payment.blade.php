@@ -21,7 +21,7 @@
 		<div id="mobileNav" class="overlay-nav">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 			<div class="overlay-content">
-				<a href="#">Contact Us</a>
+				<a href="{{ url('/contact') }}">Contact Us</a>
 				<a href="#">Login</a>
 				<a href="#">Live Chat</a>
 				<a href="#">Airport Parking</a>
@@ -385,9 +385,14 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12">
-									<p>more info...</p>
+									<a class="collapsed side-more" data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="false" aria-controls="collapseOne">more info...</a>
+									<div id="collapse" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+				                    <p class="collapsable-title">Lorem ipsum dolor sit amet</p>
+				                    <p class="collapsable-text">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.</p>
+				                </div>
 								</div>
 							</div>
+							<br/>
 							<div class="row">
 								<div class="col-md-6">
 									<p>From Date</p>
