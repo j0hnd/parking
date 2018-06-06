@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Export\Commissions;
 use App\Models\Bookings;
 use App\Models\Companies;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
-
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Excel;
 
 
-class ReportsController extends Controller implements FromCollection
+class ReportsController extends Controller
 {
 	private $vendors;
 
@@ -37,17 +37,12 @@ class ReportsController extends Controller implements FromCollection
 		$this->vendors = $vendor_list;
 	}
 
-	public function collection()
-	{
-		// TODO: Implement collection() method.
-	}
-
 	public function completed_jobs(Request $request)
 	{
 		return view('app.Reports.completed_jobs');
 	}
 
-	public function commissions(Request $request)
+	public function commissions(Request $request, Excel $excel)
 	{
 		$page_title = "Commissions";
 		$vendors = $this->vendors->get();
@@ -70,7 +65,17 @@ class ReportsController extends Controller implements FromCollection
 			}
 
 			if (isset($form['export'])) {
-				dd($form);
+				$filename = "Commissions-".Carbon::now()->format('Ymd').".xlsx";
+				if (isset($form['vendor'])) {
+					$company = Companies::findOrFail($form['vendor']);
+					$filename = "Commissions-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".xlsx";
+				}
+
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->get();
+
+				return $excel->download(new Commissions($bookings), $filename);
 			}
 		}
 
