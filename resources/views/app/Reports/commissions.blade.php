@@ -1,7 +1,7 @@
 @extends('admin_template')
 
 @section('main-content')
-	@include('app.Reports.partials._filters')
+	@include('app.Reports.partials._filters', ['export' => 'commissions'])
 
     <div class="row">
         <div class="col-md-12">
@@ -84,6 +84,18 @@ $(function () {
     var endDate = moment(_date[1]).format('YYYY-MM-DD');
 
     $('#date').val(startDate+':'+endDate);
+
+    $(document).on('click', '#toggle-generate-report', function (e) {
+        e.preventDefault();
+        $('#report-form').attr('action', $(this).data('url'));
+        $('#report-form').submit();
+    });
+
+    $(document).on('click', '#toggle-export-report', function (e) {
+        e.preventDefault();
+        $('#report-form').attr('action', $(this).data('url'));
+        $('#report-form').submit();
+    });
 });
 </script>
 @stop

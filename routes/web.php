@@ -62,6 +62,7 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::get('/reports/companies', 'ReportsController@companies');
     Route::get('/reports/completed/jobs', 'ReportsController@completed_jobs');
+    Route::post('/reports/export', 'ReportsController@export');
     Route::match(['get', 'post'], '/reports/commissions', 'ReportsController@commissions');
 });
 
