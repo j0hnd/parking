@@ -234,10 +234,13 @@ $(document).ready(function(){
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
             total = parseFloat(total) + parseFloat($(this).val());
+            $('#sms-fee-wrapper').text($(this).val());
         } else {
             if ($('#total').data('value') < total) {
                 total = parseFloat(total) - parseFloat($(this).val());
             }
+
+            $('#sms-fee-wrapper').text(0);
         }
 
         $('#total').text('£'+total.toLocaleString());
@@ -245,14 +248,16 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '#cancellation-fee', function () {
-        console.log('xxx');
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
             total = parseFloat(total) + parseFloat($(this).val());
+            $('#cancellation-waiver-wrapper').text($(this).val());
         } else {
             if ($('#total').data('value') < total) {
                 total = parseFloat(total) - parseFloat($(this).val());
             }
+
+            $('#cancellation-waiver-wrapper').text(0);
         }
 
         $('#total').text('£'+total.toLocaleString());
@@ -278,6 +283,7 @@ $(document).ready(function(){
         total = parseFloat(total) + parseFloat($('#sms-fee').val());
         $('#total').text('£'+total.toLocaleString());
         $('#total-amount').val(total.toLocaleString());
+        $('#sms-fee-wrapper').text($('#sms-fee').val());
     }
 
     if ($('#cancellation').is(':checked')) {
