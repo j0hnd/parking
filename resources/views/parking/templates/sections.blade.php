@@ -33,26 +33,26 @@
             </div>
         </div>
         <div class="row layer4-align2">
-            <div class="col-md-3">
+            <div class="col-xl-3">
                 <img src="img/handshake.png"/>
                 <p class="layer4-header">Meet&Greet</p>
                 <p class="layer4-content">Start you trip like a vip with meet and greet parking.</p>
                 <p class="layer4-content">The most convenient way to park. Simply driver to the terminal where you will meet your driver, unload you luggage and away on holiday you go. Your driver will then take care of parking your vehicle at the secure compound. On return from your trip just call your driver when you are ready and they will bring your car back to you at the terminal.  This service is perfect if you require mobility assistance, elderly, family’s with young children or people traveling with sports equipment, as you drive directly to the terminal yourself and don’t need to take a transfer bus. Its quick, stress free and makes your trip just that little more special.</p>
             </div>
-            <div class="col-md-1">
+            <div class="col-xl-1">
                 <div class="vl4"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-xl-3">
                 <img src="img/bus.png"/>
                 <p class="layer4-header">Park&Ride</p>
                 <p class="layer4-content">An easy cost effected way to park.</p>
                 <p class="layer4-content">Giving you greater flexibility on your arrival times park and ride is hassle free.</p>
                 <p class="layer4-content">Drive to your pre booked airport car park, unload your luggage and take a short shuttle ride to the terminal. On return simply take the shuttle bus from the terminal back to your car park. The easy to use shuttle busses run on frequent pre arranged times or on demand.</p>
             </div>
-            <div class="col-md-1">
+            <div class="col-xl-1">
                 <div class="vl4"></div>
             </div>
-            <div class="col-md-3">
+            <div class="col-xl-3">
                 <img src="img/car.png"/>
                 <p class="layer4-header">At the airport/on site/official</p>
                 <p class="layer4-content">Parking in the official airport car parks provided by the airport.</p>
@@ -80,15 +80,15 @@
               <div><p class="testi-name">Sarah Lee</p></div>
         </div>
         <div class="col-md-4 testi" id="animatedHeading2">
-              <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nullam non velit et mauris mattis eleifend</p></div>
-              <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nullam non velit et mauris mattis eleifend</p></div>
-              <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nullam non velit et mauris mattis eleifend</p></div>
-              <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nullam non velit et mauris mattis eleifend</p></div>
-              <div><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Nullam non velit et mauris mattis eleifend</p></div>
         </div>
         <div class="col-md-4 t-star" id="animatedHeading3">

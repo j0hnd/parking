@@ -17,16 +17,15 @@
                     CONTACT US!
                 </p>
                 <div class="info">
-                    <i style="margin-right: 15px;"><img src="{{ asset('/img/tele.png') }}"></i> (028)231 5344<br/><br/>
-                    <i style="margin-right: 15px;"><img src="{{ asset('img/email.png') }}"></i> loremipsum@lorem.com<br/><br/>
-                    <i style="margin-right: 18px;"><img src="{{ asset('img/gps.png') }}"></i> Lorem ipsum dolor sit amet,<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;consectetur adipisicing elit.
+                    <i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('/img/tele.png') }}"></i> (028)231 5344<br/><br/>
+                    <i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('img/email.png') }}"></i> loremipsum@lorem.com<br/><br/>
+                    <i style="margin-right: 18px;" class="mob-icon"><img src="{{ asset('img/gps.png') }}"></i> Lorem ipsum dolor sit amet <p class="foot-gps" ">consectetur adipisicing elit.</p>
                 </div>
             </div>
         </div>
         <hr style="color: #fff; background-color: #fff; height: 2px; width: 100%; border: #fff;">
         <div class="row">
-            <div class="col-md-4 footer-con">
+            <div class="col-md-6 footer-con">
                 <ul>
                     <li>
                         <a href="/terms" class="link-con terms">Term and Condition</a>
