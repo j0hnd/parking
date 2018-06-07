@@ -53,7 +53,7 @@
   -webkit-box-shadow: 0 1px 20px 0 #000;
   -moz-box-shadow: 0 1px 20px 0 #000;
   box-shadow: 0 1px 20px 0 #000;
-  z-index: 2000;
+  z-index: 2002;
 }
 
 .navbar.solid .navbar-nav{
@@ -197,6 +197,9 @@ margin-top: 24px;
 .filter:hover{
     color: #ffe000;
     text-decoration: none;
+}
+.datepicker{
+  z-index: 2001 !important; 
 }
 
 /* END HEADER */
@@ -399,7 +402,7 @@ hr{
     font-size: 10px;
     color: rgb(39, 178, 224);
     position: relative;
-    top: 7px;
+    top: -15px;
      margin-right: 10px;
 }
 .card-border > .plus.collapsed:before {
@@ -519,9 +522,269 @@ footer{
     margin-right: 16px;
     margin-left: 10px
 }
-
+.foot-gps{
+  margin-left: 40px;
+}
 /* END FOOTER */
 /* START MOBILE */
+
+
+@media only screen and (max-width:1025px){
+.navbar {
+    position: fixed;
+    left: 40%;
+    margin: 36px 0 0 0;
+}
+.navbar.solid {
+    width: 111%;
+    left: -9%;
+    }
+    .navbar.solid .navbar-nav {
+    position: relative;
+    left: -2%;
+}
+.navbar-2{
+  padding: 50px 0 50px 0;
+}
+.ul-pos{
+  margin-left: 0 !important;
+}
+.col3-align {
+    left: 3%;
+}
+.mob-icon{
+  display: none;
+}
+    .foot-gps{
+  margin-left: 0;
+}
+.info{
+  position: relative;
+  right: -4%;
+}
+.foot-col3 {
+    right: 9%;
+}
+#header{
+  position: relative;
+  top: -20px;
+  margin-bottom: -30px;
+}
+.input1{
+position: relative;
+height: 35px;
+top: 3px;
+margin-bottom: 0px;
+}
+.input2{
+position: relative;
+right: 0%;
+margin-top: 5px;
+}
+.input3{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input4{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input5{
+position: relative;
+left: 0%;
+margin-top: 5px;
+margin-left: 0;
+}
+.input6{
+position: relative;
+}
+.btn-primary{
+position: relative;
+left: 0%;
+width: 80%;
+height: 35px;
+border-radius: 2px;
+background-color: #27b2e0;
+color: #fff;
+border: 1px #27b2e0;
+margin-top: 10px;
+}
+.book-box{
+  margin-top: 20px;
+  background-color: transparent !important;
+  padding: 20px 10px 20px 10px;
+  color: #fff;
+  font-family: "Montserrat";
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+}
+.time-width{
+ width: 80%;
+}
+.date-width{
+  width: 80%;
+}
+.air-width{
+  width: 80%;
+}
+.home-label{
+  display: none;
+}
+.filter{
+  left: 16%;
+}
+
+}
+
+@media only screen and (max-width:769px){
+.navbar.solid {
+    left: -10%;
+    width: 133% !important;
+    padding: 10px 0 10px 0;
+}
+.navbar.solid .navbar-nav {
+    position: relative;
+    left: -16% !important;
+}
+.navbar.solid .navbar-nav > .nav-item > .nav-link {
+    margin: 0px 10px 0 10px;
+}
+.navbar.solid .navbar-brand {
+    position: relative !important;
+    left: 19%;
+}
+.navbar {
+    width: 80%;
+    left: 40%;
+    margin: 40px 0 0 0;
+}
+.navbar-brand {
+    position: absolute;
+    right: 107%;
+}
+.navbar-2{
+    display: none;
+}
+.navbar-2-mobile{
+  display: inline;
+}
+.navbar-2-mobile ul{
+  background-color: #27b2e0;
+  padding: 38px 40px 37px 40px;
+  position: relative;
+  margin-bottom: 0rem !important;
+  right: 6%;
+  width: 106%;
+}
+.active-2-mobile{
+  background-color: #005e7d;
+  display: inline;
+  padding: 40px 40px 41px 40px;
+
+}
+.not-active-2-mobile{
+  display: inline;
+  padding: 40px 40px 40px 40px;
+
+}
+.not-active-2-mobile:hover{
+ background-color: #005e7d;
+ 
+} 
+
+.navbar-2-mobile ul li a{
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+}
+.text-center {
+    position: relative;
+    right: 19%;
+}
+.vl{
+  display: none;
+}
+.text-center > .navbar-nav > .nav-item{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.navbar.solid .navbar-nav > .nav-item{
+margin-left: 0px;
+  margin-right: 0px;
+}
+.input1{
+position: relative;
+height: 35px;
+top: 3px;
+margin-bottom: 0px;
+}
+.input2{
+position: relative;
+right: 0%;
+margin-top: 5px;
+}
+.input3{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input4{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input5{
+position: relative;
+left: 0%;
+margin-top: 5px;
+margin-left: 0;
+}
+.input6{
+position: relative;
+}
+.btn-primary{
+position: relative;
+left: 0%;
+width: 80%;
+height: 35px;
+border-radius: 2px;
+background-color: #27b2e0;
+color: #fff;
+border: 1px #27b2e0;
+margin-top: 10px;
+}
+.book-box{
+  margin-top: 20px;
+  background-color: transparent !important;
+  padding: 20px 10px 20px 10px;
+  color: #fff;
+  font-family: "Montserrat";
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+  bottom:0;
+ 
+}
+.filter{
+  left: 3%;
+}
+.time-width{
+ width: 80%;
+}
+.date-width{
+  width: 80%;
+}
+.air-width{
+  width: 80%;
+}
+.home-label{
+  display: none;
+}
+}
 @media only screen and (max-width:700px){
   .overlay-nav {
     display: block;
@@ -605,6 +868,7 @@ footer{
         float: left;
         left: 50%;
         background-color: #fff !important;
+        width: 50%;
 
     }
     .navbar-brand{
@@ -627,6 +891,8 @@ footer{
   padding: 14px 0px 18px 0px;
   position: relative;
   margin-bottom: 0rem !important;
+  right: 0;
+  width: 100%;
 }
 .active-2-mobile{
   background-color: #005e7d;
@@ -715,9 +981,7 @@ margin-top: 10px;
 .home-label{
   display: none;
 }
-.datepicker {
-    width: 80%;
-}
+
 .air-width{
   width: 80%;
 }
@@ -734,12 +998,14 @@ button.btn.btn-primary.btn-sm{
 #header{
   padding-bottom: 40px;
   padding-top: 20px;
+  top: 0;
+  margin-bottom: 0px;
 }
 
 .filter {
     margin-left: 22px;
     top: 78%;
-    left: 0%;
+    left: 7%;
     margin-top: 0px;
     position: relative;
     font-size: 14px;

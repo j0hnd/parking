@@ -540,18 +540,225 @@ footer{
     margin-right: 16px;
     margin-left: 10px
 }
+.foot-gps{
+  margin-left: 40px;
+}
 /* END FOOTER */
 
 /* START MOBILE */
+@media only screen and (max-width:1025px){
+.navbar{
+  width: 100%;
+}
+.vl4 {
+    display: none;
+}
+.layer4-align {
+    left: 0%;
+}
+.layer4-title {
+  right: 0;
+  }
+.col3-align {
+    left: 3%;
+}
+.mob-icon{
+  display: none;
+}
+    .foot-gps{
+  margin-left: 0;
+}
+.info{
+  position: relative;
+  right: -4%;
+}
+.foot-col3 {
+    right: 9%;
+}
+.testi-star{
+  margin-bottom: 100px;
+}
+.testi-name{
+  margin-bottom: 100px;
+}
+.testi-con{
+  margin-bottom: 40px;
+}
+.input1{
+position: relative;
+height: 35px;
+top: 3px;
+margin-bottom: 0px;
+}
+.input2{
+position: relative;
+right: 0%;
+margin-top: 5px;
+}
+.input3{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input4{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input5{
+position: relative;
+left: 0%;
+margin-top: 5px;
+margin-left: 0;
+}
+.input6{
+position: relative;
+}
+.btn-primary{
+position: relative;
+left: 0%;
+width: 80%;
+height: 35px;
+border-radius: 2px;
+background-color: #27b2e0;
+color: #fff;
+border: 1px #27b2e0;
+margin-top: 10px;
+}
+.book-box{
+  margin-top: 20px;
+  background-color: transparent !important;
+  padding: 20px 10px 20px 10px;
+  color: #fff;
+  font-family: "Montserrat";
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+  bottom: -100px;
+ 
+}
+.time-width{
+ width: 80%;
+}
+.date-width{
+  width: 80%;
+}
+.air-width{
+  width: 80%;
+}
+.home-label{
+  display: none;
+}
+.v-scroll{
+  top:450px;
+}
+}
 
+@media only screen and (max-width:769px){
+.navbar{
+  width: 92%;
+}
+.col3-align {
+    left: 3%;
+}
+.vl4 {
+    display: none;
+}
+.layer4-align {
+    left: 0%;
+}
+.layer4-title {
+  right: 0;
+  }
+  .testi-con{
+  margin-bottom: 20px;
+}
+.testi-star{
+  margin-bottom: 120px;
+}
+.testi-name{
+  margin-bottom: 120px;
+}
+.input1{
+position: relative;
+height: 35px;
+top: 3px;
+margin-bottom: 0px;
+}
+.input2{
+position: relative;
+right: 0%;
+margin-top: 5px;
+}
+.input3{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input4{
+position: relative;
+left: 0%;
+margin-top: 5px;
+}
+.input5{
+position: relative;
+left: 0%;
+margin-top: 5px;
+margin-left: 0;
+}
+.input6{
+position: relative;
+}
+.btn-primary{
+position: relative;
+left: 0%;
+width: 80%;
+height: 35px;
+border-radius: 2px;
+background-color: #27b2e0;
+color: #fff;
+border: 1px #27b2e0;
+margin-top: 10px;
+}
+.book-box{
+  margin-top: 20px;
+  background-color: transparent !important;
+  padding: 20px 10px 20px 10px;
+  color: #fff;
+  font-family: "Montserrat";
+  letter-spacing: 1px;
+  text-align: center;
+  position: relative;
+  bottom: 30px;
+ 
+}
+.time-width{
+ width: 80%;
+}
+.date-width{
+  width: 80%;
+}
+.air-width{
+  width: 80%;
+}
+.home-label{
+  display: none;
+}
+.v-scroll{
+  top:200px;
+}
+}
 @media only screen and (max-width:700px){
+  .navbar{
+  width: 60%;
+}
   .main-header{
     right: 49%;
     top: -45px;
   }
   .header-logo{
   position: absolute;
-  width: 100%;
+  width: 99%;
 }
 
   .overlay {
@@ -738,6 +945,9 @@ text-align: left;
   display: none;
 }
 .datepicker {
+  padding: 5px 130px 5px 10px;
+}
+.date-width {
     width: 80%;
 }
 .air-width{
@@ -766,6 +976,9 @@ button.btn.btn-primary.btn-sm{
 }
 .testi-name{
   margin-bottom: 0px;
+}
+.info{
+  right: 0;
 }
 }
 @media only screen and (max-width:376px){
@@ -807,6 +1020,8 @@ button.btn.btn-primary.btn-sm{
 .book-box{
 font-size: 15px;
 margin-top: 0;
+position: relative;
+top: -90px;
   }
 .form-control-sm{
 font-size: 12px !important;
@@ -818,6 +1033,12 @@ font-size: 12px;
   position: relative;
   top: -55px;
   }
+  .layer3-header {
+    font-size: 29px;
+}
+.slick-slide img{
+  left: -6%;
+}
 }
 
   /* END MOBILE */
