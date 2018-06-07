@@ -234,6 +234,7 @@ $(document).ready(function(){
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
             total = parseFloat(total) + parseFloat($(this).val());
+            $('#sms-confirmation-container').removeClass('d-none');
             $('#sms-fee-wrapper').text($(this).val());
         } else {
             if ($('#total').data('value') < total) {
@@ -241,6 +242,7 @@ $(document).ready(function(){
             }
 
             $('#sms-fee-wrapper').text(0);
+            $('#sms-confirmation-container').addClass('d-none');
         }
 
         $('#total').text('£'+total.toLocaleString());
@@ -251,6 +253,7 @@ $(document).ready(function(){
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
             total = parseFloat(total) + parseFloat($(this).val());
+            $('#cancellation-waiver-container').removeClass('d-none');
             $('#cancellation-waiver-wrapper').text($(this).val());
         } else {
             if ($('#total').data('value') < total) {
@@ -258,6 +261,7 @@ $(document).ready(function(){
             }
 
             $('#cancellation-waiver-wrapper').text(0);
+            $('#cancellation-waiver-container').addClass('d-none');
         }
 
         $('#total').text('£'+total.toLocaleString());

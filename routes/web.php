@@ -23,16 +23,10 @@ Route::get('/payment/{token?}', 'ParkingAppController@payment');
 Route::post('/payment', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
-
-
 Route::get('/contact','ParkingAppController@contact');
-
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking_details');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
-
-
-
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');
@@ -69,6 +63,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/reports/export', 'ReportsController@export');
     Route::match(['get', 'post'], '/reports/commissions', 'ReportsController@commissions');
     Route::match(['get', 'post'], '/reports/completed/jobs', 'ReportsController@completed_jobs');
+    Route::match(['get', 'post'], '/reports/company/revenues', 'ReportsController@company_revenues');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {

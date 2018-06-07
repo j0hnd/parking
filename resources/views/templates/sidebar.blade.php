@@ -45,6 +45,7 @@
                 <ul class="treeview-menu">
                     <li><a href="{{ url('/admin/reports/commissions') }}">Commissions</a></li>
                     <li><a href="{{ url('/admin/reports/completed/jobs') }}">Completed Jobs</a></li>
+                    <li><a href="{{ url('/admin/reports/company/revenues') }}">Company Revenues</a></li>
                 </ul>
             </li>
             <li class="header">Settings</li>
