@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Export\Commissions;
+use App\Export\CompanyRevenues;
 use App\Export\CompletedJobs;
 use App\Models\Bookings;
 use App\Models\Companies;
@@ -108,6 +109,48 @@ class ReportsController extends Controller
 		]);
 	}
 
+	public function company_revenues(Request $request)
+	{
+		$page_title = "Company Revenues";
+		$vendors = $this->vendors->get();
+		$bookings = null;
+		$selected_vendor = null;
+
+		if ($request->isMethod('post')) {
+			$form = $request->only(['vendor', 'date', 'export']);
+			list($start, $end) = explode(':', $form['date']);
+			if (is_null($form['vendor'])) {
+				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->whereNull('bookings.deleted_at')
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('companies', 'companies.id', '=', 'products.vendor_id')
+					->groupBy('products.vendor_id')
+					->paginate(config('app.item_per_page'));
+			} else {
+				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->whereNull('bookings.deleted_at')
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('vendor_id', $form['vendor']);
+					})
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('companies', 'companies.id', '=', 'products.vendor_id')
+					->groupBy('products.vendor_id')
+					->paginate(config('app.item_per_page'));
+
+				$selected_vendor = $form['vendor'];
+			}
+		}
+
+		return view('app.Reports.company-revenue', [
+			'page_title'      => $page_title,
+			'vendors'         => $vendors,
+			'bookings'        => $bookings,
+			'selected_vendor' => $selected_vendor
+		]);
+	}
+
 	public function export(Request $request, Excel $excel)
 	{
 		if ($request->isMethod('post')) {
@@ -144,7 +187,7 @@ class ReportsController extends Controller
 						->get();
 
 					if (isset($form['vendor'])) {
-						$company = CompletedJobs::findOrFail($form['vendor']);
+						$company = Companies::findOrFail($form['vendor']);
 						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::active()
 							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
@@ -156,6 +199,34 @@ class ReportsController extends Controller
 					}
 
 					return $excel->download(new CompletedJobs(				$bookings), $filename);
+					break;
+
+				case "company_revenues":
+					$filename = "CompanyRevenues-".Carbon::now()->format('Ymd').".{$ext}";
+					$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+						->whereNull('bookings.deleted_at')
+						->join('products', 'products.id', '=', 'bookings.product_id')
+						->join('companies', 'companies.id', '=', 'products.vendor_id')
+						->groupBy('products.vendor_id')
+						->get();
+
+					if (isset($form['vendor'])) {
+						$company = Companies::findOrFail($form['vendor']);
+						$filename = "Revenue Report for ".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
+						$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+							->whereNull('bookings.deleted_at')
+							->whereHas('products', function ($query) use ($form) {
+								$query->where('vendor_id', $form['vendor']);
+							})
+							->join('products', 'products.id', '=', 'bookings.product_id')
+							->join('companies', 'companies.id', '=', 'products.vendor_id')
+							->groupBy('products.vendor_id')
+							->get();
+					}
+
+					return $excel->download(new CompanyRevenues(				$bookings), $filename);
 					break;
 			}
 		}
