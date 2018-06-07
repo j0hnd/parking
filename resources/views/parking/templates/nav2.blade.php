@@ -3,7 +3,7 @@
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link contact" href="/contact">Contact Us</a></li>
             <li><div class="vl Vl"></div></li>
-            <li class="nav-item"><a class="nav-link membership" href="#">Login</a></li>
+            <li class="nav-item"><a class="nav-link membership" href="{{ url('/member/login') }}">Login</a></li>
             <li><div class="vl Vl"></div></li>
             <li class="nav-item"><a class="nav-link chat" href="#">Live Chat</a></li>
             <li><div class="vl Vl"></div></li>
