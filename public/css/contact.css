@@ -461,7 +461,7 @@ footer{
 .footer-con ul{
   overflow: hidden;
   position: relative;
-  left: -10%;
+  left: -7%;
 }
 .footer-con ul li{
   display: inline;
@@ -478,6 +478,12 @@ footer{
 .foot-gps{
   margin-left: 40px;
 }
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 
 /* END FOOTER */
 
@@ -520,6 +526,12 @@ footer{
 .ul-pos{
   margin-left: 0 !important;
 }
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 }
 
 @media only screen and (min-width:700px) and (max-width: 769px){
@@ -640,6 +652,12 @@ text-align: left;
 .input2{
   width: 340px;
 }
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 }
 
 @media only screen and (min-width:100px ) and (max-width:700px){
@@ -796,10 +814,69 @@ text-align: left;
   margin-left: 10px;
   margin-right: 15px;
 }
-.input2 {
+.input2, .bar2 {
     width: 250px;
     }
-
+label{
+  font-size: 16px;
 }
+.link-con{
+  font-size: 12px;
+}
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+}
+@media only screen and (max-width:321px){
+.con-content{
+  font-size: 15px;
+}
+.get-in-touch{
+  font-size: 30px;
+}
+.contact-head{
+  font-size: 24px;
+}
+.con-link1{
+font-size: 14px;
+}
+.con-link2{
+font-size: 14px;
+}
+.fa-facebook-f{
+  font-size: 20px !important;
+}
+.fa-twitter{
+  font-size: 20px !important;
+}
+.active-2-mobile {
+    padding: 13px 5px 15px 5px;
+}
+.not-active-2-mobile {
+    padding: 13px 5px 15px 4px;
+}
+.navbar-2-mobile ul {
+    padding: 10px 0px 12px 0px;
+  }
+  .vl-mobile{
+    border-left: 2px solid #fff;
+    height: 25px;
+    margin-left: 0px;
+    margin-right: 2px;
+  }
+  .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+  .navbar-2-mobile ul li a {
+    font-size: 13px;
+  }
+}
+
 
 /* END MOBILE */
