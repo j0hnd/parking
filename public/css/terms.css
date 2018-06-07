@@ -306,7 +306,7 @@ footer{
 .footer-con ul{
   overflow: hidden;
   position: relative;
-  left: -12%;
+  left: -7%;
 }
 .footer-con ul li{
   display: inline;
@@ -363,6 +363,12 @@ footer{
 .foot-col3 {
     right: 9%;
 }
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 }
 
 @media only screen and (max-width:769px){
@@ -406,7 +412,7 @@ footer{
   width: 100%;
 }
 .active-2-mobile{
-  background-color: #005e7d;
+  background-color: #27b2e0;
   display: inline;
   padding: 40px 40px 40px 40px;
 
@@ -417,6 +423,10 @@ footer{
 
 }
 .not-active-2-mobile:hover{
+ background-color: #005e7d;
+ 
+} 
+.active-2-mobile:hover{
  background-color: #005e7d;
  
 } 
@@ -441,6 +451,12 @@ footer{
 margin-left: 0px;
   margin-right: 0px;
 }
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 }
 @media only screen and (max-width:700px){
   .overlay-nav {
@@ -550,7 +566,7 @@ margin-left: 0px;
   margin-bottom: 0rem !important;
 }
 .active-2-mobile{
-  background-color: #005e7d;
+  background-color: #27b2e0;
   display: inline;
   padding: 17px 11px 21px 11px;
 
@@ -561,6 +577,10 @@ margin-left: 0px;
 
 }
 .not-active-2-mobile:hover{
+ background-color: #005e7d;
+ 
+} 
+.active-2-mobile:hover{
  background-color: #005e7d;
  
 } 
@@ -585,6 +605,76 @@ text-align: left;
   position: relative;
   right: 0%;
 }
-
+ .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+}
+@media only screen and (max-width:321px){
+.con-content{
+  font-size: 15px;
+}
+.get-in-touch{
+  font-size: 30px;
+}
+.contact-head{
+  font-size: 24px;
+}
+.con-link1{
+font-size: 14px;
+}
+.con-link2{
+font-size: 14px;
+}
+.fa-facebook-f{
+  font-size: 20px !important;
+}
+.fa-twitter{
+  font-size: 20px !important;
+}
+.active-2-mobile {
+    padding: 13px 5px 15px 5px;
+}
+.not-active-2-mobile {
+    padding: 13px 5px 15px 4px;
+}
+.navbar-2-mobile ul {
+    padding: 10px 0px 12px 0px;
+  }
+  .vl-mobile{
+    border-left: 2px solid #fff;
+    height: 25px;
+    margin-left: 0px;
+    margin-right: 2px;
+  }
+  .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+  .navbar-2-mobile ul li a {
+    font-size: 13px;
+  }
+  .term-title{
+    font-size: 30px;
+  }
+  .term-li {
+    font-size: 12px;
+}
+.term-content {
+    font-size: 12px;
+}
+.cwu {
+    font-size: 15px;
+}
+.read-review-con {
+    font-size: 15px;
+}
+.inner-con {
+    padding: 20px 23px 20px 20px;
+}
 }
 /* END MOBILE */

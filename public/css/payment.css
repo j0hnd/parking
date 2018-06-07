@@ -417,7 +417,7 @@ footer{
 .footer-con ul{
   overflow: hidden;
   position: relative;
-  left: -12%;
+  left: -7%;
 }
 .footer-con ul li{
   display: inline;
@@ -511,6 +511,12 @@ footer{
     .affix{
         width: 28%;
     }
+    .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 
 }
 
@@ -552,7 +558,7 @@ footer{
   position: relative;
   margin-bottom: 0rem !important;
   right: 6%;
-  width: 100%;
+  width: 106%;
 }
 .active-2-mobile{
   background-color: #005e7d;
@@ -599,6 +605,12 @@ margin-left: 0px;
     .affix{
         width: 27%;
     }
+    .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
 }
 @media (min-width: 768px) {
     #sidebar.affix {
@@ -818,6 +830,103 @@ margin-left: 0px;
         padding: 5px 50px 5px 50px;
         font-size: 23px;
     }
+ .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+  .navbar-2-mobile ul {
+    width: 100%;
+}
+}
+@media only screen and (max-width:321px){
+.con-content{
+  font-size: 15px;
+}
+.get-in-touch{
+  font-size: 30px;
+}
+.contact-head{
+  font-size: 24px;
+}
+.con-link1{
+font-size: 14px;
+}
+.con-link2{
+font-size: 14px;
+}
+.fa-facebook-f{
+  font-size: 20px !important;
+}
+.fa-twitter{
+  font-size: 20px !important;
+}
+.active-2-mobile {
+    padding: 13px 5px 15px 5px;
+}
+.not-active-2-mobile {
+    padding: 13px 5px 15px 4px;
+}
+.navbar-2-mobile ul {
+    padding: 10px 0px 12px 0px;
+  }
+  .vl-mobile{
+    border-left: 2px solid #fff;
+    height: 25px;
+    margin-left: 0px;
+    margin-right: 2px;
+  }
+  .mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+  .navbar-2-mobile ul li a {
+    font-size: 13px;
+  }
+  .term-title{
+    font-size: 30px;
+  }
+  .term-li {
+    font-size: 12px;
+}
+.term-content {
+    font-size: 12px;
+}
+.cwu {
+    font-size: 15px;
+}
+.read-review-con {
+    font-size: 15px;
+}
+.inner-con {
+    padding: 20px 23px 20px 20px;
+}
+#payment_wizard-t-2 {
+    font-size: 10px !important;
+}
+#payment_wizard-t-1 {
+    font-size: 10px !important;
+}
+#payment_wizard-t-0 {
+    font-size: 10px !important;
+}
+.tab-1 {
+    padding: 10px 5px 10px 1px;
+    font-size: 10px;
+    margin-left: -4px;
+}
+#payment_choice-t-0 {
+    font-size: 11px;
+}
+#payment_choice-t-1 {
+    font-size: 12px;
+}
+.paypal {
+    left: -20%;
+}
 }
 
 
