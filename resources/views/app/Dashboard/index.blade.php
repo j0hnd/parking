@@ -104,6 +104,7 @@
   2,666
 </div></div></div>
             </div>
+
             <!-- /.box-body -->
             <div class="box-footer no-border">
               <div class="row">
