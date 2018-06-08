@@ -52,4 +52,5 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <style media="screen">
         .ui-autocomplete { height: 300px; overflow-y: scroll; overflow-x: hidden; }
     </style>
+    @yield('styles')
 </head>

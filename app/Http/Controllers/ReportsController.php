@@ -120,7 +120,7 @@ class ReportsController extends Controller
 			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
@@ -128,7 +128,7 @@ class ReportsController extends Controller
 					->groupBy('products.vendor_id')
 					->paginate(config('app.item_per_page'));
 			} else {
-				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->whereHas('products', function ($query) use ($form) {
