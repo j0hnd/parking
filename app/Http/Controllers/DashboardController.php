@@ -42,13 +42,21 @@ class DashboardController extends Controller
 			->groupBy(DB::raw("DATE_FORMAT(bookings.created_at, '%Y-%m')"))
 			->get();
 
+		$summary = Bookings::active()
+			->selectRaw("DATE_FORMAT(created_at, '%M') AS month, (SUM(price_value) + SUM(booking_fees) + SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) + SUM(CASE WHEN cancellation_waiver THEN cancellation_waiver ELSE 0 END)) AS sales, SUM(revenue_value) revenue")
+			->whereRaw("YEAR(created_at) = ?", [date('Y')])
+			->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
+			->get();
+
+
         return view('app.Dashboard.index', [
         	'page_title'       => $page_title,
 			'new_bookings'     => $new_bookings,
 			'total_bookings'   => $total_bookings,
 			'revenue' 		   => $revenue,
 			'completed_jobs'   => $completed_jobs,
-			'monthly_revenues' => $monthly_revenue
+			'monthly_revenues' => $monthly_revenue,
+			'summary'          => $summary
 		]);
     }
 }
