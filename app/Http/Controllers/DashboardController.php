@@ -14,8 +14,35 @@ class DashboardController extends Controller
         $page_title = "Dashboard";
         $start = Carbon::now()->startOfMonth();
         $now = Carbon::now();
-        $area_label_months = null;
-        $area_data = null;
+        $area_label_months = [
+        	'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
+
+        $area_data = [
+			0  => 0,
+			1  => 0,
+			2  => 0,
+			3  => 0,
+			4  => 0,
+			5  => 0,
+			6  => 0,
+			7  => 0,
+			8  => 0,
+			9  => 0,
+			10 => 0,
+			11 => 0
+		];
 
 
         $new_bookings = Bookings::active()
@@ -26,7 +53,7 @@ class DashboardController extends Controller
         $total_bookings = Bookings::active()->count();
 
         $revenue = Bookings::active()
-			->selectRaw("SUM(revenue_value) AS revenue")
+			->selectRaw("(SUM(revenue_value) + SUM(booking_fees) + SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) + SUM(CASE WHEN cancellation_waiver THEN cancellation_waiver ELSE 0 END)) AS revenue")
 			->whereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(created_at, '%Y-%m-%d') <= ?",
 				[$start->format('Y-m-d'), $now->format('Y-m-d')])
 			->first();
@@ -46,15 +73,15 @@ class DashboardController extends Controller
 			->get();
 
 		$summary = Bookings::active()
-			->selectRaw("DATE_FORMAT(created_at, '%M') AS month, (SUM(price_value) + SUM(booking_fees) + SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) + SUM(CASE WHEN cancellation_waiver THEN cancellation_waiver ELSE 0 END)) AS sales, SUM(revenue_value) revenue")
+			->selectRaw("DATE_FORMAT(created_at, '%M') AS month, SUM(price_value) AS sales, (SUM(revenue_value) + SUM(booking_fees) + SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) + SUM(CASE WHEN cancellation_waiver THEN cancellation_waiver ELSE 0 END)) AS revenue")
 			->whereRaw("YEAR(created_at) = ?", [date('Y')])
 			->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
 			->get();
 
 		if ($summary) {
 			foreach ($summary as $_summary) {
-				$area_label_months[] = $_summary->month;
-				$area_data[] = $_summary->revenue;
+				$key = array_search($_summary->month, $area_label_months);
+				$area_data[$key] = number_format($_summary->revenue, 2);
 			}
 
 			$area_label_months = json_encode($area_label_months);
