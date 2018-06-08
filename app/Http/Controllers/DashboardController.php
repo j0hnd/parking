@@ -14,6 +14,9 @@ class DashboardController extends Controller
         $page_title = "Dashboard";
         $start = Carbon::now()->startOfMonth();
         $now = Carbon::now();
+        $area_label_months = null;
+        $area_data = null;
+
 
         $new_bookings = Bookings::active()
 			->whereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(created_at, '%Y-%m-%d') <= ?",
@@ -48,6 +51,15 @@ class DashboardController extends Controller
 			->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
 			->get();
 
+		if ($summary) {
+			foreach ($summary as $_summary) {
+				$area_label_months[] = $_summary->month;
+				$area_data[] = $_summary->revenue;
+			}
+
+			$area_label_months = json_encode($area_label_months);
+			$area_data = json_encode($area_data);
+		}
 
         return view('app.Dashboard.index', [
         	'page_title'       => $page_title,
@@ -56,7 +68,9 @@ class DashboardController extends Controller
 			'revenue' 		   => $revenue,
 			'completed_jobs'   => $completed_jobs,
 			'monthly_revenues' => $monthly_revenue,
-			'summary'          => $summary
+			'summary'          => $summary,
+			'area_months'      => $area_label_months,
+			'area_data'        => $area_data
 		]);
     }
 }
