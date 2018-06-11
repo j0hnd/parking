@@ -48,7 +48,7 @@
 						</tr>
 					@else
 						<tr>
-							<td colspan="2" class="text-center"><strong>No data found</strong></td>
+							<td colspan="3" class="text-center"><strong>No data found</strong></td>
 						</tr>
 					@endif
 					</tbody>
@@ -56,7 +56,7 @@
 					@if(count($bookings))
 						<tfoot>
 						<tr>
-							<td colspan="2" class="text-right">{{ $bookings->links() }}</td>
+							<td colspan="3" class="text-right">{{ $bookings->links() }}</td>
 						</tr>
 						</tfoot>
 					@endif
@@ -68,4 +68,14 @@
 
 @section('scripts')
 	<script src="{{ url('js/reports.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function () {
+		    var selected_date = '{{ $selected_date }}';
+		    setTimeout(function () {
+                if (selected_date) {
+                    $("#reportrange span").html(selected_date);
+                }
+            }, 300);
+		});
+	</script>
 @stop

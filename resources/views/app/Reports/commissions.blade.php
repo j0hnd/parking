@@ -88,4 +88,14 @@
 
 @section('scripts')
 <script src="{{ url('js/reports.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        var selected_date = '{{ $selected_date }}';
+        setTimeout(function () {
+            if (selected_date) {
+                $("#reportrange span").html(selected_date);
+            }
+        }, 300);
+    });
+</script>
 @stop
