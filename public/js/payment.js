@@ -279,7 +279,24 @@ $(document).ready(function(){
         $('#car-registration-no').val($('#car-registration-no-src').val());
         $('#vehicle-color').val($('#vehicle-color-src').val());
         $('#vehicle-model').val($('#vehicle-model-src').val());
-        $('#order-form').submit();
+
+        var fv = $('#payment_wizard').data('formValidation'),
+
+            // The current step container
+            $container = $('#payment_wizard').find('section[data-step="0"]');
+
+        // Validate the container
+        fv.validateContainer($container);
+
+        var isValidStep = fv.isValidContainer($container);
+
+        if (isValidStep === false || isValidStep === null) {
+            // Do not jump to the next step
+            return false;
+        } else {
+            $('#order-form').submit();
+        }
+
     });
 
     if ($('#sms-fee').is(':checked')) {
