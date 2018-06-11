@@ -20,7 +20,7 @@ $(function () {
     }, cb);
 
     $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-        var date_value = picker.startDate.format('Y-m-d')+':'+picker.endDate.format('Y-m-d');
+        var date_value = picker.startDate.format('YYYY-MM-DD')+':'+picker.endDate.format('YYYY-MM-DD');
         $('#date').val(date_value);
     });
 

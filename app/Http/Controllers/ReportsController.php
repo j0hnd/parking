@@ -45,10 +45,12 @@ class ReportsController extends Controller
 		$vendors = $this->vendors->get();
 		$bookings = null;
 		$selected_vendor = null;
+		$selected_date = "";
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
+			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
 					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
@@ -71,7 +73,8 @@ class ReportsController extends Controller
 			'page_title'      => $page_title,
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
-			'selected_vendor' => $selected_vendor
+			'selected_vendor' => $selected_vendor,
+			'selected_date'   => $selected_date
 		]);
 	}
 
@@ -81,10 +84,12 @@ class ReportsController extends Controller
 		$vendors = $this->vendors->get();
 		$bookings = null;
 		$selected_vendor = null;
+		$selected_date = "";
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
+			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
@@ -105,7 +110,8 @@ class ReportsController extends Controller
 			'page_title'      => $page_title,
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
-			'selected_vendor' => $selected_vendor
+			'selected_vendor' => $selected_vendor,
+			'selected_date'   => $selected_date
 		]);
 	}
 
@@ -115,10 +121,12 @@ class ReportsController extends Controller
 		$vendors = $this->vendors->get();
 		$bookings = null;
 		$selected_vendor = null;
+		$selected_date = "";
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
+			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
@@ -147,7 +155,8 @@ class ReportsController extends Controller
 			'page_title'      => $page_title,
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
-			'selected_vendor' => $selected_vendor
+			'selected_vendor' => $selected_vendor,
+			'selected_date'   => $selected_date
 		]);
 	}
 

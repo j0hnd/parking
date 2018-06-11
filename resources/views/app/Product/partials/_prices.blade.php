@@ -2,7 +2,7 @@
     <div class="row margin-left10 margin-right10 margin-bottom15 padding-10 bg-info">
         <div id="override-container">
             <h4>Override Price Per Day</h4>
-            @if(isset($product->overrides))
+            @if(isset($product->overrides) and count($product->override))
                 @foreach($product->overrides as $override)
                 <div id="override-wrapper" class="col-md-12 padding-bottom10">
                     <div class="col-md-3">
