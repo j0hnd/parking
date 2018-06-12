@@ -52,17 +52,25 @@ class ReportsController extends Controller
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::active()
+				$bookings = Bookings::selectRaw("companies.id AS company_id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
 					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
-					->orderBy('return_at', 'desc')
+					->whereNull('bookings.deleted_at')
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('companies', 'companies.id', '=', 'products.vendor_id')
+					->groupBy('products.vendor_id')
+					->orderBy('companies.company_name', 'ASC')
 					->paginate(config('app.item_per_page'));
 			} else {
-				$bookings = Bookings::active()
+				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
 					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('vendor_id', $form['vendor']);
 					})
-					->orderBy('return_at', 'desc')
+					->whereNull('bookings.deleted_at')
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('companies', 'companies.id', '=', 'products.vendor_id')
+					->groupBy('products.vendor_id')
+					->orderBy('companies.company_name', 'ASC')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
@@ -117,7 +125,7 @@ class ReportsController extends Controller
 
 	public function company_revenues(Request $request)
 	{
-		$page_title = "Company Revenues";
+		$page_title = "Vendor Revenues";
 		$vendors = $this->vendors->get();
 		$bookings = null;
 		$selected_vendor = null;
@@ -128,7 +136,7 @@ class ReportsController extends Controller
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
+				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
@@ -239,5 +247,38 @@ class ReportsController extends Controller
 					break;
 			}
 		}
+	}
+
+	public function get_booking_details(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+
+			if ($request->ajax()) {
+
+				$params = $request->only(['date']);
+
+				$id = $request->id;
+
+				list($start, $end) = explode('-', $params['date']);
+				$start = Carbon::createFromFormat('Y-m-d', date('Y-m-d', strtotime($start)));
+				$end = Carbon::createFromFormat('Y-m-d', date('Y-m-d', strtotime($end)));
+
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
+					->whereHas('products', function ($query) use ($id) {
+						$query->where('vendor_id', $id);
+					})
+					->orderBy('return_at', 'desc')
+					->get();
+
+			}
+
+		} catch (Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
 	}
 }

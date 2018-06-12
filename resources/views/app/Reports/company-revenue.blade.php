@@ -9,7 +9,7 @@
 @stop
 
 @section('main-content')
-	@include('app.Reports.partials._filters', ['export' => 'company_revenues', 'generate_url' => url('/admin/reports/company/revenues')])
+	@include('app.Reports.partials._filters', ['export' => 'company_revenues', 'generate_url' => url('/admin/reports/vendor/revenues')])
 
 	<div class="row">
 		<div class="col-md-12">

@@ -15,16 +15,21 @@
 		<div class="col-md-12">
 			<div class="table-responsive">
 				@php
-					$total = 0;
+					$total_sales = 0;
+					$total_revenue = 0;
+					$total_booking_fee = 0;
+					$total_sms_fee = 0;
+					$total_cancellation_fee = 0;
 				@endphp
 				<table class="table table-striped">
 					<thead>
 					<tr>
-						<th>Booking ID</th>
 						<th>Vendor</th>
-						<th>Airport/Parking Type</th>
+						<th class="text-right">Sales</th>
+						<th class="text-right">Revenue</th>
 						<th class="text-right">Booking Fee</th>
-						<th class="text-center">Expected Date of Completion</th>
+						<th class="text-right">SMS Confirmation</th>
+						<th class="text-right">Cancellation Waiver</th>
 					</tr>
 					</thead>
 
@@ -33,28 +38,44 @@
 						@foreach($bookings as $booking)
 
 							@php
-								$total += $booking->price_value
+								$total_sales += $booking->sales;
+								$total_revenue += $booking->revenue;
+								$total_booking_fee += $booking->booking_fee;
+								$total_sms_fee += $booking->sms_fee;
+								$total_cancellation_fee += $booking->cancellation;
 							@endphp
 
-						<tr id="booking-{{ $booking->id }}">
-							<td>{{ $booking->booking_id }}</td>
-							<td>{{ $booking->products[0]->vendors[0]->company_name }}</td>
-							<td>{{ $booking->order_title }}</td>
-							<td class="text-right">£{{ number_format($booking->price_value, 2) }}</td>
-							<td class="text-center">{{ $booking->return_at->format('F j, Y') }}</td>
+						<tr id="booking-{{ $booking->company_id}}">
+							<td><a href="javascript:void(0);" data-id="{{ $booking->company_id }}" data-range="{{ $selected_date }}">{{ $booking->company_name }}</a></td>
+							<td class="text-right">£{{ number_format($booking->sales, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->revenue, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->booking_fee, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->sms_fee, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->cancellation, 2) }}</td>
+						</tr>
+						<tr id="booking-details-container-{{ $booking->company_id }}" class="warning">
+							<td colspan="6">
+								<div class="row">
+									<div class="col-md-12">Booking Details</div>
+								</div>
+								<div class="row">
+									<div id="details-{{ $booking->company_id }}-wrapper" class="col-md-12"></div>
+								</div>
+							</td>
 						</tr>
 						@endforeach
 
 						<tr id="summary" class="bg-aqua">
 							<td></td>
-							<td></td>
-							<td></td>
-							<td class="text-right"><strong>£{{ number_format($total, 2) }}</strong></td>
-							<td></td>
+							<td class="text-right"><strong>£{{ number_format($total_sales, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_revenue, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_booking_fee, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_sms_fee, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_cancellation_fee, 2) }}</strong></td>
 						</tr>
 					@else
 						<tr>
-							<td colspan="5" class="text-center"><strong>No data found</strong></td>
+							<td colspan="6" class="text-center"><strong>No data found</strong></td>
 						</tr>
 					@endif
 					</tbody>
@@ -62,7 +83,7 @@
 					@if(count($bookings))
 						<tfoot>
 						<tr>
-							<td colspan="5" class="text-right">{{ $bookings->links() }}</td>
+							<td colspan="6" class="text-right">{{ $bookings->links() }}</td>
 						</tr>
 						</tfoot>
 					@endif
