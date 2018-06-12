@@ -243,7 +243,7 @@ label
 .affix {
   
     z-index: 9999 !important;
-    width: 24%;
+    
 }
 .side-more{
     text-decoration: none;
@@ -437,6 +437,19 @@ footer{
 
 /* END FOOTER */
 /* START MOBILE */
+@media only screen and (min-width:1024px){
+
+.affix{
+    width: 280px;
+}
+}
+@media only screen and (min-width:1200px){
+
+.affix{
+    width: 340px;
+}
+}
+
 @media only screen and (max-width:1025px){
 .navbar {
     position: fixed;
@@ -602,9 +615,7 @@ margin-left: 0px;
     margin-left: 9px;
     font-size: 12px;
     }
-    .affix{
-        width: 27%;
-    }
+ 
     .mobile li {
     display: inline;
   }
@@ -612,7 +623,7 @@ margin-left: 0px;
     display: inline;
   }
 }
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) {
     #sidebar.affix {
         position: fixed;
         top: 40px;
@@ -840,6 +851,12 @@ margin-left: 0px;
     width: 100%;
 }
 }
+@media only screen and (max-width:992px){
+    .affix{
+        width: 210px;
+    }
+
+    }
 @media only screen and (max-width:321px){
 .con-content{
   font-size: 15px;
