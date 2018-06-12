@@ -257,11 +257,11 @@ class ReportsController extends Controller
 
 			if ($request->ajax()) {
 
-				$params = $request->only(['date']);
+				$date = $request->get('date');
 
 				$id = $request->id;
 
-				list($start, $end) = explode('-', $params['date']);
+				list($start, $end) = explode('-', $date);
 				$start = Carbon::createFromFormat('Y-m-d', date('Y-m-d', strtotime($start)));
 				$end = Carbon::createFromFormat('Y-m-d', date('Y-m-d', strtotime($end)));
 
@@ -273,6 +273,10 @@ class ReportsController extends Controller
 					->orderBy('return_at', 'desc')
 					->get();
 
+				$html = view('app.Reports.partials._booking-details', ['bookings' => $bookings])->render();
+
+				$response['success'] = true;
+				$response['data'] = $html;
 			}
 
 		} catch (Exception $e) {
