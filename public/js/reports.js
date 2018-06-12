@@ -44,4 +44,27 @@ $(function () {
         $('#report-form').attr('action', $(this).data('url'));
         $('#report-form').submit();
     });
+
+    $(document).on('click', '.toggle-booking-details', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        var date = $(this).data('date');
+
+        if ($('.booking-details').is(':visible')) {
+            $('.booking-details').addClass('hidden');
+        } else {
+            $('#booking-details-' + id).removeClass('hidden');
+            $.ajax({
+                url: '/admin/reports/booking/details/' + id,
+                type: 'post',
+                data: { _token: $('#_token').val(), date: date },
+                dataType: 'json',
+                success: function (response) {
+                    $('#details-'+ id +'-wrapper').html(response.data);
+                }
+            });
+        }
+
+
+    });
 });

@@ -15,46 +15,85 @@
 		<div class="col-md-12">
 			<div class="table-responsive">
 				@php
-					$total = 0;
+					$total_sales = 0;
+					$total_revenue = 0;
+					$total_booking_fee = 0;
+					$total_sms_fee = 0;
+					$total_cancellation_fee = 0;
 				@endphp
-				<table class="table table-striped">
+				<table class="table">
 					<thead>
 					<tr>
-						<th>Booking ID</th>
 						<th>Vendor</th>
-						<th>Airport/Parking Type</th>
+						<th class="text-right">Sales</th>
+						<th class="text-right">Revenue</th>
 						<th class="text-right">Booking Fee</th>
-						<th class="text-center">Expected Date of Completion</th>
+						<th class="text-right">SMS Confirmation</th>
+						<th class="text-right">Cancellation Waiver</th>
 					</tr>
 					</thead>
 
 					<tbody>
 					@if(count($bookings))
-						@foreach($bookings as $booking)
+						@foreach($bookings as $i => $booking)
 
 							@php
-								$total += $booking->price_value
+								$color = ($i % 2) == 0 ? "#ffffff" : "#f4f4f4";
+								$total_sales += $booking->sales;
+								$total_revenue += $booking->revenue;
+								$total_booking_fee += $booking->booking_fee;
+								$total_sms_fee += $booking->sms_fee;
+								$total_cancellation_fee += $booking->cancellation;
 							@endphp
 
-						<tr id="booking-{{ $booking->id }}">
-							<td>{{ $booking->booking_id }}</td>
-							<td>{{ $booking->products[0]->vendors[0]->company_name }}</td>
-							<td>{{ $booking->order_title }}</td>
-							<td class="text-right">£{{ number_format($booking->price_value, 2) }}</td>
-							<td class="text-center">{{ $booking->return_at->format('F j, Y') }}</td>
+						<tr id="booking-{{ $booking->company_id}}" style="background-color:{{ $color }}">
+							<td><a href="javascript:void(0);" class="toggle-booking-details" data-id="{{ $booking->company_id }}" data-date="{{ $selected_date }}">{{ $booking->company_name }}</a></td>
+							<td class="text-right">£{{ number_format($booking->sales, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->revenue, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->booking_fee, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->sms_fee, 2) }}</td>
+							<td class="text-right">£{{ number_format($booking->cancellation, 2) }}</td>
+						</tr>
+						<tr id="booking-details-{{ $booking->company_id }}" class="booking-details hidden bg-gray">
+							<td colspan="6">
+								<div class="row">
+									<div class="col-md-12"><h4>Booking Details</h4></div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table table-striped">
+											<thead>
+											<tr>
+												<th>Booking ID</th>
+												<th>Airport/Parking Type</th>
+												<th class="text-right">Booking Fee</th>
+												<th class="text-right">SMS Confirmation Fee</th>
+												<th class="text-right">Cancellation Waiver</th>
+												<th class="text-center">Revenue Share</th>
+												<th class="text-right">Revenue Value</th>
+											</tr>
+											</thead>
+
+											<tbody id="details-{{ $booking->company_id }}-wrapper">
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</td>
 						</tr>
 						@endforeach
 
 						<tr id="summary" class="bg-aqua">
 							<td></td>
-							<td></td>
-							<td></td>
-							<td class="text-right"><strong>£{{ number_format($total, 2) }}</strong></td>
-							<td></td>
+							<td class="text-right"><strong>£{{ number_format($total_sales, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_revenue, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_booking_fee, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_sms_fee, 2) }}</strong></td>
+							<td class="text-right"><strong>£{{ number_format($total_cancellation_fee, 2) }}</strong></td>
 						</tr>
 					@else
 						<tr>
-							<td colspan="5" class="text-center"><strong>No data found</strong></td>
+							<td colspan="6" class="text-center"><strong>No data found</strong></td>
 						</tr>
 					@endif
 					</tbody>
@@ -62,7 +101,7 @@
 					@if(count($bookings))
 						<tfoot>
 						<tr>
-							<td colspan="5" class="text-right">{{ $bookings->links() }}</td>
+							<td colspan="6" class="text-right">{{ $bookings->links() }}</td>
 						</tr>
 						</tfoot>
 					@endif
@@ -70,6 +109,8 @@
 			</div>
 		</div>
 	</div>
+
+	<input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}" />
 @stop
 
 @section('scripts')
