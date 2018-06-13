@@ -21,22 +21,24 @@ class CompletedJobs implements FromCollection, WithMapping, WithHeadings
 	public function map($data): array
 	{
 		return [
-			$data->booking_id,
-			$data->products[0]->vendors[0]->company_name,
-			$data->order_title,
-			'£'.number_format($data->price_value, 2),
-			$data->return_at->format('F j, Y')
+			$data->company_name,
+			'£'.number_format($data->sales, 2),
+			'£'.number_format($data->revenue, 2),
+			'£'.number_format($data->booking_fee, 2),
+			'£'.number_format($data->sms_fee, 2),
+			'£'.number_format($data->cancallation_waiver, 2),
 		];
 	}
 
 	public function headings(): array
 	{
 		return [
-			'Booking ID',
 			'Vendor',
-			'Order',
+			'Sales',
+			'Revenue',
 			'Booking Fee',
-			'Expected Date of Completion'
+			'SMS Confirmation Fee',
+			'Cancellation Waiver'
 		];
 	}
 

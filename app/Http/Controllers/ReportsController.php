@@ -198,20 +198,28 @@ class ReportsController extends Controller
 
 				case "completed_jobs":
 					$filename = "CompletedJobs-".Carbon::now()->format('Ymd').".{$ext}";
-					$bookings = Bookings::active()
-						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
-						->orderBy('return_at', 'desc')
+					$bookings = Bookings::selectRaw("companies.id AS company_id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
+						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+						->whereNull('bookings.deleted_at')
+						->join('products', 'products.id', '=', 'bookings.product_id')
+						->join('companies', 'companies.id', '=', 'products.vendor_id')
+						->groupBy('products.vendor_id')
+						->orderBy('companies.company_name', 'ASC')
 						->get();
 
 					if (isset($form['vendor'])) {
 						$company = Companies::findOrFail($form['vendor']);
 						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
-						$bookings = Bookings::active()
-							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
+						$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
+							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('vendor_id', $form['vendor']);
 							})
-							->orderBy('return_at', 'desc')
+							->whereNull('bookings.deleted_at')
+							->join('products', 'products.id', '=', 'bookings.product_id')
+							->join('companies', 'companies.id', '=', 'products.vendor_id')
+							->groupBy('products.vendor_id')
+							->orderBy('companies.company_name', 'ASC')
 							->get();
 					}
 

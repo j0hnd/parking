@@ -5,6 +5,17 @@
 		#summary td {
 			font-size: 18px;
 		}
+
+		#grand-total {
+			font-size: 22px;
+			font-weight: bold;
+		}
+
+		#grand-total span {
+			font-weight: normal;
+			font-size: 11px;
+			padding-right: 10px;
+		}
 	</style>
 @stop
 
@@ -75,6 +86,7 @@
 											</thead>
 
 											<tbody id="details-{{ $booking->company_id }}-wrapper">
+												<tr><td class="text-center" colspan="7"><img src="{{ asset('/img/loader.gif') }}"></td></tr>
 											</tbody>
 										</table>
 									</div>
@@ -91,6 +103,14 @@
 							<td class="text-right"><strong>£{{ number_format($total_sms_fee, 2) }}</strong></td>
 							<td class="text-right"><strong>£{{ number_format($total_cancellation_fee, 2) }}</strong></td>
 						</tr>
+						<tr>
+							<td id="grand-total" class="text-right" colspan="6">
+								@php
+									$grand_total = $total_sales + $total_revenue + $total_booking_fee + $total_sms_fee + $total_cancellation_fee;
+								@endphp
+								<span>Grand Total:</span> £{{ number_format($grand_total, 2) }}
+							</td>
+						</tr>
 					@else
 						<tr>
 							<td colspan="6" class="text-center"><strong>No data found</strong></td>
@@ -100,9 +120,9 @@
 
 					@if(count($bookings))
 						<tfoot>
-						<tr>
-							<td colspan="6" class="text-right">{{ $bookings->links() }}</td>
-						</tr>
+							<tr>
+								<td colspan="6" class="text-right">{{ $bookings->links() }}</td>
+							</tr>
 						</tfoot>
 					@endif
 				</table>
