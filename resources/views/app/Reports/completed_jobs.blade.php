@@ -75,6 +75,7 @@
 											</thead>
 
 											<tbody id="details-{{ $booking->company_id }}-wrapper">
+												<tr><td class="text-center" colspan="7"><img src="{{ asset('/img/loader.gif') }}"></td></tr>
 											</tbody>
 										</table>
 									</div>
