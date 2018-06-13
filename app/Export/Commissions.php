@@ -24,8 +24,10 @@ class Commissions implements FromCollection, WithMapping, WithHeadings
 			$data->booking_id,
 			$data->products[0]->vendors[0]->company_name,
 			$data->order_title,
-			$data->products[0]->revenue_share.'%',
-			'£'.$data->revenue_value
+			$data->customers->first_name." ".$data->customers->last_name,
+			$data->created_at->format('F j, Y'),
+			$data->drop_off_at->format('F j, Y')."/".$data->return_at->format('F j, Y'),
+			($data->price_value + $data->booking_fee + $data->sms_confirmation_fee + $data->cancellation_waiver) - $data->revenue_value
 		];
 	}
 
@@ -35,8 +37,10 @@ class Commissions implements FromCollection, WithMapping, WithHeadings
 			'Booking ID',
 			'Vendor',
 			'Order',
-			'Revenue Share',
-			'Revenue Value'
+			'Customer Name',
+			'Book Date',
+			'Drop Off At/Return At',
+			'Cost'
 		];
 	}
 

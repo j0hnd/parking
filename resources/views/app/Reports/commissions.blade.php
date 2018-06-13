@@ -54,7 +54,7 @@
                             <td class="text-center"><span class="drop-off">{{ $booking->drop_off_at->format('F j, Y') }}</span>/<span class="return-at">{{ $booking->return_at->format('F j, Y') }}</span></td>
                             <td class="text-right">
                                 @php
-                                    $cost = $booking->price_value + $booking->booking_fee + $booking->sms_confirmation_fee + $booking->cancellation_waiver;
+                                    $cost = ($booking->price_value + $booking->booking_fee + $booking->sms_confirmation_fee + $booking->cancellation_waiver) - $booking->revenue_value;
                                     $total_cost += $cost;
                                 @endphp
 
