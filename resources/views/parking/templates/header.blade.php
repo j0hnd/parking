@@ -7,7 +7,7 @@
 <div class="container book">
     <div class="row">
         <div class="col-md-12 main-header">
-            <img src="img/header-logo.png" class="header-logo">
+            <img src="{{ asset('/img/header-logo-light.png') }}" class="header-logo">
         </div>
     </div>
     @include('parking.partials._search')

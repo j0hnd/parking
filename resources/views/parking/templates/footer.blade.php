@@ -9,16 +9,19 @@
                 </p>
             </div>
             <div class="col-md-4">
-                <p class="foot-col2">AIRPORT</p>
-                <p class="foot-col2-sub">PARKING SYSTEM</p>
+                @php
+                    $app_name = explode(" ", config('app.name'));
+                @endphp
+                <p class="foot-col2">{{ $app_name[0] }}</p>
+                <p class="foot-col2-sub">{{ $app_name[1] }}</p>
             </div>
             <div class="col-md-4 col3-align">
                 <p class="foot-col3">
                     CONTACT US!
                 </p>
                 <div class="info">
-                    <i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('/img/tele.png') }}"></i> (028)231 5344<br/><br/>
-                    <i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('img/email.png') }}"></i> loremipsum@lorem.com<br/><br/>
+                    {{--<i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('/img/tele.png') }}"></i> (028)231 5344<br/><br/>--}}
+                    <i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('img/email.png') }}"></i> {{ config('app.company_email') }}<br/><br/>
                     <i style="margin-right: 18px;" class="mob-icon"><img src="{{ asset('img/gps.png') }}"></i> Lorem ipsum dolor sit amet <p class="foot-gps" ">consectetur adipisicing elit.</p>
                 </div>
             </div>
