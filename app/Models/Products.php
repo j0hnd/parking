@@ -106,7 +106,7 @@ class Products extends BaseModel
                                     'overrides' => $override_price,
 									'services' => $product->carpark_services
                                 ];
-							} elseif ($no_days !== $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and is_null($price->price_year)) {
+							} elseif ($no_days == $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and is_null($price->price_year)) {
 								$products[$i] = [
 									'product_id' => $product->id,
 									'airport_id' => $airport->airport_id,
@@ -120,7 +120,7 @@ class Products extends BaseModel
 									'overrides' => $override_price,
 									'services' => $product->carpark_services
 								];
-							} elseif ($no_days !== $price->no_of_days and is_null($price->price_month) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+							} elseif ($no_days == $price->no_of_days and is_null($price->price_month) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
 									'product_id' => $product->id,
 									'airport_id' => $airport->airport_id,
@@ -134,7 +134,7 @@ class Products extends BaseModel
 									'overrides' => $override_price,
 									'services' => $product->carpark_services
 								];
-							} elseif ($no_days !== $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+							} elseif ($no_days == $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
 									'product_id' => $product->id,
 									'airport_id' => $airport->airport_id,
