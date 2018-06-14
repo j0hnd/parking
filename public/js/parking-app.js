@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
     $('[data-scroll]').on('click', scrollToSection);
     $('.datepicker').datepicker({
         autoclose: true,
-        format: 'mm/dd/yyyy',
+        format: 'dd/mm/yyyy',
         todayHighlight: true
     });
 }(jQuery));
