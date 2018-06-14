@@ -6,6 +6,7 @@ use App\Mail\SendBookingConfirmation;
 use App\Models\Airports;
 use App\Models\BookingDetails;
 use App\Models\Bookings;
+use App\Models\Carpark;
 use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Tools\Common;
@@ -95,6 +96,7 @@ class ParkingAppController extends Controller
 			$airport = Airports::findOrFail($airport_id);
 			$product = Products::findOrFail($product_id);
 			$price   = Prices::findOrFail($price_id);
+			$carpark = Carpark::findOrFail($product->carpark_id);
 
 			$booking_fee          = Fees::active()->where('fee_name', 'booking_fee')->first();
 			$sms_confirmation_fee = Fees::active()->where('fee_name', 'sms_confirmation_fee')->first();
@@ -108,6 +110,7 @@ class ParkingAppController extends Controller
 			return view('parking.payment', compact(
 				'product',
 				'airport',
+				'carpark',
 				'price',
 				'price_value',
 				'booking_fee',
