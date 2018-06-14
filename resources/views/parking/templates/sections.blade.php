@@ -73,25 +73,32 @@
         </div>
         <div class="row testi-align">
         <div class="col-md-4 t-name" id="animatedHeading">
-              <div><p class="testi-name">Etiam tincidunt werwgr</p></div>
-              <div><p class="testi-name">John Doe</p></div>
-              <div><p class="testi-name">Jane Doe</p></div>
-              <div><p class="testi-name">Eric Bobin</p></div>
-              <div><p class="testi-name">Sarah Lee</p></div>
+              <div><p class="testi-name">Steven Allen</p></div>
+              <div><p class="testi-name">Ola Steczkowska</p></div>
+              <div><p class="testi-name">Joyce Morris</p></div>
+              <div><p class="testi-name">Mr Bhaykar</p></div>
+              <div><p class="testi-name">Gerard Mackie</p></div>
+              <div><p class="testi-name">Halil Salahi Ali</p></div>
+              <div><p class="testi-name">Jonny Martin</p></div>
+              <div><p class="testi-name">Brenda</p></div>
+              <div><p class="testi-name">Ayesha Sheikh</p></div>
         </div>
         <div class="col-md-4 testi" id="animatedHeading2">
-              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam non velit et mauris mattis eleifend</p></div>
-              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam non velit et mauris mattis eleifend</p></div>
-              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam non velit et mauris mattis eleifend</p></div>
-              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam non velit et mauris mattis eleifend</p></div>
-              <div class="testi-con"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nullam non velit et mauris mattis eleifend</p></div>
+              <div class="testi-con"><p>Great price, would use again</p></div>
+              <div class="testi-con"><p>very good efficient service. helpful staff</p></div>
+              <div class="testi-con"><p>excellent service! traveled to Alicante from Stansted with my family, was running late and the meet and greet service saved the day. Thank you</p></div>
+              <div class="testi-con"><p>fast and easy to use,very pleased. will book again</p></div>
+              <div class="testi-con"><p>booking was simple, quick and cheaper then before</p></div>
+              <div class="testi-con"><p>Pick up and drop off was simple, good value and service</p></div>
+              <div class="testi-con"><p>booked parking for a group of friends thought it was going to be difficult but i was surprised how easy it was. cant wait for the next stag trip</p></div>
+              <div class="testi-con"><p>very happy, as always great experience</p></div>
+              <div class="testi-con"><p>highly recommended, very professional</p></div>
         </div>
         <div class="col-md-4 t-star" id="animatedHeading3">
+              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
               <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
               <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
               <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
@@ -105,8 +112,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p class="layer6-header">Lorem ipsum dolor sit amet, consectetur. </p>
-                <p class="layer6-sub">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Etiam tincidunt.</p>
+                <p class="layer6-header">BOOK IT and BE THERE!</p>
+                <p class="layer6-sub">Book your parking with confidence with My Travel Compared. Working hard for you to provide a cost effective, professional service.</p>
+                <p class="layer6-sub">At My Travel Compared we can facilitate all your parking needs. Working in partnership with the UK's best car parking operators at all
+                    UK major airports we aim to exceed your expectation. From frequent flyers, business travelers, VIP's, family groups or first time flyers we will find
+                    the right service to meets your requirements.</p>
             </div>
         </div>
     </div>

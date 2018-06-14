@@ -39,9 +39,11 @@
 }
 .navbar-brand{
     position: absolute;
-    right: 120%;
+    right: 133%;
+    /*right: 120%;*/
     top: -28px;
-    width:40%;
+    width:30%;
+    /*width:40%;*/
 }
 .navbar.solid {
   background-color: #fff !important;
