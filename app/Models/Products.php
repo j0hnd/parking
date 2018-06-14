@@ -63,8 +63,9 @@ class Products extends BaseModel
             if ($product_airports->count()) {
 
                 // get number of days between the dates in the search parameters
-                $begin = Carbon::parse($data['search']['drop-off-date']);
-                $no_days = $begin->diffInDays($data['search']['return-at-date']);
+                $begin = Carbon::createFromFormat('d/m/Y', $data['search']['drop-off-date']);
+                $end   = Carbon::createFromFormat('d/m/Y', $data['search']['return-at-date']);
+                $no_days = $begin->diffInDays($end);
 
                 if ($no_days === 0) {
                     $no_days = 1;

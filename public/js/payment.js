@@ -186,7 +186,7 @@ $(document).ready(function(){
                         message: 'The drop off date is a required field'
                     },
                     date: {
-                        format: 'MM/DD/YYYY',
+                        format: 'DD/MM/YYYY',
                         message: 'The value is not a valid date'
                     }
                 }
@@ -197,7 +197,7 @@ $(document).ready(function(){
                         message: 'The return at date is a required field'
                     },
                     date: {
-                        format: 'MM/DD/YYYY',
+                        format: 'DD/MM/YYYY',
                         message: 'The value is not a valid date'
                     }
                 }

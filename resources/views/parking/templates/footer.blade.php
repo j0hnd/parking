@@ -8,12 +8,8 @@
                     labore et dolore magna aliqua.
                 </p>
             </div>
-            <div class="col-md-4">
-                @php
-                    $app_name = explode(" ", config('app.name'));
-                @endphp
-                <p class="foot-col2">{{ $app_name[0] }}</p>
-                <p class="foot-col2-sub">{{ $app_name[1] }}</p>
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('/img/logo-white.png') }}" style="width:90%; margin-right:auto; margin-left:auto;">
             </div>
             <div class="col-md-4 col3-align">
                 <p class="foot-col3">

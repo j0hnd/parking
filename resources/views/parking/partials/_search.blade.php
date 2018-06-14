@@ -35,7 +35,7 @@
         <div class="col-xl-2 input2">
 
             <div class="home-label"> <i><img src="{{ asset('/img/calendar.png') }}"></i> Drop off <br/></div>
-            <input type='text' name="search[drop-off-date]" class="form-control-sm datepicker date-width" placeholder="mm/dd/yyyy" value="{{ empty($drop_off_date) ? date('m/d/Y') : $drop_off_date }}" />
+            <input type='text' name="search[drop-off-date]" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="{{ empty($drop_off_date) ? date('d/m/Y') : $drop_off_date }}" />
         </div>
         <div class="col-xl-1 input3">
             <div class="home-label"><br></div>
@@ -47,7 +47,7 @@
         </div>
         <div class="col-xl-2 input4">
             <div class="home-label"><i><img src="{{ asset('img/calendar.png') }}"></i> Return at<br/></div>
-            <input type='text' name="search[return-at-date]" class="form-control-sm datepicker date-width" placeholder="mm/dd/yyyy" value="{{ empty($return_at_date) ? date('m/d/Y') : $return_at_date }}" />
+            <input type='text' name="search[return-at-date]" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="{{ empty($return_at_date) ? date('d/m/Y') : $return_at_date }}" />
         </div>
         <div class="col-xl-1 input5">
            <div class="home-label"><br></div>
