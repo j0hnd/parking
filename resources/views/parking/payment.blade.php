@@ -380,7 +380,11 @@
 						<div class="container receipt">
 							<div class="row align-rec-img">
 								<div class="col-md-12">
-									<img src="{{ asset('/img/booking/parking.png') }}" class="receipt-img">
+									@if(empty($carpark->image))
+									<img src="{{ asset('/img/default.png') }}" class="receipt-img">
+									@else
+									<img src="{{ asset($carpark->image) }}" class="receipt-img">
+									@endif
 									<br/>
 									<hr>
 								</div>
