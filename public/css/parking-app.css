@@ -448,7 +448,7 @@ margin-top: 24px;
   margin-bottom: 34px;
 }
 .testi-con5{
-  margin-bottom: 34px;
+  margin-bottom: 24px;
 }
 .testi-con6{
   margin-bottom: 20px;
@@ -476,7 +476,7 @@ margin-top: 50px;
 /* END LAYER 5 */
 /* START LAYER 6 */
 #layer6{
-  min-height: 29vh;
+  min-height: 40vh;
     width: auto;
     background-repeat: no-repeat;
     background-position: center center;
@@ -500,6 +500,7 @@ margin-top: 50px;
   -webkit-transform: matrix( 0.95186085627567,0,0,0.95186085627567,0,0);
   -ms-transform: matrix( 0.95186085627567,0,0,0.95186085627567,0,0);
   position: relative;
+  font-weight: 600;
 }
 .layer6-sub{
   font-size: 14px;
@@ -637,7 +638,7 @@ footer{
 /* END FOOTER */
 
 /* START MOBILE */
-@media only screen and (max-width:1025px){
+@media only screen and (max-width:1200px){
 .navbar{
   width: 100%;
 }
