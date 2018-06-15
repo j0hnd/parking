@@ -161,7 +161,7 @@ body{
 .tab-1{
     position: absolute;
     top: 0;
-    padding: 18px 0px 14px 1px;
+    padding: 18px 0px 20px 1px !important;
     background-color: #9dc8e2;
     border-radius: 5px;
     color: #fff;
@@ -443,14 +443,14 @@ footer{
     width: 280px;
 }
 }
-@media only screen and (min-width:1200px){
+@media only screen and (min-width:1201px){
 
 .affix{
     width: 340px;
 }
 }
 
-@media only screen and (max-width:1025px){
+@media only screen and (max-width:1200px){
 .navbar {
     position: fixed;
     left: 40%;
@@ -516,7 +516,7 @@ footer{
         font-size: 12px !important;
     }
     .tab-1 {
-    padding: 13px 50px 12px 1px;
+    padding: 13px 50px 12px 1px !important;
     color: #fff;
     margin-left: 12px;
     font-size: 12px;
@@ -533,7 +533,7 @@ footer{
 
 }
 
-@media only screen and (max-width:769px){
+@media only screen and (max-width:992px){
 .navbar.solid {
     left: -10%;
     width: 133% !important;
@@ -610,7 +610,7 @@ margin-left: 0px;
   margin-right: 0px;
 }
  .tab-1 {
-    padding: 13px 14px 12px 1px;
+    padding: 13px 20px 12px 1px !important;
     color: #fff;
     margin-left: 9px;
     font-size: 12px;
@@ -628,6 +628,13 @@ margin-left: 0px;
         position: fixed;
         top: 40px;
     }
+    .tab-1 {
+    padding: 13px 20px 12px 1px;
+    color: #fff;
+    margin-left: 9px;
+    font-size: 12px;
+    }
+
 }
 @media only screen and (max-width:700px){
 .overlay-nav {
@@ -717,9 +724,9 @@ margin-left: 0px;
     }
     .navbar-brand{
         position: absolute;
-        right: 46%;
+        left: -100%;
         top: -10px;
-        width: 150%;
+        width: 350px;
     }
     .navbar-light .navbar-nav .nav-link {
         margin-top: 10px;
@@ -857,7 +864,7 @@ margin-left: 0px;
     }
 
     }
-@media only screen and (max-width:321px){
+@media only screen and (max-width:500px){
 .con-content{
   font-size: 15px;
 }
@@ -943,6 +950,12 @@ font-size: 14px;
 }
 .paypal {
     left: -20%;
+}
+.navbar-brand {
+    position: absolute;
+    right: 46%;
+    top: -10px;
+    width: 150%;
 }
 }
 

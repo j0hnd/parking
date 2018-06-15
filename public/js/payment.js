@@ -5,7 +5,7 @@ $(document).ready(function(){
     $('#sidebar').affix({
         offset:{
             top: hh + 250,
-            bottom: fh + 95
+            bottom: fh + 90
         }
     });
 
