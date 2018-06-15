@@ -73,37 +73,37 @@
         </div>
         <div class="row testi-align">
         <div class="col-md-4 t-name" id="animatedHeading">
-              <div><p class="testi-name">Steven Allen</p></div>
-              <div><p class="testi-name">Ola Steczkowska</p></div>
-              <div><p class="testi-name1">Joyce Morris</p></div>
-              <div><p class="testi-name2">Mr Bhaykar</p></div>
-              <div><p class="testi-name2">Gerard Mackie</p></div>
-              <div><p class="testi-name2">Halil Salahi Ali</p></div>
-              <div><p class="testi-name1">Jonny Martin</p></div>
-              <div><p class="testi-name">Brenda</p></div>
-              <div><p class="testi-name">Ayesha Sheikh</p></div>
+              <div><p class="testi-name0">Steven Allen</p></div>
+              <div><p class="testi-name1">Ola Steczkowska</p></div>
+              <div><p class="testi-name2">Joyce Morris</p></div>
+              <div><p class="testi-name3">Mr Bhaykar</p></div>
+              <div><p class="testi-name4">Gerard Mackie</p></div>
+              <div><p class="testi-name5">Halil Salahi Ali</p></div>
+              <div><p class="testi-name6">Jonny Martin</p></div>
+              <div><p class="testi-name7">Brenda</p></div>
+              <div><p class="testi-name8">Ayesha Sheikh</p></div>
         </div>
         <div class="col-md-4 testi" id="animatedHeading2">
-              <div class="testi-con"><p>Great price, would use again</p></div>
-              <div class="testi-con"><p>very good efficient service. helpful staff</p></div>
-              <div class="testi-con1"><p>excellent service! traveled to Alicante from Stansted with my family, was running late and the meet and greet service saved the day. Thank you</p></div>
-              <div class="testi-con2"><p>fast and easy to use,very pleased. will book again</p></div>
-              <div class="testi-con2"><p>booking was simple, quick and cheaper then before</p></div>
-              <div class="testi-con2"><p>Pick up and drop off was simple, good value and service</p></div>
-              <div class="testi-con1"><p>booked parking for a group of friends thought it was going to be difficult but i was surprised how easy it was. cant wait for the next stag trip</p></div>
-              <div class="testi-con"><p>very happy, as always great experience</p></div>
-              <div class="testi-con"><p>highly recommended, very professional</p></div>
+              <div class="testi-con0"><p>Great price, would use again</p></div>
+              <div class="testi-con1"><p>very good efficient service. helpful staff</p></div>
+              <div class="testi-con2"><p>excellent service! traveled to Alicante from Stansted with my family, was running late and the meet and greet service saved the day. Thank you</p></div>
+              <div class="testi-con3"><p>fast and easy to use,very pleased. will book again</p></div>
+              <div class="testi-con4"><p>booking was simple, quick and cheaper then before</p></div>
+              <div class="testi-con5"><p>Pick up and drop off was simple, good value and service</p></div>
+              <div class="testi-con6"><p>booked parking for a group of friends thought it was going to be difficult but i was surprised how easy it was. cant wait for the next stag trip</p></div>
+              <div class="testi-con7"><p>very happy, as always great experience</p></div>
+              <div class="testi-con8"><p>highly recommended, very professional</p></div>
         </div>
         <div class="col-md-4 t-star" id="animatedHeading3">
-              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
-              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star0"><img src="{{ asset('/img/star-like.png') }}"></div>
               <div class="testi-star1"><img src="{{ asset('/img/star-like.png') }}"></div>
               <div class="testi-star2"><img src="{{ asset('/img/star-like.png') }}"></div>
-              <div class="testi-star2"><img src="{{ asset('/img/star-like.png') }}"></div>
-              <div class="testi-star2"><img src="{{ asset('/img/star-like.png') }}"></div>
-              <div class="testi-star1"><img src="{{ asset('/img/star-like.png') }}"></div>
-              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
-              <div class="testi-star"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star3"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star4"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star5"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star6"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star7"><img src="{{ asset('/img/star-like.png') }}"></div>
+              <div class="testi-star8"><img src="{{ asset('/img/star-like.png') }}"></div>
         </div>
     </div>
 </section>
