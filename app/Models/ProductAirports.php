@@ -10,5 +10,13 @@ class ProductAirports extends BaseModel
 
     protected $dates = ['deleted_at'];
 
+    protected $with = ['products'];
+
     public $timestamps = true;
+
+
+    public function products()
+	{
+		return $this->hasMany(Products::class, 'id', 'product_id');
+	}
 }

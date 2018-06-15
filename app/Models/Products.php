@@ -74,11 +74,44 @@ class Products extends BaseModel
                 $i = 0;
 
                 foreach ($product_airports->get() as $pa) {
-                    $product = Products::findOrFail($pa->product_id);
-                    $airport = Airports::findOrFail($pa->airport_id);
+					$airport = Airports::findOrFail($pa->airport_id);
 					$override_price = null;
+					$product = null;
 
-                    if (count($product)) {
+                	if (isset($data['filter'])) {
+						if ($data['filter'] != 'all') {
+							switch ($data['filter']) {
+								case "onsite":
+									$category_id = 1;
+									break;
+								case "offsite":
+									$category_id = 2;
+									break;
+								case "parkride":
+									$category_id = 3;
+									break;
+								case "meetgreet":
+									$category_id = 4;
+									break;
+							}
+
+							$product = Products::active()
+								->where('id', $pa->product_id)
+								->whereHas('prices', function ($query) use ($category_id) {
+									$query->where('prices.category_id', $category_id);
+								})
+								->whereHas('prices', function ($query) use ($no_days) {
+									$query->where('prices.no_of_days', $no_days);
+								})
+								->first();
+						} else {
+							$product = Products::findOrFail($pa->product_id);
+						}
+					} else {
+						$product = Products::findOrFail($pa->product_id);
+					}
+
+                    if (count($product) > 0) {
 						// check for overrides
 						if (count($product->overrides)) {
 							foreach ($product->overrides as $overrides) {
@@ -93,7 +126,7 @@ class Products extends BaseModel
 						}
 
                         foreach ($product->prices as $price) {
-                            if ($no_days === $price->no_of_days and is_null($price->price_month) and is_null($price->price_year)) {
+                            if ($no_days == $price->no_of_days and is_null($price->price_month) and is_null($price->price_year)) {
                                 $products[$i] = [
                                     'product_id' => $product->id,
 									'airport_id' => $pa->airport_id,

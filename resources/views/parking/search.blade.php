@@ -44,10 +44,12 @@
     </header>
 
     <div class="container park-search">
-        <div class="row">
+        <div id="cards-container" class="row">
             @include('parking.partials._cards')
         </div>
     </div>
+
+    <input type="hidden" id="token" value="{{ csrf_token() }}">
 @stop
 
 @section('js')
