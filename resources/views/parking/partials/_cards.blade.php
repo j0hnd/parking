@@ -35,9 +35,9 @@
                     <input type="hidden" name="drop_off" value="{{ $result['drop_off'] }}">
                     <input type="hidden" name="return_at" value="{{ $result['return_at'] }}">
                 </div>
-                <a href="popup{{ $result['product_id'] }}" class="more"><i><img src="{{ asset('/img/booking/info.png') }}"></i> MORE INFO</a>
+                <a href="#popup{{ $i }}" class="more"><i><img src="{{ asset('/img/booking/info.png') }}"></i> MORE INFO</a>
                 <br/>
-                <div id="popup{{ $result['product_id'] }}" class="overlay">
+                <div id="popup{{ $i }}" class="overlay">
                     <div class="popup">
                         <h1>Lorem ipsum dolor sit amet</h1><br/>
                         <a class="close3" href="#">&times;</a>
@@ -46,9 +46,9 @@
                         </div>
                     </div>
                 </div>
-                <a class="plus collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $result['product_id'] }}" aria-expanded="false" aria-controls="collapseOne">
+                <a class="plus collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapseOne">
                 </a>
-                <div id="collapse{{ $result['product_id'] }}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div id="collapse{{ $i }}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                     <p class="collapsable-title">Lorem ipsum dolor sit amet</p>
                     <p class="collapsable-text">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.le VHS.</p>
                 </div>
