@@ -371,7 +371,7 @@ footer{
   }
 }
 
-@media only screen and (max-width:769px){
+@media only screen and (max-width:992px){
 .navbar.solid {
     left: -10%;
     width: 133% !important;
@@ -545,9 +545,9 @@ margin-left: 0px;
     }
     .navbar-brand{
         position: absolute;
-        right: 46%;
+        left: -100%
         top: -10px;
-        width: 150%;
+        width: 350px;
     }
 .navbar-light .navbar-nav .nav-link {
   margin-top: 10px;
@@ -612,7 +612,13 @@ text-align: left;
     display: inline;
   }
 }
-@media only screen and (max-width:321px){
+@media only screen and (max-width:500px){
+  .navbar-brand {
+    position: absolute;
+    right: 46%;
+    top: -10px;
+    width: 150%;
+}
 .con-content{
   font-size: 15px;
 }
