@@ -338,5 +338,27 @@ class ParkingAppController extends Controller
 			abort(404, $e->getMessage());
 		}
 	}
+
+	public function filter_result(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->except(['_token']);
+				parse_str($form['data'], $form);
+				$form['filter'] = $request->filter;
+				$products = Products::search($form);
+				$results = Products::prepare_data($products);
+
+				$html = view('parking.partials._cards', compact('results'))->render();
+				$response = ['success' => true, 'html' => $html];
+			}
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }
 

@@ -45,7 +45,15 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
                 slidesToShow: 3,
                 infinite: true
             }
-        }, {
+        },
+        {
+            breakpoint: 770,
+            settings: {
+                slidesToShow: 2,
+                infinite: true
+            }
+        },
+         {
             breakpoint: 600,
             settings: {
                 slidesToShow: 1,
@@ -80,7 +88,15 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
                 slidesToShow: 3,
                 infinite: true
             }
-        }, {
+        },
+        {
+            breakpoint: 770,
+            settings: {
+                slidesToShow: 2,
+                infinite: true
+            }
+        },
+         {
             breakpoint: 600,
             settings: {
                 slidesToShow: 1,
@@ -115,7 +131,15 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
                 slidesToShow: 3,
                 infinite: true
             }
-        }, {
+        }, 
+            {
+            breakpoint: 770,
+            settings: {
+                slidesToShow: 2,
+                infinite: true
+            }
+        },
+        {
             breakpoint: 600,
             settings: {
                 slidesToShow: 1,

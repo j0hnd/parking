@@ -1,4 +1,4 @@
-<form action="{{ url('/search') }}" method="post">
+<form id="search-form" action="{{ url('/search') }}" method="post">
     <div class="row book-box">
         @if(isset($form))
             @php
