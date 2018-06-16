@@ -58,10 +58,38 @@ class Products extends BaseModel
         $products = null;
 
         try {
-            // get airports
-            $product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
-            if ($product_airports->count()) {
+			// get airports
+			$product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
 
+			if (isset($data['filter'])) {
+				if ($data['filter'] != 'all') {
+					switch ($data['filter']) {
+						case "onsite":
+							$category_id = 1;
+							break;
+						case "offsite":
+							$category_id = 2;
+							break;
+						case "parkride":
+							$category_id = 3;
+							break;
+						case "meetgreet":
+							$category_id = 4;
+							break;
+					}
+
+					// get airports
+					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id")
+						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
+						->whereNull('product_airports.deleted_at')
+						->where([
+							'product_airports.airport_id' => $data['search']['airport'],
+							'prices.category_id' => $category_id
+						]);
+				}
+			}
+
+            if ($product_airports->count()) {
                 // get number of days between the dates in the search parameters
                 $begin = Carbon::createFromFormat('d/m/Y', $data['search']['drop-off-date']);
                 $end   = Carbon::createFromFormat('d/m/Y', $data['search']['return-at-date']);
@@ -74,41 +102,16 @@ class Products extends BaseModel
                 $i = 0;
 
                 foreach ($product_airports->get() as $pa) {
-					$airport = Airports::findOrFail($pa->airport_id);
 					$override_price = null;
-					$product = null;
 
-                	if (isset($data['filter'])) {
-						if ($data['filter'] != 'all') {
-							switch ($data['filter']) {
-								case "onsite":
-									$category_id = 1;
-									break;
-								case "offsite":
-									$category_id = 2;
-									break;
-								case "parkride":
-									$category_id = 3;
-									break;
-								case "meetgreet":
-									$category_id = 4;
-									break;
-							}
+					$product = Products::findOrFail($pa->product_id);
+					$airport = Airports::findOrFail($pa->airport_id);
 
-							$product = Products::active()
-								->where('id', $pa->product_id)
-								->whereHas('prices', function ($query) use ($category_id) {
-									$query->where('prices.category_id', $category_id);
-								})
-								->whereHas('prices', function ($query) use ($no_days) {
-									$query->where('prices.no_of_days', $no_days);
-								})
-								->first();
-						} else {
-							$product = Products::findOrFail($pa->product_id);
-						}
+					if (isset($pa->price_id)) {
+						// $prices = Prices::findOrFail($pa->price_id);
+						$prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
 					} else {
-						$product = Products::findOrFail($pa->product_id);
+						$prices = $product->prices;
 					}
 
                     if (count($product) > 0) {
@@ -125,7 +128,7 @@ class Products extends BaseModel
 							}
 						}
 
-                        foreach ($product->prices as $price) {
+                        foreach ($prices as $price) {
                             if ($no_days == $price->no_of_days and is_null($price->price_month) and is_null($price->price_year)) {
                                 $products[$i] = [
                                     'product_id' => $product->id,
