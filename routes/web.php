@@ -11,23 +11,29 @@
 |
 */
 
+Route::get('/', 'ParkingAppController@index');
 Route::get('/admin', 'DashboardController@index');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
-
-Route::get('/', 'ParkingAppController@index');
 Route::get('/member/login', 'Auth\LoginController@login_member');
-Route::post('/paypal', 'ParkingAppController@paypal');
-Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
 Route::get('/payment/{token?}', 'ParkingAppController@payment');
-Route::post('/payment', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
 Route::get('/contact','ParkingAppController@contact');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
-Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking_details');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
+
+Route::post('/member/authenticate', 'Auth\LoginController@login_member');
+Route::post('/paypal', 'ParkingAppController@paypal');
+Route::post('/payment', 'ParkingAppController@payment');
+Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking_details');
 Route::post('/filter/search/{filter}', 'ParkingAppController@filter_result');
+
+Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
+Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
+
+Route::group(['prefix' => 'members'], function () {
+	Route::get('/dashboard', 'MembersController@dashboard');
+});
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/dashboard', 'DashboardController@index');

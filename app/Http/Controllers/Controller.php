@@ -24,14 +24,42 @@ class Controller extends BaseController
                 if (Sentinel::check()) {
                     $this->user = Sentinel::getUser();
                     $this->role = $this->user->roles()->get();
-                    if ($this->role[0]->slug == 'administrator') {
-                        view()->share('user', $this->user);
-                        view()->share('role', $this->role->toArray());
-                        return $next($request);
-                    } else {
-                        Sentinel::logout();
-                        return redirect()->to('/');
-                    }
+					$requestUri = $request->getRequestUri();
+                    switch ($this->role[0]->slug) {
+						case "administrator":
+							if (strpos($requestUri, 'members')) {
+								Sentinel::logout();
+								return redirect()->to('/');
+							}
+							view()->share('user', $this->user);
+							view()->share('role', $this->role->toArray());
+							return $next($request);
+							break;
+
+						case "member":
+						case "vendor":
+						case "travel_agent":
+						if (strpos($requestUri, 'admin')) {
+							Sentinel::logout();
+							return redirect()->to('/');
+						}
+							return $next($request);
+							break;
+
+						default:
+							Sentinel::logout();
+							return redirect()->to('/');
+							break;
+					}
+
+//                    if ($this->role[0]->slug == 'administrator') {
+//                        view()->share('user', $this->user);
+//                        view()->share('role', $this->role->toArray());
+//                        return $next($request);
+//                    } else {
+//                        Sentinel::logout();
+//                        return redirect()->to('/');
+//                    }
                 } else {
                     Sentinel::logout();
                     return redirect()->to('login');
