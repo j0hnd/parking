@@ -4,10 +4,10 @@ $(function () {
         $('#product-'+id).submit();
     });
 
-    $(document).on('click', '.nav-item a', function (e) {
+    $(document).on('click', '.item a', function (e) {
         var name = $(this).data('name');
-        $('#filter-wrapper .nav-item').removeClass('active-2');
-        $('#filter-wrapper .nav-item').addClass('not-active');
+        $('#filter-wrapper .item').removeClass('active-2');
+        $('#filter-wrapper .item').addClass('not-active');
 
         $(this).parent().addClass('active-2');
         $(this).parent().removeClass('not-active');
