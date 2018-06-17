@@ -31,10 +31,10 @@
             <li class="header">HEADER</li>
             <li class="active"><a href="{{ url('/admin/dashboard') }}"><i class="fa fa-tachometer"></i> <span>Dashboard</span></a></li>
             @if($user->roles[0]->slug == 'administrator')
-            <li class="active"><a href="{{ url('/admin/airport') }}"><i class="fa fa-plane"></i> <span>Airports</span></a></li>
-            <li class="active"><a href="{{ url('/admin/carpark') }}"><i class="fa fa-building "></i> <span>Carparks</span></a></li>
-            <li class="active"><a href="{{ url('/admin/product') }}"><i class="fa fa-list"></i> <span>Products</span></a></li>
-            <li class="active"><a href="{{ url('/admin/booking') }}"><i class="fa fa-calendar"></i> <span>Bookings</span></a></li>
+            <li class=""><a href="{{ url('/admin/airport') }}"><i class="fa fa-plane"></i> <span>Airports</span></a></li>
+            <li class=""><a href="{{ url('/admin/carpark') }}"><i class="fa fa-building "></i> <span>Carparks</span></a></li>
+            <li class=""><a href="{{ url('/admin/product') }}"><i class="fa fa-list"></i> <span>Products</span></a></li>
+            <li class=""><a href="{{ url('/admin/booking') }}"><i class="fa fa-calendar"></i> <span>Bookings</span></a></li>
             <li class="header">Reports</li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-link"></i> <span>Reports</span>
@@ -60,6 +60,7 @@
                     <li><a href="{{ url('/admin/fees') }}">Fees</a></li>
                 </ul>
             </li>
+            <li><a href="{{ url('/admin/posts') }}"><i class="fa fa-rss"></i> <span>Posts</span></a></li>
             @endif
         </ul>
         <!-- /.sidebar-menu -->
