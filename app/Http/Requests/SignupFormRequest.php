@@ -4,8 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-
-class MembersFormRequest extends FormRequest
+class SignupFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +23,15 @@ class MembersFormRequest extends FormRequest
      */
     public function rules()
     {
-		$input = $this->all();
 		$rules = [
 			'first_name'   => 'required|string',
 			'last_name'    => 'required|string',
-			'company_name' => 'string',
-			'email_add'    => 'email'
+			'email'        => 'email'
 		];
 
-		if (!empty($input['id'])) {
-			if (!empty($input['new_password'])) {
-				$rules['new_password'] = 'string|min:4|max:12';
-				$rules['confirm_password'] = 'same:new_password';
-			}
+		$input = $this->all();
+		if (isset($input['company_name'])) {
+			$rules['company_name'] = 'string';
 		}
 
 		return $rules;

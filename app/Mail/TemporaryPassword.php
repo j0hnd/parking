@@ -31,7 +31,7 @@ class TemporaryPassword extends Mailable
     public function build()
     {
         return $this->view('emails.temporary_password')
-            ->subject("ParkingApp: Temporary password")
+            ->subject("MyTravel Compared: Temporary password")
             ->with([
                 'password' => $this->data['password']
             ]);

@@ -26,42 +26,50 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 text-center">
 				<h3 class="padding-20">Forgot Password</h3>
 			</div>
 		</div>
 
-		@if ($errors->any())
-			<div class="error-container">
-				<div class="alert alert-danger">
-					<strong>Whoops!</strong> Something went wrong...<br>
-					<ul class="error-wrapper" style="padding-left: 17px;">
-						@foreach ($errors->all() as $error)
-							<li>{{ $error }}</li>
-						@endforeach
-					</ul>
-				</div>
-			</div>
-		@endif
-
 		<div class="row">
-			<form action="{{ url('/forgot-password') }}" method="post" style="width: 100%; padding-bottom: 30px;">
-				<div class="col-md-6">
-					<p>Enter your registered email address and we will send you a temporary password.</p>
-					<div class="form-group">
-						<label>Email</label>
-						<input type="text" class="form-control" name="email">
+			<div class="col-md-6 offset-md-3">
+				@if ($errors->any())
+					<div class="error-container">
+						<div class="alert alert-danger">
+							<strong>Whoops!</strong> Something went wrong...<br>
+							<ul class="error-wrapper" style="padding-left: 17px;">
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
 					</div>
-				</div>
+				@endif
 
-				<div class="row">
-					<div class="col-md-6 text-right">
-						<button type="submit" class="btn btn-info">Send</button>
+				@if (session('success'))
+					<div class="alert alert-success">
+						{{ session('success') }}
 					</div>
-				</div>
+				@endif
 
-				{{ csrf_field() }}
-			</form>
+				<form action="{{ url('/process/forgot-password') }}" method="post" style="width: 100%; padding-bottom: 30px;">
+					<div class="col-md-12">
+						<p>Enter your registered email address and we will send you a temporary password.</p>
+						<div class="form-group">
+							<label>Email</label>
+							<input type="text" class="form-control" name="email" placeholder="Email Address">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12 text-right">
+							<button type="submit" class="btn btn-info">Send</button>
+						</div>
+					</div>
+
+					{{ csrf_field() }}
+				</form>
+			</div>
 		</div>
 	</div>
 
