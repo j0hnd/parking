@@ -5,7 +5,7 @@
 			@include('common.flash')
 			<div class="box">
 				<div class="box-header">
-					<a href="{{ url('/admin/booking/create') }}" class="btn bg-navy btn-flat">Add Post</a>
+					<a href="{{ url('/admin/posts/create') }}" class="btn bg-navy btn-flat">Add Post</a>
 
 					{{--<div class="box-tools" style="margin-top: 7px">--}}
 						{{--<form action="{{ url('/admin/booking/search') }}" method="post">--}}

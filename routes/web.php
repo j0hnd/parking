@@ -80,8 +80,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::match(['get', 'post'], '/reports/completed/jobs', 'ReportsController@completed_jobs');
     Route::match(['get', 'post'], '/reports/vendor/revenues', 'ReportsController@company_revenues');
 
-    Route::get('/posts', 'PostsController@index');
-    Route::get('/posts/create', 'PostsController@create');
+    Route::resource('posts', 'PostsController')->except(['update', 'destroy', 'show']);
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {
