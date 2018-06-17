@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ForgotPassword;
 use App\Mail\SendBookingConfirmation;
 use App\Models\Airports;
 use App\Models\BookingDetails;
@@ -13,11 +14,13 @@ use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
 use App\Models\Tools\Prices;
 use App\Models\Tools\Sessions;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Facades\PayPal;
 use DB;
+use Hash;
 
 
 class ParkingAppController extends Controller
@@ -359,6 +362,29 @@ class ParkingAppController extends Controller
 		}
 
 		return response()->json($response);
+	}
+
+	public function forgot_password(Request $request)
+	{
+		if ($request->isMethod('post')) {
+			$email = $request->get('email');
+			$user = User::where('email', $email)->whereNull('deleted_at');
+			if ($user->count()) {
+				$temporary_password = str_random(12);
+				$hash = Hash::make($temporary_password);
+
+				if ($user->update(['password' => $hash])) {
+					Mail::to($email)->send(new ForgotPassword(['password' => $temporary_password]));
+					return back()->with('success', 'Temporary password has been sent to your registered email address.');
+				} else {
+					return back()->withErrors(['errors' => 'Unable to update your password']);
+				}
+			} else {
+				return back()->withErrors(['errors' => 'Email not registered']);
+			}
+		} else {
+			return view('member-portal.forgot-password');
+		}
 	}
 }
 
