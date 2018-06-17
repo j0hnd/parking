@@ -143,7 +143,7 @@
                                             </div>
                                             <div class="text">
                                                 <h2>1000</h2>
-                                                <span>total point you earn</span>
+                                                <span>total point you earned</span>
                                             </div>
                                         </div>
                                         <div class="overview-chart">

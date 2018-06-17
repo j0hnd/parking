@@ -1,5 +1,7 @@
 @extends('member-portal')
+@section('css')
 
+@stop
 @section('main-content')
 	<div class="limiter">
 
@@ -13,9 +15,9 @@
 					<span class="login100-form-title p-b-43">Login to continue</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email">
+						<input class="input100" type="text" name="email" autofocus="true">
 						<span class="focus-input100"></span>
-						<span class="label-input100">Email</span>
+						<span class="label-input100" id="email">Email</span>
 					</div>
 
 
