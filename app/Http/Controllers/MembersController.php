@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MembersFormRequest;
 use App\Models\Bookings;
+use App\Models\Companies;
 use App\Models\Members;
 use App\Models\User;
 use Sentinel;
@@ -33,18 +34,30 @@ class MembersController extends Controller
 				$user = User::findOrFail(Sentinel::getUser()->id);
 				if (!empty($form['new_password']) and !empty($form['confirm_password'])) {
 					$user->update(['password' => Hash::make($form['new_password'])]);
-					$update_data = [
-						'first_name' => $form['first_name'],
-						'last_name' => $form['last_name']
-					];
-				} else {
-					$update_data = [
-						'first_name' => $form['first_name'],
-						'last_name' => $form['last_name']
-					];
 				}
 
-				if ($user->members->update($update_data)) {
+				$member_data = [
+					'first_name' => $form['first_name'],
+					'last_name' => $form['last_name']
+				];
+
+				if (isset($form['company'])) {
+					$company_data = [
+						'company_name' => $form['company']['company_name'],
+						'phone_no' => $form['company']['phone_no'],
+						'mobile_no' => $form['company']['mobile_no'],
+						'email' => $form['company']['email'],
+					];
+
+					if (Companies::where('id', $form['cid'])->count()) {
+						$user->members->company->update($company_data);
+					} else {
+						$company = Companies::create($company_data);
+						$member_data['company_id'] = $company->id;
+					}
+				}
+
+				if ($user->members->update($member_data)) {
 					return redirect('/members/profile')->with('success', 'Profile has been updated!');
 				} else {
 					return redirect('/members/profile')->withErrors(['errors' => 'Unable to update profile']);

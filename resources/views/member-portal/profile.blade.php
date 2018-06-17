@@ -61,6 +61,38 @@
 							<label>Lastname</label>
 							<input type="text" class="form-control" name="last_name" value="{{ $user->members->last_name }}">
 						</div>
+
+						@if(in_array($user->roles[0]->slug, ['vendor', 'travel_agent']))
+							@php
+								$company_id   = is_null($user->members->company) ? "" : $user->members->company->id;
+								$company_name = is_null($user->members->company) ? "" : $user->members->company->company_name;
+								$phone_no     = is_null($user->members->company) ? "" : $user->members->company->phone_no;
+								$mobile_no    = is_null($user->members->company) ? "" : $user->members->company->mobile_no;
+								$email_add    = is_null($user->members->company) ? "" : $user->members->company->email;
+							@endphp
+
+						<div class="form-group">
+							<label>Company Name</label>
+							<input type="text" class="form-control" name="company[company_name]" value="{{ $company_name }}">
+						</div>
+
+						<div class="form-group">
+							<label>Company Phone No.</label>
+							<input type="text" class="form-control" name="company[phone_no]" value="{{ $phone_no }}">
+						</div>
+
+						<div class="form-group">
+							<label>Company Mobile No.</label>
+							<input type="text" class="form-control" name="company[mobile_no]" value="{{ $mobile_no }}">
+						</div>
+
+						<div class="form-group">
+							<label>Company Email</label>
+							<input type="text" class="form-control" name="company[email]" value="{{ $email_add }}">
+						</div>
+
+						<input type="hidden" name="cid" value="{{ $company_id }}">
+						@endif
 					</div>
 
 					<div class="col-sm">

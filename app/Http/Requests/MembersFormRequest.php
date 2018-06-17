@@ -26,8 +26,10 @@ class MembersFormRequest extends FormRequest
     {
 		$input = $this->all();
 		$rules = [
-			'first_name' => 'required|string',
-			'last_name'  => 'required|string'
+			'first_name'   => 'required|string',
+			'last_name'    => 'required|string',
+			'company_name' => 'string',
+			'email_add'    => 'email'
 		];
 
 		if (!empty($input['id'])) {
