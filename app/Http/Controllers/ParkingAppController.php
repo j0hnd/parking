@@ -364,10 +364,20 @@ class ParkingAppController extends Controller
 		return response()->json($response);
 	}
 
-	public function forgot_password(Request $request)
+	public function forgot_password()
+	{
+		return view('member-portal.forgot-password');
+	}
+
+	public function process_forgot_password(Request $request)
 	{
 		if ($request->isMethod('post')) {
 			$email = $request->get('email');
+
+			if (empty($email)) {
+				return back()->withErrors(['errors' => 'Please input your registered email address']);
+			}
+
 			$user = User::where('email', $email)->whereNull('deleted_at');
 			if ($user->count()) {
 				$temporary_password = str_random(12);
@@ -382,9 +392,9 @@ class ParkingAppController extends Controller
 			} else {
 				return back()->withErrors(['errors' => 'Email not registered']);
 			}
-		} else {
-			return view('member-portal.forgot-password');
 		}
+
+		return back()->withErrors(['errors' => 'Unable to update your password']);
 	}
 }
 
