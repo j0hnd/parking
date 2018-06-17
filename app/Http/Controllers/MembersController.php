@@ -16,7 +16,21 @@ class MembersController extends Controller
 	public function dashboard(Request $request)
 	{
 		$user = Sentinel::getUser();
-		$bookings = Bookings::where('customer_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+		if ($user->roles[0]->slug == 'member') {
+			$bookings = Bookings::where('customer_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+		} else {
+			$company_id = $user->members->company->id;
+			$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
+				->whereNull('bookings.deleted_at')
+				->whereHas('products', function ($query) use ($company_id) {
+					$query->where('vendor_id', $company_id);
+				})
+				->join('products', 'products.id', '=', 'bookings.product_id')
+				->join('companies', 'companies.id', '=', 'products.vendor_id')
+				->groupBy('products.vendor_id')
+				->paginate(config('app.item_per_page'));
+		}
+
 		return view('member-portal.dashboard', compact('bookings'));
 	}
 
