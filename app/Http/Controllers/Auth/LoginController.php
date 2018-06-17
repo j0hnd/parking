@@ -66,9 +66,17 @@ class LoginController extends Controller
         }
     }
 
-    public function login_member()
+    public function login_member(Request $request)
 	{
-		return view('member-portal.login	');
+		if ($request->isMethod('post')) {
+			if ($user = Sentinel::authenticate($request->only(['email', 'password']), $request->get('remember-me', false))) {
+				return redirect('/members/dashboard');
+			} else {
+				return back()->withErrors('Invalid Username and/or Password');
+			}
+		}
+
+		return view('member-portal.login');
 	}
 
     public function logout(Request $request)
@@ -81,4 +89,5 @@ class LoginController extends Controller
             }
         }
     }
+
 }
