@@ -30,6 +30,7 @@ Route::post('/filter/search/{filter}', 'ParkingAppController@filter_result');
 
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
+Route::match(['get', 'post'], '/forgot-password', 'ParkingAppController@forgot_password');
 
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');

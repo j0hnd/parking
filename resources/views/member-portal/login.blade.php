@@ -32,7 +32,7 @@
 						</div>
 
 						<div>
-							<a href="#" class="txt1">Forgot Password?</a>
+							<a href="{{ url('/forgot-password') }}" class="txt1">Forgot Password?</a>
 						</div>
 					</div>
 
