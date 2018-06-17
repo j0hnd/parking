@@ -41,22 +41,22 @@
 					</div>
 					<br/>
 					<div class="container-signup100-form-btn">
-						<button class="signup100-form-btn">Sign Up</button>
+						<button type="button" class="signup100-form-btn">Sign Up</button>
 					</div>
 
-					<div class="text-center p-t-46 p-b-20">
-						<span class="txt2">or sign up using</span>
-					</div>
+					{{--<div class="text-center p-t-46 p-b-20">--}}
+						{{--<span class="txt2">or sign up using</span>--}}
+					{{--</div>--}}
 
-					<div class="login100-form-social flex-c-m">
-						<a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">
-							<i class="fab fa-facebook-f" aria-hidden="true"></i>
-						</a>
+					{{--<div class="login100-form-social flex-c-m">--}}
+						{{--<a href="#" class="login100-form-social-item flex-c-m bg1 m-r-5">--}}
+							{{--<i class="fab fa-facebook-f" aria-hidden="true"></i>--}}
+						{{--</a>--}}
 
-						<a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">
-							<i class="fab fa-twitter" aria-hidden="true"></i>
-						</a>
-					</div>
+						{{--<a href="#" class="login100-form-social-item flex-c-m bg2 m-r-5">--}}
+							{{--<i class="fab fa-twitter" aria-hidden="true"></i>--}}
+						{{--</a>--}}
+					{{--</div>--}}
 
 					{{ csrf_field() }}
 				</form>
@@ -65,4 +65,14 @@
 			</div>
 		</div>
 	</div>
+@stop
+
+@section('js')
+<script type="text/javascript">
+	$(function () {
+		$(document).on('click', '.signup100-form-btn', function (e) {
+		    window.location = "{{ url('/signup') }}";
+		});
+	});
+</script>
 @stop

@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ForgotPassword extends Mailable
+class Signup extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -20,7 +20,7 @@ class ForgotPassword extends Mailable
      */
     public function __construct($data)
     {
-		$this->data = $data;
+        $this->data = $data;
     }
 
     /**
@@ -30,9 +30,11 @@ class ForgotPassword extends Mailable
      */
     public function build()
     {
-		return $this->view('emails.temporary_password')
-			->subject("MyTravel Compared: Temporary password")
+		return $this->view('emails.signup')
+			->subject("Welcome to MyTravel Compared")
 			->with([
+				'first_name' => $this->data['first_name'],
+				'email' => $this->data['email'],
 				'password' => $this->data['password']
 			]);
     }

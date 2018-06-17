@@ -2,25 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SignupFormRequest;
 use App\Mail\ForgotPassword;
 use App\Mail\SendBookingConfirmation;
+use App\Mail\Signup;
 use App\Models\Airports;
 use App\Models\BookingDetails;
 use App\Models\Bookings;
 use App\Models\Carpark;
 use App\Models\Customers;
+use App\Models\Members;
 use App\Models\Products;
 use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
 use App\Models\Tools\Prices;
 use App\Models\Tools\Sessions;
 use App\Models\User;
+use App\Models\Companies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Facades\PayPal;
 use DB;
 use Hash;
+use Sentinel;
 
 
 class ParkingAppController extends Controller
@@ -395,6 +400,68 @@ class ParkingAppController extends Controller
 		}
 
 		return back()->withErrors(['errors' => 'Unable to update your password']);
+	}
+
+	public function signup()
+	{
+		return view('member-portal.signup');
+	}
+
+	public function save_signup(SignupFormRequest $request)
+	{
+		if ($request->isMethod('post')) {
+			$form = $request->except(['_token']);
+			$temporary_password = str_random(12);
+			$form_user = [
+				'email'    => $form['email'],
+				'password' => $temporary_password
+			];
+
+			$role = ['vendor' => 2, 'travel_agent' => 3, 'member' => 4];
+
+			DB::beginTransaction();
+
+			if ($user = Sentinel::registerAndActivate($form_user)) {
+				if (isset($form['company_nam'])) {
+					$company = Companies::create(['company_name' => $form['company_name']]);
+					$member_data = [
+						'user_id'    => $user->id,
+						'company_id' => $company->id,
+						'first_name' => $form['first_name'],
+						'last_name'  => $form['last_name'],
+						'is_active'  => 1
+					];
+				} else {
+					$member_data = [
+						'user_id'    => $user->id,
+						'first_name' => $form['first_name'],
+						'last_name'  => $form['last_name'],
+						'is_active'  => 1
+					];
+				}
+
+				// create member info
+				$member = Members::create($member_data);
+
+				// assign role to a user
+				$role = Sentinel::findRoleById($role[$form['member_type']]);
+				$role->users()->attach($user);
+
+				Mail::to($form['email'])->send(new Signup([
+					'first_name' => $form['first_name'],
+					'email'      => $form['email'],
+					'password'   => $temporary_password
+				]));
+
+				DB::commit();
+
+				return back()->with('success', 'Thank you for signing up and check your email address for your login credentials');
+			} else {
+				DB::rollback();
+
+				return back()->with('error', 'Error in adding new user');
+			}
+		}
 	}
 }
 

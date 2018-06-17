@@ -13,19 +13,12 @@
 
 	<br/><br/><br/><br/><br/>
 
-	<nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-10">
-				<h4 style="color:white;">Welcome {{ $user->members->first_name }}!</h4>
-			</div>
-		</div>
-	</nav>
+	<nav class="navbar-expand-lg navbar-light bg-light navbar-2"></nav>
 
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 text-center">
-				<h3 class="padding-20">Profile</h3>
+				<h3 class="padding-20">Signup</h3>
 			</div>
 		</div>
 
@@ -37,7 +30,7 @@
 							<strong>Whoops!</strong> Something went wrong...<br>
 							<ul class="error-wrapper" style="padding-left: 17px;">
 								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
+								<li>{{ $error }}</li>
 								@endforeach
 							</ul>
 						</div>
@@ -50,40 +43,42 @@
 					</div>
 				@endif
 
-				<form action="{{ url('/members/update/profile') }}" method="post" style="width: 100%; padding-bottom: 30px;">
+				<form action="" method="post" style="width: 100%; padding-bottom: 30px;">
 					<div class="col-sm">
 						<div class="form-group">
 							<label>Firstname</label>
-							<input type="text" class="form-control" name="first_name" value="{{ $user->members->first_name }}">
+							<input type="text" class="form-control" name="first_name" placeholder="Firstname">
 						</div>
 
 						<div class="form-group">
 							<label>Lastname</label>
-							<input type="text" class="form-control" name="last_name" value="{{ $user->members->last_name }}">
+							<input type="text" class="form-control" name="last_name" placeholder="Lastname">
 						</div>
-					</div>
 
-					<div class="col-sm">
 						<div class="form-group">
 							<label>Email</label>
-							<input type="text" class="form-control" value="{{ $user->email }}" disabled>
-						</div>
-						<div class="form-group">
-							<label>Password</label>
-							<input type="password" class="form-control" name="new_password">
+							<input type="text" class="form-control" name="email" placeholder="Email Address">
 						</div>
 
 						<div class="form-group">
-							<label>Confirm Password</label>
-							<input type="password" class="form-control" name="confirm_password">
+							<label>Member Type</label>
+							<select name="member_type" class="form-control member-type">
+								<option value="member">Member</option>
+								<option value="vendor">Vendor</option>
+								<option value="travel_agent">Travel Agent</option>
+							</select>
+						</div>
+
+						<div id="company-wrapper" class="form-group d-none">
+							<label>Company Name</label>
+							<input type="text" class="form-control" name="company_name" placeholder="Company Name">
 						</div>
 					</div>
 
 					<div class="col-sm text-right">
-						<button type="submit" class="btn btn-info">Update</button>
+						<button type="submit" class="btn btn-info">Signup</button>
 					</div>
 
-					<input type="hidden" name="id" value="{{ $user->id }}">
 					{{ csrf_field() }}
 				</form>
 			</div>
@@ -94,4 +89,15 @@
 @stop
 
 @section('js')
+<script type="text/javascript">
+	$(function () {
+		$(document).on('change', '.member-type', function (e) {
+		    if ($(this).val() == 'member') {
+                $('#company-wrapper').addClass('d-none');
+			} else {
+		        $('#company-wrapper').removeClass('d-none');
+			}
+        });
+    });
+</script>
 @stop
