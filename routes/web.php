@@ -21,18 +21,25 @@ Route::get('/privacy','ParkingAppController@privacy');
 Route::get('/contact','ParkingAppController@contact');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
+Route::get('/forgot-password', 'ParkingAppController@forgot_password');
+Route::get('/signup', 'ParkingAppController@signup');
 
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');
 Route::post('/paypal', 'ParkingAppController@paypal');
 Route::post('/payment', 'ParkingAppController@payment');
+Route::post('/signup', 'ParkingAppController@save_signup');
 Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking_details');
 Route::post('/filter/search/{filter}', 'ParkingAppController@filter_result');
+Route::post('/process/forgot-password', 'ParkingAppController@process_forgot_password');
 
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
 
+
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');
+	Route::get('/profile', 'MembersController@display_profile');
+	Route::post('/update/profile', 'MembersController@update_profile');
 });
 
 Route::group(['prefix' => 'admin'], function () {

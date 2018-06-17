@@ -35,6 +35,7 @@
     <link href="{{ asset('/member-portal/vendor/select2/select2.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('/member-portal/vendor/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('/css/theme.css') }}" rel="stylesheet" media="all">
+    @yield('css')
 </head>
 <body style="background-color: #666666;">
 	@yield('main-content')
@@ -48,6 +49,7 @@
 	<script src="{{ asset('/vendor/daterangepicker/daterangepicker.js') }}"></script>
 	<script src="{{ asset('/vendor/countdowntime/countdowntime.js') }}"></script>
 	<script src="{{ asset('/js/login.js') }}"></script>
+
 	<script src="{{ asset('/js/member-nav.js') }}"></script>
 
 
@@ -69,5 +71,8 @@
 
     <!-- Main JS-->
     <script src="{{ asset('/js/main.js') }}"></script>
+
+	@yield('js')
+
 </body>
 </html>

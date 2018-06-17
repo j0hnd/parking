@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TemporaryPassword extends Mailable
+class Signup extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,10 +30,12 @@ class TemporaryPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.temporary_password')
-            ->subject("MyTravel Compared: Temporary password")
-            ->with([
-                'password' => $this->data['password']
-            ]);
+		return $this->view('emails.signup')
+			->subject("Welcome to MyTravel Compared")
+			->with([
+				'first_name' => $this->data['first_name'],
+				'email' => $this->data['email'],
+				'password' => $this->data['password']
+			]);
     }
 }
