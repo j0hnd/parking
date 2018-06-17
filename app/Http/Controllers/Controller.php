@@ -39,10 +39,12 @@ class Controller extends BaseController
 						case "member":
 						case "vendor":
 						case "travel_agent":
-						if (strpos($requestUri, 'admin')) {
-							Sentinel::logout();
-							return redirect()->to('/');
-						}
+							if (strpos($requestUri, 'admin')) {
+								Sentinel::logout();
+								return redirect()->to('/');
+							}
+							view()->share('user', $this->user);
+							view()->share('role', $this->role->toArray());
 							return $next($request);
 							break;
 
