@@ -235,8 +235,10 @@ margin-top: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .l-con1{
   font-size: 33px;
