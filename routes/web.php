@@ -83,6 +83,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('posts', 'PostsController')->except(['update', 'destroy', 'show']);
 	Route::post('/posts/update', 'PostsController@update');
 	Route::post('/posts/update/status/{post}', 'PostsController@update_status');
+	Route::post('/posts/delete/{post}', 'PostsController@delete');
 
 	Route::resource('fees', 'FeesController')->except(['update', 'destroy', 'show']);
 	Route::post('/fees/update', 'FeesController@update');
