@@ -1,5 +1,4 @@
-<table class="table table-striped">
-	<thead>
+<thead>
 	<tr>
 		<th>Booking ID</th>
 		<th>Order Title</th>
@@ -11,7 +10,7 @@
 	<tbody>
 	@if(count($bookings))
 		@foreach($bookings as $booking)
-			<tr>
+			<tr class="tr-shadow">
 				<td>{{ $booking->booking_id }}</td>
 				<td>
 					{{ $booking->order_title }}<br>
@@ -32,7 +31,7 @@
 			</tr>
 		@endforeach
 	@else
-		<tr>
+		<tr class="tr-shadow">
 			<td colspan="4">No bookings found</td>
 		</tr>
 	@endif
@@ -40,11 +39,10 @@
 
 	@if(count($bookings))
 		<tfoot>
-		<tr>
+		<tr class="tr-shadow">
 			<td colspan="4">
 				{{ $bookings->links() }}
 			</td>
 		</tr>
 		</tfoot>
 	@endif
-</table>

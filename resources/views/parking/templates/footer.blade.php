@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('/img/logo-white.png') }}" style="width:90%; margin-right:auto; margin-left:auto;">
+                <img src="{{ asset('/img/logo-white.png') }}" class="foot-logo">
             </div>
             <div class="col-md-4 col3-align">
                 <p class="foot-col3">

@@ -635,6 +635,11 @@ footer{
 .foot-gps{
   margin-left: 40px;
 }
+.foot-logo{
+  width:90%; 
+  margin-right:auto; 
+  margin-left:auto;
+}
 /* END FOOTER */
 
 /* START MOBILE */
@@ -1239,6 +1244,10 @@ button.btn.btn-primary.btn-sm{
 }
 .testi-con8{
   margin-bottom: 80px;
+}
+  .foot-logo{
+  width:70%; 
+  margin: 20px 0 40px -40%;
 }
 }
 @media only screen and (max-width:376px){

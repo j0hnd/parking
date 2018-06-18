@@ -41,7 +41,7 @@
     position: absolute;
     right: 133%;
     /*right: 120%;*/
-    top: -28px;
+    top: -25px;
     width:30%;
     /*width:40%;*/
 }
@@ -71,7 +71,7 @@
    }
    .navbar.solid .navbar-brand{
     position: relative !important;
-    left: 30%;
+    left: 19%;
     width: 40%;
     top: 10%;
    }
@@ -526,6 +526,11 @@ footer{
 }
 .foot-gps{
   margin-left: 40px;
+}
+.foot-logo{
+  width:90%; 
+  margin-right:auto; 
+  margin-left:auto;
 }
 /* END FOOTER */
 /* START MOBILE */
@@ -1041,6 +1046,10 @@ button.btn.btn-primary.btn-sm{
   .mobile li .vl-mobile{
     display: inline;
   }
+    .foot-logo{
+  width:70%; 
+  margin: 20px 0 40px -40%;
+}
 }
 @media only screen and (max-width:321px){
 .con-content{
