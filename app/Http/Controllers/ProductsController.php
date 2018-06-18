@@ -13,7 +13,7 @@ use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
-use Cartalyst\Sentinel\Sentinel;
+use Sentinel;
 use DB;
 use Illuminate\Http\Request;
 
@@ -144,6 +144,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
