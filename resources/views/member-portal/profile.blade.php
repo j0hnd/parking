@@ -5,6 +5,14 @@
 @stop
 
 @section('main-content')
+	<div id="mobileNav" class="overlay-nav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="#">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Logout</a>
+      </div>
+    </div>
 	<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
 		<a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo-light.png') }}" class="navbar-brand"></a>
 		@include('parking.templates.member-nav')
@@ -65,11 +73,13 @@
                                     <div class="card-body">
                                         <div class="mx-auto d-block">
                                             <img class="rounded-circle mx-auto d-block" src="{{ asset('img/profile.png') }}" alt="Card image cap">
+                                            
                                             <h5 class="text-sm-center mt-2 mb-1">{{ $user->members->first_name }} {{ $user->members->last_name }}</h5>
                                             <div class="location text-sm-center">
                                                 <i class="fa fa-map-marker"></i> London, United Kingdom</div>
                                         </div>
-                                        <hr>
+                                    <br/>
+                                    <br/>
 							            <div class="row">
 										<div class="col-md-6 offset-md-3">
 											@if ($errors->any())
