@@ -5,7 +5,7 @@ namespace App\Models;
 
 class Posts extends BaseModel
 {
-    protected $fillable = ['title', 'content', 'image'];
+    protected $fillable = ['title', 'slug', 'content', 'image'];
 
     protected $guarded = ['created_by'];
 
@@ -14,6 +14,6 @@ class Posts extends BaseModel
 
     public function owner()
 	{
-		return $this->hasMany(User::class, 'created_by', 'id');
+		return $this->hasMany(User::class, 'id', 'created_by');
 	}
 }
