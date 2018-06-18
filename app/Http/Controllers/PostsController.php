@@ -71,7 +71,46 @@ class PostsController extends Controller
 	public function edit(Request $request)
 	{
 		$page_title = "Edit Posts";
-		$post = Posts::findOrFail($request->id);
+		$post = Posts::findOrFail($request->post);
 		return view('app.Posts.edit', compact('page_title', 'post'));
+	}
+
+	public function update(PostsFormRequest $request)
+	{
+		$current = Carbon::now();
+
+		if ($request->isMethod('post')) {
+			$form = $request->only(['id', 'title', 'content']);
+			$form['slug'] = str_slug($form['title']);
+			$post = Posts::findOrFail($form['id']);
+
+			$path = 'uploads/posts/' . $current->format('Y-m-d');
+
+			if ($post->update($form)) {
+				if ($request->hasFile('image')) {
+					$image = \Request::file('image');
+					$filename   = $image->getClientOriginalName();
+					$image_path = "{$path}/".$post->id;
+
+					// check if upload folder is existing, if not create it
+					if (!File::exists(public_path($path))) {
+						File::makeDirectory(public_path($path));
+					}
+
+					if (!File::exists(public_path($image_path))) {
+						File::makeDirectory(public_path($image_path));
+					}
+
+					$image_resize = Image::make($image->getRealPath());
+					$image_resize->resize(350, 253);
+					$image_resize->save(public_path("{$image_path}/{$filename}"));
+					Posts::where('id', $post->id)->update(['image' => $image_path."/".$filename]);
+				}
+
+				return redirect('/admin/posts')->with('success', 'Post has been updated');
+			} else {
+				return back()->withErrors(['error' => 'Unable to update post']);
+			}
+		}
 	}
 }
