@@ -23,29 +23,19 @@
 
 				<div class="box-body table-responsive no-padding">
 					<table class="table table-hover">
-						<tbody>
+						<thead>
 						<tr>
 							<th>#</th>
 							<th>Title</th>
 							<th>Status</th>
 							<th>Date Posted</th>
+							<th>Date Published</th>
 							<th></th>
 						</tr>
-						@if(count($posts))
-							@foreach($posts as $post)
-								<tr>
-									<td><a href="{{ url('/admin/post/'.$post->id.'/edit') }}">{{ $post->post_id }}</a></td>
-									<td>{{ $post->title }}</td>
-									<td>{{ ucfirst($post->status) }}</td>
-									<td>{{ $post->created_at->format('m/d/Y') }}</td>
-									<td></td>
-								</tr>
-							@endforeach
-						@else
-							<tr>
-								<td colspan="5" class="text-center">No posts listed</td>
-							</tr>
-						@endif
+						</thead>
+
+						<tbody id="posts-container">
+							@include('app.Posts.partials._posts')
 						</tbody>
 						@if(count($posts))
 							<tfoot>
@@ -59,4 +49,51 @@
 			</div>
 		</div>
 	</div>
+@stop
+
+@section('scripts')
+<script type="text/javascript">
+	$(function () {
+		$(document).on('click', '#toggle-status', function (e) {
+		    e.preventDefault();
+		    var id = $(this).data('id');
+		    var value = $(this).data('value');
+		    $.ajax({
+				url: "{{ url('/admin/posts/update/status') }}/" + id,
+				type: 'post',
+				data: { _token: "{{ csrf_token() }}", status: value },
+				dataType: 'json',
+				success: function (response) {
+				    if (response.success) {
+                        $('#posts-container').html(response.html);
+                        alert('Your post has been updated');
+					} else {
+				        alert(response.message);
+					}
+				}
+			});
+		});
+
+		$(document).on('click', '#toggle-delete', function (e) {
+			e.preventDefault();
+            var id = $(this).data('id');
+            if (confirm("Delete this post?")) {
+                $.ajax({
+                    url: "{{ url('/admin/posts/delete') }}/" + id,
+                    type: 'post',
+                    data: { _token: "{{ csrf_token() }}" },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#posts-container').html(response.html);
+                            alert('Your post has been deleted');
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+			}
+        });
+    });
+</script>
 @stop

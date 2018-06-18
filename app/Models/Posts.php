@@ -5,15 +5,17 @@ namespace App\Models;
 
 class Posts extends BaseModel
 {
-    protected $fillable = ['title', 'content', 'image'];
+    protected $fillable = ['title', 'slug', 'content', 'image', 'status', 'created_by', 'date_published', 'deleted_at'];
 
     protected $guarded = ['created_by'];
 
     protected $with = ['owner'];
 
+    protected $date = ['date_published', 'deleted_at'];
+
 
     public function owner()
 	{
-		return $this->hasMany(User::class, 'created_by', 'id');
+		return $this->hasMany(User::class, 'id', 'created_by');
 	}
 }
