@@ -38,9 +38,11 @@
 }
 .navbar-brand{
     position: absolute;
-    right: 120%;
-    top: -28px;
-    width:40%;
+    right: 133%;
+    /*right: 120%;*/
+    top: -25px;
+    width:30%;
+    /*width:40%;*/
 }
 .navbar.solid {
   background-color: #fff !important;
@@ -67,7 +69,7 @@
    }
    .navbar.solid .navbar-brand{
     position: relative !important;
-    left: 30%;
+    left: 19%;
     width: 40%;
     top: 10%;
    }
@@ -322,6 +324,11 @@ footer{
 }
 .foot-gps{
   margin-left: 40px;
+}
+.foot-logo{
+  width:90%; 
+  margin-right:auto; 
+  margin-left:auto;
 }
 
 /* END FOOTER */
@@ -611,6 +618,10 @@ text-align: left;
   .mobile li .vl-mobile{
     display: inline;
   }
+   .foot-logo{
+  width:70%; 
+  margin: 20px 0 40px -40%;
+}
 }
 @media only screen and (max-width:500px){
   .navbar-brand {

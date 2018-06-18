@@ -1,0 +1,218 @@
+/* START FOOTER */
+footer{
+  background-color: #1c1c1c;
+  padding: 50px 0 30px 0;
+  bottom: 0;
+  position: relative;
+}
+.foot-col2{
+  font-size: 35px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  position: relative;
+  letter-spacing: 10px;
+  left: 2%;
+
+}
+.foot-col1{
+  font-size: 14px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  text-align: left;
+  position: relative;
+  left: 2%;
+}
+.foot-col2-sub{
+  font-size: 15px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  position: relative;
+  letter-spacing: 4px;
+  bottom: 10%;
+
+}
+.foot-col3{
+  font-size: 16px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: left;
+  position: relative;
+  letter-spacing: 3px;
+  margin-left: 37px;
+}
+.info{
+  font-size: 14px;
+  font-family: "Montserrat";
+  color: rgb(255, 255, 255);
+  line-height: 1.2;
+  position: relative;
+}
+.col3-align{
+  position: relative;
+  left: 5%;
+}
+.foot-logo{
+  width:90%; 
+  margin-right:auto; 
+  margin-left:auto;
+}
+.footer-con{
+  color: #fff;
+
+}
+.link-con{
+  text-decoration: none;
+  color: #fff;
+  font-family: "Montserrat";
+  font-size: 15px;
+}
+.link-con:hover{
+  text-decoration: none;
+  color: #27b2e0;
+
+}
+
+.footer-con ul{
+  overflow: hidden;
+  position: relative;
+  left: 0%;
+}
+.footer-con ul li{
+  display: inline;
+}
+.footer-con ul li .fl{
+  display: inline;
+}
+.fl{
+   border-left: 2px solid #fff;
+    height: 25px;
+    margin-right: 16px;
+    margin-left: 10px
+}
+.foot-gps{
+  margin-left: 40px;
+}
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+
+/* END FOOTER */
+/* START MOBILE */
+
+@media only screen and (min-width:700px) and (max-width: 769px){
+ 
+.foot-col2-sub{
+text-align: left;
+margin-left: 10px;
+  }
+  .foot-col2{
+text-align: left;
+  }
+  .col3-align {
+    position: relative;
+    left: 0%;
+}
+.ul-pos{
+  margin-left: 0 !important;
+}
+.contact-card {
+    padding: 30px 16px 30px 16px !important;
+    top: 36%;
+    }
+
+    .lvl-2 {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+.mob-icon{
+  display: none;
+}
+    .foot-gps{
+  margin-left: 0;
+}
+.info{
+  position: relative;
+  right: -17%;
+}
+
+  .foot-logo{
+  width:70%; 
+  margin-right:auto; 
+  margin-left:auto;
+}
+}
+
+@media only screen and (min-width:100px ) and (max-width:699px){
+ 
+.foot-col2-sub{
+text-align: left;
+margin-left: 10px;
+  }
+  .foot-col2{
+text-align: left;
+  }
+  .col3-align {
+    position: relative;
+    left: 0%;
+}
+.side-banner{
+  margin-top: 25px;
+  position: relative;
+  right: 0%;
+}
+.contact-card{
+  background-color: #fff;
+  position: relative;
+  right: 0;
+  top: 0;
+  padding: 40px 30px 40px 30px;
+  border: 5px #27b2e0 solid;
+  border-radius: 20px;
+  box-shadow: 5px 10px 18px #888888;
+  margin-left: 10px;
+  margin-right: 15px;
+}
+.input2, .bar2 {
+    width: 250px;
+    }
+label{
+  font-size: 16px;
+}
+.link-con{
+  font-size: 12px;
+}
+.mobile li {
+    display: inline;
+  }
+  .mobile li .vl-mobile{
+    display: inline;
+  }
+   .get-in-touch{
+    left: 0%;
+    position: relative;
+  }
+  .con-content{
+    left: 0%;
+    position: relative;
+  }
+    .foot-logo{
+  width:70%; 
+  margin: 20px 0 40px -40%;
+}
+}
+
+
+/* END MOBILE */
