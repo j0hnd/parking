@@ -15,7 +15,7 @@
     </div>
 	<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
 		<a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo-light.png') }}" class="navbar-brand"></a>
-		@include('member-portal.templates.member-nav')
+		@include('parking.templates.member-nav')
 		<span class="nav-icon" onclick="openNav()"><i class="fas fa-bars"></i></span>
 	</nav>
 
@@ -139,7 +139,7 @@
                                     <div class="overview__inner">
                                         <div class="overview-box clearfix">
                                             <div class="icon">
-                                                <i class="zmdi zmdi-money"></i>
+                                                <i class="zmdi zmdi-star"></i>
                                             </div>
                                             <div class="text">
                                                 <h2>1000</h2>
