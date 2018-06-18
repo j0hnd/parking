@@ -1,18 +1,18 @@
-@extends('parking-app')
+@extends('member-portal')
 
 @section('css')
-	<link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
-	<style type="text/css">
-		footer {
-			bottom: 0;
-			position: absolute;
-			width: 100%;
-			height: 250px;
-		}
-	</style>
+	<link href="{{ asset('/css/member-portal.css') }}" rel="stylesheet">
 @stop
 
 @section('main-content')
+	<div id="mobileNav" class="overlay-nav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content">
+        <a href="#">Dashboard</a>
+        <a href="#">Profile</a>
+        <a href="#">Logout</a>
+      </div>
+    </div>
 	<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
 		<a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo-light.png') }}" class="navbar-brand"></a>
 		@include('parking.templates.member-nav')
@@ -73,7 +73,7 @@
 		</div>
 	</div>
 
-
+	@include('parking.templates.footer')
 @stop
 
 @section('js')
