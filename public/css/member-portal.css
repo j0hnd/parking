@@ -126,13 +126,19 @@ footer{
 
 /* END FOOTER */
 /* START MOBILE */
+@media only screen and (min-width:1900px ){
+
+  .navbar-brand{
+    width: 23%;
+  }
+}
 @media only screen and (min-width:1200px ) and (max-width:1500px){
 .col3-align {
     position: relative;
-    left: 18% !important;
+    left: 4% !important;
 }
 }
-@media only screen and (min-width:700px) and (max-width: 769px){
+@media only screen and (min-width:700px) and (max-width: 1000px){
  
 .foot-col2-sub{
 text-align: left;

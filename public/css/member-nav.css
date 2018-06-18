@@ -93,8 +93,23 @@
     left: 13%;
 }
 
+.page-content--bgf7{
+  margin-top: 90px;
+}
+
 /* END NAVBAR */
 /* START MOBILE */ 
+@media only screen and (min-width:700px) and (max-width: 1000px){
+ 
+.navbar-brand {
+    position: absolute;
+    right: 125%;
+    /* right: 120%; */
+    top: -9px;
+    width: 40%;
+    /* width: 40%; */
+}
+}
 
 @media only screen and (min-width:100px ) and (max-width:699px){
   .overlay-nav {

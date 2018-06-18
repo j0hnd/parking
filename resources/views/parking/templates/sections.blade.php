@@ -123,27 +123,24 @@
     </div>
 </section>
 
+@if($posts)
 <section id="layer7">
     <div class="container">
-        <div class="row">
+         <div class="row">
+            @foreach($posts as $post)
             <div class="col-md-4">
-                <img src="img/hand-luggage.jpeg" class="img-fluid">
-                <p class="layer7-header">Hand Luggage – What Should I Pack?</p>
-                <p class="layer7-con">Whether you are travelling long haul or short haul to your holiday destination, there are some items that you should never be without on the plane. If you are trying...</p>
-                <p class="layer7-name"><a href="#" class="layer7-more">Read more...</a></p>
+                @if(is_null($post->image))
+                <img src="{{ asset('/img/default.png') }}" class="img-fluid">
+                @else
+                <img src="{{ asset($post->image) }}" class="img-fluid">
+                @endif
+                <p class="layer7-header">{{ $post->title }}</p>
+                <p class="layer7-con">{{ html_entity_decode(substr($post->content, 0, 20)) }}</p>
+                <p class="layer7-name">{{ $post->owner[0]->members->first_name }}</p>
+
             </div>
-            <div class="col-md-4">
-                <img src="img/stansted.jpg" class="img-fluid">
-                <p class="layer7-header">Where to Eat at Stansted Airport</p>
-                <p class="layer7-con">Over the last few years Stansted Airport has been refurbished throughout which means there are now more eateries than ever before to choose from before... </p>
-                <p class="layer7-name"><a href="#" class="layer7-more">Read more...</a></p>
-            </div>
-            <div class="col-md-4">
-                <img src="img/sun-cream.png" class="img-fluid">
-                <p class="layer7-header">Which sun cream is best for you?</p>
-                <p class="layer7-con">Getting sunburnt does more than spoil your holiday photos; it can also potentially have serious skin effects later in life. As such it is important to prevent it especially....</p>
-                <p class="layer7-name"><a href="" class="layer7-more">Read more...</a></p>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
+@endif

@@ -24,10 +24,10 @@
     <br/><br/><br/><br/><br/>
 
     <nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-        @include('parking.templates.nav3')
+        
     </nav>
     <div class="navbar-2-mobile">
-            @include('parking.templates.nav3-mobile')
+            
         </div>
 
         <div class="container outer-con">

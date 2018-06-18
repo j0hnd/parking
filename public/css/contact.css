@@ -41,7 +41,7 @@
     right: 133%;
     /*right: 120%;*/
     top: -25px;
-    width:30%;
+    width:250px;
     /*width:40%;*/
 }
 .navbar.solid {
@@ -579,6 +579,9 @@ footer{
   font-size: 14px;
   text-decoration: none;
 }
+.navbar-brand{
+    right: 110%;
+  }
 }
 
 @media only screen and (max-width: 1200px){
@@ -621,7 +624,7 @@ footer{
 }
 .text-center {
     position: relative;
-    right: 19%;
+    right: 0%;
 }
 .vl{
   display: none;
@@ -819,9 +822,9 @@ text-align: left;
     }
     .navbar-brand{
         position: absolute;
-        left: -100%;
-        top: -10px;
-        width: 350px;
+    right: 91%;
+    top: 3px;
+    width: 100%;
     }
 .navbar-light .navbar-nav .nav-link {
   margin-top: 10px;
