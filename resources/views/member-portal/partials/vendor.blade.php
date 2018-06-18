@@ -1,4 +1,3 @@
-<table class="table table-striped">
 	<thead>
 	<tr>
 		<th>Booking ID</th>
@@ -17,7 +16,7 @@
 			@php
 				$cost = 0;
 			@endphp
-			<tr id="booking-{{ $booking->id }}">
+			<tr id="booking-{{ $booking->id }}" class="tr-shadow">
 				<td><a href="{{ url('/admin/booking/'.$booking->id.'/edit') }}" target="_blank">{{ $booking->booking_id }}</a></td>
 				<td>{{ $booking->products[0]->vendors[0]->company_name }}</td>
 				<td>{{ $booking->order_title }}</td>
@@ -34,12 +33,12 @@
 				</td>
 			</tr>
 		@endforeach
-		<tr id="summary" class="bg-aqua">
+		<tr id="summary" class="bg-aqua tr-shadow">
 			<td colspan="6"></td>
 			<td class="text-right"><strong>£{{ number_format($total_cost, 2) }}</strong></td>
 		</tr>
 	@else
-		<tr>
+		<tr class="tr-shadow">
 			<td colspan="8" class="text-center"><strong>No data found</strong></td>
 		</tr>
 	@endif
@@ -47,7 +46,7 @@
 
 	@if(count($bookings))
 		<tfoot>
-		<tr>
+		<tr class="tr-shadow">
 			<td colspan="8" class="text-right">{{ $bookings->links() }}</td>
 		</tr>
 		</tfoot>
