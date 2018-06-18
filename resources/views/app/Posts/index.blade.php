@@ -73,6 +73,27 @@
 				}
 			});
 		});
+
+		$(document).on('click', '#toggle-delete', function (e) {
+			e.preventDefault();
+            var id = $(this).data('id');
+            if (confirm("Delete this post?")) {
+                $.ajax({
+                    url: "{{ url('/admin/posts/delete') }}/" + id,
+                    type: 'post',
+                    data: { _token: "{{ csrf_token() }}" },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#posts-container').html(response.html);
+                            alert('Your post has been deleted');
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
+			}
+        });
     });
 </script>
 @stop

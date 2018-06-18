@@ -146,4 +146,36 @@ class PostsController extends Controller
 
 		return response()->json($response);
 	}
+
+	public function delete(Request $request)
+	{
+		$response = ['success' => true];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$id = $request->post;
+				$form['deleted_at'] = Carbon::now();
+				$post = Posts::findOrFail($id);
+
+				if ($post->update($form)) {
+
+					$posts = Posts::active()->orderBy('created_at', 'desc')->get();
+					$html = view('app.Posts.partials._posts', compact('posts'))->render();
+
+					$response = ['success' => true, 'html' => $html];
+
+				} else {
+					$response['message'] = 'Error deleting post';
+				}
+			} else {
+				$response['message'] = 'Invalid request';
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }
