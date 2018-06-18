@@ -12,6 +12,7 @@ use App\Models\Bookings;
 use App\Models\Carpark;
 use App\Models\Customers;
 use App\Models\Members;
+use App\Models\Posts;
 use App\Models\Products;
 use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
@@ -49,7 +50,8 @@ class ParkingAppController extends Controller
         $airports = Airports::active()->get();
 		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
 		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
-        return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval'));
+		$posts = Posts::active()->inRandomOrder()->take(3)->get();
+        return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'posts'));
     }
 
     public function search(Request $request)

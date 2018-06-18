@@ -4,12 +4,12 @@
 			<td><a href="{{ url('/admin/post/'.$post->id.'/edit') }}">{{ $post->id }}</a></td>
 			<td>{{ $post->title }}</td>
 			<td>{{ ucfirst($post->status) }}</td>
-			<td>{{ $post->created_at->format('m/d/Y') }}</td>
+			<td>{{ $post->created_at->format('d/m/Y') }}</td>
 			<td>
-				@if(strtotime($post->date_published))
-					{{ date('m/d/Y', strtotime($post->date_published)) }}
-				@else
+				@if($post->date_published == "0000-00-00 00:00:00")
 					<span class="bg-warning padding-5">Not Published</span>
+				@else
+					{{ date('m/d/Y', strtotime($post->date_published)) }}
 				@endif
 			</td>
 			<td>

@@ -122,27 +122,23 @@
     </div>
 </section>
 
+@if($posts)
 <section id="layer7">
     <div class="container">
-        <div class="row">
+         <div class="row">
+            @foreach($posts as $post)
             <div class="col-md-4">
-                <img src="img/cars.png" class="img-fluid">
-                <p class="layer7-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p class="layer7-con">Lorem ipsum dolor sit amet, consectetur adipiscing<br/>elit. Cras non accumsan dui, ut dapibus felis. </p>
-                <p class="layer7-name">Lorem ipsum.</p>
+                @if(is_null($post->image))
+                <img src="{{ asset('/img/default.png') }}" class="img-fluid">
+                @else
+                <img src="{{ asset($post->image) }}" class="img-fluid">
+                @endif
+                <p class="layer7-header">{{ $post->title }}</p>
+                <p class="layer7-con">{{ html_entity_decode(substr($post->content, 0, 20)) }}</p>
+                <p class="layer7-name">{{ $post->owner[0]->members->first_name }}</p>
             </div>
-            <div class="col-md-4">
-                <img src="img/planes.png" class="img-fluid">
-                <p class="layer7-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p class="layer7-con">Lorem ipsum dolor sit amet, consectetur adipiscing<br/>elit. Cras non accumsan dui, ut dapibus felis. </p>
-                <p class="layer7-name">Lorem ipsum.</p>
-            </div>
-            <div class="col-md-4">
-                <img src="img/city.png" class="img-fluid">
-                <p class="layer7-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p class="layer7-con">Lorem ipsum dolor sit amet, consectetur adipiscing<br/>elit. Cras non accumsan dui, ut dapibus felis. </p>
-                <p class="layer7-name">Lorem ipsum.</p>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
+@endif
