@@ -113,4 +113,37 @@ class PostsController extends Controller
 			}
 		}
 	}
+
+	public function update_status(Request $request)
+	{
+		$response = ['success' => true];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$id = $request->post;
+				$form = $request->only(['status']);
+				$form['date_published'] = Carbon::now();
+				$post = Posts::findOrFail($id);
+
+				if ($post->update($form)) {
+
+					$posts = Posts::active()->orderBy('created_at', 'desc')->get();
+					$html = view('app.Posts.partials._posts', compact('posts'))->render();
+
+					$response = ['success' => true, 'html' => $html];
+
+				} else {
+					$response['message'] = 'Error updating status';
+				}
+			} else {
+				$response['message'] = 'Invalid request';
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }

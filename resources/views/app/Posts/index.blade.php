@@ -23,7 +23,7 @@
 
 				<div class="box-body table-responsive no-padding">
 					<table class="table table-hover">
-						<tbody>
+						<thead>
 						<tr>
 							<th>#</th>
 							<th>Title</th>
@@ -32,36 +32,10 @@
 							<th>Date Published</th>
 							<th></th>
 						</tr>
-						@if(count($posts))
-							@foreach($posts as $post)
-								<tr>
-									<td><a href="{{ url('/admin/post/'.$post->id.'/edit') }}">{{ $post->id }}</a></td>
-									<td>{{ $post->title }}</td>
-									<td>{{ ucfirst($post->status) }}</td>
-									<td>{{ $post->created_at->format('m/d/Y') }}</td>
-									<td>
-										@if(strtotime($post->published))
-										{{ $post->date_published->format('m/d/Y') }}
-										@else
-										<span class="bg-warning padding-5">Not Published</span>
-										@endif
-									</td>
-									<td>
-										<a href="{{ url('/admin/posts/'.$post->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-										@if($post->status == 'draft')
-										<button type="button" id="toggle-publish" class="btn bg-aqua btn-flat" data-id="{{ $post->id }}" data-value="published"><i class="fa fa-chevron-circle-up" aria-hidden="true"></i></button>
-										@else
-										<button type="button" id="toggle-publish" class="btn bg-red btn-flat" data-id="{{ $post->id }}" data-value="draft"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></button>
-										@endif
-										<button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $post->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-									</td>
-								</tr>
-							@endforeach
-						@else
-							<tr>
-								<td colspan="5" class="text-center">No posts listed</td>
-							</tr>
-						@endif
+						</thead>
+
+						<tbody id="posts-container">
+							@include('app.Posts.partials._posts')
 						</tbody>
 						@if(count($posts))
 							<tfoot>
@@ -75,4 +49,30 @@
 			</div>
 		</div>
 	</div>
+@stop
+
+@section('scripts')
+<script type="text/javascript">
+	$(function () {
+		$(document).on('click', '#toggle-status', function (e) {
+		    e.preventDefault();
+		    var id = $(this).data('id');
+		    var value = $(this).data('value');
+		    $.ajax({
+				url: "{{ url('/admin/posts/update/status') }}/" + id,
+				type: 'post',
+				data: { _token: "{{ csrf_token() }}", status: value },
+				dataType: 'json',
+				success: function (response) {
+				    if (response.success) {
+                        $('#posts-container').html(response.html);
+                        alert('Your post has been updated');
+					} else {
+				        alert(response.message);
+					}
+				}
+			});
+		});
+    });
+</script>
 @stop
