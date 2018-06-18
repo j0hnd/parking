@@ -1,7 +1,7 @@
 /* START CONTENT */
 .main-content {
     padding-top: 20px;
-    min-height: 100vh;
+    min-height: 75vh;
 }
 .offset-md-3{
   margin-left: 25%;
@@ -59,6 +59,7 @@ footer{
   position: relative;
   letter-spacing: 3px;
   margin-left: 37px;
+  
 }
 .info{
   font-size: 14px;
@@ -66,10 +67,14 @@ footer{
   color: rgb(255, 255, 255);
   line-height: 1.2;
   position: relative;
+  
 }
 .col3-align{
   position: relative;
   left: 5%;
+  padding: 0;
+  margin: 0;
+  align-items: right;
 }
 .foot-logo{
   width:90%; 
@@ -121,7 +126,12 @@ footer{
 
 /* END FOOTER */
 /* START MOBILE */
-
+@media only screen and (min-width:1200px ) and (max-width:1500px){
+.col3-align {
+    position: relative;
+    left: 18% !important;
+}
+}
 @media only screen and (min-width:700px) and (max-width: 769px){
  
 .foot-col2-sub{
@@ -222,6 +232,14 @@ label{
   width:70%; 
   margin: 20px 0 40px -40%;
 }
+.offset-md-3{
+  margin-left: 0%;
+}
+.mb-1, .location{
+  margin-left: 0%;
+  text-align: center;
+}
+
 }
 
 
