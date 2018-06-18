@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6" style="padding-right: 45px">
-                <p class="l-con1">BOOK WITH THE UK’S FASTEST GROWING PARKING</p>
+                <p class="l-con1">BOOK WITH THE UK’S FASTEST GROWING COMPANY</p>
                 <p class="l-con2">Why book with “MyTravel Compared.com” ?</p>
             </div>
             <div class="col-md-6" style="padding-left: 45px">
-                <p class="l-con3">My Travel Compared.com is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs.</p>
+                <p class="l-con3">My Travel Compared is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs.</p>
             </div>
         </div>
     </div>
@@ -48,6 +48,7 @@
                 <p class="layer4-content">An easy cost effected way to park.</p>
                 <p class="layer4-content">Giving you greater flexibility on your arrival times park and ride is hassle free.</p>
                 <p class="layer4-content">Drive to your pre booked airport car park, unload your luggage and take a short shuttle ride to the terminal. On return simply take the shuttle bus from the terminal back to your car park. The easy to use shuttle busses run on frequent pre arranged times or on demand.</p>
+                <p class="layer4-content">Some park and ride services will allow you to park your car and keep your keys with you. Others will require you to park in a drop off area so that vehicle can be parked for you. </p>
             </div>
             <div class="col-xl-1">
                 <div class="vl4"></div>
@@ -126,22 +127,22 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <img src="img/cars.png" class="img-fluid">
-                <p class="layer7-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p class="layer7-con">Lorem ipsum dolor sit amet, consectetur adipiscing<br/>elit. Cras non accumsan dui, ut dapibus felis. </p>
-                <p class="layer7-name">Lorem ipsum.</p>
+                <img src="img/hand-luggage.jpeg" class="img-fluid">
+                <p class="layer7-header">Hand Luggage – What Should I Pack?</p>
+                <p class="layer7-con">Whether you are travelling long haul or short haul to your holiday destination, there are some items that you should never be without on the plane. If you are trying...</p>
+                <p class="layer7-name"><a href="#" class="layer7-more">Read more...</a></p>
             </div>
             <div class="col-md-4">
-                <img src="img/planes.png" class="img-fluid">
-                <p class="layer7-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p class="layer7-con">Lorem ipsum dolor sit amet, consectetur adipiscing<br/>elit. Cras non accumsan dui, ut dapibus felis. </p>
-                <p class="layer7-name">Lorem ipsum.</p>
+                <img src="img/stansted.jpg" class="img-fluid">
+                <p class="layer7-header">Where to Eat at Stansted Airport</p>
+                <p class="layer7-con">Over the last few years Stansted Airport has been refurbished throughout which means there are now more eateries than ever before to choose from before... </p>
+                <p class="layer7-name"><a href="#" class="layer7-more">Read more...</a></p>
             </div>
             <div class="col-md-4">
-                <img src="img/city.png" class="img-fluid">
-                <p class="layer7-header">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                <p class="layer7-con">Lorem ipsum dolor sit amet, consectetur adipiscing<br/>elit. Cras non accumsan dui, ut dapibus felis. </p>
-                <p class="layer7-name">Lorem ipsum.</p>
+                <img src="img/sun-cream.png" class="img-fluid">
+                <p class="layer7-header">Which sun cream is best for you?</p>
+                <p class="layer7-con">Getting sunburnt does more than spoil your holiday photos; it can also potentially have serious skin effects later in life. As such it is important to prevent it especially....</p>
+                <p class="layer7-name"><a href="" class="layer7-more">Read more...</a></p>
             </div>
         </div>
     </div>

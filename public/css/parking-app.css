@@ -264,7 +264,7 @@ margin-top: 24px;
   line-height: 1.714;
   position: relative;
 }
-/* END LAYER 2 */
+/* END 2 */
 /* START LAYER 3 */
 #layer3{
     height: 50vh;
@@ -538,6 +538,9 @@ margin-top: 50px;
   font-weight: bold;
   line-height: 1.2;
   position: relative;
+}
+.layer7-more:hover{
+  text-decoration: none;
 }
 
 /* END LAYER 7 */
