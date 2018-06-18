@@ -377,18 +377,18 @@ hr{
   font-weight: 300;
 }
 .close3 {
-  position: absolute;
-  bottom: 75%;
-  left: 97%;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none !important;
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 25px;
-  background: #003345;
-  padding: 0px 12px 2px 12px;
+    position: absolute;
+    bottom: 75%;
+    left: 97%;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none !important;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 33px;
+    background: #003345;
+    padding: 0px 13px 1px 13px;
 
 }
 .popup .close3:hover {

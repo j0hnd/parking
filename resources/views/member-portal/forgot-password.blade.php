@@ -21,6 +21,10 @@
 		.offset-md-3 {
     		margin-left: 0%;
 		}
+		.btn{
+			position: relative;
+			right: 15px;
+		}
 		@media only screen and (min-width:100px ) and (max-width:699px){
 		.card {
 		        margin-bottom: 30px;
@@ -62,8 +66,6 @@
             <strong class="card-title mb-3">Forgot Password</strong>
          </div>
     <div class="card-body">
-	<div class="container">
-		
 			<div class="col-md-6 offset-md-3">
 				@if ($errors->any())
 					<div class="error-container">
@@ -107,7 +109,7 @@
 		
 
 	</div>
-</div>
+
 </div>
 </div>
 </div>

@@ -20,9 +20,6 @@
 	</nav>
 
 	<br/>
-	<br/>
-	<br/>
-	<br/>
 	 <!-- PAGE CONTENT-->
         <div class="page-content--bgf7">
             <!-- BREADCRUMB-->

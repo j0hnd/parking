@@ -199,7 +199,7 @@
     .navbar-brand{
         position: absolute;
         left: -89%;
-        top: -10px;
+        top: 2px;
         width: 350px;
     }
 .navbar-light .navbar-nav .nav-link {
