@@ -21,8 +21,7 @@
 
 	<br/><br/><br/><br/><br/>
 
-	<nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-	</nav>
+	
 
 	<div class="container">
 		<div class="row">
