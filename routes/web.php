@@ -81,6 +81,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::match(['get', 'post'], '/reports/vendor/revenues', 'ReportsController@company_revenues');
 
     Route::resource('posts', 'PostsController')->except(['update', 'destroy', 'show']);
+	Route::post('/posts/update', 'PostsController@update');
+	Route::post('/posts/update/status/{post}', 'PostsController@update_status');
 
 	Route::resource('fees', 'FeesController')->except(['update', 'destroy', 'show']);
 	Route::post('/fees/update', 'FeesController@update');

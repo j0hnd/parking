@@ -5,7 +5,7 @@ namespace App\Models;
 
 class Posts extends BaseModel
 {
-    protected $fillable = ['title', 'slug', 'content', 'image'];
+    protected $fillable = ['title', 'slug', 'content', 'image', 'status', 'date_published'];
 
     protected $guarded = ['created_by'];
 

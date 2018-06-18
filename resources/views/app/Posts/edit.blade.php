@@ -10,7 +10,7 @@
 				</div>
 				<!-- /.box-header -->
 				<!-- form start -->
-				<form id="airport-form" class="form-horizontal" method="post" action="{{ url('/admin/posts/'.$post->id) }}">
+				<form id="airport-form" class="form-horizontal" method="post" action="{{ url('/admin/posts/update') }}">
 					@include('app.Posts.partials._form')
 
 					<div class="box-footer">
