@@ -29,15 +29,23 @@
 							<th>Title</th>
 							<th>Status</th>
 							<th>Date Posted</th>
+							<th>Date Published</th>
 							<th></th>
 						</tr>
 						@if(count($posts))
 							@foreach($posts as $post)
 								<tr>
-									<td><a href="{{ url('/admin/post/'.$post->id.'/edit') }}">{{ $post->post_id }}</a></td>
+									<td><a href="{{ url('/admin/post/'.$post->id.'/edit') }}">{{ $post->id }}</a></td>
 									<td>{{ $post->title }}</td>
 									<td>{{ ucfirst($post->status) }}</td>
 									<td>{{ $post->created_at->format('m/d/Y') }}</td>
+									<td>
+										@if(strtotime($post->published))
+										{{ $post->date_published->format('m/d/Y') }}
+										@else
+										<span class="bg-warning padding-5">Not Published</span>
+										@endif
+									</td>
 									<td></td>
 								</tr>
 							@endforeach

@@ -14,8 +14,8 @@
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
           type: 'line',
           datasets: [{
-            data: [78, 81, 80, 45, 34, 12, 40],
-            label: 'Dataset',
+            data: [2, 0, 1, 0, 0, 7, 0],
+            label: 'Your bookings',
             backgroundColor: 'rgba(255,255,255,.1)',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -152,7 +152,7 @@
           type: 'line',
           datasets: [{
             data: [2, 0, 1, 0, 0, 5],
-            label: '',
+            label: 'You booked',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -218,11 +218,11 @@
       var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
           datasets: [
             {
-              label: "My First dataset",
-              data: [78, 81, 80, 65, 58, 75, 60, 75, 65, 60, 60, 75],
+              label: "Points: ",
+              data: [200, 0, 100, 0, 0, 700],
               borderColor: "transparent",
               borderWidth: "0",
               backgroundColor: "rgba(255,255,255,.3)"

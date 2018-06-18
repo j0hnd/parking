@@ -2,7 +2,7 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Title</label>
 		<div class="col-sm-9">
-			<input type="text" class="form-control disabled" name="fee_name" placeholder="Fee Name" autocomplete="off" value="">
+			<input type="text" class="form-control disabled" name="title" placeholder="Title">
 		</div>
 	</div>
 
