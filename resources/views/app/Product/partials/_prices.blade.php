@@ -78,14 +78,23 @@
     </div>
 
     @if(isset($product->prices))
-        @foreach($product->prices as $prices)
+        @foreach($product->prices as $i => $prices)
         <div id="first-row" class="row margin-bottom10 margin-left10">
             <div class="col-md-4">
-                <select name="prices[category_id][0][]" class="form-control price-category">
+				@if($i > 0)
+					@php($disabled = "disabled=disabled")
+				@else
+					@php($disabled = "")
+				@endif
+                <select name="prices[category_id][0][]" class="form-control price-category" {{ $disabled }}>
                     @if($priceCategories->count())
                         <option value="">-- Select Price Category --</option>
                         @foreach($priceCategories->get() as $price)
-                            @if($price->id == $prices->category_id)
+							@if($i == 0)
+								@php($category_id = $price->id)
+							@endif
+
+                            @if($price->id == $category_id)
                             <option value="{{ $price->id }}" selected>{{ $price->category_name }}</option>
                             @else
                             <option value="{{ $price->id }}">{{ $price->category_name }}</option>
