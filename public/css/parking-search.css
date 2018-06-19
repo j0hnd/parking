@@ -812,6 +812,7 @@ margin-top: 10px;
 @media only screen and (max-width:793px){
  .skip{
   display: inline;
+  margin-bottom: 2px;  
 }
 .skip2{
   display: inline;
@@ -922,7 +923,7 @@ margin-top: 10px;
 }
 .navbar-2-mobile ul{
   background-color: #27b2e0;
-  padding: 14px 0px 18px 0px;
+  padding: 14px 0px 13px 0px;
   position: relative;
   margin-bottom: 0rem !important;
   right: 0;
@@ -931,12 +932,12 @@ margin-top: 10px;
 .active-2-mobile{
   background-color: #005e7d;
   display: inline;
-  padding: 17px 11px 22px 11px;
+  padding: 17px 11px 17px 11px;
 
 }
 .not-active-2-mobile{
   display: inline;
-  padding: 17px 11px 22px 11px;
+  padding: 17px 11px 17px 11px;
 
 }
 .not-active-2-mobile:hover{

@@ -12,6 +12,16 @@ jQuery(document).ready(function($) {
         autoclose: true,
         format: 'dd/mm/yyyy',
         todayHighlight: true
+    }).on('changeDate', function (e) {
+        console.log(e.target.id);
+        if (e.target.id == 'drop-off-date') {
+            var selected_date = $(this).val().split('/');
+            var date = new Date(selected_date[2], selected_date[1], selected_date[0]);
+            date.setDate(date.getDate() + 7);
+
+            var return_at = date.getDate() + "/"  + date.getMonth() + "/" + date.getFullYear();
+            $('#return-at-date').datepicker('update', return_at);
+        }
     });
 }(jQuery));
 
@@ -156,25 +166,27 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
     titleMain2.slick('slickPlay');
     titleMain3.slick('slickPlay');
 };
+
 $(document).ready(function() {
-        $(window).scroll(function() {
-          if($(this).scrollTop() > 20) { 
-              $('.navbar').addClass('solid');
-              $('nav').removeClass('bg-dark');
-              $('.Vl').removeClass('vl');
-          } else {
-              $('.navbar').removeClass('solid');
-              $('nav').addClass('bg-dark');
-              $('.Vl').addClass('vl');
-          }
-        });
+    $(window).scroll(function() {
+        if($(this).scrollTop() > 20) {
+            $('.navbar').addClass('solid');
+            $('nav').removeClass('bg-dark');
+            $('.Vl').removeClass('vl');
+        } else {
+            $('.navbar').removeClass('solid');
+            $('nav').addClass('bg-dark');
+            $('.Vl').addClass('vl');
+        }
+    });
 });
- function openNav() {
-      document.getElementById("mobileNav").style.width = "100%";
-      $('.nav-icon').hide();
-      }
-      function closeNav() {
-      document.getElementById("mobileNav").style.width = "0%";
-      $('.nav-icon').show();
-      
-      }
+
+function openNav() {
+    document.getElementById("mobileNav").style.width = "100%";
+    $('.nav-icon').hide();
+}
+
+function closeNav() {
+    document.getElementById("mobileNav").style.width = "0%";
+    $('.nav-icon').show();
+}
