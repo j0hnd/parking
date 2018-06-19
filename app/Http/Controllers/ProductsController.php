@@ -92,7 +92,7 @@ class ProductsController extends Controller
                                 foreach ($values as $i => $val) {
                                     $prices_form[$i] = [
                                         'product_id'      => $products->id,
-                                        'category_id'     => $form['prices']['category_id'][0][$i],
+                                        'category_id'     => $form['prices']['category_id'][0][0],
                                         'no_of_days'      => $form['prices']['no_of_days'][1][$i],
                                         'price_month'     => $form['prices']['price_month'][2][$i],
                                         'price_year'      => $form['prices']['price_year'][3][$i],
@@ -250,7 +250,7 @@ class ProductsController extends Controller
                                 foreach ($values as $i => $val) {
                                     $prices_form[$i] = [
                                         'product_id'      => $product->id,
-										'category_id'     => $form['prices']['category_id'][0][$i],
+										'category_id'     => $form['prices']['category_id'][0][0],
 										'no_of_days'      => isset($form['prices']['no_of_days'][1][$i]) ? $form['prices']['no_of_days'][1][$i] : null,
 										'price_month'     => $form['prices']['price_month'][2][$i],
 										'price_year'      => $form['prices']['price_year'][3][$i],
@@ -306,6 +306,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
