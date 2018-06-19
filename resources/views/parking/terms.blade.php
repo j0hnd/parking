@@ -5,15 +5,7 @@
 @stop
 
 @section('main-content')
- <div id="mobileNav" class="overlay-nav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <div class="overlay-content">
-        <a href="/contact">Contact Us</a>
-        <a href="#">Login</a>
-        <a href="#">Live Chat</a>
-        <a href="#">Airport Parking</a>
-      </div>
-    </div>
+ @include('parking.templates.nav-mobile')
     <nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
         <a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo.png') }}" class="navbar-brand"></a>
         @include('parking.templates.nav2')
