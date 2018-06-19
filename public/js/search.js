@@ -8,9 +8,13 @@ $(function () {
         var name = $(this).data('name');
         $('#filter-wrapper .item').removeClass('active-2');
         $('#filter-wrapper .item').addClass('not-active');
+        $('#filter-wrapper .item').removeClass('active-2-mobile');
+        $('#filter-wrapper .item').addClass('not-active-2-mobile');
 
         $(this).parent().addClass('active-2');
         $(this).parent().removeClass('not-active');
+        $(this).parent().addClass('active-2-mobile');
+        $(this).parent().removeClass('not-active-2-mobile');
 
         $.ajax({
             url: '/filter/search/' + name,
