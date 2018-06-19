@@ -38,11 +38,11 @@
 		<br/><br/><br/><br/><br/>
 
 		<nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-			@include('parking.templates.nav3')
+			
 		</nav>
 
 		<div class="navbar-2-mobile">
-			@include('parking.templates.nav3-mobile')
+			
 		</div>
 
 		<div class="container full-wizard">
@@ -51,7 +51,7 @@
 					<a href="{{ url('/') }}" class="edit-search"><i class="fas fa-angle-left"></i> EDIT YOUR SEARCH</a>
 				</div>
 				<div class="col-md-4" id="top">
-					<p>Lorem ipsum dolor sit amet, consectetur.</p>
+					<p></p>
 				</div>
 			</div>
 			<div class="row">
@@ -194,10 +194,10 @@
 											</div>
 										</div>
 										<br/>
-										<p>Lorem ipsum dolor</p>
+										{{--<p>Lorem ipsum dolor</p>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										</p>
+										</p>--}}
 									</div>
 								</fieldset>
 
