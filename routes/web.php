@@ -19,6 +19,7 @@ Route::get('/payment/{token?}', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
 Route::get('/contact','ParkingAppController@contact');
+Route::get('blog', 'ParkingAppController@blog');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
 Route::get('/forgot-password', 'ParkingAppController@forgot_password');
