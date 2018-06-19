@@ -129,7 +129,11 @@
         <div class="row">
             @foreach($posts as $post)
             <div class="col-md-4">
-                <img src="img/hand-luggage.jpeg" class="img-fluid">
+                @if($post->image)
+                <img src="{{ asset($post->image) }}" class="img-fluid">
+                @else
+                <img src="{{ asset('/img/default-blog.png') }}" class="img-fluid">
+                @endif
                 <p class="layer7-header">{{ $post->title }}</p>
                 <p class="layer7-con">{!! html_entity_decode(substr($post->content, 0, 100)) !!}...</p>
                 <p class="layer7-name"><a href="#" class="layer7-more">Read more...</a></p>
