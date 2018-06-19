@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="col-sm-2 control-label">Carpark</label>
+    <label class="col-sm-2 control-label">Carpark <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <select name="carpark_id" id="carpark-id" class="form-control">
@@ -13,7 +13,7 @@
                         <option value="{{ $carpark->id }}">{{ $carpark->name }}</option>
                         @endif
                     @else
-                    <option value="{{ $carpark->id }}">{{ $carpark->name }}</option>
+                    <option value="{{ $carpark->id }}" {{ (old('carpark_id') == $carpark->id ? "selected":"") }}>{{ $carpark->name }}</option>
                     @endif
                 @endforeach
             @endif
@@ -82,9 +82,9 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Revenue Share</label>
+    <label class="col-sm-2 control-label">Revenue Share <span class="required">*</span></label>
 
     <div class="col-sm-5">
-        <input type="text" class="form-control" name="revenue_share" value="{{ isset($product) ? $product->revenue_share : '' }}">
+        <input type="text" class="form-control" name="revenue_share" value="{{ isset($product) ? $product->revenue_share : old('revenue_share') }}">
     </div>
 </div>
