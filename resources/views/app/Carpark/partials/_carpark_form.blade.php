@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label class="col-sm-2 control-label">Carpark Name</label>
+    <label class="col-sm-2 control-label">Carpark Name <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <input type="text" class="form-control" name="name" placeholder="Carpark Name" autocomplete="off" value="{{ isset($carpark->name) ? $carpark->name : "" }}">
@@ -15,7 +15,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Address</label>
+    <label class="col-sm-2 control-label">Address <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <input type="text" class="form-control" name="address" placeholder="Address" autocomplete="off" value="{{ isset($carpark->address) ? $carpark->address : "" }}">
@@ -31,7 +31,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">City</label>
+    <label class="col-sm-2 control-label">City <span class="required">*</span></label>
 
     <div class="col-sm-6">
         <input type="text" class="form-control" name="city" placeholder="City" autocomplete="off" value="{{ isset($carpark->city) ? $carpark->city : "" }}">
@@ -39,7 +39,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">County/State</label>
+    <label class="col-sm-2 control-label">County/State <span class="required">*</span></label>
 
     <div class="col-sm-6">
         <input type="text" class="form-control" name="county_state" placeholder="County/State" autocomplete="off" value="{{ isset($carpark->county_state) ? $carpark->county_state : "" }}">
@@ -47,7 +47,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Country</label>
+    <label class="col-sm-2 control-label">Country <span class="required">*</span></label>
 
     <div class="col-sm-6">
         <select name="country_id" id="countries" class="form-control">
@@ -67,7 +67,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Postal Code</label>
+    <label class="col-sm-2 control-label">Postal Code <span class="required">*</span></label>
 
     <div class="col-sm-6">
         <input type="text" class="form-control" name="zipcode" placeholder="Postal Code" autocomplete="off" value="{{ isset($carpark->zipcode) ? $carpark->zipcode : "" }}">

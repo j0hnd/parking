@@ -30,7 +30,6 @@ class AirportsController extends Controller
     public function store(AirportRequestForm $request)
     {
         try {
-
             if ($request->isMethod('post')) {
 
                 $form = $request->except(['_token', 'subcategory']);
