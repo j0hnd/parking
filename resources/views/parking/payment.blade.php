@@ -400,28 +400,28 @@
 							</div>
 							<br/>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p>From Date</p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-align">{{ $drop_off_date }}</p>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p>To Date</p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-align">{{ $return_at_date }}</p>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-name">{{ $airport->airport_name }}</p>
 									<p class="h6">{{ $price->categories->category_name }}</p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									@php
 										$price_value = number_format($price_value, 2);
 										$price_value = str_replace('.00', '', $price_value);
@@ -431,35 +431,35 @@
 							</div>
 							<hr>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-name">BOOKING FEE</p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-align">£{{ $booking_fee->amount }}</p>
 								</div>
 							</div>
 							<div id="sms-confirmation-container" class="row d-none">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-name"><small>SMS Confirmation</small></p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-align">£<span id="sms-fee-wrapper">0</span></p>
 								</div>
 							</div>
 							<div id="cancellation-waiver-container" class="row d-none">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-name"><small>Cancellation Waiver</small></p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-align">£<span id="cancellation-waiver-wrapper">0</span></p>
 								</div>
 							</div>
 							<hr>
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p>TOTAL PRICE</p>
 								</div>
-								<div class="col-md-6">
+								<div class="col-6 col-md-6">
 									<p class="receipt-align total" id="total" data-value="{{ $total }}">£{{ $total }}</p>
 								</div>
 							</div>
