@@ -355,7 +355,7 @@ footer{
   margin-left: 0 !important;
 }
 .col3-align {
-    left: 3%;
+    left: -10%;
 }
 .mob-icon{
   display: none;
@@ -386,7 +386,7 @@ footer{
 
 @media only screen and (max-width:992px){
 .navbar.solid {
-    left: -10%;
+    left: -16%;
     width: 133% !important;
     padding: 10px 0 10px 0;
 }
@@ -399,10 +399,10 @@ footer{
 }
 .navbar.solid .navbar-brand {
     position: relative !important;
-    left: 19%;
+    left: 220px;
 }
 .navbar {
-    width: 80%;
+    width: 70%;
     left: 40%;
     margin: 40px 0 0 0;
 }
