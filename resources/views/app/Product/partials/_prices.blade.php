@@ -2,7 +2,7 @@
     <div class="row margin-left10 margin-right10 margin-bottom15 padding-10 bg-info">
         <div id="override-container">
             <h4>Override Price Per Day</h4>
-            @if(isset($product->overrides) and count($product->override))
+            @if(isset($product->overrides) and count($product->overrides))
                 @foreach($product->overrides as $override)
                 <div id="override-wrapper" class="col-md-12 padding-bottom10">
                     <div class="col-md-3">
@@ -81,7 +81,7 @@
         @foreach($product->prices as $prices)
         <div id="first-row" class="row margin-bottom10 margin-left10">
             <div class="col-md-4">
-                <select name="prices[category_id][0][]" class="form-control">
+                <select name="prices[category_id][0][]" class="form-control price-category">
                     @if($priceCategories->count())
                         <option value="">-- Select Price Category --</option>
                         @foreach($priceCategories->get() as $price)
@@ -152,7 +152,7 @@
     @else
         <div id="first-row" class="row margin-bottom10 margin-left10">
             <div class="col-md-4">
-                <select name="prices[category_id][0][]" class="form-control">
+                <select name="prices[category_id][0][]" class="form-control price-category">
                     @if($priceCategories->count())
                         <option value="">-- Category --</option>
                         @foreach($priceCategories->get() as $price)
