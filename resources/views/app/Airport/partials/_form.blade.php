@@ -100,7 +100,7 @@
     </div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">Sub-Category</label>
+        <label class="col-sm-2 control-label">Terminals</label>
 
         <div class="col-sm-6">
             <select name="subcategory[]" id="subcategory" class="form-control" multiple="multiple">
