@@ -50,7 +50,7 @@ class ParkingAppController extends Controller
         $airports = Airports::active()->get();
 		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
 		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
-		$posts = Posts::active()->inRandomOrder()->take(3)->get();
+		$posts = Posts::active()->published()->orderBy('created_at', 'desc')->take(3)->get();
         return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'posts'));
     }
 

@@ -14,6 +14,11 @@ class Posts extends BaseModel
     protected $date = ['date_published', 'deleted_at'];
 
 
+    public function scopePublished($query)
+	{
+		return $query->where('status', 'published');
+	}
+
     public function owner()
 	{
 		return $this->hasMany(User::class, 'id', 'created_by');
