@@ -163,12 +163,14 @@ body{
 .tab-1{
     position: absolute;
     top: 0;
-    padding: 18px 0px 20px 1px !important;
+    padding: 16px 0px 16px 1px !important;
     background-color: #9dc8e2;
     border-radius: 5px;
     color: #fff;
     margin-left: 10px;
     z-index: 2001;
+    font-size: 16px;
+
 }
 .tab-1:hover{
     background-color: #2184be;
@@ -444,6 +446,12 @@ footer{
 
 /* END FOOTER */
 /* START MOBILE */
+@media only screen and (max-width:1024px){
+
+.affix{
+    width: 280px;
+}
+}
 @media only screen and (min-width:1024px){
 
 .affix{
@@ -637,12 +645,6 @@ margin-left: 0px;
     #sidebar.affix {
         position: fixed;
         top: 40px;
-    }
-    .tab-1 {
-    padding: 13px 20px 12px 1px;
-    color: #fff;
-    margin-left: 9px;
-    font-size: 12px;
     }
 
 }
@@ -952,9 +954,9 @@ font-size: 14px;
     font-size: 10px !important;
 }
 .tab-1 {
-    padding: 10px 5px 10px 1px;
+    padding: 10px 10px 10px 1px !important;
     font-size: 10px;
-    margin-left: -4px;
+    margin-left: 10px;
 }
 #payment_choice-t-0 {
     font-size: 11px;
@@ -971,6 +973,15 @@ font-size: 14px;
     top: -10px;
     width: 150%;
 }
+}
+@media only screen and (max-width:376px){
+.tab-1 {
+    padding: 10px 5px 10px 1px !important;
+    font-size: 10px;
+    margin-left: -2px;
+}
+
+
 }
 
 
