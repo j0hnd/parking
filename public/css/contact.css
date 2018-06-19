@@ -524,7 +524,7 @@ footer{
 
 .navbar.solid {
     width: 111%;
-    left: -9%;
+    left: -3%;
     }
     .navbar.solid .navbar-nav {
     position: relative;
@@ -539,9 +539,7 @@ footer{
   .mobile li .vl-mobile{
     display: inline;
   }
-  .navbar-2{
-    display: none;
-}
+
 .navbar-2-mobile{
   display: inline;
   position: relative;
@@ -587,18 +585,32 @@ footer{
 @media only screen and (max-width: 1200px){
 
   .get-in-touch{
-    left: -8%;
+    left: -2%;
     position: relative;
   }
   .con-content{
-    left: -10%;
+    left: -4%;
     position: relative;
   }
 }
 
-@media only screen and (min-width:700px) and (max-width: 769px){
+@media only screen and (min-width:767px) and (max-width: 699px){
+  .col3-align {
+    left: -30% !important;
+}
+.navbar {
+    width: 67% !important;
+    }
+    .navbar.solid .navbar-brand {
+    left: 30% !important;
+}
+.navbar.solid {
+    left: -16% !important;
+}
+}
+@media only screen and (min-width:700px) and (max-width: 768px){
   .navbar.solid {
-    left: -9%;
+    left: -16%;
     width: 133% !important;
     padding: 10px 0 10px 0;
 }
@@ -611,10 +623,10 @@ footer{
 }
 .navbar.solid .navbar-brand {
     position: relative !important;
-    left: 19%;
+    left: 30%;
 }
 .navbar {
-    width: 80%;
+    width: 67%;
     left: 40%;
     margin: 40px 0 0 0;
 }
@@ -646,7 +658,7 @@ text-align: left;
   }
   .col3-align {
     position: relative;
-    left: 0%;
+    left: -22%;
 }
 .ul-pos{
   margin-left: 0 !important;
@@ -670,12 +682,7 @@ text-align: left;
   position: relative;
   right: -17%;
 }
-.navbar-2{
-    display: none;
-}
-.navbar-2-mobile{
-  display: inline;
-}
+
 .navbar-2-mobile ul{
   background-color: #27b2e0;
   padding: 38px 40px 37px 40px;

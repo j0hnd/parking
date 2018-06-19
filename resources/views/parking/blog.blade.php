@@ -17,18 +17,15 @@
     <nav class="navbar-expand-lg navbar-light bg-light navbar-2">
        
     </nav>
-    <div class="navbar-2-mobile">
-        </div>
-
-        
+        <div class="container blog-page">
             <div class="row">
-                <div class="col-md-9 blog">
+                <div class="col-lg-9 blog">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-lg-5">
                                 <img src="{{asset('img/stansted.jpg')}}" class="img-fluid">
                             </div>
-                            <div class="col-md-7 con">
+                            <div class="col-lg-7 con">
                                 <h5 class="name">John Doe<div></div></h5>
                                 <h1 class="blog-content-title">Where to Eat at Stanstead Airport?</h1>
                                 <p class="blog-content">Over the last few years Stanstead Airport has been refurbished throughout which means there are now more eateries than ever before to choose from before boarding your flight. Save time at the airport by planning where you would like to eat in advance using this handy guide and enjoy more time in duty free!</p>
@@ -44,8 +41,7 @@
                         </div>
                     </div>    
                 </div>
-                <div class="col-md-3 side-blog" id="top">
-                    <div id="sidebar">
+                <div class="col-lg-3 side-blog" id="sidebar">
                      <div class="row">
                         <div class="col-md-12">
                                 <div class="card">
@@ -73,9 +69,9 @@
                                 </div>
                             </div>
                     </div>
-                </div>
             </div>
             </div>
+        </div>
 @stop
 
 @section('js')
