@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-7">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Company Name</label>
+            <label class="col-sm-2 control-label">Company Name <span class="required">*</span></label>
 
             <div id="company-name-wrapper" class="col-sm-9">
                 <input type="text" class="form-control"
@@ -14,7 +14,7 @@
         </div>
 
         <div class="form-group">
-            <label class="col-sm-2 control-label">Email</label>
+            <label class="col-sm-2 control-label">Email <span class="required">*</span></label>
 
             <div class="col-sm-9">
                 <input type="text" class="form-control" name="email" placeholder="Email" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->email : "" }}">

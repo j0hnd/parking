@@ -72,3 +72,10 @@
 .margin-bottom20 { margin-bottom: 20px !important; }
 .margin-bottom25 { margin-bottom: 25px !important; }
 .margin-bottom30 { margin-bottom: 30px !important; }
+
+.required {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 5px;
+}
