@@ -301,6 +301,9 @@ class ParkingAppController extends Controller
 	public function contact(){
 		return view ('parking.contact');
 	}
+	public function blog(){
+		return view ('parking.blog');
+	}
 
 
 	public function paypal(Request $request)

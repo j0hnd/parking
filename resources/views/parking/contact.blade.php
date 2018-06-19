@@ -32,10 +32,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-sm-5 con1">
-                <p class="con-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat.</p>
+                <p class="con-content">We are here to help.
+                For assistance with new bookings, amendments or if you require information on our products and services please feel free to contact us.</p>
+                <p class="con-content">To work in partnership with My Travel Compared please contact us via this section. A member of our partnership team will then be pleased to contact you.</p>
             </div>
             <div class="col-md-5 col-sm-6 contact-card">
                 <div class="row">

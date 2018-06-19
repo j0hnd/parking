@@ -11,6 +11,7 @@ $(document).ready(function() {
           }
         });
 });
+
  function openNav() {
       document.getElementById("mobileNav").style.width = "100%";
       $('.nav-icon').hide();

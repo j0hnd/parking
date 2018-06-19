@@ -410,12 +410,7 @@ footer{
     position: absolute;
     right: 107%;
 }
-.navbar-2{
-    display: none;
-}
-.navbar-2-mobile{
-  display: inline;
-}
+
 .navbar-2-mobile ul{
   background-color: #27b2e0;
   padding: 37px 40px 37px 46px;
@@ -565,12 +560,7 @@ margin-left: 0px;
 .navbar-light .navbar-nav .nav-link {
   margin-top: 10px;
   }
-  .navbar-2{
-    display: none;
-}
-.navbar-2-mobile{
-  display: inline;
-}
+
 .navbar-2-mobile ul{
   background-color: #27b2e0;
   padding: 14px 0px 18px 0px;
