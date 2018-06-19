@@ -73,7 +73,7 @@ class DashboardController extends Controller
 			->get();
 
 		$summary = Bookings::active()
-			->selectRaw("DATE_FORMAT(created_at, '%M') AS month, SUM(price_value) AS sales, (SUM(revenue_value) + SUM(booking_fees) + SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) + SUM(CASE WHEN cancellation_waiver THEN cancellation_waiver ELSE 0 END)) AS revenue")
+			->selectRaw("DATE_FORMAT(created_at, '%M') AS MONTH, SUM(price_value) AS sales, (SUM(revenue_value) + SUM(CASE WHEN (booking_fees AND booking_fees IS NOT NULL) THEN booking_fees ELSE 0 END) + SUM(CASE WHEN sms_confirmation_fee AND sms_confirmation_fee IS NOT NULL THEN sms_confirmation_fee ELSE 0 END) + SUM(CASE WHEN (cancellation_waiver AND cancellation_waiver IS NOT NULL)  THEN cancellation_waiver ELSE 0 END)) AS revenue")
 			->whereRaw("YEAR(created_at) = ?", [date('Y')])
 			->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
 			->get();

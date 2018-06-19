@@ -27,7 +27,8 @@ class ProductFormRequest extends FormRequest
             'carpark_id'  => 'required|numeric',
             'description' => 'string',
             'on_arrival'  => 'string',
-            'on_return'   => 'string'
+            'on_return'   => 'string',
+			'revenue_share' => 'required'
         ];
     }
 }
