@@ -125,6 +125,7 @@
 
 <section id="layer7">
     <div class="container">
+
         <div class="row">
             <div class="col-md-4">
                 <img src="img/hand-luggage.jpeg" class="img-fluid">
@@ -143,6 +144,7 @@
                 <p class="layer7-header">Which sun cream is best for you?</p>
                 <p class="layer7-con">Getting sunburnt does more than spoil your holiday photos; it can also potentially have serious skin effects later in life. As such it is important to prevent it especially....</p>
                 <p class="layer7-name"><a href="" class="layer7-more">Read more...</a></p>
+
             </div>
         </div>
     </div>

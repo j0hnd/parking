@@ -2,11 +2,11 @@
     <div class="container" style="position: relative;">
         <div class="row">
             <div class="col-md-4">
-                <p class="foot-col1">Lorem ipsum dolor sit amet,<br/>
+                {{--<p class="foot-col1">Lorem ipsum dolor sit amet,<br/>
                     consectetur adipisicing elit,<br/>
                     sed do eiusmodtempor incididunt<br/>
                     labore et dolore magna aliqua.
-                </p>
+                </p>--}}
             </div>
             <div class="col-md-4 text-center">
                 <img src="{{ asset('/img/logo-white.png') }}" class="foot-logo">

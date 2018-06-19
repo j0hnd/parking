@@ -42,7 +42,7 @@
     right: 133%;
     /*right: 120%;*/
     top: -25px;
-    width:30%;
+    width:250px;
     /*width:40%;*/
 }
 .navbar.solid {
@@ -377,18 +377,18 @@ hr{
   font-weight: 300;
 }
 .close3 {
-  position: absolute;
-  bottom: 75%;
-  left: 97%;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none !important;
-  color: #fff;
-  border: 2px solid #fff;
-  border-radius: 25px;
-  background: #003345;
-  padding: 0px 12px 2px 12px;
+    position: absolute;
+    bottom: 75%;
+    left: 97%;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none !important;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 33px;
+    background: #003345;
+    padding: 0px 13px 1px 13px;
 
 }
 .popup .close3:hover {
@@ -650,6 +650,9 @@ margin-top: 10px;
   .mobile li .vl-mobile{
     display: inline;
   }
+  .navbar-brand{
+    right: 110%;
+  }
 }
 
 @media only screen and (max-width:993px){
@@ -715,7 +718,7 @@ margin-top: 10px;
 }
 .text-center {
     position: relative;
-    right: 19%;
+    right: 0%;
 }
 .vl{
   display: none;
@@ -802,8 +805,19 @@ margin-top: 10px;
   .mobile li .vl-mobile{
     display: inline;
   }
+   .skip{
+  display: none;
 }
-@media only screen and (max-width:700px){
+}
+@media only screen and (max-width:793px){
+ .skip{
+  display: inline;
+}
+.skip2{
+  display: inline;
+}
+}
+@media only screen and (max-width:701px){
   .overlay-nav {
     display: block;
     height: 100%;
@@ -891,9 +905,9 @@ margin-top: 10px;
     }
     .navbar-brand{
         position: absolute;
-        right: 46%;
-        top: -10px;
-        width: 150%;
+        right: 91%;
+        top: 3px;
+        width: 100%;
     }
 .navbar-light .navbar-nav .nav-link {
   margin-top: 10px;
@@ -901,6 +915,8 @@ margin-top: 10px;
   .navbar-2{
     display: none;
 }
+
+
 .navbar-2-mobile{
   display: inline;
 }
@@ -1049,6 +1065,9 @@ button.btn.btn-primary.btn-sm{
     .foot-logo{
   width:70%; 
   margin: 20px 0 40px -40%;
+}
+.skip2{
+  display: none;
 }
 }
 @media only screen and (max-width:321px){
