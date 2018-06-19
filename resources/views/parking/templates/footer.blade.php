@@ -19,7 +19,7 @@
                 <div class="info">
                     {{--<i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('/img/tele.png') }}"></i> (028)231 5344<br/><br/>--}}
                     <i style="margin-right: 15px;" class="mob-icon"><img src="{{ asset('img/email.png') }}"></i> <a href="mailto:{{ config('app.company_email') }}">{{ config('app.company_email') }}</a> <br/><br/>
-                    <i style="margin-right: 18px;" class="mob-icon"><img src="{{ asset('img/gps.png') }}"></i> Lorem ipsum dolor sit amet <p class="foot-gps" ">consectetur adipisicing elit.</p>
+                    <i style="margin-right: 18px;" class="mob-icon"><img src="{{ asset('img/gps.png') }}"></i> {{--Lorem ipsum dolor sit amet <p class="foot-gps" ">consectetur adipisicing elit.</p>--}}
                 </div>
             </div>
             </div>
