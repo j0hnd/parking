@@ -4,6 +4,11 @@
     <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <style type="text/css">
+        /*.dropdown{*/
+            /*display: inline;*/
+        /*}*/
+    </style>
 @stop
 
 @section('main-content')
@@ -29,15 +34,33 @@
             {{-- search form --}}
             @include('parking.partials._search')
 
-            <a href="#" class="filter dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a>
-             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Sample 1</a>
-                <a class="dropdown-item" href="#">Sample 2</a>
-                <a class="dropdown-item" href="#">Sample 3</a>
-              </div>
+            {{-- filters --}}
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="ratings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a>
+                <div class="dropdown-menu" aria-labelledby="ratings">
+                    <a class="dropdown-item" href="#">Sample 1</a>
+                    <a class="dropdown-item" href="#">Sample 2</a>
+                    <a class="dropdown-item" href="#">Sample 3</a>
+                </div>
+            </div>
 
-            <a href="#" class="filter">Lowest Price <i class="fas fa-angle-down"></i></a>
-            <a href="#" class="filter">Select Filter <i class="fas fa-angle-down"></i></a>
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="lowest-price" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lowest Price</a>
+                <div class="dropdown-menu" aria-labelledby="lowest-price">
+                    <a class="dropdown-item" href="#">xxx</a>
+                    <a class="dropdown-item" href="#">xxx</a>
+                    <a class="dropdown-item" href="#">xxx</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Filter</a>
+                <div class="dropdown-menu" aria-labelledby="filters">
+                    <a class="dropdown-item" href="#">zzz</a>
+                    <a class="dropdown-item" href="#">zzz</a>
+                    <a class="dropdown-item" href="#">zzz</a>
+                </div>
+            </div>
         </div>
     </header>
 
