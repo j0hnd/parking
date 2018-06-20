@@ -38,11 +38,11 @@
 		<br/><br/><br/><br/><br/>
 
 		<nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-			
+
 		</nav>
 
 		<div class="navbar-2-mobile">
-			
+
 		</div>
 
 		<div class="container full-wizard">
@@ -354,6 +354,7 @@
 						<input type="hidden" id="email" name="email" />
 						<input type="hidden" id="phoneno" name="phoneno" />
 						<input type="hidden" id="sms" name="sms">
+						<input type="hidden" id="sms-confirmation" name="sms-confirmation">
 						<input type="hidden" id="cancellation" name="cancellation">
 						<input type="hidden" id="booking-fee" name="booking_fee" value="{{ $booking_fee->amount }}">
 						<input type="hidden" id="car-registration-no" name="car_registration_no">
