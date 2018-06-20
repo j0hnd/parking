@@ -4,11 +4,7 @@
     <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
-    <style type="text/css">
-        /*.dropdown{*/
-            /*display: inline;*/
-        /*}*/
-    </style>
+    
 @stop
 
 @section('main-content')
