@@ -88,7 +88,6 @@ class PostsController extends Controller
 
 			if ($post->update($form)) {
 				if ($request->hasFile('image')) {
-					dd('xxx');
 					$image = \Request::file('image');
 					$filename   = $image->getClientOriginalName();
 					$image_path = "{$path}/".$post->id;
