@@ -29,7 +29,13 @@
             {{-- search form --}}
             @include('parking.partials._search')
 
-            <a href="#" class="filter">Rating <i class="fas fa-angle-down"></i></a>
+            <a href="#" class="filter dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a>
+             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Sample 1</a>
+                <a class="dropdown-item" href="#">Sample 2</a>
+                <a class="dropdown-item" href="#">Sample 3</a>
+              </div>
+
             <a href="#" class="filter">Lowest Price <i class="fas fa-angle-down"></i></a>
             <a href="#" class="filter">Select Filter <i class="fas fa-angle-down"></i></a>
         </div>
