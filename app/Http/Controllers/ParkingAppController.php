@@ -468,5 +468,20 @@ class ParkingAppController extends Controller
 			}
 		}
 	}
+
+	public function show_post(Request $request)
+	{
+		$post = Posts::active()->published()->where('slug', $request->post);
+		if ($post->count()) {
+			$post  = $post->first();
+			$posts = Posts::active()->published()->where('id', '!=', $post->id)->inRandomOrder()->take(2)->get();
+			$next  = Posts::active()->published()->where('id', ($post->id + 1))->first();
+			$prev  = Posts::active()->published()->where('id', ($post->id - 1))->first();
+		} else {
+			abort(404);
+		}
+
+		return view('parking.blog', compact('post', 'posts', 'next', 'prev'));
+	}
 }
 

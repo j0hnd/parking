@@ -136,7 +136,7 @@
                 @endif
                 <p class="layer7-header">{{ $post->title }}</p>
                 <p class="layer7-con">{!! html_entity_decode(substr($post->content, 0, 100)) !!}...</p>
-                <p class="layer7-name"><a href="#" class="layer7-more">Read more...</a></p>
+                <p class="layer7-name"><a href="{{ url('/post/' . $post->slug) }}" class="layer7-more" target="_blank">Read more...</a></p>
             </div>
             @endforeach
         </div>
