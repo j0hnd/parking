@@ -194,12 +194,17 @@ margin-top: 24px;
     margin-left: 100px;
     color: #fff;
     top: 78%;
-    left: 20%;
+   
 }
 .filter:hover{
     color: #ffe000;
     text-decoration: none;
 }
+.dropdown{
+     display: inline;
+     position: relative;
+     left: 20%;
+        }
 .datepicker{
   z-index: 2001 !important; 
 }
@@ -641,7 +646,7 @@ margin-top: 10px;
 .home-label{
   display: none;
 }
-.filter{
+.dropdown{
   left: 16%;
 }
  .mobile li {
@@ -784,7 +789,7 @@ margin-top: 10px;
   bottom:0;
  
 }
-.filter{
+.dropdown{
   left: 3%;
 }
 .time-width{
@@ -1040,10 +1045,12 @@ button.btn.btn-primary.btn-sm{
 .filter {
     margin-left: 22px;
     top: 78%;
-    left: 7%;
     margin-top: 0px;
     position: relative;
     font-size: 14px;
+}
+.dropdown{
+  left: 5%;
 }
 .mobile-align{
   margin-top: 20px;
@@ -1134,6 +1141,12 @@ font-size: 14px;
 }
 .inner-con {
     padding: 20px 23px 20px 20px;
+}
+.filter {
+    margin-left: 14px;
+}
+.dropdown{
+  left: 0%;
 }
 }
 /* END MOBILE */
