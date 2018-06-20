@@ -23,6 +23,7 @@ Route::get('blog', 'ParkingAppController@blog');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
 Route::get('/forgot-password', 'ParkingAppController@forgot_password');
+Route::get('/post/{post}', 'ParkingAppController@show_post');
 Route::get('/signup', 'ParkingAppController@signup');
 
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');

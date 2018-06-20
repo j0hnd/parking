@@ -301,6 +301,9 @@ class ParkingAppController extends Controller
 	public function contact(){
 		return view ('parking.contact');
 	}
+	public function blog(){
+		return view ('parking.blog');
+	}
 
 
 	public function paypal(Request $request)
@@ -464,6 +467,21 @@ class ParkingAppController extends Controller
 				return back()->with('error', 'Error in adding new user');
 			}
 		}
+	}
+
+	public function show_post(Request $request)
+	{
+		$post = Posts::active()->published()->where('slug', $request->post);
+		if ($post->count()) {
+			$post  = $post->first();
+			$posts = Posts::active()->published()->where('id', '!=', $post->id)->inRandomOrder()->take(2)->get();
+			$next  = Posts::active()->published()->where('id', ($post->id + 1))->first();
+			$prev  = Posts::active()->published()->where('id', ($post->id - 1))->first();
+		} else {
+			abort(404);
+		}
+
+		return view('parking.blog', compact('post', 'posts', 'next', 'prev'));
 	}
 }
 
