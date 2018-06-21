@@ -1333,20 +1333,24 @@ section {
 
 .noti__item {
     position: relative;
-    margin-right: 35px;
+    margin-right: 25px;
+    margin-top: 4px;
     display: inline-block;
     cursor: pointer;
+    left: 20px;
 }
 
 @media (max-width: 1200px) {
     .noti__item {
         margin-right: 25px;
+        margin-top: 4px;
     }
 }
 
 @media (max-width: 767px) {
     .noti__item {
         margin-right: 20px;
+        margin-top: 4px;
     }
 }
 
@@ -1868,11 +1872,11 @@ section {
     -o-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
     transition: all 0.4s ease;
-    -webkit-transform-origin: left top;
-    -moz-transform-origin: left top;
-    -ms-transform-origin: left top;
-    -o-transform-origin: left top;
-    transform-origin: left top;
+    -webkit-transform-origin: top;
+    -moz-transform-origin: top;
+    -ms-transform-origin: top;
+    -o-transform-origin: top;
+    transform-origin: top;
     top: 100%;
     left: 0;
 }
@@ -1888,7 +1892,7 @@ section {
     border-right: 9px solid transparent;
     position: absolute;
     top: -17px;
-    left: 55px;
+    left: 203px;
     z-index: 3;
 }
 
@@ -1976,7 +1980,7 @@ section {
 
 .email-dropdown {
     top: 49px;
-    left: -53px;
+    left: -200px;
 }
 
 .email__item {
@@ -3438,7 +3442,7 @@ section {
 }
 
 .au-task__item--primary .au-task__item-inner {
-    border-left: 3px solid #4272d7;
+    border-left: 3px solid #999;
 }
 
 .au-task__item--success .au-task__item-inner {

@@ -1,0 +1,25 @@
+/* START CONTENT */
+.au-card-title {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+.text-right{
+    text-align: right !important;
+}
+.align-right{
+    margin-left: 8%;
+}
+.email-content{
+    color:#000;
+    font-size: 16px;
+}
+@media only screen and (max-width:920px){
+
+.text-right{
+    text-align: left !important;
+}
+.align-right{
+    margin-left: 0%;
+}
+
+}

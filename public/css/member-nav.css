@@ -96,7 +96,9 @@
 .page-content--bgf7{
   margin-top: 90px;
 }
-
+.noti__item i:hover{
+  color: #27b2e0 !important;
+}
 /* END NAVBAR */
 /* START MOBILE */ 
 @media only screen and (min-width:700px) and (max-width: 1000px){
