@@ -1041,6 +1041,7 @@
                 "laravel"
             ],
             "time": "2018-06-20T14:21:11+00:00"
+
         },
         {
             "name": "laravel/tinker",

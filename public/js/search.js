@@ -30,7 +30,19 @@ $(function () {
         });
     });
 
-    $("#details-tab").steps({
+(function (window, document, undefined) {
+  'use strict';
+  
+  var mediaQuery = window.matchMedia('(max-width: 700px)');
+  
+  mediaQuery.addListener(doSomething);
+  
+  function doSomething(mediaQuery) {    
+    if (mediaQuery.matches) {
+      $('.detail-tab').removeAttr('details-tab');
+    } 
+    else {
+       $("#details-tab").steps({
         headerTag: "h4",
         bodyTag: "fieldset",
         transitionEffect: "slideLeft",
@@ -40,8 +52,13 @@ $(function () {
         titleTemplate: "#title#",
         cssClass: "tabcontrol"
     });
-
-    $(document).on('click', '.dropdown-item', function (e) {
+    }
+  }
+  
+  doSomething(mediaQuery);
+  
+})(window, document);
+$(document).on('click', '.dropdown-item', function (e) {
         var _type = $(this).data('type');
         var _value = $(this).data('value');
 

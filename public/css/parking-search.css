@@ -373,7 +373,7 @@ hr{
   padding: 20px;
   background: #fff;
   border-radius: 5px;
-  width: 55%;
+  width: 65%;
   position: relative;
   transition: all 2s ease-in-out;
   top: 3%;
@@ -873,9 +873,6 @@ margin-top: 10px;
 }
 }
 @media only screen and (max-width:701px){
-  #details-tab{
-    display: none;
-  }
   .overlay-nav {
     display: block;
     height: 100%;
