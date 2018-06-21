@@ -91,7 +91,10 @@ $(document).ready(function(){
 
             $.ajax({
                 url: '/booking/destroy',
-                data: { bid: $('#bid').val() },
+                data: {
+                    bid: $('#bid').val(),
+                    send_sms: $('#sms-confirmation').val() == "1"
+                },
                 dataType: 'json',
                 success: function (response) {
                     if (response.success) {
@@ -236,6 +239,7 @@ $(document).ready(function(){
             total = parseFloat(total) + parseFloat($(this).val());
             $('#sms-confirmation-container').removeClass('d-none');
             $('#sms-fee-wrapper').text($(this).val());
+            $('#sms-confirmation').val(1);
         } else {
             if ($('#total').data('value') < total) {
                 total = parseFloat(total) - parseFloat($(this).val());
@@ -243,6 +247,7 @@ $(document).ready(function(){
 
             $('#sms-fee-wrapper').text(0);
             $('#sms-confirmation-container').addClass('d-none');
+            $('#sms-confirmation').val(0);
         }
 
         $('#total').text('£'+total.toLocaleString());
@@ -305,6 +310,9 @@ $(document).ready(function(){
         $('#total').text('£'+total.toLocaleString());
         $('#total-amount').val(total.toLocaleString());
         $('#sms-fee-wrapper').text($('#sms-fee').val());
+        $('#sms-confirmation').val(1);
+    } else {
+        $('#sms-confirmation').val(0);
     }
 
     if ($('#cancellation').is(':checked')) {
