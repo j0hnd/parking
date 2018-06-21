@@ -52,9 +52,22 @@
             <div class="dropdown">
                 <a href="#" class="filter dropdown-toggle" id="filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Filter</a>
                 <div class="dropdown-menu" aria-labelledby="filters">
-                    <a class="dropdown-item" href="#">zzz</a>
-                    <a class="dropdown-item" href="#">zzz</a>
-                    <a class="dropdown-item" href="#">zzz</a>
+                @if($services)
+                    @foreach($services as $service)
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="service" data-value="{{ urlencode($service->service_name) }}">{{ $service->service_name }}</a>
+                    @endforeach
+                @endif
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="terminals" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Terminal</a>
+                <div class="dropdown-menu" aria-labelledby="terminals">
+                    @if($terminals)
+                        @foreach($terminals as $terminal)
+                            <a class="dropdown-item" href="javascript:void(0)" data-type="terminal" data-value="{{ $terminal->subcategory_name }}">{{ $terminal->subcategory_name }}</a>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>

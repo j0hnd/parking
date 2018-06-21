@@ -29,4 +29,22 @@ $(function () {
             }
         });
     });
+
+    $(document).on('click', '.dropdown-item', function (e) {
+        var _type = $(this).data('type');
+        var _value = $(this).data('value');
+
+        $.ajax({
+            url: '/search/filter/' + _type + '/' + _value,
+            type: 'post',
+            data: { _token: $('#token').val(), data: $('#search-form').serialize() },
+            dataType: 'json',
+            beforeSend: function () {
+                $('#cards-container').html("<div class='col-md-12 text-center'><img src='/img/loader.gif'></div>");
+            },
+            success: function (response) {
+                $('#cards-container').html(response.html);
+            }
+        });
+    });
 });

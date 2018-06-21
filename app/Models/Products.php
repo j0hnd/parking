@@ -6,6 +6,9 @@ use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
+use DB;
+use Illuminate\Support\Facades\Log;
+
 
 class Products extends BaseModel
 {
@@ -104,17 +107,43 @@ class Products extends BaseModel
                 foreach ($product_airports->get() as $pa) {
 					$override_price = null;
 
-					$product = Products::findOrFail($pa->product_id);
+//					if (isset($data['sub'])) {
+//						if ($data['sub']['type'] == 'service') {
+//							Log::info($pa->product_id);
+//							$service_name = urldecode($data['sub']['value']);
+//							$product = Products::whereNull('products.deleted_at')
+//								->join('services', 'services.product_id', '=', 'products.id')
+//								->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
+//								->where([
+//									'products.id' => $pa->product_id,
+//									'carpark_services.service_name' => $service_name
+//								])
+//								->first();
+//						}
+//
+////						if ($data['sub']['type'] == 'terminal') {
+////							$product = Products::whereNull('deleted_at')
+////								->join('product_airports', 'product_airports.product_id', '=', 'products.id')
+////								->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+////								->where('products.id', $pa->product_id);
+////						}
+//
+//						if ($product) {
+//							$product = Products::findOrFail($product->id);
+//						}
+//					} else {
+						$product = Products::findOrFail($pa->product_id);
+//					}
+
 					$airport = Airports::findOrFail($pa->airport_id);
 
-					if (isset($pa->price_id)) {
-						// $prices = Prices::findOrFail($pa->price_id);
-						$prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
-					} else {
-						$prices = $product->prices;
-					}
-
                     if (count($product) > 0) {
+						if (isset($pa->price_id)) {
+							$prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
+						} else {
+							$prices = $product->prices;
+						}
+
 						// check for overrides
 						if (count($product->overrides)) {
 							foreach ($product->overrides as $overrides) {
@@ -193,6 +222,7 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
 
