@@ -76,6 +76,10 @@ class Products extends BaseModel
 							'product_airports.airport_id' => $data['search']['airport']
 						]);
 				}
+
+//				if ($data['sub']['type'] == 'terminal') {
+//					$terminal = urldecode($data['sub']['value']);
+//				}
 			}
 
 			if (isset($data['filter'])) {
