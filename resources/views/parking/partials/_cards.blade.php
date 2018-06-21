@@ -50,8 +50,7 @@
                                         {{ $result['carpark_name'] }} - {{ $result['category'] }}
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
-                                    <br/>
+                                <div class="col-lg-3 price-book">
                                     <p class="price">£{{ $price }}</p>
                                     <a href="javascript:void(0);" class="book-now toggle-book-now" data-id="{{ $i }}">BOOK NOW</a>
                                 </div>
@@ -61,7 +60,7 @@
                     <br/><br/>
                    
                     <div  id="details-tab" class="detail-tab">
-                        <h4>Overview</h4>
+                        <h4 class="tab-title">Overview</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">Essentials</h2>
                             <ul class="tab-ul">
@@ -72,7 +71,7 @@
                                 <li>Your keys will stay with the car park whilst you are away.</li>
                             </ul>
                             <h2 class="overview-title">Overview</h2>
-                            <p>Heathrow’s best value Airport and Cruise Port parking. Located in close proximity to both Heathrow Airport and Heathrow Port, Gateway Airport Parking offers secure undercover and outdoor parking for customers travelling from Heathrow Airport and the Heathrow Port all at value for money prices.</p>
+                            <p class="tab-con">Heathrow’s best value Airport and Cruise Port parking. Located in close proximity to both Heathrow Airport and Heathrow Port, Gateway Airport Parking offers secure undercover and outdoor parking for customers travelling from Heathrow Airport and the Heathrow Port all at value for money prices.</p>
                             <h2 class="overview-title">Why Book This Parking Space?</h2>
                             <ul class="tab-ul">
                                 <li>Airport parking near BNE airport meeting all your expectations</li>
@@ -81,49 +80,49 @@
                                 <li>Full range of car servicing & repairs offered on arrival</li>
                             </ul>
                             <h2 class="overview-title">Disabled Info</h2>
-                            <strong>Wheelchair Guests</strong>
-                            <p>The car park buses don't have the ability to transfer wheelchair customers to/from the airport terminals.
+                            <strong class="sub-title">Wheelchair Guests</strong>
+                            <p class="tab-con">The car park buses don't have the ability to transfer wheelchair customers to/from the airport terminals.
                             Assuming you are travelling with at least one adult the wheelchair person should be dropped at the terminal first and the car then driven to the car park.</p>
                             <h2 class="overview-title">Additional Info</h2>
-                            <strong>Travelling with children</strong>
-                            <p>All of our drivers are trained to fit baby capsules for 0-3 year olds and we have plenty of baby capsules on site. We also carry booster seats for 4-7 year olds in all buses. Young families are always welcome.</p>
-                            <p>Car detailing services available to book on arrival.</p>
-                            <p>Please take a copy of your confirmation details with you on your day of travel.</p>
+                            <strong class="sub-title">Travelling with children</strong>
+                            <p class="tab-con">All of our drivers are trained to fit baby capsules for 0-3 year olds and we have plenty of baby capsules on site. We also carry booster seats for 4-7 year olds in all buses. Young families are always welcome.</p>
+                            <p class="tab-con">Car detailing services available to book on arrival.</p>
+                            <p class="tab-con">Please take a copy of your confirmation details with you on your day of travel.</p>
                         </fieldset>
 
-                        <h4>On Arrival</h4>
+                        <h4 class="tab-title">On Arrival</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">On Arrival</h2>
-                            <p>We recommend customers drive through our gates 45 minutes before you want to walk through the terminal door. This ensures ample time to ask questions, have our drivers load your luggage and factor any traffic delays – even during the very busiest times.</p>
-                            <p>When you enter the car park, just park in one of the drop off bays conveniently located near the entrance. Then proceed to reception to facilitate transit to the terminal. Your car will be allocated to storage parking and will be easily accessible to you on your return.</p>
+                            <p class="tab-con">We recommend customers drive through our gates 45 minutes before you want to walk through the terminal door. This ensures ample time to ask questions, have our drivers load your luggage and factor any traffic delays – even during the very busiest times.</p>
+                            <p class="tab-con">When you enter the car park, just park in one of the drop off bays conveniently located near the entrance. Then proceed to reception to facilitate transit to the terminal. Your car will be allocated to storage parking and will be easily accessible to you on your return.</p>
                         </fieldset>
 
-                        <h4>On Return</h4>
+                        <h4 class="tab-title">On Return</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">On Return</h2>
-                            <p>When you return from your journey, please call us after you have claimed your baggage and proceed to the pick-up point. We will be there promptly to take you to your car.</p>
+                            <p class="tab-con">When you return from your journey, please call us after you have claimed your baggage and proceed to the pick-up point. We will be there promptly to take you to your car.</p>
                         </fieldset>
 
-                        <h4>Directions</h4>
+                        <h4 class="tab-title">Directions</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">Sat Nav Info</h2>
-                            <p>Lorem ipsum dolor sit amet<br/>
+                            <p class="tab-con">Lorem ipsum dolor sit amet<br/>
                                 Lorem ipsum dolor sit amet<br/>
                                 Lorem ipsum dolor sit amet
                             </p>
                             <h2 class="overview-title">Direction</h2>
-                            <strong>Lorem ipsum dolor sit amet</strong>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            <strong class="sub-title">Lorem ipsum dolor sit amet</strong>
+                            <p class="tab-con">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua.</p>
 
-                            <strong>Lorem ipsum dolor sit amet</strong>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            <strong class="sub-title">Lorem ipsum dolor sit amet</strong>
+                            <p class="tab-con">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua.</p>
                         </fieldset>
 
-                        <h4>Map</h4>
+                        <h4 class="tab-title">Map</h4>
                         <fieldset class="tab-content">
-                            
+                            <h2 class="overview-title-first">Map</h2>
                         </fieldset>
 
                     </div>
