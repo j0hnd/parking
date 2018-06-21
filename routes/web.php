@@ -26,6 +26,7 @@ Route::get('/forgot-password', 'ParkingAppController@forgot_password');
 Route::get('/post/{post}', 'ParkingAppController@show_post');
 Route::get('/signup', 'ParkingAppController@signup');
 
+Route::post('/search/filter/{type}/{value}', 'ParkingAppController@filter');
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');
 Route::post('/paypal', 'ParkingAppController@paypal');
 Route::post('/payment', 'ParkingAppController@payment');

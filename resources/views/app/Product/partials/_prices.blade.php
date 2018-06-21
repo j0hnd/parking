@@ -90,11 +90,11 @@
                     @if($priceCategories->count())
                         <option value="">-- Select Price Category --</option>
                         @foreach($priceCategories->get() as $price)
-							@if($i == 0)
-								@php($category_id = $price->id)
-							@endif
+							{{--@if($i == 0)--}}
+								{{--@php($category_id = $price->id)--}}
+							{{--@endif--}}
 
-                            @if($price->id == $category_id)
+                            @if($price->id == $prices->category_id)
                             <option value="{{ $price->id }}" selected>{{ $price->category_name }}</option>
                             @else
                             <option value="{{ $price->id }}">{{ $price->category_name }}</option>
