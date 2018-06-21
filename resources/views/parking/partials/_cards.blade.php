@@ -60,7 +60,7 @@
                     <a class="close3" href="#">&times;</a>
                     <br/><br/>
                    
-                    <div  id="details-tab">
+                    <div  id="details-tab" class="detail-tab">
                         <h4>Overview</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">Essentials</h2>

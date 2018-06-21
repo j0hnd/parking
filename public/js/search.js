@@ -29,8 +29,20 @@ $(function () {
             }
         });
     });
-    
-    $("#details-tab").steps({
+
+(function (window, document, undefined) {
+  'use strict';
+  
+  var mediaQuery = window.matchMedia('(max-width: 700px)');
+  
+  mediaQuery.addListener(doSomething);
+  
+  function doSomething(mediaQuery) {    
+    if (mediaQuery.matches) {
+      $('.detail-tab').removeAttr('details-tab');
+    } 
+    else {
+       $("#details-tab").steps({
         headerTag: "h4",
         bodyTag: "fieldset",
         transitionEffect: "slideLeft",
@@ -40,4 +52,10 @@ $(function () {
         titleTemplate: "#title#",
         cssClass: "tabcontrol"
     });
+    }
+  }
+  
+  doSomething(mediaQuery);
+  
+})(window, document);
 });
