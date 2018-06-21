@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Facades\PayPal;
+use Twilio\Rest\Client;
 use DB;
 use Hash;
 use Sentinel;
@@ -34,13 +35,16 @@ use Sentinel;
 class ParkingAppController extends Controller
 {
 	private $provider;
-
+	private $twilio;
 
     public function __construct()
     {
         $this->middleware('guest');
 		$this->provider = PayPal::setProvider('express_checkout');
 		$this->provider->setApiCredentials(config('paypal'));
+
+		$this->twilio = new Client(env('TWILIO_SID', ''), env('TWILIO_AUTHTOKEN', ''));
+		// $this->twilio = new Client($sid, $token);
     }
 
     public function index()
@@ -274,6 +278,7 @@ class ParkingAppController extends Controller
 		try {
 			if ($request->ajax()) {
 				$bid = $request->get('bid');
+				$send_sms = $request->get('send_sms');
 				$booking = Bookings::findOrFail($bid);
 				$customer = Customers::findOrFail($booking->customer_id);
 
@@ -287,6 +292,19 @@ class ParkingAppController extends Controller
 
 				// send booking confirmation
 				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
+
+				// send sms
+				if ($send_sms) {
+					$message = $this->twilio->messages
+						  ->create($customer->mobile_no,
+								   array(
+									   "body" => "SMS Confirmation",
+									   "from" => env('TWILIO_NUMBER', '')
+								   )
+						  );
+
+					$response['twilio'] = json($message);
+				}
 
 				$sess_id = session('sess_id');
 				Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
@@ -323,7 +341,6 @@ class ParkingAppController extends Controller
 	{
 		try {
 			$form = $request->except(['_token']);
-
 			$data['items'] = [
 				[
 					'name' => $form['product'],
@@ -519,4 +536,3 @@ class ParkingAppController extends Controller
 		return response()->json($response);
 	}
 }
-

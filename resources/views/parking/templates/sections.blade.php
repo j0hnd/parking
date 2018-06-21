@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6" style="padding-right: 45px">
-                <p class="l-con1">BOOK WITH THE UK’S FASTEST GROWING COMPANY</p>
+                <p class="l-con1">BOOK WITH THE UK’S FASTEST GROWING PARKING COMPANY</p>
                 <p class="l-con2">Why book with “MyTravel Compared.com” ?</p>
             </div>
             <div class="col-md-6" style="padding-left: 45px">
@@ -36,7 +36,7 @@
             <div class="col-xl-3">
                 <img src="img/handshake.png"/>
                 <p class="layer4-header">Meet&Greet</p>
-                <p class="layer4-content">Start you trip like a vip with meet and greet parking.</p>
+                <p class="layer4-content">Start your trip like a vip with meet and greet parking.</p>
                 <p class="layer4-content">The most convenient way to park. Simply driver to the terminal where you will meet your driver, unload you luggage and away on holiday you go. Your driver will then take care of parking your vehicle at the secure compound. On return from your trip just call your driver when you are ready and they will bring your car back to you at the terminal.  This service is perfect if you require mobility assistance, elderly, family’s with young children or people traveling with sports equipment, as you drive directly to the terminal yourself and don’t need to take a transfer bus. Its quick, stress free and makes your trip just that little more special.</p>
             </div>
             <div class="col-xl-1">

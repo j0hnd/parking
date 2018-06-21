@@ -30,6 +30,17 @@ $(function () {
         });
     });
 
+    $("#details-tab").steps({
+        headerTag: "h4",
+        bodyTag: "fieldset",
+        transitionEffect: "slideLeft",
+        enableFinishButton: true,
+        enablePagination: false,
+        enableAllSteps: true,
+        titleTemplate: "#title#",
+        cssClass: "tabcontrol"
+    });
+
     $(document).on('click', '.dropdown-item', function (e) {
         var _type = $(this).data('type');
         var _value = $(this).data('value');

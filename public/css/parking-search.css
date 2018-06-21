@@ -345,6 +345,11 @@ hr{
     color: #ffe000;
 
 }
+.tab-content{
+  overflow: scroll;
+  background-color: #fff;
+  font-family: "Montserrat";
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -355,7 +360,8 @@ hr{
   transition: opacity 500ms;
   visibility: hidden;
   opacity: 0;
-  z-index: 2000;
+  z-index: 2002;
+  overflow: scroll;
 }
 .overlay:target {
   visibility: visible;
@@ -370,7 +376,8 @@ hr{
   width: 55%;
   position: relative;
   transition: all 2s ease-in-out;
-  top: 20%;
+  top: 3%;
+  background-color: #27b2e0;
 
 }
 
@@ -380,11 +387,20 @@ hr{
   font-family: "Roboto";
   font-size: 50;
   font-weight: 300;
+  
+}
+.pop1-content{
+  font-family: "Montserrat";
+  text-align: center;
+  margin-top: 50px;
+  font-size: 30px;
+  color: #fff;
+  font-weight: 500;
 }
 .close3 {
     position: absolute;
-    bottom: 75%;
-    left: 97%;
+    bottom: 96%;
+    left: 96%;
     transition: all 200ms;
     font-size: 30px;
     font-weight: bold;
@@ -400,7 +416,39 @@ hr{
   color: #0797cc;
 
 }
-
+.tabcontrol > .steps > ul > li.current > a {
+    color: #000 !important;
+}
+.tabcontrol > .steps > ul > li > a {
+    color: #fff !important;
+}
+.tabcontrol > .steps > ul > li > a:hover{
+    color: #000 !important;
+}
+.tabcontrol > .steps {
+    background-color: #27b2e0 !important;
+}
+.tabcontrol > .content {
+      border-top: 1px solid #000 !important;
+    border: 1px solid #000;
+    border-radius: 0px 6px 6px 6px;
+    padding-top: 20px;
+    background-color: #fff;
+}
+.tabcontrol > .steps > ul > li.current {
+    border-top: 1px solid #000 !important;
+    border-left: 1px solid #000 !important;
+    border-right: 1px solid #000 !important;
+}
+.tab-ul{
+  margin-left: 40px !important;
+}
+.overview-title{
+  margin: 40px 0 20px 0;
+}
+.overview-title-first{
+  margin: 20px 0 20px 0;
+}
 .card-border > .plus:before {
     float: right !important;
     font-family: FontAwesome;
@@ -434,6 +482,7 @@ hr{
   color: rgb(0, 94, 125);
   font-weight: bold;
 }
+
 /* END MAIN CONTENT */
 /* START FOOTER */
 footer{
@@ -824,6 +873,9 @@ margin-top: 10px;
 }
 }
 @media only screen and (max-width:701px){
+  #details-tab{
+    display: none;
+  }
   .overlay-nav {
     display: block;
     height: 100%;
