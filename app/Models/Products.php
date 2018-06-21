@@ -64,6 +64,20 @@ class Products extends BaseModel
 			// get airports
 			$product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
 
+        	if (isset($data['sub'])) {
+				if ($data['sub']['type'] == 'service') {
+					$service_name = urldecode($data['sub']['value']);
+
+					$product_airports = ProductAirports::whereNull('product_airports.deleted_at')
+						->join('services', 'services.product_id', '=', 'product_airports.product_id')
+						->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
+						->where([
+							'carpark_services.service_name' => $service_name,
+							'product_airports.airport_id' => $data['search']['airport']
+						]);
+				}
+			}
+
 			if (isset($data['filter'])) {
 				if ($data['filter'] != 'all') {
 					switch ($data['filter']) {
@@ -106,35 +120,7 @@ class Products extends BaseModel
 
                 foreach ($product_airports->get() as $pa) {
 					$override_price = null;
-
-//					if (isset($data['sub'])) {
-//						if ($data['sub']['type'] == 'service') {
-//							Log::info($pa->product_id);
-//							$service_name = urldecode($data['sub']['value']);
-//							$product = Products::whereNull('products.deleted_at')
-//								->join('services', 'services.product_id', '=', 'products.id')
-//								->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
-//								->where([
-//									'products.id' => $pa->product_id,
-//									'carpark_services.service_name' => $service_name
-//								])
-//								->first();
-//						}
-//
-////						if ($data['sub']['type'] == 'terminal') {
-////							$product = Products::whereNull('deleted_at')
-////								->join('product_airports', 'product_airports.product_id', '=', 'products.id')
-////								->join('airports', 'airports.id', '=', 'product_airports.airport_id')
-////								->where('products.id', $pa->product_id);
-////						}
-//
-//						if ($product) {
-//							$product = Products::findOrFail($product->id);
-//						}
-//					} else {
-						$product = Products::findOrFail($pa->product_id);
-//					}
-
+					$product = Products::findOrFail($pa->product_id);
 					$airport = Airports::findOrFail($pa->airport_id);
 
                     if (count($product) > 0) {
