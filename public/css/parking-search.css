@@ -482,7 +482,9 @@ hr{
   color: rgb(0, 94, 125);
   font-weight: bold;
 }
-
+.price-book{
+  margin-top: 40px;
+}
 /* END MAIN CONTENT */
 /* START FOOTER */
 footer{
@@ -862,6 +864,45 @@ margin-top: 10px;
    .skip{
   display: none;
 }
+.pop1-content {
+    margin-top: 10px;
+}
+.price-book {
+    margin-top: 5px;
+    text-align: center;
+}
+.tab-title{
+  display: none;
+}
+.tab-content {
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.tab-ul {
+    margin-left: 0px !important;
+}
+.overview-title-first {
+    margin: 20px 0 20px 10px;
+}
+.overview-title {
+    margin: 20px 0 20px 10px;
+}
+.tab-con {
+  padding-left: 20px;
+  padding-right: 10px;
+
+}
+.sub-title{
+  padding-left: 10px;
+}
+.close3 {
+    bottom: 99%;
+    left: 96%;
+}
+.popup {
+    width: 80%;
+}
 }
 @media only screen and (max-width:793px){
  .skip{
@@ -1107,11 +1148,11 @@ button.btn.btn-primary.btn-sm{
 }
  .popup{
     width: 90%;
-    top: 10%;
+    top: -2%;
   }
   .close3 {
-      bottom: 84%;
-    left: 90%;
+      bottom: 99%;
+    left: 95%;
 }
  .mobile li {
     display: inline;
@@ -1126,6 +1167,7 @@ button.btn.btn-primary.btn-sm{
 .skip2{
   display: none;
 }
+
 }
 @media only screen and (max-width:321px){
 .con-content{

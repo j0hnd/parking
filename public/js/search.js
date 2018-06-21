@@ -33,7 +33,7 @@ $(function () {
 (function (window, document, undefined) {
   'use strict';
   
-  var mediaQuery = window.matchMedia('(max-width: 700px)');
+  var mediaQuery = window.matchMedia('(max-width: 991px)');
   
   mediaQuery.addListener(doSomething);
   
