@@ -6,6 +6,9 @@ use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
+use DB;
+use Illuminate\Support\Facades\Log;
+
 
 class Products extends BaseModel
 {
@@ -61,6 +64,24 @@ class Products extends BaseModel
 			// get airports
 			$product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
 
+        	if (isset($data['sub'])) {
+				if ($data['sub']['type'] == 'service') {
+					$service_name = urldecode($data['sub']['value']);
+
+					$product_airports = ProductAirports::whereNull('product_airports.deleted_at')
+						->join('services', 'services.product_id', '=', 'product_airports.product_id')
+						->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
+						->where([
+							'carpark_services.service_name' => $service_name,
+							'product_airports.airport_id' => $data['search']['airport']
+						]);
+				}
+
+//				if ($data['sub']['type'] == 'terminal') {
+//					$terminal = urldecode($data['sub']['value']);
+//				}
+			}
+
 			if (isset($data['filter'])) {
 				if ($data['filter'] != 'all') {
 					switch ($data['filter']) {
@@ -103,18 +124,16 @@ class Products extends BaseModel
 
                 foreach ($product_airports->get() as $pa) {
 					$override_price = null;
-
 					$product = Products::findOrFail($pa->product_id);
 					$airport = Airports::findOrFail($pa->airport_id);
 
-					if (isset($pa->price_id)) {
-						// $prices = Prices::findOrFail($pa->price_id);
-						$prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
-					} else {
-						$prices = $product->prices;
-					}
-
                     if (count($product) > 0) {
+						if (isset($pa->price_id)) {
+							$prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
+						} else {
+							$prices = $product->prices;
+						}
+
 						// check for overrides
 						if (count($product->overrides)) {
 							foreach ($product->overrides as $overrides) {
@@ -193,6 +212,7 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
 

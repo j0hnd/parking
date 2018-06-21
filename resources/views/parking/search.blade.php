@@ -4,6 +4,8 @@
     <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
+    
 @stop
 
 @section('main-content')
@@ -29,9 +31,46 @@
             {{-- search form --}}
             @include('parking.partials._search')
 
-            <a href="#" class="filter">Rating <i class="fas fa-angle-down"></i></a>
-            <a href="#" class="filter">Lowest Price <i class="fas fa-angle-down"></i></a>
-            <a href="#" class="filter">Select Filter <i class="fas fa-angle-down"></i></a>
+            {{-- filters --}}
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="ratings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a>
+                <div class="dropdown-menu" aria-labelledby="ratings">
+                    <a class="dropdown-item" href="#">Sample 1</a>
+                    <a class="dropdown-item" href="#">Sample 2</a>
+                    <a class="dropdown-item" href="#">Sample 3</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="lowest-price" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lowest Price</a>
+                <div class="dropdown-menu" aria-labelledby="lowest-price">
+                    <a class="dropdown-item" href="#">xxx</a>
+                    <a class="dropdown-item" href="#">xxx</a>
+                    <a class="dropdown-item" href="#">xxx</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="filters" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Filter</a>
+                <div class="dropdown-menu" aria-labelledby="filters">
+                @if($services)
+                    @foreach($services as $service)
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="service" data-value="{{ urlencode($service->service_name) }}">{{ $service->service_name }}</a>
+                    @endforeach
+                @endif
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="filter dropdown-toggle" id="terminals" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Terminal</a>
+                <div class="dropdown-menu" aria-labelledby="terminals">
+                    @if($terminals)
+                        @foreach($terminals as $terminal)
+                            <a class="dropdown-item" href="javascript:void(0)" data-type="terminal" data-value="{{ $terminal->subcategory_name }}">{{ $terminal->subcategory_name }}</a>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
         </div>
     </header>
 
@@ -47,6 +86,7 @@
 @section('js')
     <script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
     <script type="text/javascript">

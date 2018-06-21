@@ -14,16 +14,19 @@ use App\Models\Customers;
 use App\Models\Members;
 use App\Models\Posts;
 use App\Models\Products;
+use App\Models\Tools\CarparkServices;
 use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
 use App\Models\Tools\Prices;
 use App\Models\Tools\Sessions;
+use App\Models\Tools\Subcategories;
 use App\Models\User;
 use App\Models\Companies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Srmklive\PayPal\Facades\PayPal;
+use Twilio\Rest\Client;
 use DB;
 use Hash;
 use Sentinel;
@@ -32,13 +35,16 @@ use Sentinel;
 class ParkingAppController extends Controller
 {
 	private $provider;
-
+	private $twilio;
 
     public function __construct()
     {
         $this->middleware('guest');
 		$this->provider = PayPal::setProvider('express_checkout');
 		$this->provider->setApiCredentials(config('paypal'));
+
+		$this->twilio = new Client(env('TWILIO_SID', ''), env('TWILIO_AUTHTOKEN', ''));
+		// $this->twilio = new Client($sid, $token);
     }
 
     public function index()
@@ -64,6 +70,8 @@ class ParkingAppController extends Controller
 			$results = Products::prepare_data($products);
 			$drop_off_time = $form['search']['drop-off-time'];
 			$return_at_time = $form['search']['return-at-time'];
+			$services = CarparkServices::active()->orderBy('service_name', 'asc')->get();
+			$terminals = Subcategories::groupBy('subcategory_name')->orderBy('subcategory_name', 'asc')->get();
         } else {
         	$drop_off_time = "";
         	$return_at_time = "";
@@ -73,7 +81,15 @@ class ParkingAppController extends Controller
         $drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes', $drop_off_time);
         $return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes', $return_at_time);
 
-        return view('parking.search', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'results', 'form'));
+        return view('parking.search', [
+			'airports' => $airports,
+			'drop_off_time_interval' => $drop_off_time_interval,
+			'return_at_time_interval' => $return_at_time_interval,
+			'results' => $results,
+			'form' => $form,
+			'services' => $services,
+			'terminals' => $terminals
+		]);
     }
 
     public function payment(Request $request)
@@ -262,6 +278,7 @@ class ParkingAppController extends Controller
 		try {
 			if ($request->ajax()) {
 				$bid = $request->get('bid');
+				$send_sms = $request->get('send_sms');
 				$booking = Bookings::findOrFail($bid);
 				$customer = Customers::findOrFail($booking->customer_id);
 
@@ -275,6 +292,19 @@ class ParkingAppController extends Controller
 
 				// send booking confirmation
 				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
+
+				// send sms
+				if ($send_sms) {
+					$message = $this->twilio->messages
+						  ->create($customer->mobile_no,
+								   array(
+									   "body" => "SMS Confirmation",
+									   "from" => env('TWILIO_NUMBER', '')
+								   )
+						  );
+
+					$response['twilio'] = json($message);
+				}
 
 				$sess_id = session('sess_id');
 				Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
@@ -301,16 +331,11 @@ class ParkingAppController extends Controller
 	public function contact(){
 		return view ('parking.contact');
 	}
-	public function blog(){
-		return view ('parking.blog');
-	}
-
 
 	public function paypal(Request $request)
 	{
 		try {
 			$form = $request->except(['_token']);
-
 			$data['items'] = [
 				[
 					'name' => $form['product'],
@@ -350,28 +375,6 @@ class ParkingAppController extends Controller
 		} catch (\Exception $e) {
 			abort(404, $e->getMessage());
 		}
-	}
-
-	public function filter_result(Request $request)
-	{
-		$response = ['success' => false];
-
-		try {
-			if ($request->ajax() and $request->isMethod('post')) {
-				$form = $request->except(['_token']);
-				parse_str($form['data'], $form);
-				$form['filter'] = $request->filter;
-				$products = Products::search($form);
-				$results = Products::prepare_data($products);
-
-				$html = view('parking.partials._cards', compact('results'))->render();
-				$response = ['success' => true, 'html' => $html];
-			}
-		} catch (\Exception $e) {
-			$response['message'] = $e->getMessage();
-		}
-
-		return response()->json($response);
 	}
 
 	public function forgot_password()
@@ -483,5 +486,48 @@ class ParkingAppController extends Controller
 
 		return view('parking.blog', compact('post', 'posts', 'next', 'prev'));
 	}
-}
 
+	public function filter_result(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->except(['_token']);
+				parse_str($form['data'], $form);
+				$form['filter'] = $request->filter;
+				$products = Products::search($form);
+				$results = Products::prepare_data($products);
+
+				$html = view('parking.partials._cards', compact('results'))->render();
+				$response = ['success' => true, 'html' => $html];
+			}
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
+
+	public function filter(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->except(['_token']);
+				parse_str($form['data'], $form);
+				$form['sub'] = ['type' => $request->type, 'value' => $request->value];
+				$products = Products::search($form);
+				$results = Products::prepare_data($products);
+
+				$html = view('parking.partials._cards', compact('results'))->render();
+				$response = ['success' => true, 'html' => $html];
+			}
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
+}

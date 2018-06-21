@@ -29,4 +29,50 @@ $(function () {
             }
         });
     });
+
+(function (window, document, undefined) {
+  'use strict';
+  
+  var mediaQuery = window.matchMedia('(max-width: 700px)');
+  
+  mediaQuery.addListener(doSomething);
+  
+  function doSomething(mediaQuery) {    
+    if (mediaQuery.matches) {
+      $('.detail-tab').removeAttr('details-tab');
+    } 
+    else {
+       $("#details-tab").steps({
+        headerTag: "h4",
+        bodyTag: "fieldset",
+        transitionEffect: "slideLeft",
+        enableFinishButton: true,
+        enablePagination: false,
+        enableAllSteps: true,
+        titleTemplate: "#title#",
+        cssClass: "tabcontrol"
+    });
+    }
+  }
+  
+  doSomething(mediaQuery);
+  
+})(window, document);
+$(document).on('click', '.dropdown-item', function (e) {
+        var _type = $(this).data('type');
+        var _value = $(this).data('value');
+
+        $.ajax({
+            url: '/search/filter/' + _type + '/' + _value,
+            type: 'post',
+            data: { _token: $('#token').val(), data: $('#search-form').serialize() },
+            dataType: 'json',
+            beforeSend: function () {
+                $('#cards-container').html("<div class='col-md-12 text-center'><img src='/img/loader.gif'></div>");
+            },
+            success: function (response) {
+                $('#cards-container').html(response.html);
+            }
+        });
+    });
 });
