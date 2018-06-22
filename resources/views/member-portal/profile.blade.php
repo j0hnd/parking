@@ -8,9 +8,10 @@
 	<div id="mobileNav" class="overlay-nav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div class="overlay-content">
-        <a href="#">Dashboard</a>
-        <a href="#">Profile</a>
-        <a href="#">Logout</a>
+        <a href="{{ url('/members/dashboard') }}">Dashboard</a>
+        <a href="{{ url('/members/profile') }}">Profile</a>
+        <a href="{{ url('/members/inbox') }}">Inbox</a>
+        <a href="{{ url('/logout') }}">Logout</a>
       </div>
     </div>
 	<nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
@@ -48,18 +49,6 @@
                 </div>
             </section>
 
-             <section class="welcome p-t-10">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h1 class="title-4">Welcome back
-                                <span>{{ $user->members->first_name }}!</span>
-                            </h1>
-                            <hr class="line-seprate">
-                        </div>
-                    </div>
-                </div>
-            </section>
     <section class="statistic statistic2">
 	<div class="main-content">
                 <div class="section__content section__content--p30">
