@@ -169,7 +169,10 @@ class Products extends BaseModel
 									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
 									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
                                     'overrides' => $override_price,
-									'services' => $product->carpark_services
+									'services' => $product->carpark_services,
+									'description' => $product->description,
+									'on_arrival' => $product->on_arrival,
+									'on_return' => $product->on_return
                                 ];
 							} elseif ($no_days == (int) $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and is_null($price->price_year)) {
 								$products[$i] = [
@@ -183,7 +186,9 @@ class Products extends BaseModel
 									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
 									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
 									'overrides' => $override_price,
-									'services' => $product->carpark_services
+									'services' => $product->carpark_services,
+									'on_arrival' => $product->on_arrival,
+									'on_return' => $product->on_return
 								];
 							} elseif ($no_days == (int) $price->no_of_days and is_null($price->price_month) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
@@ -197,7 +202,9 @@ class Products extends BaseModel
 									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
 									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
 									'overrides' => $override_price,
-									'services' => $product->carpark_services
+									'services' => $product->carpark_services,
+									'on_arrival' => $product->on_arrival,
+									'on_return' => $product->on_return
 								];
 							} elseif ($no_days == (int) $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
@@ -211,7 +218,9 @@ class Products extends BaseModel
 									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
 									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
 									'overrides' => $override_price,
-									'services' => $product->carpark_services
+									'services' => $product->carpark_services,
+									'on_arrival' => $product->on_arrival,
+									'on_return' => $product->on_return
 								];
 							}
 
@@ -221,7 +230,6 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
-        	dd($e);
             abort(404, $e->getMessage());
         }
 
@@ -251,7 +259,10 @@ class Products extends BaseModel
 					'category' => $category->category_name,
 					'price' => is_null($product['overrides']) ? $product['prices']->price_value : ($product['prices']->price_value * $product['overrides']),
 					'drop_off' => $product['drop_off'],
-					'return_at' => $product['return_at']
+					'return_at' => $product['return_at'],
+					'description' => $product['description'],
+					'on_arrival' => $product['on_arrival'],
+					'on_return' => $product['on_return']
 				];
 
                 // prepare linked carpark services

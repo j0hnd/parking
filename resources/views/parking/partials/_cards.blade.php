@@ -43,7 +43,13 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <h4>{{ $result['category'] }}</h4>
+
+                                    @if(is_null($result['image']))
                                     <img src="{{ asset('/img/default.png') }}" class="img-fluid">
+                                    @else
+                                    <img src="{{ asset($result['image']) }}" class="img-fluid">
+                                    @endif
+
                                 </div>
                                 <div class="col-lg-5">
                                     <div class="pop1-content">
@@ -71,7 +77,7 @@
                                 <li>Your keys will stay with the car park whilst you are away.</li>
                             </ul>
                             <h2 class="overview-title">Overview</h2>
-                            <p class="tab-con">Heathrow’s best value Airport and Cruise Port parking. Located in close proximity to both Heathrow Airport and Heathrow Port, Gateway Airport Parking offers secure undercover and outdoor parking for customers travelling from Heathrow Airport and the Heathrow Port all at value for money prices.</p>
+                            <p class="tab-con">{!! html_entity_decode($result['description']) !!}</p>
                             <h2 class="overview-title">Why Book This Parking Space?</h2>
                             <ul class="tab-ul">
                                 <li>Airport parking near BNE airport meeting all your expectations</li>
@@ -93,14 +99,13 @@
                         <h4 class="tab-title">On Arrival</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">On Arrival</h2>
-                            <p class="tab-con">We recommend customers drive through our gates 45 minutes before you want to walk through the terminal door. This ensures ample time to ask questions, have our drivers load your luggage and factor any traffic delays – even during the very busiest times.</p>
-                            <p class="tab-con">When you enter the car park, just park in one of the drop off bays conveniently located near the entrance. Then proceed to reception to facilitate transit to the terminal. Your car will be allocated to storage parking and will be easily accessible to you on your return.</p>
+                            <p class="tab-con">{!! html_entity_decode($result['on_arrival']) !!}</p>
                         </fieldset>
 
                         <h4 class="tab-title">On Return</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">On Return</h2>
-                            <p class="tab-con">When you return from your journey, please call us after you have claimed your baggage and proceed to the pick-up point. We will be there promptly to take you to your car.</p>
+                            <p class="tab-con">{!! html_entity_decode($result['on_return']) !!}</p>
                         </fieldset>
 
                         <h4 class="tab-title">Directions</h4>
