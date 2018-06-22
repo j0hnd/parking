@@ -20,7 +20,9 @@ class DefaultAirports extends Seeder
 				'city' => 'Silvertown',
 				'county_state' => 'London',
 				'zipcode' => 'E16 2PX',
-				'country_id' => 249
+				'country_id' => 249,
+				'latitude' => '51.503164654',
+				'longitude' => '0.053166454',
 			],
         	[
         		'airport_name' => 'Heathrow Airport',
@@ -29,7 +31,9 @@ class DefaultAirports extends Seeder
 				'city' => 'Longford',
 				'county_state' => 'Hounslow',
 				'zipcode' => 'TW6 2GW',
-				'country_id' => 249
+				'country_id' => 249,
+				'latitude' => '51.470020',
+				'longitude' => '-0.454295',
 			],
         	[
         		'airport_name' => 'Gatwick Airport',
@@ -38,7 +42,9 @@ class DefaultAirports extends Seeder
 				'city' => 'Crawley',
 				'county_state' => 'Gatwick',
 				'zipcode' => 'RH6 0NP',
-				'country_id' => 249
+				'country_id' => 249,
+				'latitude' => '51.1536621',
+				'longitude' => '-0.18206290000000536',
 			],
         	[
         		'airport_name' => 'Luton Airport',
@@ -47,7 +53,9 @@ class DefaultAirports extends Seeder
 				'city' => 'Luton',
 				'county_state' => 'Bedfordshire',
 				'zipcode' => 'LU2 9LY',
-				'country_id' => 249
+				'country_id' => 249,
+				'latitude' => '51.87626460000001',
+				'longitude' => '-0.3717470999999932',
 			],
         	[
         		'airport_name' => 'London Stansted Airport',
@@ -56,7 +64,9 @@ class DefaultAirports extends Seeder
 				'city' => 'Stansed',
 				'county_state' => 'Essex',
 				'zipcode' => 'CM24 1QW',
-				'country_id' => 249
+				'country_id' => 249,
+				'latitude' => '51.8860181',
+				'longitude' => '0.23886609999999564',
 			],
         	[
         		'airport_name' => 'London Southend Airport',
@@ -65,7 +75,9 @@ class DefaultAirports extends Seeder
 				'city' => 'Southend',
 				'county_state' => 'Essex',
 				'zipcode' => 'SS2 6YF',
-				'country_id' => 249
+				'country_id' => 249,
+				'latitude' => '51.56982',
+				'longitude' => '0.703737',
 			],
 		];
 

@@ -172,7 +172,9 @@ class Products extends BaseModel
 									'services' => $product->carpark_services,
 									'description' => $product->description,
 									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return
+									'on_return' => $product->on_return,
+									'latitude' => $airport->latitude,
+									'longitude' => $airport->longitude
                                 ];
 							} elseif ($no_days == (int) $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and is_null($price->price_year)) {
 								$products[$i] = [
@@ -188,7 +190,9 @@ class Products extends BaseModel
 									'overrides' => $override_price,
 									'services' => $product->carpark_services,
 									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return
+									'on_return' => $product->on_return,
+									'latitude' => $airport->latitude,
+									'longitude' => $airport->longitude
 								];
 							} elseif ($no_days == (int) $price->no_of_days and is_null($price->price_month) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
@@ -204,7 +208,9 @@ class Products extends BaseModel
 									'overrides' => $override_price,
 									'services' => $product->carpark_services,
 									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return
+									'on_return' => $product->on_return,
+									'latitude' => $airport->latitude,
+									'longitude' => $airport->longitude
 								];
 							} elseif ($no_days == (int) $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 								$products[$i] = [
@@ -220,7 +226,9 @@ class Products extends BaseModel
 									'overrides' => $override_price,
 									'services' => $product->carpark_services,
 									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return
+									'on_return' => $product->on_return,
+									'latitude' => $airport->latitude,
+									'longitude' => $airport->longitude
 								];
 							}
 
@@ -262,7 +270,9 @@ class Products extends BaseModel
 					'return_at' => $product['return_at'],
 					'description' => $product['description'],
 					'on_arrival' => $product['on_arrival'],
-					'on_return' => $product['on_return']
+					'on_return' => $product['on_return'],
+					'latitude' => $product['latitude'],
+					'longitude' => $product['longitude']
 				];
 
                 // prepare linked carpark services

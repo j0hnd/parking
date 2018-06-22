@@ -5,7 +5,13 @@
     <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
-    
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+		 * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+    </style>
 @stop
 
 @section('main-content')
@@ -90,6 +96,7 @@
     <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('app.ggogle_api') }}&callback=initMap" async defer></script>
     <script type="text/javascript">
         $(function () {
             $('#airport').select2();
