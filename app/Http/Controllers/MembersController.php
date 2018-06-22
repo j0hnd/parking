@@ -81,4 +81,14 @@ class MembersController extends Controller
 			}
 		}
 	}
+
+	public function display_inbox(){
+
+		$date = date("l, M d, Y");
+
+		return view ('/member-portal.inbox')->with('date',$date);
+	}
+	public function display_email(){
+		return view ('/member-portal.email');
+	}
 }
