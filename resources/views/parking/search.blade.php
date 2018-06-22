@@ -34,19 +34,20 @@
             {{-- filters --}}
             <div class="dropdown">
                 <a href="#" class="filter dropdown-toggle" id="ratings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a>
-                <div class="dropdown-menu" aria-labelledby="ratings">
-                    <a class="dropdown-item" href="#">Sample 1</a>
-                    <a class="dropdown-item" href="#">Sample 2</a>
-                    <a class="dropdown-item" href="#">Sample 3</a>
-                </div>
+                {{--<div class="dropdown-menu" aria-labelledby="ratings">--}}
+                    {{--<a class="dropdown-item" href="#">Sample 1</a>--}}
+                    {{--<a class="dropdown-item" href="#">Sample 2</a>--}}
+                    {{--<a class="dropdown-item" href="#">Sample 3</a>--}}
+                {{--</div>--}}
             </div>
 
             <div class="dropdown">
                 <a href="#" class="filter dropdown-toggle" id="lowest-price" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lowest Price</a>
                 <div class="dropdown-menu" aria-labelledby="lowest-price">
-                    <a class="dropdown-item" href="#">xxx</a>
-                    <a class="dropdown-item" href="#">xxx</a>
-                    <a class="dropdown-item" href="#">xxx</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="0-50">Below £50</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="51-100">£51 - £100</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="101-200">£101 - £200</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="101-Up">Above £200</a>
                 </div>
             </div>
 
@@ -61,16 +62,16 @@
                 </div>
             </div>
 
-            <div class="dropdown">
-                <a href="#" class="filter dropdown-toggle" id="terminals" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Terminal</a>
-                <div class="dropdown-menu" aria-labelledby="terminals">
-                    @if($terminals)
-                        @foreach($terminals as $terminal)
-                            <a class="dropdown-item" href="javascript:void(0)" data-type="terminal" data-value="{{ $terminal->subcategory_name }}">{{ $terminal->subcategory_name }}</a>
-                        @endforeach
-                    @endif
-                </div>
-            </div>
+            {{--<div class="dropdown">--}}
+                {{--<a href="#" class="filter dropdown-toggle" id="terminals" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Terminal</a>--}}
+                {{--<div class="dropdown-menu" aria-labelledby="terminals">--}}
+                    {{--@if($terminals)--}}
+                        {{--@foreach($terminals as $terminal)--}}
+                            {{--<a class="dropdown-item" href="javascript:void(0)" data-type="terminal" data-value="{{ $terminal->subcategory_name }}">{{ $terminal->subcategory_name }}</a>--}}
+                        {{--@endforeach--}}
+                    {{--@endif--}}
+                {{--</div>--}}
+            {{--</div>--}}
         </div>
     </header>
 
