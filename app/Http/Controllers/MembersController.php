@@ -29,34 +29,40 @@ class MembersController extends Controller
 				->where('customer_id', $user->id)
 				->get();
 		} else {
-			$company_id = $user->members->company->id;
+			if ($user->roles[0]->slug == 'travel_agent') {
+				$bookings = 0;
+				$total_bookings = 0;
+				$ongoing_bookings = 0;
+			} else {
+				$company_id = $user->members->company->id;
 
-			$total_bookings = Bookings::whereNull('bookings.deleted_at')
-				->whereHas('products', function ($query) use ($company_id) {
-					$query->where('vendor_id', $company_id);
-				})
-				->join('products', 'products.id', '=', 'bookings.product_id')
-				->join('companies', 'companies.id', '=', 'products.vendor_id')
-				->groupBy('products.vendor_id')
-				->get();
+				$total_bookings = Bookings::whereNull('bookings.deleted_at')
+					->whereHas('products', function ($query) use ($company_id) {
+						$query->where('vendor_id', $company_id);
+					})
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('companies', 'companies.id', '=', 'products.vendor_id')
+					->groupBy('products.vendor_id')
+					->get();
 
-			$ongoing_bookings = Bookings::active()
-				->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
-				->whereHas('products', function ($query) use ($company_id) {
-					$query->where('vendor_id', $company_id);
-				})
-				->get();
+				$ongoing_bookings = Bookings::active()
+					->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+					->whereHas('products', function ($query) use ($company_id) {
+						$query->where('vendor_id', $company_id);
+					})
+					->get();
 
-			$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
+				$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
 			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees")
-				->whereNull('bookings.deleted_at')
-				->whereHas('products', function ($query) use ($company_id) {
-					$query->where('vendor_id', $company_id);
-				})
-				->join('products', 'products.id', '=', 'bookings.product_id')
-				->join('companies', 'companies.id', '=', 'products.vendor_id')
-				->groupBy('products.vendor_id')
-				->paginate(config('app.item_per_page'));
+					->whereNull('bookings.deleted_at')
+					->whereHas('products', function ($query) use ($company_id) {
+						$query->where('vendor_id', $company_id);
+					})
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('companies', 'companies.id', '=', 'products.vendor_id')
+					->groupBy('products.vendor_id')
+					->paginate(config('app.item_per_page'));
+			}
 		}
 
 		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings'));
