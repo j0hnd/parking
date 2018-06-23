@@ -20,7 +20,25 @@ class MembersController extends Controller
 			$bookings = Bookings::where('customer_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
 		} else {
 			$company_id = $user->members->company->id;
-			$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
+
+			$total_bookings = Bookings::whereNull('bookings.deleted_at')
+				->whereHas('products', function ($query) use ($company_id) {
+					$query->where('vendor_id', $company_id);
+				})
+				->join('products', 'products.id', '=', 'bookings.product_id')
+				->join('companies', 'companies.id', '=', 'products.vendor_id')
+				->groupBy('products.vendor_id')
+				->get();
+
+			$ongoing_bookings = Bookings::active()
+				->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+				->whereHas('products', function ($query) use ($company_id) {
+					$query->where('vendor_id', $company_id);
+				})
+				->get();
+
+			$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
+			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees")
 				->whereNull('bookings.deleted_at')
 				->whereHas('products', function ($query) use ($company_id) {
 					$query->where('vendor_id', $company_id);
@@ -31,7 +49,7 @@ class MembersController extends Controller
 				->paginate(config('app.item_per_page'));
 		}
 
-		return view('member-portal.dashboard', compact('bookings'));
+		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings'));
 	}
 
 	public function display_profile()

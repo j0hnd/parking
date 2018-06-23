@@ -73,7 +73,7 @@
                             <div class="col-md-12">
                                 <div class="overview-wrap">
                                     <h2 class="title-1">overview</h2>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                                 <i class="zmdi zmdi-calendar-note"></i>
                                             </div>
                                             <div class="text">
-                                                <h2>2</h2>
+                                                <h2>{{ count($ongoing_bookings) }}</h2>
                                                 <span>ongoing booking</span>
                                             </div>
                                         </div>
@@ -122,8 +122,8 @@
                                                 <i class="zmdi zmdi-check"></i>
                                             </div>
                                             <div class="text">
-                                                <h2>8</h2>
-                                                <span>total booking you made</span>
+                                                <h2>{{ count($total_bookings) }}</h2>
+                                                <span>total bookings</span>
                                             </div>
                                         </div>
                                         <div class="overview-chart">
@@ -140,7 +140,7 @@
                                                 <i class="zmdi zmdi-star"></i>
                                             </div>
                                             <div class="text">
-                                                <h2>1000</h2>
+                                                <h2>0</h2>
                                                 <span>total point you earned</span>
                                             </div>
                                         </div>
@@ -161,7 +161,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="title-5 m-b-35">Your Bookings</h3>
-                            
+
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                    @if($user->roles[0]->slug == 'member')
@@ -179,7 +179,7 @@
             <br/>
             <br/>
             <br/>
-            <!-- END DATA TABLE-->	
+            <!-- END DATA TABLE-->
             @include('parking.templates.footer')
 @stop
 

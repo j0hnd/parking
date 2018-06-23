@@ -1,28 +1,36 @@
 	<thead>
 	<tr>
 		<th>Booking ID</th>
-		<th>Vendor</th>
-		<th>Airport/Parking Type</th>
-		<th class="text-left">Customer Name</th>
-		<th class="text-center">Book Date</th>
-		<th class="text-center">Drop of Date/Return Date</th>
+		<th>Order</th>
+		<th class="text-center">Booking Date</th>
+		<th class="text-center">Drop of Date</th>
+		<th class="text-center">Return Date</th>
+		<th class="text-center">Completed</th>
 		<th class="text-right">Total Cost</th>
 	</tr>
 	</thead>
 
 	<tbody>
-	@if(count($bookings))
+	@if($bookings)
+		@php
+			$total_cost = 0;
+		@endphp
+
 		@foreach($bookings as $booking)
 			@php
 				$cost = 0;
 			@endphp
 			<tr id="booking-{{ $booking->id }}" class="tr-shadow">
-				<td><a href="{{ url('/admin/booking/'.$booking->id.'/edit') }}" target="_blank">{{ $booking->booking_id }}</a></td>
-				<td>{{ $booking->products[0]->vendors[0]->company_name }}</td>
+				<td>{{ $booking->booking_id }}</td>
 				<td>{{ $booking->order_title }}</td>
-				<td class="text-left">{{ $booking->customers->first_name }}&nbsp;{{ $booking->customers->last_name }}</td>
-				<td class="text-center">{{ $booking->created_at->format('F j, Y') }}</td>
-				<td class="text-center"><span class="drop-off">{{ $booking->drop_off_at->format('F j, Y') }}</span>/<span class="return-at">{{ $booking->return_at->format('F j, Y') }}</span></td>
+				<td class="text-center">{{ $booking->created_at->format('d/m/Y') }}</td>
+				<td class="text-center">{{ $booking->drop_off_at->format('d/m/Y') }}</td>
+				<td class="text-center">{{ $booking->return_at->format('d/m/Y') }}</td>
+				<td class="text-center">
+					 @if(strtotime('now') > strtotime($booking->return_at))
+					 <i class="fa fa-check-square-o" aria-hidden="true"></i>
+					 @endif
+				</td>
 				<td class="text-right">
 					@php
 						$cost = ($booking->price_value + $booking->booking_fee + $booking->sms_confirmation_fee + $booking->cancellation_waiver) - $booking->revenue_value;
@@ -33,6 +41,7 @@
 				</td>
 			</tr>
 		@endforeach
+
 		<tr id="summary" class="bg-aqua tr-shadow">
 			<td colspan="6"></td>
 			<td class="text-right"><strong>£{{ number_format($total_cost, 2) }}</strong></td>
