@@ -85,7 +85,7 @@ class LoginController extends Controller
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 return response()->json(['data' => 'User logged out.', 200]);
             } else {
-                return redirect('/');
+                return redirect('/member/login');
             }
         }
     }
