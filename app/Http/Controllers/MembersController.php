@@ -16,8 +16,18 @@ class MembersController extends Controller
 	public function dashboard(Request $request)
 	{
 		$user = Sentinel::getUser();
+
 		if ($user->roles[0]->slug == 'member') {
 			$bookings = Bookings::where('customer_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+
+			$total_bookings = Bookings::whereNull('bookings.deleted_at')
+				->where('customer_id', $user->id)
+				->get();
+
+			$ongoing_bookings = Bookings::active()
+				->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+				->where('customer_id', $user->id)
+				->get();
 		} else {
 			$company_id = $user->members->company->id;
 
