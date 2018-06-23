@@ -44,7 +44,7 @@ Route::group(['prefix' => 'members'], function () {
 	Route::get('/profile', 'MembersController@display_profile');
 	Route::post('/update/profile', 'MembersController@update_profile');
     Route::get('/inbox','MembersController@display_inbox');
-    Route::get('/email','MembersController@display_email');
+    Route::get('/email/{id}','MembersController@display_email');
 });
 
 Route::group(['prefix' => 'admin'], function () {
