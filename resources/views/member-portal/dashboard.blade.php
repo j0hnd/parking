@@ -160,17 +160,22 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">Your Bookings</h3>
-
-                            <div class="table-responsive table-responsive-data2">
-                                <table class="table table-data2">
-                                   @if($user->roles[0]->slug == 'member')
+                            @if($user->roles[0]->slug == 'member')
+                                <h3 class="title-5 m-b-35">Your Bookings</h3>
+                                <div class="table-responsive table-responsive-data2">
+                                    <table class="table table-data2">
                                         @include('member-portal.partials.member')
-                                    @else
+                                    </table>
+                                </div>
+                            @endif
+                            @if($user->roles[0]->slug == 'vendor')
+                                <h3 class="title-5 m-b-35">Your Bookings</h3>
+                                <div class="table-responsive table-responsive-data2">
+                                    <table class="table table-data2">
                                         @include('member-portal.partials.vendor')
-                                    @endif
-                                </table>
-                            </div>
+                                    </table>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
