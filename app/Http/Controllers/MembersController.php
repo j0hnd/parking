@@ -6,6 +6,7 @@ use App\Http\Requests\MembersFormRequest;
 use App\Models\Bookings;
 use App\Models\Companies;
 use App\Models\Members;
+use App\Models\Messages;
 use App\Models\User;
 use Sentinel;
 use Illuminate\Http\Request;
@@ -64,13 +65,16 @@ class MembersController extends Controller
 					->groupBy('products.vendor_id')
 					->paginate(config('app.item_per_page'));
 
-				$new_messages = Messages::where('status', 'unread');
-				$count = $new_messages->count();
-				$inbox = $new_messages->get()->toArray();
+
 			}
 		}
+		$new_messages = Messages::where('status', 'unread')
+								->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'inbox'));
+		$count = $new_messages->count();
+		$inbox = $new_messages->get()->toArray();
+
+		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'count', 'inbox'));
 	}
 
 	public function display_profile()
@@ -128,6 +132,7 @@ class MembersController extends Controller
 	public function display_inbox()
 	{
 		$user = Sentinel::getUser();
+
 		$date = date("l, M d, Y");
 		$new_messages = Messages::where('status', 'unread')
 								->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
@@ -153,5 +158,17 @@ class MembersController extends Controller
 		$count = $messages->count();
 		$inbox = $messages->get()->toArray();
 		return view ('/member-portal.email', compact('count', 'inbox', 'message'));
+	}
+
+	public function products(Request $request)
+	{
+		$user = Sentinel::getUser();
+		$new_messages = Messages::where('status', 'unread')
+			->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+
+		$count = $new_messages->count();
+		$inbox = $new_messages->get()->toArray();
+
+		return view('member-portal.products', compact('inbox', 'count'));
 	}
 }
