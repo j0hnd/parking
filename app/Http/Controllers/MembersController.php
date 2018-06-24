@@ -159,4 +159,16 @@ class MembersController extends Controller
 		$inbox = $messages->get()->toArray();
 		return view ('/member-portal.email', compact('count', 'inbox', 'message'));
 	}
+
+	public function products(Request $request)
+	{
+		$user = Sentinel::getUser();
+		$new_messages = Messages::where('status', 'unread')
+			->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+
+		$count = $new_messages->count();
+		$inbox = $new_messages->get()->toArray();
+
+		return view('member-portal.products', compact('inbox', 'count'));
+	}
 }
