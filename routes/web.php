@@ -15,12 +15,12 @@ Route::get('/', 'ParkingAppController@index');
 Route::get('/admin', 'DashboardController@index');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/member/login', 'Auth\LoginController@login_member');
-Route::get('/payment/{token?}', 'ParkingAppController@payment');
+Route::get('/payment/{token?}/{cancel?}', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
 Route::get('/contact','ParkingAppController@contact');
-Route::get('blog', 'ParkingAppController@blog');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
+Route::get('/paypal/cancel', 'ParkingAppController@paypal_cancel');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
 Route::get('/forgot-password', 'ParkingAppController@forgot_password');
 Route::get('/post/{post}', 'ParkingAppController@show_post');
@@ -37,7 +37,6 @@ Route::post('/process/forgot-password', 'ParkingAppController@process_forgot_pas
 
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
-
 
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');

@@ -99,6 +99,7 @@ class ParkingAppController extends Controller
 			$form = $request->only(['products', 'drop_off', 'return_at']);
 			$token = null;
 			$details = null;
+			$cancel = isset($request->cancel) ? $request->cancel : 0;
 
 			if (isset($request->token)) {
 				$sessions = Sessions::where('session_id', session('sess_id'))->first();
@@ -152,7 +153,8 @@ class ParkingAppController extends Controller
 				'form',
 				'drop_off_time_interval',
 				'return_at_time_interval',
-				'booking_id'
+				'booking_id',
+				'cancel'
 			));
 		}
 	}
@@ -228,6 +230,11 @@ class ParkingAppController extends Controller
 		} else {
 			abort(502);
 		}
+	}
+
+	public function paypal_cancel(Request $request)
+	{
+		return redirect()->to('/payment/token='.$request->get('token').'/cancel=1');
 	}
 
 	public function update_booking_details(Request $request)
@@ -337,7 +344,9 @@ class ParkingAppController extends Controller
 	{
 		return view ('parking.privacy');
 	}
-	public function contact(){
+
+	public function contact()
+	{
 		return view ('parking.contact');
 	}
 

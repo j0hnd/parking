@@ -10,7 +10,7 @@
 
 				<form class="login100-form validate-form" action="{{ url('/member/authenticate') }}" method="post">
 					{{-- THIS WILL GO BACK TO THE PREVIOUS PAGE --}}
-					<a href="javascript:history.go(-1)" class="back">
+					<a href="{{ url('/') }}" class="back">
 						<i class="fas fa-arrow-left"></i>
 					</a>
 					<span class="login100-form-title p-b-43">Login to continue</span>
