@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MembersFormRequest;
 use App\Models\Bookings;
+use App\Models\Carpark;
 use App\Models\Companies;
 use App\Models\Members;
 use App\Models\Messages;
+use App\Models\Products;
 use App\Models\User;
 use Sentinel;
 use Illuminate\Http\Request;
@@ -169,6 +171,16 @@ class MembersController extends Controller
 		$count = $new_messages->count();
 		$inbox = $new_messages->get()->toArray();
 
-		return view('member-portal.products', compact('inbox', 'count'));
+		$products = Products::selectRaw("products.id as product_id, prices.id as price_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name, prices.no_of_days, prices.price_month, prices.price_year, prices.price_value")
+			->join('product_airports', 'product_airports.product_id', '=', 'products.id')
+			->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+			->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+			->join('prices', 'prices.product_id', '=', 'products.id')
+			->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+			->whereNull('products.deleted_at')
+			->where('products.vendor_id', $user->members->company->id)
+			->paginate(config('app.item_per_page'));
+
+		return view('member-portal.products', compact('inbox', 'count', 'products'));
 	}
 }

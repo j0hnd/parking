@@ -5,53 +5,15 @@
 @stop
 
 @section('main-content')
-    <div id="mobileNav" class="overlay-nav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <div class="overlay-content">
-            <a href="{{ url('/members/dashboard') }}">Dashboard</a>
-            @if($user->roles[0]->slug == 'vendor')
-            <a href="{{ url('/members/products') }}">My Products</a>
-            @endif
-            <a href="{{ url('/members/profile') }}">Profile</a>
-            <a href="{{ url('/members/inbox') }}">Inbox</a>
-            <a href="{{ url('/logout') }}">Logout</a>
-        </div>
-    </div>
-    <nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
-        <a href="{{ url('/') }}"> <img src="{{ asset('/img/header-logo-light.png') }}" class="navbar-brand"></a>
-        @include('parking.templates.member-nav')
-        <span class="nav-icon" onclick="openNav()"><i class="fas fa-bars"></i></span>
-    </nav>
+    @include('member-portal.partials.nav-mobile')
+
+    @include('member-portal.partials.nav-header')
 
     <br/>
     <!-- PAGE CONTENT-->
     <div class="page-content--bgf7">
         <!-- BREADCRUMB-->
-        <section class="au-breadcrumb2">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="au-breadcrumb-content">
-                            <div class="au-breadcrumb-left">
-                                <span class="au-breadcrumb-span">You are here:</span>
-                                <ul class="list-unstyled list-inline au-breadcrumb__list">
-                                    {{--<li class="list-inline-item seprate">
-										<span>/</span>
-									</li>--}}
-                                    <li class="list-inline-item">Dashboard</li>
-                                </ul>
-                            </div>
-                            <form class="au-form-icon--sm" action="" method="post">
-                                <input class="au-input--w300 au-input--style2" type="text" placeholder="Search for transactions...">
-                                <button class="au-btn--submit2" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        @include('member-portal.partials.breadcrumbs', ['page_title' => 'Dashboard'])
         <!-- END BREADCRUMB-->
 
         <!-- WELCOME-->
