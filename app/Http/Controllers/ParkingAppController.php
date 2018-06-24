@@ -300,15 +300,22 @@ class ParkingAppController extends Controller
 
 				// send booking confirmation
 				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
-				Messages::create([
-					'subject' => 'My Travel Compared Booking Confirmation',
-					'booking_id' => $booking->booking_id,
-					'drop_off' => $booking->drop_off_at->format('Y-m-d h:i:s'),
-					'return_at' => $booking->return_at->format('Y-m-d h:i:s'),
-					'order' => $booking->order_title,
-					'name' => $customer->first_name,
-					'status' => 'unread'
-				]);
+
+				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
+								  ->where('booking_id', $booking->booking_id)->first();
+
+				if ($message == null) {
+					Messages::create([
+						'subject' => 'My Travel Compared Booking Confirmation',
+						'booking_id' => $booking->booking_id,
+						'drop_off' => $booking->drop_off_at,
+						'return_at' => $booking->return_at,
+						'order' => $booking->order_title,
+						'name' => $customer->first_name,
+						'status' => 'unread'
+					]);
+				}
+
 				// send sms
 				if ($send_sms) {
 					$message = $this->twilio->messages
