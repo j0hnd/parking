@@ -86,4 +86,13 @@ class Bookings extends BaseModel
 
         return isset($booking_ids) ? $booking_ids : null;
     }
+
+    public function get_user_bookings($company_id)
+	{
+		$bookings = Bookings::join('products', 'bookings.product_id', 'products.id')
+							->join('carparks', 'products.carpark_id', 'carparks.id')
+							->where('carparks.company_id', $company_id);
+
+		return $bookings->pluck('booking_id')->toArray();
+	}
 }

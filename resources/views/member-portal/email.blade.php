@@ -64,17 +64,18 @@
                   <div class="card-header">
                     <strong class="card-title">Email from Admin</strong>
                   </div>
-
                   <div class="card-body">
                     <div class="typo-headers">
-                      <h2 class="pb-2 display-5">Meeting about plan for Admin Template 2018</h2>
-                      <h3 class="pb-2 display-5">Today, Jun 22, 2018</h3>
-                      <h4 class="pb-2 display-5">10:00 AM</h4>
+                      <h2 class="pb-2 display-5">{{$message->subject}}</h2>
+                      <h3 class="pb-2 display-5">{{$message->get_day_name(strtotime($message->created_at)).', '. date('Y-m-d', strtotime($message->created_at))}}</h3>
+                      <h4 class="pb-2 display-5">{{date('h:i A', strtotime($message->created_at))}}</h4>
                     </div>
                     <div class="typo-articles">
                         <br/>
                       <p class="email-content">
-                        The unique stripes of zebras make them one of the animals most familiar to people. They occur in a variety of habitats, such as grasslands, savannas, woodlands, thorny scrublands, mountains , and coastal hills. However, various anthropogenic factors have had a severe impact on zebra populations, in particular hunting for skins and habitat destruction. Grévy's zebra and the mountain highlighted text zebra are endangered.
+						  {{$message->order}}<br>
+						  {{$message->name}}
+                      </p>
                     </div>
                     <br/>
                     <a href="{{ url('/members/inbox') }}" class="btn btn-info">&lt;&lt; <strong>Inbox</strong></a>
@@ -88,7 +89,7 @@
     </div>
     <!-- END PAGE CONTAINER-->
 
-    
+
 </div>
 </div>
 	@include('parking.templates.footer')
