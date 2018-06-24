@@ -16,6 +16,7 @@ class MembersController extends Controller
 	public function dashboard(Request $request)
 	{
 		$user = Sentinel::getUser();
+		$inbox = null;
 
 		if ($user->roles[0]->slug == 'member') {
 			$bookings = Bookings::where('customer_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
@@ -62,15 +63,23 @@ class MembersController extends Controller
 					->join('companies', 'companies.id', '=', 'products.vendor_id')
 					->groupBy('products.vendor_id')
 					->paginate(config('app.item_per_page'));
+
+				$new_messages = Messages::where('status', 'unread');
+				$count = $new_messages->count();
+				$inbox = $new_messages->get()->toArray();
 			}
 		}
 
-		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings'));
+		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'inbox'));
 	}
 
 	public function display_profile()
 	{
-		return view('member-portal.profile');
+		$new_messages = Messages::where('status', 'unread');
+		$count = $new_messages->count();
+		$inbox = $new_messages->get()->toArray();
+
+		return view('member-portal.profile', compact('count', 'inbox'));
 	}
 
 	public function update_profile(MembersFormRequest $request)
@@ -116,13 +125,33 @@ class MembersController extends Controller
 		}
 	}
 
-	public function display_inbox(){
-
+	public function display_inbox()
+	{
+		$user = Sentinel::getUser();
 		$date = date("l, M d, Y");
+		$new_messages = Messages::where('status', 'unread')
+								->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		return view ('/member-portal.inbox')->with('date',$date);
+		$count = $new_messages->count();
+		$inbox = $new_messages->get()->toArray();
+
+		$messages = Messages::whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id))
+							->paginate(config('app.item_per_page'));
+
+		return view ('/member-portal.inbox', compact('count', 'inbox', 'messages'))->with('date',$date);
 	}
-	public function display_email(){
-		return view ('/member-portal.email');
+
+	public function display_email($id)
+	{
+		$user = Sentinel::getUser();
+		$message = Messages::where('id', $id)->first();
+		$message->update(['status' => 'read']);
+
+		$messages = Messages::where('status', 'unread')
+							->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+
+		$count = $messages->count();
+		$inbox = $messages->get()->toArray();
+		return view ('/member-portal.email', compact('count', 'inbox', 'message'));
 	}
 }

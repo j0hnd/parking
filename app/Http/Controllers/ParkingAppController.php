@@ -12,6 +12,7 @@ use App\Models\Bookings;
 use App\Models\Carpark;
 use App\Models\Customers;
 use App\Models\Members;
+use App\Models\Messages;
 use App\Models\Posts;
 use App\Models\Products;
 use App\Models\Tools\CarparkServices;
@@ -292,7 +293,15 @@ class ParkingAppController extends Controller
 
 				// send booking confirmation
 				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
-
+				Messages::create([
+					'subject' => 'My Travel Compared Booking Confirmation',
+					'booking_id' => $booking->booking_id,
+					'drop_off' => $booking->drop_off_at->format('Y-m-d h:i:s'),
+					'return_at' => $booking->return_at->format('Y-m-d h:i:s'),
+					'order' => $booking->order_title,
+					'name' => $customer->first_name,
+					'status' => 'unread'
+				]);
 				// send sms
 				if ($send_sms) {
 					$message = $this->twilio->messages
@@ -303,7 +312,7 @@ class ParkingAppController extends Controller
 								   )
 						  );
 
-					$response['twilio'] = json($message);
+					$response['twilio'] = $message;
 				}
 
 				$sess_id = session('sess_id');
