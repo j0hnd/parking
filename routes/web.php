@@ -46,6 +46,8 @@ Route::group(['prefix' => 'members'], function () {
     Route::get('/products', 'MembersController@products');
 
 	Route::post('/update/profile', 'MembersController@update_profile');
+
+	Route::match(['get', 'post'], '/price/{price}', 'MembersController@price');
 });
 
 Route::group(['prefix' => 'admin'], function () {

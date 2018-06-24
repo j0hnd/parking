@@ -9,6 +9,7 @@ use App\Models\Companies;
 use App\Models\Members;
 use App\Models\Messages;
 use App\Models\Products;
+use App\Models\Tools\Prices;
 use App\Models\User;
 use Sentinel;
 use Illuminate\Http\Request;
@@ -182,5 +183,47 @@ class MembersController extends Controller
 			->paginate(config('app.item_per_page'));
 
 		return view('member-portal.products', compact('inbox', 'count', 'products'));
+	}
+
+	public function price(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+
+			if ($request->ajax()) {
+				if ($request->isMethod('post')) {
+					$user = Sentinel::getUser();
+					$price = Prices::findOrFail($request->price);
+					$form = $request->except(['_token']);
+
+					if ($price->update($form)) {
+						$products = Products::selectRaw("products.id as product_id, prices.id as price_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name, prices.no_of_days, prices.price_month, prices.price_year, prices.price_value")
+							->join('product_airports', 'product_airports.product_id', '=', 'products.id')
+							->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+							->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+							->join('prices', 'prices.product_id', '=', 'products.id')
+							->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+							->whereNull('products.deleted_at')
+							->where('products.vendor_id', $user->members->company->id)
+							->get();
+
+						$html = view('member-portal.partials.product-list', compact('products'))->render();
+						$response = ['success' => true, 'html' => $html];
+					} else {
+						$response['message'] = "Unable to update price";
+					}
+				} else {
+					$price = Prices::findOrFail($request->price);
+					$form = view('member-portal.partials.product-update', compact('price'))->render();
+					$response = ['success' => true, 'form' => $form];
+				}
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
 	}
 }
