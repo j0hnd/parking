@@ -6,6 +6,7 @@ use App\Http\Requests\MembersFormRequest;
 use App\Models\Bookings;
 use App\Models\Companies;
 use App\Models\Members;
+use App\Models\Messages;
 use App\Models\User;
 use Sentinel;
 use Illuminate\Http\Request;
