@@ -199,7 +199,15 @@ class ParkingAppController extends Controller
 					$products = Products::findOrFail($product_id);
 					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
 
+					$user = Sentinel::getUser();
+					if (is_null($user)) {
+						$user_id = $user->id;
+					} else {
+						$user_id = 0;
+					}
+
 					$bookings['order_title'] = $booking_data['product'];
+					$bookings['user_id'] = $user_id;
 					$bookings['customer_id'] = $customer->id;
 					$bookings['product_id'] =  $product_id;
 					$bookings['price_id'] = $price_id;
