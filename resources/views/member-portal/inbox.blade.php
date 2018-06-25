@@ -30,32 +30,37 @@
 										<p>Emails for {{ $user->members->first_name }} {{ $user->members->last_name }}</p>
 									</div>
 									<div class="au-task-list js-scrollbar3">
-										@foreach($messages as $msg)
-											<div class="au-task__item au-task__item--primary">
-												<div class="au-task__item-inner">
-													<div class="container">
-														<div class="row">
-															<div class="col-lg-4">
-																<span {{ ($msg->status == 'unread' ? 'class=time' : '')}}>{{$msg->name}}</span>
-															</div>
-															<div class="col-lg-5">
-																<h5 class="task">
-																	<a href="{{ url('/members/email/'.$msg['id']) }}">{{$msg->subject}}</a>
-																</h5>
-															</div>
-															<div class="col-lg-3 text-right">
-																<span {{ $msg->status == 'unread' ? 'class=time' : ''}}>{{date('h:i a', strtotime($msg->created_at))}}</span>
+										@if(count($messages))
+											@foreach($messages as $msg)
+												<div class="au-task__item au-task__item--primary">
+													<div class="au-task__item-inner">
+														<div class="container">
+															<div class="row">
+																<div class="col-lg-4">
+																	<span {{ ($msg->status == 'unread' ? 'class=time' : '')}}>{{$msg->name}}</span>
+																</div>
+																<div class="col-lg-5">
+																	<h5 class="task">
+																		<a href="{{ url('/members/email/'.$msg['id']) }}">{{$msg->subject}}</a>
+																	</h5>
+																</div>
+																<div class="col-lg-3 text-right">
+																	<span {{ $msg->status == 'unread' ? 'class=time' : ''}}>{{date('h:i a', strtotime($msg->created_at))}}</span>
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-										@endforeach
+											@endforeach
+										@endif
 									</div>
+
+									@if(count($messages))
 									<div class="au-task__footer">
 									{{$messages->links()}}
 									<!-- <button class="au-btn au-btn-load js-load-btn">load more</button> -->
 									</div>
+									@endif
 								</div>
 							</div>
 						</div>
