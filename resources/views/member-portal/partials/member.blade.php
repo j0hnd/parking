@@ -3,6 +3,8 @@
 		<th>Booking ID</th>
 		<th>Order Title</th>
 		<th>Booking Date</th>
+		<th>Drop Off</th>
+		<th>Return</th>
 		<th class="text-right">Amount</th>
 	</tr>
 	</thead>
@@ -12,14 +14,10 @@
 		@foreach($bookings as $booking)
 			<tr class="tr-shadow">
 				<td>{{ $booking->booking_id }}</td>
-				<td>
-					{{ $booking->order_title }}<br>
-					<small>
-						<span style="display: block;">Drop Off: {{ $booking->drop_off_at->format('d/m/Y') }}</span>
-						<span style="display: block;">Return At: {{ $booking->return_at->format('d/m/Y') }}</span>
-					</small>
-				</td>
+				<td>{{ $booking->order_title }}<br></td>
 				<td>{{ $booking->created_at->format('d/m/Y') }}</td>
+				<td>{{ $booking->drop_off_at->format('d/m/Y H:i') }}</td>
+				<td>{{ $booking->return_at->format('d/m/Y H:i') }}</td>
 				<td class="text-right">
 					@php
 						$sms_fee = is_null($booking->sms_confirmation_fee) ? 0 : $booking->sms_confirmation_fee;
@@ -32,7 +30,7 @@
 		@endforeach
 	@else
 		<tr class="tr-shadow">
-			<td colspan="4">No bookings found</td>
+			<td colspan="6">No bookings found</td>
 		</tr>
 	@endif
 	</tbody>
@@ -40,7 +38,7 @@
 	@if(count($bookings))
 		<tfoot>
 		<tr class="tr-shadow">
-			<td colspan="4">
+			<td colspan="6">
 				{{ $bookings->links() }}
 			</td>
 		</tr>

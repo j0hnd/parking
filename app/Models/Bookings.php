@@ -56,7 +56,7 @@ class Bookings extends BaseModel
         }
 
         $reference_no = str_pad(($booking_id), 6, '0', STR_PAD_LEFT);
-        return "CPC-".date('m')."-".$reference_no;
+        return "MTC-".date('m')."-".$reference_no;
     }
 
     public static function search($search_str)
