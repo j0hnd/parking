@@ -71,11 +71,19 @@ class MembersController extends Controller
 
 			}
 		}
-		$new_messages = Messages::where('status', 'unread')
-								->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		$count = $new_messages->count();
-		$inbox = $new_messages->get()->toArray();
+		if (is_null($user->members->company)) {
+			$count = 0;
+			$inbox = null;
+		} else {
+			$new_messages = Messages::where('status', 'unread')
+				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+
+			$count = $new_messages->count();
+			$inbox = $new_messages->get()->toArray();
+		}
+
+
 
 		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'count', 'inbox'));
 	}
