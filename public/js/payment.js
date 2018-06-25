@@ -324,6 +324,10 @@ $(document).ready(function(){
 });
 
 $(document).ready(function() {
+    setTimeout(function() {
+    document.documentElement.scrollTop =
+        document.body.scrollTop = 500;
+}, 0);
     $(window).scroll(function() {
       if($(this).scrollTop() > 20) {
           $('.navbar').addClass('solid');
