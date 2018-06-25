@@ -26,7 +26,8 @@ class UsersController extends Controller
     {
         $roles = Roles::all();
         $page_title = "Add User";
-        return view('app.User.create', compact('roles', 'page_title'));
+        $user_info = null;
+        return view('app.User.create', compact('roles', 'page_title', 'user_info'));
     }
 
     public function store(UserFormRequest $request)
@@ -43,16 +44,26 @@ class UsersController extends Controller
                 $form_user['password'] = $temporary_password;
 
                 if ($user = Sentinel::registerAndActivate($form_user)) {
-                	$company = Companies::create($form_member['company']);
+                	if (!is_null($form_member['company']['company_name'])) {
+						$company = Companies::create($form_member['company']);
 
-                    // create member info
-                    $member = Members::create([
-                        'user_id'    => $user->id,
-                        'company_id' => $company->id,
-                        'first_name' => $form_member['first_name'],
-                        'last_name'  => $form_member['last_name'],
-                        'is_active'  => 1
-                    ]);
+						// create member info
+						$member = Members::create([
+							'user_id'    => $user->id,
+							'company_id' => $company->id,
+							'first_name' => $form_member['first_name'],
+							'last_name'  => $form_member['last_name'],
+							'is_active'  => 1
+						]);
+					} else {
+						// create member info
+						$member = Members::create([
+							'user_id'    => $user->id,
+							'first_name' => $form_member['first_name'],
+							'last_name'  => $form_member['last_name'],
+							'is_active'  => 1
+						]);
+					}
 
                     // assign role to a user
                     $role = Sentinel::findRoleById($form_user['role_id']);

@@ -23,15 +23,15 @@ class MembersController extends Controller
 		$inbox = null;
 
 		if ($user->roles[0]->slug == 'member') {
-			$bookings = Bookings::where('customer_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+			$bookings = Bookings::where('user_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
 
 			$total_bookings = Bookings::whereNull('bookings.deleted_at')
-				->where('customer_id', $user->id)
+				->where('user_id', $user->id)
 				->get();
 
 			$ongoing_bookings = Bookings::active()
 				->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
-				->where('customer_id', $user->id)
+				->where('user_id', $user->id)
 				->get();
 		} else {
 			if ($user->roles[0]->slug == 'travel_agent') {
@@ -67,8 +67,6 @@ class MembersController extends Controller
 					->join('companies', 'companies.id', '=', 'products.vendor_id')
 					->groupBy('products.vendor_id')
 					->paginate(config('app.item_per_page'));
-
-
 			}
 		}
 
@@ -145,14 +143,22 @@ class MembersController extends Controller
 		$user = Sentinel::getUser();
 
 		$date = date("l, M d, Y");
-		$new_messages = Messages::where('status', 'unread')
-								->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		$count = $new_messages->count();
-		$inbox = $new_messages->get()->toArray();
+		if (is_null($user->members->company)) {
+			$count = 0;
+			$inbox = null;
+			$messages = null;
+		} else {
+			$new_messages = Messages::where('status', 'unread')
+				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		$messages = Messages::whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id))
-							->paginate(config('app.item_per_page'));
+			$count = $new_messages->count();
+			$inbox = $new_messages->get()->toArray();
+
+			$messages = Messages::whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id))
+				->paginate(config('app.item_per_page'));
+		}
+
 
 		return view ('/member-portal.inbox', compact('count', 'inbox', 'messages'))->with('date',$date);
 	}

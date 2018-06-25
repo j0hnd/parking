@@ -30,8 +30,12 @@
             <select name="role_id" id="role-id" class="form-control">
                 <option value="" readonly>-- Roles --</option>
                 @foreach($roles as $role)
-                    @if($user_info->roles[0]->id == $role->id)
-                    <option value="{{ $role->id }}"selected>{{ $role->name }}</option>
+                    @if(count($user_info))
+                        @if($user_info->roles[0]->id == $role->id)
+                        <option value="{{ $role->id }}"selected>{{ $role->name }}</option>
+                        @else
+                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                        @endif
                     @else
                     <option value="{{ $role->id }}">{{ $role->name }}</option>
                     @endif
@@ -40,7 +44,11 @@
         </div>
     </div>
 
-    @php($class = ($user_info->roles[0]->slug == 'vendor') ? '' : 'hidden')
+    @if(count($user_info))
+        @php($class = ($user_info->roles[0]->slug == 'vendor') ? '' : 'hidden')
+    @else
+        @php($class = 'hidden')
+    @endif
 
     <fieldset id="company-info-wrapper" class="{{ $class }}">
         <label>Company Details</label>
