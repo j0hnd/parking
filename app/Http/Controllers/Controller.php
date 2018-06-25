@@ -29,7 +29,7 @@ class Controller extends BaseController
 						case "administrator":
 							if (strpos($requestUri, 'members')) {
 								Sentinel::logout();
-								return redirect()->to('/');
+								return redirect()->to('/member/login');
 							}
 							view()->share('user', $this->user);
 							view()->share('role', $this->role->toArray());
@@ -41,7 +41,7 @@ class Controller extends BaseController
 						case "travel_agent":
 							if (strpos($requestUri, 'admin')) {
 								Sentinel::logout();
-								return redirect()->to('/');
+								return redirect()->to('/admin');
 							}
 							view()->share('user', $this->user);
 							view()->share('role', $this->role->toArray());
