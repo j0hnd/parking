@@ -145,14 +145,22 @@ class MembersController extends Controller
 		$user = Sentinel::getUser();
 
 		$date = date("l, M d, Y");
-		$new_messages = Messages::where('status', 'unread')
-								->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		$count = $new_messages->count();
-		$inbox = $new_messages->get()->toArray();
+		if (is_null($user->members->company)) {
+			$count = 0;
+			$inbox = null;
+			$messages = null;
+		} else {
+			$new_messages = Messages::where('status', 'unread')
+				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
 
-		$messages = Messages::whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id))
-							->paginate(config('app.item_per_page'));
+			$count = $new_messages->count();
+			$inbox = $new_messages->get()->toArray();
+
+			$messages = Messages::whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id))
+				->paginate(config('app.item_per_page'));
+		}
+
 
 		return view ('/member-portal.inbox', compact('count', 'inbox', 'messages'))->with('date',$date);
 	}
