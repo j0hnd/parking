@@ -168,6 +168,10 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
 };
 
 $(document).ready(function() {
+setTimeout(function() {
+    document.documentElement.scrollTop =
+        document.body.scrollTop = 500;
+}, 0);
     $(window).scroll(function() {
         if($(this).scrollTop() > 20) {
             $('.navbar').addClass('solid');
@@ -180,6 +184,7 @@ $(document).ready(function() {
         }
     });
 });
+
 
 function openNav() {
     document.getElementById("mobileNav").style.width = "100%";
