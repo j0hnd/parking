@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, width=device-width">
         <title>{{ config('app.name') }}</title>
         <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/spacing.css') }}" rel="stylesheet">
@@ -25,6 +25,17 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
+
+        <meta name="application-name" content="My Travel Compared"/>
+                <meta name="msapplication-square70x70logo" content="{{ asset('/img/small.jpg') }}"/>
+                <meta name="msapplication-square150x150logo" content="{{ asset('/img/medium.jpg') }}"/>
+                <meta name="msapplication-wide310x150logo" content="{{ asset('/img/wide.jpg') }}"/>
+                <meta name="msapplication-square310x310logo" content="{{ asset('/img/large.jpg') }}"/>
+                <meta name="msapplication-TileColor" content="#ffffff"/>
+        <script type="text/javascript">
+            cdn_url = 'https://healthandharmony.com.ph';
+        </script>
+        @yield('tags')
         @yield('css')
     </head>
 
