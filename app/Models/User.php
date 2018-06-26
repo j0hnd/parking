@@ -51,6 +51,11 @@ class User extends EloquentUser implements UserInterface
         return $this->belongsToMany(Roles::class, 'role_users', 'user_id', 'role_id');
     }
 
+    public function affiliate()
+	{
+		return $this->hasOne(Affiliates::class, 'travel_agent_id', 'id');
+	}
+
     public static function search($search_str)
     {
         $results = DB::table('users')

@@ -96,6 +96,8 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::resource('fees', 'FeesController')->except(['update', 'destroy', 'show']);
 	Route::post('/fees/update', 'FeesController@update');
 	Route::post('/fees/{id}/delete', 'FeesController@delete');
+
+	Route::resource('affiliates', 'AffiliatesController')->except(['update', 'destroy', 'show']);
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {
