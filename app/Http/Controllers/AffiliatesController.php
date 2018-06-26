@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AffiliateFormRequest;
 use App\Models\Affiliates;
+use App\Models\Members;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use DB;
+use Hash;
+
 
 
 class AffiliatesController extends Controller
@@ -33,15 +38,26 @@ class AffiliatesController extends Controller
 		try {
 			if ($request->isMethod('post')) {
 				$form = $request->except(['_token']);
+
+				DB::beginTransaction();
+
 				if (Affiliates::create($form)) {
+					$member = Members::whereNull('deleted_at')->where('user_id', $form['travel_agent_id'])->first();
+					$member->update(['affiliate_id' => Str::uuid()]);
+
+					DB::commit();
+
 					return redirect('/admin/affiliates')->with('success', 'Affiliate has been generated');
 				} else {
+					DB::rollback();
 					return back()->withErrors(['error' => 'Unable to generate an affiliate reference']);
 				}
 			} else {
+				DB::rollback();
 				return back()->with('success', 'Invalid request');
 			}
 		} catch (\Exception $e) {
+			DB::rollback();
 			return back()->withErrors(['error' => $e->getMessage()]);
 		}
 	}

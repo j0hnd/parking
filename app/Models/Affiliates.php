@@ -45,6 +45,7 @@ class Affiliates extends BaseModel
 			->where(function ($query) use ($search_str) {
 				$query->orWhere('members.first_name', 'like', "{$search_str}%");
 				$query->orWhere('members.last_name', 'like', "{$search_str}%");
+				$query->orWhere('affiliates.code', 'like', "{$search_str}%");
 			});
 
 		return $result->count() ? $result : null;

@@ -26,11 +26,10 @@
 					<table class="table table-hover">
 						<tbody>
 						<tr>
-							<th>Travel Agent</th>
-							<td>Affiliate Link</td>
-							<th>Code</th>
-							<th>Distributions</th>
-							<th></th>
+							<th class="col-md-3">Travel Agent</th>
+							<th class="col-md-5">Affiliate Link</th>
+							<th class="col-md-2">Distributions</th>
+							<th class="col-md-2"></th>
 						</tr>
 
 						<tbody>
@@ -38,8 +37,7 @@
 							@foreach($affiliates as $affiliate)
 							<tr>
 								<td>{{ $affiliate->travel_agent->members->first_name }} {{ $affiliate->travel_agent->members->last_name }}</td>
-								<td>{{ url('/referrer/' . $affiliate->code) }}</td>
-								<td>{{ $affiliate->code }}</td>
+								<td>{{ url('/affiliate/' . $affiliate->code . '/' . base64_encode($affiliate->travel_agent->members->affiliate_id)) }}</td>
 								<td>
 									<p>Admin: {{ $affiliate->percent_admin }}%</p>
 									<p>Vendor: {{ $affiliate->percent_vendor }}%</p>
@@ -53,7 +51,7 @@
 							@endforeach
 						@else
 						<tr>
-							<td colspan="5" class="text-center">No affiliates found</td>
+							<td colspan="4" class="text-center">No affiliates found</td>
 						</tr>
 						@endif
 						</tbody>
@@ -61,7 +59,7 @@
 						@if(count($affiliates))
 						<tfoot>
 							<tr>
-								<td colspan="5">{{ $affiliates->links() }}</td>
+								<td colspan="4">{{ $affiliates->links() }}</td>
 							</tr>
 						</tfoot>
 						@endif

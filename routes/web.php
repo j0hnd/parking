@@ -25,7 +25,7 @@ Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
 Route::get('/forgot-password', 'ParkingAppController@forgot_password');
 Route::get('/post/{post}', 'ParkingAppController@show_post');
 Route::get('/signup', 'ParkingAppController@signup');
-Route::get('/referrer/{code}', 'ParkingAppController@affiliate');
+Route::get('/affiliate/{code}/{id}', 'ParkingAppController@affiliate');
 
 Route::post('/search/filter/{type}/{value}', 'ParkingAppController@filter');
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');
