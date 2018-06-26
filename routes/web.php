@@ -25,6 +25,7 @@ Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
 Route::get('/forgot-password', 'ParkingAppController@forgot_password');
 Route::get('/post/{post}', 'ParkingAppController@show_post');
 Route::get('/signup', 'ParkingAppController@signup');
+Route::get('/referrer/{code}', 'ParkingAppController@affiliate');
 
 Route::post('/search/filter/{type}/{value}', 'ParkingAppController@filter');
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');
@@ -98,6 +99,9 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('/fees/{id}/delete', 'FeesController@delete');
 
 	Route::resource('affiliates', 'AffiliatesController')->except(['update', 'destroy', 'show']);
+	Route::post('/affiliates/search', 'AffiliatesController@search');
+	Route::post('/affiliates/update', 'AffiliatesController@update');
+	Route::post('/affiliates/{id}/delete', 'AffiliatesController@delete');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {

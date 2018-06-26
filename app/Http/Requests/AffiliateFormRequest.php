@@ -25,16 +25,16 @@ class AffiliateFormRequest extends FormRequest
     {
 		$input = $this->all();
         $rules = [
-			'travel_agent_id' => 'required',
-			'percent_admin' => 'required',
-			'percent_vendor' => 'required',
-			'percent_travel_agent' => 'required'
+			'travel_agent_id' => 'required|numeric',
+			'percent_admin' => 'required|numeric',
+			'percent_vendor' => 'required|numeric',
+			'percent_travel_agent' => 'required|numeric'
         ];
 
-        if (empty($input['id'])) {
-			$rules['code'] = 'required|max:8|min:8|unique:affiliates,code,' . $input['id'];
+        if (isset($input['id'])) {
+			$rules['code'] = 'max:8|min:8|unique:affiliates,code,' . $input['id'];
 		} else {
-        	$rules['code'] = 'required|max:8|min:8';
+        	$rules['code'] = 'max:8|min:8';
 		}
 
         return $rules;

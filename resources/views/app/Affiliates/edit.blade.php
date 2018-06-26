@@ -10,16 +10,18 @@
 				</div>
 				<!-- /.box-header -->
 				<!-- form start -->
-				<form id="affiliate-form" class="form-horizontal" method="post" action="{{ url('/admin/affiliates') }}">
+				<form id="affiliate-form" class="form-horizontal" method="post" action="{{ url('/admin/affiliates/update') }}">
 					@include('app.Affiliates.partials._form')
 
 					<div class="box-footer">
 						<button type="button" class="btn btn-default pull-right toggle-cancel" data-back="{{ url('/admin/affiliates') }}" style="margin-left: 7px;">Cancel</button>
-						<button type="submit" id="toggle-save" class="btn btn-info pull-right">Generate</button>
+						<button type="submit" id="toggle-save" class="btn btn-info pull-right">Update</button>
 					</div>
 					<!-- /.box-footer -->
 
 					{{ csrf_field() }}
+
+					<input type="hidden" name="id" value="{{ isset($affiliate) ? $affiliate->id : "" }}">
 				</form>
 			</div>
 		</div>
