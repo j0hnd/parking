@@ -28,7 +28,7 @@
 				<td class="text-center">{{ $booking->return_at->format('d/m/Y') }}</td>
 				<td class="text-center">
 					 @if(strtotime('now') > strtotime($booking->return_at))
-					 <i class="fa fa-check-square-o" aria-hidden="true"></i>
+					 <i class="fas fa-check-square" aria-hidden="true"></i>
 					 @endif
 				</td>
 				<td class="text-right">
