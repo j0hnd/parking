@@ -4,6 +4,7 @@
 	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content="My Travel Compared"/>
 	<meta property="og:image" content="{{ asset ('img/round.png') }}"/>
+	<meta property="og:type"   content="website" />
 	<meta property="og:url" content="http://mytravelcompared.com/"/>
 	<meta property="og:site_name" content="My Travel Compared"/>
 	<meta property="og:description" content="My Travel Compared is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs."/>
