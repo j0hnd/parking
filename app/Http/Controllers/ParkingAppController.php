@@ -6,6 +6,7 @@ use App\Http\Requests\SignupFormRequest;
 use App\Mail\ForgotPassword;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\Signup;
+use App\Models\Affiliates;
 use App\Models\Airports;
 use App\Models\BookingDetails;
 use App\Models\Bookings;
@@ -26,11 +27,13 @@ use App\Models\Companies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 use Srmklive\PayPal\Facades\PayPal;
 use Twilio\Rest\Client;
 use DB;
 use Hash;
 use Sentinel;
+
 
 
 class ParkingAppController extends Controller
@@ -562,5 +565,25 @@ class ParkingAppController extends Controller
 		}
 
 		return response()->json($response);
+	}
+
+	public function affiliate(Request $request)
+	{
+		if (empty($request->code)) {
+			abort(404);
+		}
+
+		try {
+			$affiliate_id = base64_decode($request->id);
+
+			$affiliate = Affiliates::active()->where('code', $request->code);
+
+			if ($affiliate->count() and $affiliate->first()->travel_agent->members->affiliate_id = $affiliate_id) {
+				Cache::add('affiliate-'.$request->code, $affiliate_id, Carbon::now()->addMinutes(30));
+				return redirect('/');
+			}
+		} catch (\Exception $e) {
+			dd($e);
+		}
 	}
 }
