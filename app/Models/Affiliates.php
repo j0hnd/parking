@@ -35,6 +35,11 @@ class Affiliates extends BaseModel
 		return $this->belongsTo(User::class, 'travel_agent_id', 'id');
 	}
 
+	public function bookings()
+	{
+		return $this->hasMany(AffiliateBookings::class, 'affiliate_id', 'id');
+	}
+
 	public static function search($search_str)
 	{
 		$result = DB::table('affiliates')
@@ -49,5 +54,14 @@ class Affiliates extends BaseModel
 			});
 
 		return $result->count() ? $result : null;
+	}
+
+	public static function get_id($affiliate_code)
+	{
+		return DB::table('affiliates')
+			->select('id')
+			->whereNull('deleted_at')
+			->where('code', $affiliate_code)
+			->first();
 	}
 }
