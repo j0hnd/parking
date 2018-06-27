@@ -1,11 +1,7 @@
 @extends('parking-app')
 
 @section('tags')
-	<meta name="description" content="My Travel Compared is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs." />
-	<meta name="keywords" content="airport, travel, parking, " />
-	<meta name="author" content="Unistop LTD" />
-
-  	<!-- Facebook and Twitter integration -->
+	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content="My Travel Compared"/>
 	<meta property="og:image" content="{{ asset ('img/round.png') }}"/>
 	<meta property="og:url" content="http://mytravelcompared.com/"/>
@@ -18,8 +14,6 @@
 	<meta name="twitter:url" content="http://mytravelcompared.com/" />
 	<meta name="twitter:card" content="summary" />
     <meta name="twitter:description" content="My Travel Compared is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs.">
-
-
 
     <script>
     var dataLayer = [{
@@ -48,13 +42,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	{{-- Bootstrap datepicker --}}
 	<link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
 	<link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+
+
+	<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '220464112099274');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=220464112099274&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
 @stop
 
-@section('main-content')
+@section('tag-manager')
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-552WTR9"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+@stop
+
+@section('main-content')
 
 	<div id="mobileNav" class="overlay">
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

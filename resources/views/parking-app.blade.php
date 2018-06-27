@@ -40,6 +40,7 @@
     </head>
 
     <body>
+        @yield('tag-manager')
         {{-- main --}}
         <main>
             @yield('main-content')
