@@ -33,7 +33,7 @@
                 <meta name="msapplication-square310x310logo" content="{{ asset('/img/large.jpg') }}"/>
                 <meta name="msapplication-TileColor" content="#ffffff"/>
         <script type="text/javascript">
-            cdn_url = 'https://healthandharmony.com.ph';
+            cdn_url = 'http://mytravelcompared.com';
         </script>
         @yield('tags')
         @yield('css')
