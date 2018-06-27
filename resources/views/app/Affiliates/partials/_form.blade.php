@@ -23,12 +23,15 @@
 	</div>
 
 	<div class="form-group">
-		<label class="col-sm-2 control-label">Distributions</label>
+		<label class="col-sm-2 control-label">Distributions (%)</label>
 
 		<div class="col-sm-2">
-			<input type="text" class="form-control margin-bottom10" name="percent_admin" placeholder="Admin Percentage" autocomplete="off" value="{{ isset($affiliate) ? $affiliate->percent_admin : 0 }}">
-			<input type="text" class="form-control margin-bottom10" name="percent_vendor" placeholder="Vendor Percentage" autocomplete="off" value="{{ isset($affiliate) ? $affiliate->percent_vendor : 0 }}">
-			<input type="text" class="form-control margin-bottom10" name="percent_travel_agent" placeholder="Travel Agent Percentage" autocomplete="off" value="{{ isset($affiliate) ? $affiliate->percent_travel_agent : 0 }}">
+			<input type="text" id="percent-admin" class="form-control margin-bottom10 percent" name="percent_admin" placeholder="Admin Percentage" autocomplete="off" value="{{ isset($affiliate) ? $affiliate->percent_admin : "" }}">
+			<input type="text" id="percent-vendor" class="form-control margin-bottom10 percent" name="percent_travel_agent" placeholder="Travel Agent Percentage" autocomplete="off" value="{{ isset($affiliate) ? $affiliate->percent_travel_agent : "" }}">
+		</div>
+		<div class="col-md-2">
+			<input type="text" class="form-control margin-bottom10" name="percent_vendor" placeholder="Vendor Percentage" autocomplete="off" value="{{ isset($affiliate) ? $affiliate->percent_vendor : "" }}">
+			<small>Percentage of travel agents will be taken to the percentage of admin.</small>
 		</div>
 	</div>
 </div>
