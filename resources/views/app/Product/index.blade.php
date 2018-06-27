@@ -27,6 +27,7 @@
                         <tr>
                             <th>Carpark</th>
                             <th>Airport</th>
+                            <th>Product</th>
                             <th></th>
                         </tr>
                         @if(count($products))
@@ -47,6 +48,7 @@
                                         <span>Not Available</span>
                                         @endif
                                     </td>
+                                    <td>{{ $product->prices[0]->categories->category_name }}</td>
                                     <td>
                                         <a href="{{ url('/admin/product/'.$product->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                         <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $product->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>

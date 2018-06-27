@@ -37,7 +37,7 @@
 							@foreach($affiliates as $affiliate)
 							<tr>
 								<td>{{ $affiliate->travel_agent->members->first_name }} {{ $affiliate->travel_agent->members->last_name }}</td>
-								<td>{{ url('/affiliate/' . $affiliate->code . '/' . base64_encode($affiliate->travel_agent->members->affiliate_id)) }}</td>
+								<td>{{ url('/affiliate/' . $affiliate->code) }}</td>
 								<td>
 									<p>Admin: {{ $affiliate->percent_admin }}%</p>
 									<p>Vendor: {{ $affiliate->percent_vendor }}%</p>
