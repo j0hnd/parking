@@ -1,2 +1,2 @@
 User-agent: *
-Disallow:
+sitemap: http://www.mytravelcompared.com/sitemap.xml
