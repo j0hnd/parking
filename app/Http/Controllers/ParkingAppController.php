@@ -6,6 +6,7 @@ use App\Http\Requests\SignupFormRequest;
 use App\Mail\ForgotPassword;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\Signup;
+use App\Models\AffiliateBookings;
 use App\Models\Affiliates;
 use App\Models\Airports;
 use App\Models\BookingDetails;
@@ -26,8 +27,9 @@ use App\Models\User;
 use App\Models\Companies;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Cookie\CookieJar;
 use Srmklive\PayPal\Facades\PayPal;
 use Twilio\Rest\Client;
 use DB;
@@ -35,11 +37,11 @@ use Hash;
 use Sentinel;
 
 
-
 class ParkingAppController extends Controller
 {
 	private $provider;
 	private $twilio;
+
 
     public function __construct()
     {
@@ -48,7 +50,6 @@ class ParkingAppController extends Controller
 		$this->provider->setApiCredentials(config('paypal'));
 
 		$this->twilio = new Client(env('TWILIO_SID', ''), env('TWILIO_AUTHTOKEN', ''));
-		// $this->twilio = new Client($sid, $token);
     }
 
     public function index()
@@ -228,7 +229,16 @@ class ParkingAppController extends Controller
 					$booking = Bookings::create($bookings);
 					if (!empty($booking)) {
 						Bookings::findOrFail($booking->id)->update(['booking_id' => Bookings::generate_booking_id($booking->id)]);
+
+						// reference affiliate
+						$affiliate_code = Cookie::get('affiliate');
+						if ($user->roles[0]->slug == 'travel_agent' and !is_null($affiliate_code)) {
+							$affiliate = Affiliates::active()->where('code', $affiliate_code)->first();
+							AffiliateBookings::create(['affiliate_id' => $affiliate->id, 'booking_id' => $booking->id]);
+						}
+
 						DB::commit();
+
 						$request->session()->put('bid', $booking->id);
 
 						return redirect('/payment/token=' . $paypal_response['token']);
@@ -567,23 +577,21 @@ class ParkingAppController extends Controller
 		return response()->json($response);
 	}
 
-	public function affiliate(Request $request)
+	public function affiliate(CookieJar $cookieJar, Request $request)
 	{
 		if (empty($request->code)) {
 			abort(404);
 		}
 
 		try {
-			$affiliate_id = base64_decode($request->id);
-
 			$affiliate = Affiliates::active()->where('code', $request->code);
 
-			if ($affiliate->count() and $affiliate->first()->travel_agent->members->affiliate_id = $affiliate_id) {
-				Cache::add('affiliate-'.$request->code, $affiliate_id, Carbon::now()->addMinutes(30));
-				return redirect('/');
+			if ($affiliate->count()) {
+				$cookie = cookie('affiliate', $affiliate->first()->code, 1440);
+				return redirect('/')->withCookie($cookie);
 			}
 		} catch (\Exception $e) {
-			dd($e);
+			abort(404);
 		}
 	}
 }

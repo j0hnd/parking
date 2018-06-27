@@ -29,9 +29,31 @@
 @stop
 
 @section('scripts')
-	<script type="text/javascript">
-        $(function(){
-            $('#travel-agents').select2({ placeholder: '-- Travel Agents --' });
-        });
-	</script>
+<script type="text/javascript">
+	$(function(){
+		$('#travel-agents').select2({ placeholder: '-- Travel Agents --' });
+
+		$(document).on('blur', '#percent-admin', function () {
+			var _admin = $(this).val();
+			var _vendor = $('#percent-vendor').val();
+
+			if ((parseInt(_admin) + parseInt(_vendor)) > 100) {
+				$(this).val('');
+				$(this).focus();
+				alert('The total of admin and vendor percentage should not be greater than 100');
+			}
+		});
+
+		$(document).on('blur', '#percent-vendor', function () {
+			var _admin = $('#percent-admin').val();
+			var _vendor = $(this).val();
+
+			if ((parseInt(_admin) + parseInt(_vendor)) > 100) {
+				$(this).val('');
+				$(this).focus();
+				alert('The total of admin and vendor percentage should not be greater than 100');
+			}
+		});
+	});
+</script>
 @stop
