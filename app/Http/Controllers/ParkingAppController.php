@@ -80,6 +80,9 @@ class ParkingAppController extends Controller
         } else {
         	$drop_off_time = "";
         	$return_at_time = "";
+        	$results = null;
+        	$services = null;
+        	$terminals = null;
 		}
 
         $airports = Airports::active()->get();
