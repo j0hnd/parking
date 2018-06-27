@@ -1,7 +1,7 @@
 $(document).ready(function() {
   setTimeout(function() {
     document.documentElement.scrollTop =
-        document.body.scrollTop = 500;
+        document.body.scrollTop = 0;
 }, 0);
         $(window).scroll(function() {
           if($(this).scrollTop() > 20) { 
