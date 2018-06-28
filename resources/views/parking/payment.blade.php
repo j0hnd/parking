@@ -217,12 +217,12 @@
 								<div class="row">
 									@if($cancel == 1)
 									<div class="col-md-12 text-center padding-top30">
-										<h4>Thank you! Your payment is confirmed.</h4>
-										<p>Please continue and complete the details of your booking.</p>
+										<h4>Your payment has been cancelled</h4>
 									</div>
 									@else
 									<div class="col-md-12 text-center padding-top30">
-										<h4>Your payment has been cancelled</h4>
+										<h4>Thank you! Your payment is confirmed.</h4>
+										<p>Please continue and complete the details of your booking.</p>
 									</div>
 									@endif
 								</div>

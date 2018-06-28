@@ -80,13 +80,14 @@ class DashboardController extends Controller
 
 		if ($summary) {
 			foreach ($summary as $_summary) {
-				$key = array_search($_summary->month, $area_label_months);
+				$key = array_search($_summary->MONTH, $area_label_months);
 				$area_data[$key] = number_format($_summary->revenue, 2);
 			}
 
 			$area_label_months = json_encode($area_label_months);
 			$area_data = json_encode($area_data);
 		}
+
 
         return view('app.Dashboard.index', [
         	'page_title'       => $page_title,

@@ -208,9 +208,9 @@ class ParkingAppController extends Controller
 
 					$user = Sentinel::getUser();
 					if (is_null($user)) {
-						$user_id = $user->id;
-					} else {
 						$user_id = 0;
+					} else {
+						$user_id = $user->id;
 					}
 
 					$bookings['order_title'] = $booking_data['product'];
@@ -235,8 +235,11 @@ class ParkingAppController extends Controller
 
 						// reference affiliate
 						$affiliate_code = Cookie::get('affiliate');
-						if ($user->roles[0]->slug == 'travel_agent' and !is_null($affiliate_code)) {
-							$affiliate = Affiliates::active()->where('code', $affiliate_code)->first();
+						$affiliate = Affiliates::active()->where('code', $affiliate_code)->first();
+						if (count($affiliate)) {
+							$user = User::active()->where('id', $affiliate->travel_agent_id)->first();
+
+							$booking->update(['user_id' => $user->id]);
 							AffiliateBookings::create(['affiliate_id' => $affiliate->id, 'booking_id' => $booking->id]);
 						}
 
