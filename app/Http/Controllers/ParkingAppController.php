@@ -188,6 +188,9 @@ class ParkingAppController extends Controller
 					list($return_date, $return_time) = explode(' ', $others['return_at']);
 					list($product_id, $price_id) = explode(':', $booking_data['ids']);
 
+					$drop_date = str_replace('/', '-', $drop_date);
+					$return_date = str_replace('/', '-', $return_date);
+
 					DB::beginTransaction();
 
 					// save customer information
@@ -226,8 +229,8 @@ class ParkingAppController extends Controller
 					$bookings['car_registration_no'] = $booking_data['car_registration_no'];
 					$bookings['vehicle_model'] = $booking_data['vehicle_model'];
 					$bookings['vehicle_color'] = $booking_data['vehicle_color'];
-					$bookings['drop_off_at'] = date('Y-m-d H:i:s', strtotime($drop_date));
-					$bookings['return_at'] = date('Y-m-d H:i:s', strtotime($return_date));
+					$bookings['drop_off_at'] = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
+					$bookings['return_at'] = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
 
 					$booking = Bookings::create($bookings);
 					if (!empty($booking)) {
@@ -270,8 +273,11 @@ class ParkingAppController extends Controller
 			$form = $request->except(['_token']);
 			$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 			if ($booking) {
-				$drop_off = Carbon::createFromTimestamp(strtotime($form['drop_off_at']));
-				$return_at = Carbon::createFromTimestamp(strtotime($form['return_at']));
+				$drop_date = str_replace('/', '-', $form['drop_off_at']);
+				$return_date = str_replace('/', '-', $form['return_at']);
+
+				$drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
+				$return_at = Carbon::createFromTimestamp(strtotime($return_date));
 
 				$update = [
 					'drop_off_at' => $drop_off->format('Y-m-d H:i'),
