@@ -35,10 +35,10 @@ class Affiliates extends BaseModel
 		return $this->belongsTo(User::class, 'travel_agent_id', 'id');
 	}
 
-	public function bookings()
-	{
-		return $this->hasMany(AffiliateBookings::class, 'affiliate_id', 'id');
-	}
+//	public function bookings()
+//	{
+//		return $this->hasMany(AffiliateBookings::class, 'affiliate_id', 'id');
+//	}
 
 	public static function search($search_str)
 	{

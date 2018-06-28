@@ -58,6 +58,10 @@
                                     $total_cost += $cost;
                                 @endphp
 
+                                @if(isst($booking->affiliate_bookings[0]->affiliates))
+                                    $share = $booking->affiliate_bookings[0]->affiliates->percent_admin;
+                                @endif
+
                                 £{{ number_format($cost, 2) }}
                             </td>
                         </tr>
