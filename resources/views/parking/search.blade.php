@@ -1,5 +1,7 @@
 @extends('parking-app')
-
+@section('title')
+Parking Search |
+@stop
 @section('css')
     <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>

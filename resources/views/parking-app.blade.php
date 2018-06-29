@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, width=device-width">
-        <title>{{ config('app.name') }}</title>
+        <title>@yield('title') {{ config('app.name') }}</title>
         <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/spacing.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,800" rel="stylesheet">
