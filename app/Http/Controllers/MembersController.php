@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MembersFormRequest;
+use App\Models\Affiliates;
 use App\Models\Bookings;
 use App\Models\Carpark;
 use App\Models\Companies;
@@ -21,6 +22,7 @@ class MembersController extends Controller
 	{
 		$user = Sentinel::getUser();
 		$inbox = null;
+		$affiliate = null;
 
 		if ($user->roles[0]->slug == 'member') {
 			$bookings = Bookings::where('user_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
@@ -35,9 +37,18 @@ class MembersController extends Controller
 				->get();
 		} else {
 			if ($user->roles[0]->slug == 'travel_agent') {
-				$bookings = 0;
-				$total_bookings = 0;
-				$ongoing_bookings = 0;
+				$bookings = Bookings::where('user_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+
+				$total_bookings = Bookings::whereNull('bookings.deleted_at')
+					->where('user_id', $user->id)
+					->get();
+
+				$ongoing_bookings = Bookings::active()
+					->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+					->where('user_id', $user->id)
+					->get();
+
+				$affiliate = Affiliates::active()->where('travel_agent_id', $user->id)->first();
 			} else {
 				$company_id = $user->members->company->id;
 
@@ -81,9 +92,7 @@ class MembersController extends Controller
 			$inbox = $new_messages->get()->toArray();
 		}
 
-
-
-		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'count', 'inbox'));
+		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'count', 'inbox', 'affiliate'));
 	}
 
 	public function display_profile()

@@ -1,5 +1,7 @@
 @extends('parking-app')
-
+@section('title')
+Contact Us |
+@stop
 @section('css')
 <link href="{{ asset('/css/contact.css') }}" rel="stylesheet">
 @stop

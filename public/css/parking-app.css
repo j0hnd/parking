@@ -256,6 +256,7 @@ margin-top: 24px;
   line-height: 1.2;
   text-align: right;
   position: relative;
+  display: inline;
 }
 .l-con3{
   font-size: 14px;
