@@ -125,8 +125,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        @if($user->roles[0]->slug == 'member')
+                        @if($user->roles[0]->slug == 'member' or $user->roles[0]->slug == 'travel_agent')
                             <h3 class="title-5 m-b-35">Your Bookings</h3>
+                            @if(!is_null($affiliate))
+                            <p class="text-right m-b-10">Affiliate link: {{ url('/affiliate/' . $affiliate->code) }}</p>
+                            @endif
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     @include('member-portal.partials.member')
@@ -134,7 +137,7 @@
                             </div>
                         @endif
                         @if($user->roles[0]->slug == 'vendor')
-                            <h3 class="title-5 m-b-35">Your Bookings</h3>
+                            <h3 class="title-5 m-b-35">Your Bookings ss</h3>
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     @include('member-portal.partials.vendor')
