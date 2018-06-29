@@ -32,7 +32,7 @@ class Bookings extends BaseModel
 
     protected $guarded = ['booking_id'];
 
-    protected $with = ['customers', 'booking_details', 'products'];
+    protected $with = ['customers', 'booking_details', 'products', 'affiliate_bookings'];
 
 
     public function customers()
@@ -48,6 +48,11 @@ class Bookings extends BaseModel
 	public function products()
 	{
 		return $this->hasMany(Products::class, "id", "product_id");
+	}
+
+	public function affiliate_bookings()
+	{
+		return $this->hasMany(AffiliateBookings::class, 'booking_id', 'id');
 	}
 
     public static function generate_booking_id($booking_id)

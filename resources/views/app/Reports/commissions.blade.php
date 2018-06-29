@@ -55,10 +55,17 @@
                             <td class="text-right">
                                 @php
                                     $cost = ($booking->price_value + $booking->booking_fee + $booking->sms_confirmation_fee + $booking->cancellation_waiver) - $booking->revenue_value;
+                                    $percent_admin = "";
+
+                                    if (isset($booking->affiliate_bookings[0]->affiliates)) {
+                                        $percent_admin = $booking->affiliate_bookings[0]->affiliates[0]->percent_admin;
+                                        $cost = $percent_admin - round(($percent_admin / 100), PHP_ROUND_HALF_UP);
+                                    }
+
                                     $total_cost += $cost;
                                 @endphp
 
-                                £{{ number_format($cost, 2) }}
+                                @if(!empty($percent_admin))<small>({{ $percent_admin }}%)</small>@endif £{{ number_format($cost, 2) }}
                             </td>
                         </tr>
                         @endforeach
