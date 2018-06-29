@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6" style="padding-right: 45px">
                 <p class="l-con1">BOOK WITH THE UK’S FASTEST GROWING PARKING COMPANY</p>
-                <p class="l-con2">Why book with “MyTravel Compared.com” ?</p>
+                <p class="l-con2">Why book with "</p><h1 class="l-con2">MyTravel Compared.com</h1><p class="l-con2">"?</p>
             </div>
             <div class="col-md-6" style="padding-left: 45px">
                 <p class="l-con3">My Travel Compared is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs.</p>

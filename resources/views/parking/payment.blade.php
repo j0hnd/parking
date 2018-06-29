@@ -1,5 +1,7 @@
 @extends('parking-app')
-
+@section('title')
+Payment |
+@stop
 @section('css')
 	<link href="{{ asset('/bower_components/form.validation/dist/css/formValidation.css') }}" rel="stylesheet">
 	<link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}" rel="stylesheet">

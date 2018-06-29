@@ -1,5 +1,4 @@
 @extends('parking-app')
-
 @section('tags')
 	<!-- Facebook and Twitter integration -->
 	<meta property="og:title" content="My Travel Compared"/>
