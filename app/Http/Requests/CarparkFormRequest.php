@@ -26,7 +26,6 @@ class CarparkFormRequest extends FormRequest
     {
         $input = $this->all();
         $rules = [
-            'description' => 'string',
             'address' => 'required|string',
             'city' => 'required|string',
             'county_state' => 'required|string',

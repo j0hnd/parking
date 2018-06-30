@@ -46,7 +46,9 @@ class CarparkController extends Controller
                     'country_id',
                     'zipcode',
                     'longitude',
-                    'latitude'
+                    'latitude',
+					'opening',
+					'closing'
                 ]);
 
                 $company_form = $request->only([
@@ -177,7 +179,9 @@ class CarparkController extends Controller
                     'country_id',
                     'zipcode',
                     'longitude',
-                    'latitude'
+                    'latitude',
+					'opening',
+					'closing'
                 ]);
 
                 $company_form = $request->only([

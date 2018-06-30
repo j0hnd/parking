@@ -19,6 +19,8 @@ class Carpark extends BaseModel
         'country_id',
         'longtitude',
         'latitude',
+		'opening',
+		'closing',
         'image',
         'deleted_at'
     ];

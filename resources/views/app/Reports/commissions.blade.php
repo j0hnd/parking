@@ -23,7 +23,7 @@
         <div class="col-md-12">
             <div class="table-responsive">
                 @php
-                    $total_cost = 0;
+                    $total_cost_after = $total_cost = 0;
                 @endphp
 
                 <table class="table table-striped">
@@ -35,7 +35,8 @@
                         <th class="text-left">Customer Name</th>
                         <th class="text-center">Book Date</th>
                         <th class="text-center">Drop of Date/Return Date</th>
-                        <th class="text-right">Total Cost</th>
+                        <th class="text-right">Cost</th>
+                        <th class="text-right">Cost after Affiliate %</th>
                     </tr>
                     </thead>
 
@@ -43,7 +44,7 @@
                     @if(count($bookings))
                         @foreach($bookings as $booking)
                             @php
-                                $cost = 0;
+                                $cost_after = $cost = 0;
                             @endphp
                         <tr id="booking-{{ $booking->id }}">
                             <td><a href="{{ url('/admin/booking/'.$booking->id.'/edit') }}" target="_blank">{{ $booking->booking_id }}</a></td>
@@ -55,23 +56,29 @@
                             <td class="text-right">
                                 @php
                                     $cost = ($booking->price_value + $booking->booking_fee + $booking->sms_confirmation_fee + $booking->cancellation_waiver) - $booking->revenue_value;
+                                    $total_cost += $cost;
+                                @endphp
+                                £{{ number_format($cost, 2) }}
+                            </td>
+                            <td class="text-right">
+                                @php
                                     $percent_admin = "";
 
                                     if (isset($booking->affiliate_bookings[0]->affiliates)) {
                                         $percent_admin = $booking->affiliate_bookings[0]->affiliates[0]->percent_admin;
-                                        $cost = $percent_admin - round(($percent_admin / 100), PHP_ROUND_HALF_UP);
+                                        $cost_after = number_format($cost * round(($percent_admin / 100), PHP_ROUND_HALF_UP), 2);
+                                        $total_cost_after += $cost_after;
                                     }
-
-                                    $total_cost += $cost;
                                 @endphp
-
-                                @if(!empty($percent_admin))<small>({{ $percent_admin }}%)</small>@endif £{{ number_format($cost, 2) }}
+                                £{{ $cost_after }}
+                                @if(!empty($percent_admin))<sup>({{ $percent_admin }}%)</sup>@endif
                             </td>
                         </tr>
                         @endforeach
                         <tr id="summary" class="bg-aqua">
                             <td colspan="6"></td>
                             <td class="text-right"><strong>£{{ number_format($total_cost, 2) }}</strong></td>
+                            <td class="text-right"><strong>£{{ number_format($total_cost_after, 2) }}</strong></td>
                         </tr>
                     @else
                         <tr>
