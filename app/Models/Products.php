@@ -59,11 +59,14 @@ class Products extends BaseModel
     public static function search($data)
     {
         $products = null;
-        dd($data);
 
         try {
 			// get airports
-			$product_airports = ProductAirports::active()->where(['airport_id' => $data['search']['airport']]);
+			$product_airports = ProductAirports::whereNull('product_airports.deleted_at')
+				->join('products', 'products.id', '=', 'product_airports.product_id')
+				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+				->where(['airport_id' => $data['search']['airport']])
+				->whereRaw("(TIME('?') BETWEEN opening AND closing AND TIME('?') BETWEEN opening AND closing)", [$data['search']['drop-off-time'], $data['search']['return-at-time']]);
 
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
@@ -239,6 +242,7 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
 
