@@ -66,6 +66,8 @@ class Products extends BaseModel
 				->join('products', 'products.id', '=', 'product_airports.product_id')
 				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
 				->where(['airport_id' => $data['search']['airport']])
+				->where('carparks.opening', '!=', '00:00:00')
+				->where('carparks.closing', '!=', '00:00:00')
 				->whereRaw("(TIME('?') BETWEEN opening AND closing AND TIME('?') BETWEEN opening AND closing)", [$data['search']['drop-off-time'], $data['search']['return-at-time']]);
 
         	if (isset($data['sub'])) {
