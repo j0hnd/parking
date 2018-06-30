@@ -59,6 +59,7 @@ class Products extends BaseModel
     public static function search($data)
     {
         $products = null;
+        dd($data);
 
         try {
 			// get airports

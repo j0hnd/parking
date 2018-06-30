@@ -91,6 +91,15 @@
 </div>
 
 <div class="form-group">
+    <label class="col-sm-2 control-label">Operation Hours</label>
+
+    <div class="col-sm-6">
+        <input type="text" class="form-control margin-bottom5" name="opening" placeholder="Opening Hours" autocomplete="off" value="{{ isset($carpark->opening) ? ($carpark->opening != "00:00:00") ? $carpark->opening : "" : "" }}">
+        <input type="text" class="form-control" name="closing" placeholder="Closing Hours" autocomplete="off" value="{{ isset($carpark->closing) ? ($carpark->closing != "00:00:00") ? $carpark->closing : "" : "" }}">
+    </div>
+</div>
+
+<div class="form-group">
     <label class="col-sm-2 control-label">Upload Image</label>
 
     <div class="col-sm-6">

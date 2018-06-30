@@ -57,6 +57,8 @@ class ReportsController extends Controller
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('companies', 'companies.id', '=', 'products.vendor_id')
+//					->leftjoin('affiliate_bookings', 'affiliate_bookings.booking_id', '=', 'bookings.id')
+//					->join('affiliates', 'affiliates.id', '=', 'affiliate_bookings.affiliate_id')
 					->groupBy('products.vendor_id')
 					->orderBy('companies.company_name', 'ASC')
 					->paginate(config('app.item_per_page'));
@@ -69,6 +71,8 @@ class ReportsController extends Controller
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('companies', 'companies.id', '=', 'products.vendor_id')
+//					->leftjoin('affiliate_bookings', 'affiliate_bookings.booking_id', '=', 'bookings.id')
+//					->join('affiliates', 'affiliates.id', '=', 'affiliate_bookings.affiliate_id')
 					->groupBy('products.vendor_id')
 					->orderBy('companies.company_name', 'ASC')
 					->paginate(config('app.item_per_page'));
