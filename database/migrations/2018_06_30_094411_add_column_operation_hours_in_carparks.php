@@ -14,8 +14,8 @@ class AddColumnOperationHoursInCarparks extends Migration
     public function up()
     {
 		Schema::table('carparks', function($table) {
-			$table->time('opening')->after('zipcode');
-			$table->time('closing')->after('opening');
+			$table->time('opening')->after('zipcode')->nullable();
+			$table->time('closing')->after('opening')->nullable();
 			$table->index(['opening', 'closing']);
 		});
     }

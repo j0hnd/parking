@@ -61,14 +61,26 @@ class Products extends BaseModel
         $products = null;
 
         try {
+			// get number of days between the dates in the search parameters
+			$begin = Carbon::createFromFormat('d/m/Y', $data['search']['drop-off-date']);
+			$end   = Carbon::createFromFormat('d/m/Y', $data['search']['return-at-date']);
+			$no_days = $begin->diffInDays($end);
+
+			if ($no_days === 0) {
+				$no_days = 1;
+			}
+
 			// get airports
-			$product_airports = ProductAirports::whereNull('product_airports.deleted_at')
+			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id	")
 				->join('products', 'products.id', '=', 'product_airports.product_id')
+				->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+				->join('prices', 'prices.product_id', '=', 'products.id')
+				->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+				->whereNull('product_airports.deleted_at')
 				->where(['airport_id' => $data['search']['airport']])
-				->where('carparks.opening', '!=', '00:00:00')
-				->where('carparks.closing', '!=', '00:00:00')
-				->whereRaw("(TIME('?') BETWEEN opening AND closing AND TIME('?') BETWEEN opening AND closing)", [$data['search']['drop-off-time'], $data['search']['return-at-time']]);
+				->whereRaw("(TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing)")
+				->whereRaw("(prices.no_of_days = ? OR prices.price_month = ? OR prices.price_year = ?)", [$no_days, date('m'), date('Y')]);
 
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
@@ -126,15 +138,6 @@ class Products extends BaseModel
 			}
 
             if ($product_airports->count()) {
-                // get number of days between the dates in the search parameters
-                $begin = Carbon::createFromFormat('d/m/Y', $data['search']['drop-off-date']);
-                $end   = Carbon::createFromFormat('d/m/Y', $data['search']['return-at-date']);
-                $no_days = $begin->diffInDays($end);
-
-                if ($no_days === 0) {
-                    $no_days = 1;
-                }
-
                 $i = 0;
 
                 foreach ($product_airports->get() as $pa) {
@@ -163,7 +166,6 @@ class Products extends BaseModel
 						}
 
                         foreach ($prices as $price) {
-                            if ($no_days == (int) $price->no_of_days and is_null($price->price_month) and is_null($price->price_year)) {
                                 $products[$i] = [
                                     'product_id' => $product->id,
 									'airport_id' => $pa->airport_id,
@@ -182,61 +184,6 @@ class Products extends BaseModel
 									'latitude' => $airport->latitude,
 									'longitude' => $airport->longitude
                                 ];
-							} elseif ($no_days == (int) $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and is_null($price->price_year)) {
-								$products[$i] = [
-									'product_id' => $product->id,
-									'airport_id' => $airport->airport_id,
-									'airport_name' => $airport->airport_name,
-									'carpark' => $product->carpark->name,
-									'image' => $product->carpark->image,
-									'price_id' => $price->id,
-									'prices' => $price,
-									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-									'overrides' => $override_price,
-									'services' => $product->carpark_services,
-									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return,
-									'latitude' => $airport->latitude,
-									'longitude' => $airport->longitude
-								];
-							} elseif ($no_days == (int) $price->no_of_days and is_null($price->price_month) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
-								$products[$i] = [
-									'product_id' => $product->id,
-									'airport_id' => $airport->airport_id,
-									'airport_name' => $airport->airport_name,
-									'carpark' => $product->carpark->name,
-									'image' => $product->carpark->image,
-									'price_id' => $price->id,
-									'prices' => $price,
-									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-									'overrides' => $override_price,
-									'services' => $product->carpark_services,
-									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return,
-									'latitude' => $airport->latitude,
-									'longitude' => $airport->longitude
-								];
-							} elseif ($no_days == (int) $price->no_of_days and $price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
-								$products[$i] = [
-									'product_id' => $product->id,
-									'airport_id' => $airport->airport_id,
-									'airport_name' => $airport->airport_name,
-									'carpark' => $product->carpark->name,
-									'image' => $product->carpark->image,
-									'price_id' => $price->id,
-									'prices' => $price,
-									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-									'overrides' => $override_price,
-									'services' => $product->carpark_services,
-									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return,
-									'latitude' => $airport->latitude,
-									'longitude' => $airport->longitude
-								];
-							}
 
 							$i++;
                         }
@@ -244,7 +191,6 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
-        	dd($e);
             abort(404, $e->getMessage());
         }
 
