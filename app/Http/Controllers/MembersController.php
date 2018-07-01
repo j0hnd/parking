@@ -106,6 +106,7 @@ class MembersController extends Controller
 
 	public function display_profile()
 	{
+		$user = Sentinel::getUser();
 		$new_messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
 
 		$count = $new_messages->count();
@@ -202,7 +203,7 @@ class MembersController extends Controller
 		$count = $new_messages->count();
 		$inbox = $new_messages->get()->toArray();
 
-		$products = Products::selectRaw("products.id as product_id, prices.id as price_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name, prices.no_of_days, prices.price_month, prices.price_year, prices.price_value")
+		$products = Products::selectRaw("products.id as product_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name")
 			->join('product_airports', 'product_airports.product_id', '=', 'products.id')
 			->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 			->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -210,9 +211,43 @@ class MembersController extends Controller
 			->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 			->whereNull('products.deleted_at')
 			->where('products.vendor_id', $user->members->company->id)
-			->paginate(config('app.item_per_page'));
+			->groupBy('prices.product_id')
+			->get();
 
 		return view('member-portal.products', compact('inbox', 'count', 'products'));
+	}
+
+	public function get_product_details(Request $request)
+	{
+		$response = ['success' => true];
+
+		try {
+			$user = Sentinel::getUser();
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$prices = Products::selectRaw("products.id as product_id, prices.id as price_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name, prices.no_of_days, prices.price_month, prices.price_year, prices.price_value")
+					->join('product_airports', 'product_airports.product_id', '=', 'products.id')
+					->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->join('prices', 'prices.product_id', '=', 'products.id')
+					->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+					->whereNull('products.deleted_at')
+					->where([
+						'products.vendor_id' => $user->members->company->id,
+						'prices.product_id' => $request->id
+					])
+					->get();
+
+				$html = view('member-portal.partials.price-list', ['prices' => $prices])->render();
+
+				$response = ['success' => true, 'html' => $html];
+			}
+
+		} catch (\Exception $e) {
+			dd($e);
+		}
+
+		return response()->json($response);
 	}
 
 	public function get_price(Request $request)

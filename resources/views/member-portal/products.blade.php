@@ -29,22 +29,12 @@
 								<th>Airport</th>
 								<th>Carpark</th>
 								<th>Type</th>
-								<th class="text-center">No. Of Days</th>
-								<th class="text-center">Month</th>
-								<th class="text-center">Year</th>
-								<th class="text-right">Fee</th>
 							</tr>
 							</thead>
 
 							<tbody id="products-list">
 							@include('member-portal.partials.product-list', compact('products'))
 							</tbody>
-
-							@if(count($products))
-							<tfoot>
-								<td colspan="7">{{ $products->links() }}</td>
-							</tfoot>
-							@endif
 						</table>
 					</div>
 				</div>
@@ -82,6 +72,28 @@
 @section('js')
 <script type="text/javascript">
 $(function() {
+    $(document).on('click', '.products', function (e) {
+		var id = $(this).data('id');
+
+
+		$.ajax({
+			url: "/members/products/" + id,
+			type: "post",
+			data: { _token: $('#token').val() },
+			dataType: "json",
+			success: function (response) {
+                if ($('#product-details-' + id).is(':visible')) {
+                    $('#product-details-' + id).addClass('d-none');
+                } else {
+                    $('.product-details').addClass('d-none');
+                    $('#product-details-' + id).removeClass('d-none');
+                    $('#price-list-' + id).html(response.html);
+                }
+			}
+		});
+    });
+
+
     $(document).on('click', '.update-price', function (e) {
         var _id = $(this).data('id');
         $.ajax({

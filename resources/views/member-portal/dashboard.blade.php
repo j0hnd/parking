@@ -137,7 +137,7 @@
                             </div>
                         @endif
                         @if($user->roles[0]->slug == 'vendor')
-                            <h3 class="title-5 m-b-35">Your Bookings ss</h3>
+                            <h3 class="title-5 m-b-35">Your Bookings</h3>
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     @include('member-portal.partials.vendor')
