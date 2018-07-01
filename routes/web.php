@@ -49,6 +49,9 @@ Route::group(['prefix' => 'members'], function () {
 
 	Route::post('/update/profile', 'MembersController@update_profile');
 
+	Route::get('/product/{id}/update', 'MembersController@get_product');
+	Route::post('/product/{id}/update', 'MembersController@update_product');
+
 	Route::get('/price/{price}', 'MembersController@get_price');
 	Route::post('/price/{price}', 'MembersController@price');
 });

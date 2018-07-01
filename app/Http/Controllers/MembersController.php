@@ -265,19 +265,47 @@ class MembersController extends Controller
 		$response = ['success' => false];
 
 		try {
-			if ($request->ajax()) {
-				if ($request->isMethod('post')) {
-					$user = Sentinel::getUser();
-					$price = Prices::findOrFail($request->price);
-					$form = $request->except(['_token']);
-					$form['price_id'] = $price->id;
-					$form['changed_by'] = $user->id;
+			if ($request->ajax() and $request->isMethod('post')) {
+				$user = Sentinel::getUser();
+				$price = Prices::findOrFail($request->price);
+				$form = $request->except(['_token']);
+				$form['price_id'] = $price->id;
+				$form['changed_by'] = $user->id;
 
-					if (PriceHistory::create($form)) {
-						$response = ['success' => true, 'message' => 'Your price updates are subject for approval'];
-					} else {
-						$response['message'] = "Unable to update price";
-					}
+				if (PriceHistory::create($form)) {
+					$response = ['success' => true, 'message' => 'Your price updates are subject for approval'];
+				} else {
+					$response['message'] = "Unable to update price";
+				}
+			}
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
+
+	public function get_product(Request $request)
+	{
+		$user = Sentinel::getUser();
+		$product = Products::findOrFail($request->id);
+		$form = view('member-portal.partials.product-details', compact('product', 'user'))->render();
+		$response = ['success' => true, 'form' => $form];
+
+		return response()->json($response);
+	}
+
+	public function update_product(Request $request)
+	{
+		$response = ['success' => false, 'message' => 'Invalid request'];
+
+		try {
+			if ($request->ajax() and $request->isMethod('post')) {
+				$product = Products::findOrFail($request->id);
+				$form = $request->only(['description', 'on_arrival', 'on_return']);
+
+				if ($product->update($form)) {
+					$response = ['success' => true, 'message' => 'Product has been updated'];
 				}
 			}
 		} catch (\Exception $e) {
