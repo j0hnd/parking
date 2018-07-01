@@ -168,14 +168,12 @@ class MembersController extends Controller
 			$inbox = null;
 			$messages = null;
 		} else {
-			$new_messages = Messages::where('status', 'unread')
-				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+			$new_messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
 
 			$count = $new_messages->count();
 			$inbox = $new_messages->get()->toArray();
 
-			$messages = Messages::whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id))
-				->paginate(config('app.item_per_page'));
+			$messages = Messages::where('user_id', $user->id)->paginate(config('app.item_per_page'));
 		}
 
 
@@ -185,14 +183,14 @@ class MembersController extends Controller
 	public function display_email($id)
 	{
 		$user = Sentinel::getUser();
-		$message = Messages::where('id', $id)->first();
+		$message = Messages::findOrFail($id);
 		$message->update(['status' => 'read']);
 
-		$messages = Messages::where('status', 'unread')
-							->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+		$messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
 
 		$count = $messages->count();
 		$inbox = $messages->get()->toArray();
+
 		return view ('/member-portal.email', compact('count', 'inbox', 'message'));
 	}
 
