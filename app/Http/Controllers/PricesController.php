@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Members;
+use App\Models\Messages;
 use App\Models\PriceHistory;
 use App\Models\Products;
 use App\Models\Tools\Prices;
@@ -34,28 +36,37 @@ class PricesController extends Controller
 		$response = ['success' => false, 'message' => 'Unable to approved request'];
 
 		try {
+			$user = Sentinel::getUser();
 
 			if ($request->ajax() and $request->isMethod('post')) {
-				$request = PriceHistory::where('price_id', $request->price)->first();
-				$price = Prices::findOrFail($request->price_id);
-				$user = Sentinel::getUser();
+				$price_request = PriceHistory::findOrFail($request->price);
+				$price = Prices::findOrFail($price_request->price_id);
+				$changed_by = Members::where('user_id', $price_request->changed_by)->first();
+
+				$form = [
+					'no_of_days'  => $price_request->no_of_days,
+					'price_month' => $price_request->price_month,
+					'price_year'  => $price_request->price_year,
+					'price_value' => $price_request->price_value
+				];
 
 				DB::beginTransaction();
 
-				$form = [
-					'no_of_days'  => $request->no_of_days,
-					'price_month' => $request->price_month,
-					'price_year'  => $request->price_year,
-					'price_value' => $request->price_value
-				];
-
 				if ($price->update($form)) {
-					if ($request->update(['approved_at' => Carbon::now(), 'approved_by' => $user->id])) {
+					if ($price_request->update(['approved_at' => Carbon::now(), 'approved_by' => $user->id])) {
+						Messages::create([
+							'user_id' => $changed_by->user_id,
+							'subject' => 'Price Change Approved',
+							'message' => 'Your price change request last ' . date('d/m/Y', strtotime($price_request->created_at)) . ' has been approved.',
+							'name'    => $changed_by->first_name,
+							'status'  => 'unread'
+						]);
+
 						DB::commit();
 
 						$requests = PriceHistory::get_requests();
 
-						$html = view('app.Prices.partials.list', ['requests' => $requests]);
+						$html = view('app.Prices.partials.list', ['requests' => $requests])->render();
 
 						$response = ['success' => true, 'message' => 'Price changed has been approved', 'html' => $html];
 					} else {
@@ -80,12 +91,22 @@ class PricesController extends Controller
 		try {
 
 			if ($request->ajax() and $request->isMethod('post')) {
-				$request = PriceHistory::where('price_id', $request->price)->first();
+				$price_request = PriceHistory::findOrFail($request->price);
 
-				if ($request->update(['deleted_at' => Carbon::now()])) {
+				if ($price_request->update(['deleted_at' => Carbon::now()])) {
 					$requests = PriceHistory::get_requests();
 
-					$html = view('app.Prices.partials.list', ['requests' => $requests]);
+					$changed_by = Members::where('user_id', $price_request->changed_by)->first();
+
+					Messages::create([
+						'user_id' => $changed_by->user_id,
+						'subject' => 'Price Change Declined',
+						'message' => 'Your price change request last ' . date('d/m/Y', strtotime($price_request->created_at)) . ' has been declined.',
+						'name'    => $changed_by->first_name,
+						'status'  => 'unread'
+					]);
+
+					$html = view('app.Prices.partials.list', ['requests' => $requests])->render();
 
 					$response = ['success' => true, 'message' => 'Price changed has been declined', 'html' => $html];
 				}

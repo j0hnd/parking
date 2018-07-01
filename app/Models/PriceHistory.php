@@ -4,16 +4,17 @@ namespace App\Models;
 
 class PriceHistory extends BaseModel
 {
-    protected $fillable = ['price_id', 'no_of_days', 'price_month', 'price_year', 'price_value', 'changed_by', 'approved_at', 'approved_by'];
+    protected $fillable = ['price_id', 'no_of_days', 'price_month', 'price_year', 'price_value', 'changed_by', 'approved_at', 'approved_by', 'deleted_at'];
 
-    protected $guarded = ['price_id', 'no_of_days', 'price_month', 'price_year', 'price_value', 'approved_by'];
+    protected $guarded = ['price_id', 'no_of_days', 'price_month', 'price_year', 'price_value'];
 
-    protected $dates = ['approved_at'];
+    protected $dates = ['approved_at', 'deleted_at'];
 
 
     public static function get_requests()
 	{
 		return PriceHistory::selectRaw("
+						price_histories.id,
 						prices.id as price_id,
 						CONCAT(airports.airport_name,'-',price_categories.category_name) AS order_title,
 						prices.no_of_days, 
@@ -31,6 +32,7 @@ class PriceHistory extends BaseModel
 			->join('product_airports', 'product_airports.product_id', '=', 'products.id')
 			->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 			->whereNull('price_histories.approved_at')
+			->whereNull('price_histories.deleted_at')
 			->whereNull('prices.deleted_at');
 	}
 }

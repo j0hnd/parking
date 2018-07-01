@@ -28,8 +28,8 @@
 			<td class="text-center bg-gray-light">{{ (is_null($request->request_price_year)) ? "-" : $request->request_price_year }}</td>
 			<td class="text-center bg-gray-light">{{ (is_null($request->request_price_value)) ? "-" : "£".number_format($request->request_price_value, 2) }}</td>
 			<td>
-				<button type="button" id="toggle-approve" class="btn bg-green btn-flat" data-id="{{ $request->price_id }}"><i class="fa fa-check" aria-hidden="true"></i></button>
-				<button type="button" id="toggle-decline" class="btn bg-red btn-flat" data-id="{{ $request->price_id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+				<button type="button" id="toggle-approve" class="btn bg-green btn-flat" data-id="{{ $request->id }}"><i class="fa fa-check" aria-hidden="true"></i></button>
+				<button type="button" id="toggle-decline" class="btn bg-red btn-flat" data-id="{{ $request->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
 			</td>
 		</tr>
 	@endforeach

@@ -83,23 +83,31 @@ class MembersController extends Controller
 			}
 		}
 
-		if (is_null($user->members->company)) {
-			$count = 0;
-			$inbox = null;
-		} else {
-			$new_messages = Messages::where('status', 'unread')
-				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+//		if (is_null($user->members->company)) {
+//			$count = 0;
+//			$inbox = null;
+//		} else {
+//			$new_messages = Messages::where('status', 'unread')
+//				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+//
+//			$new_messages = Messages::where('user_id', $user->id);
+//
+//			$count = $new_messages->count();
+//			$inbox = $new_messages->get()->toArray();
+//		}
 
-			$count = $new_messages->count();
-			$inbox = $new_messages->get()->toArray();
-		}
+		$new_messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
+
+		$count = $new_messages->count();
+		$inbox = $new_messages->get()->toArray();
 
 		return view('member-portal.dashboard', compact('bookings', 'total_bookings', 'ongoing_bookings', 'count', 'inbox', 'affiliate'));
 	}
 
 	public function display_profile()
 	{
-		$new_messages = Messages::where('status', 'unread');
+		$new_messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
+
 		$count = $new_messages->count();
 		$inbox = $new_messages->get()->toArray();
 
@@ -191,8 +199,7 @@ class MembersController extends Controller
 	public function products(Request $request)
 	{
 		$user = Sentinel::getUser();
-		$new_messages = Messages::where('status', 'unread')
-			->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
+		$new_messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
 
 		$count = $new_messages->count();
 		$inbox = $new_messages->get()->toArray();
