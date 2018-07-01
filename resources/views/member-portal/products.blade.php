@@ -110,7 +110,7 @@ $(function() {
                     $('#updateModal').modal('hide');
                     setTimeout(function () {
                         $('#products-list').html(response.html);
-                        alert('Selected price is updated');
+                        alert(response.message);
 					}, 300);
 				} else {
                     alert(response.message);

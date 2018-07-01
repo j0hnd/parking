@@ -15,14 +15,18 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id');
             $table->string('subject');
-            $table->string('booking_id');
-            $table->datetime('drop_off');
-            $table->datetime('return_at');
-            $table->string('order');
+			$table->text('message')->nullable();
+			$table->string('booking_id')->nullable();
+            $table->datetime('drop_off')->nullable();
+            $table->datetime('return_at')->nullable();
+            $table->string('order')->nullable();
             $table->string('name');
             $table->enum('status', ['unread', 'read']);
             $table->timestamps();
+
+            $table->index('user_id');
         });
     }
 

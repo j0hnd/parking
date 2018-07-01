@@ -335,11 +335,12 @@ class ParkingAppController extends Controller
 				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
-								  ->where('booking_id', $booking->booking_id)->first();
+					->where('booking_id', $booking->booking_id)->first();
 
 				if ($message == null) {
 					Messages::create([
 						'subject' => 'My Travel Compared Booking Confirmation',
+						'message' => 'My Travel Compared Booking Confirmation',
 						'booking_id' => $booking->booking_id,
 						'drop_off' => $booking->drop_off_at,
 						'return_at' => $booking->return_at,
@@ -352,12 +353,12 @@ class ParkingAppController extends Controller
 				// send sms
 				if ($send_sms) {
 					$message = $this->twilio->messages
-						  ->create($customer->mobile_no,
-								   array(
-									   "body" => "SMS Confirmation",
-									   "from" => env('TWILIO_NUMBER', '')
-								   )
-						  );
+						->create($customer->mobile_no,
+							array(
+								"body" => "SMS Confirmation",
+								"from" => env('TWILIO_NUMBER', '')
+							)
+						);
 
 					$response['twilio'] = $message;
 				}

@@ -72,10 +72,14 @@
                                     </div>
                                     <div class="typo-articles">
                                         <br/>
+                                        @if(empty($message->order) or empty($message->name))
+                                        <p class="email-content">{{ $message->message }}</p>
+                                        @else
                                         <p class="email-content">
                                             {{$message->order}}<br>
                                             {{$message->name}}
                                         </p>
+                                        @endif
                                     </div>
                                     <br/>
                                     <a href="{{ url('/members/inbox') }}" class="btn btn-info">&lt;&lt; <strong>Inbox</strong></a>

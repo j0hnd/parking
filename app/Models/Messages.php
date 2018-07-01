@@ -6,29 +6,32 @@ use Illuminate\Database\Eloquent\Model;
 
 class Messages extends Model
 {
-    protected $fillable = [
-            'subject',
-            'booking_id',
-            'drop_off',
-            'order',
-            'name',
-            'status'
-    ];
+	protected $fillable = [
+		'user_id',
+		'subject',
+		'message',
+		'booking_id',
+		'drop_off',
+		'order',
+		'name',
+		'status'
+	];
 
-    public function booking()
-    {
-        $this->hasOne(Bookings::class, 'booking_id', 'id');
-    }
+	public function booking()
+	{
+		$this->hasOne(Bookings::class, 'booking_id', 'id');
+	}
 
-    public function get_day_name($timestamp) {
-	    $date = date('d/m/Y', $timestamp);
+	public function get_day_name($timestamp)
+	{
+		$date = date('d/m/Y', $timestamp);
 
-	    if($date == date('d/m/Y')) {
-	      $date = 'Today';
-	    }
-	    else if($date == date('d/m/Y',strtotime(now()) - (24 * 60 * 60))) {
-	      $date = 'Yesterday';
-	    }
-	    return $date;
+		if ($date == date('d/m/Y')) {
+			$date = 'Today';
+		} else if ($date == date('d/m/Y',strtotime(now()) - (24 * 60 * 60))) {
+			$date = 'Yesterday';
+		}
+
+		return $date;
 	}
 }

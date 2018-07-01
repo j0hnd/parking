@@ -48,6 +48,7 @@
 		<input type="text" class="form-control" name="price_value" value="{{ $price->price_value }}">
 	</div>
 
-	<input type="hidden" name="id" value="{{ $price->id }}">
+	<input type="hidden" name="price_id" value="{{ $price->id }}">
+	<input type="hidden" name="id" value="{{ $user->id }}">
 	{{ csrf_field() }}
 </form>

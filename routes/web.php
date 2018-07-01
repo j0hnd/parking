@@ -48,7 +48,8 @@ Route::group(['prefix' => 'members'], function () {
 
 	Route::post('/update/profile', 'MembersController@update_profile');
 
-	Route::match(['get', 'post'], '/price/{price}', 'MembersController@price');
+	Route::get('/price/{price}', 'MembersController@get_price');
+	Route::post('/price/{price}', 'MembersController@price');
 });
 
 Route::group(['prefix' => 'admin'], function () {
@@ -81,7 +82,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/customer/search', 'CustomersController@get_customer');
 
     Route::get('/get/price', 'PricesController@get_price');
+    Route::get('/price/requests', 'PricesController@get_price_requests');
     Route::get('/get/vehicle/model', 'BookingsController@get_vehicle_models');
+    Route::post('/price/request/{price}/approved', 'PricesController@approved');
+    Route::post('/price/request/{price}/declined', 'PricesController@declined');
 
     Route::post('/reports/booking/details/{id}', 'ReportsController@get_booking_details');
     Route::post('/reports/export', 'ReportsController@export');

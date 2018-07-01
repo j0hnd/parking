@@ -48,10 +48,13 @@ Contact Us |
                         <i class="fab fa-facebook-f" style="color: #3B5998; font-size: 25px;"> <a href="" target="_blank" class="con-link1"> My Traveled Compared.com on Facebook</i></a><br/><br/>
                         <i class="fab fa-twitter" style="color: #326ada; font-size: 25px;"> <a href="" target="_blank" class="con-link2"> My Traveled Compared.com on Twitter</a></i>
                         <br/><br/><br/>
-                        <p class="contact-head">Direct & Fast</p>
-                        <br/>
-                        <p class="con-content1">If you're looking to try our app, but want to talk to us first you can go ahead and chat live with us by this following link:</p>
-                        <br/>
+                        <p class="contact-head">Our Address</p>
+                        <p class="con-content1">
+                            27 Cambridge Park,
+                            Wanstead<br/>
+                            London
+                            E11 2PU
+                        </p>
                         <br/>
                         <a href="#" class="chat">Click here, to chat with us!</a>
                     </div>
