@@ -23,6 +23,7 @@ class CreateTablePriceHistory extends Migration
 			$table->integer('changed_by');
 			$table->dateTime('approved_at');
 			$table->integer('approved_by');
+			$table->softDeletes();
 			$table->timestamps();
 
 			$table->index('price_id');

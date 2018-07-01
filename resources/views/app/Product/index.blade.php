@@ -57,14 +57,14 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="3" class="text-center">No products listed</td>
+                                <td colspan="4" class="text-center">No products listed</td>
                             </tr>
                         @endif
                         </tbody>
                         @if(count($products))
                             <tfoot>
                             <tr>
-                                <td colspan="3" style="padding-right: 20px; text-align: right;">{{ $products->links() }}</td>
+                                <td colspan="4" style="padding-right: 20px; text-align: right;">{{ $products->links() }}</td>
                             </tr>
                             </tfoot>
                         @endif

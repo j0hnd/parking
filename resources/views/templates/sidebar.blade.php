@@ -62,6 +62,7 @@
                 </ul>
             </li>
             <li><a href="{{ url('/admin/posts') }}"><i class="fa fa-rss"></i> <span>Posts</span></a></li>
+            <li><a href="{{ url('/admin/price/requests') }}"><i class="fa fa-rss"></i> <span>Price Change Requests</span></a></li>
             @endif
         </ul>
         <!-- /.sidebar-menu -->
