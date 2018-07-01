@@ -53,15 +53,6 @@ class Controller extends BaseController
 							return redirect()->to('/');
 							break;
 					}
-
-//                    if ($this->role[0]->slug == 'administrator') {
-//                        view()->share('user', $this->user);
-//                        view()->share('role', $this->role->toArray());
-//                        return $next($request);
-//                    } else {
-//                        Sentinel::logout();
-//                        return redirect()->to('/');
-//                    }
                 } else {
                     Sentinel::logout();
                     return redirect()->to('login');
