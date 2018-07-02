@@ -66,42 +66,43 @@ Contact Us |
         <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <form>
-                <div class="row">
-                    <div class="col-md-6">
-                       <div class="group">      
-                          <input type="text" class="input1" required>
-                          <span class="highlight"></span>
-                          <span class="bar1"></span>
-                          <label>Name</label>
+                <form name="{{ url('/contact') }}" method="post">
+                    <div class="row">
+                        <div class="col-md-6">
+                           <div class="group">
+                              <input type="text" class="input1" name="from" required>
+                              <span class="highlight"></span>
+                              <span class="bar1"></span>
+                              <label>Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="group">
+                              <input type="email" class="input1" name="email" required>
+                              <span class="highlight"></span>
+                              <span class="bar1"></span>
+                              <label>Email</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="group">      
-                          <input type="email" class="input1" required>
-                          <span class="highlight"></span>
-                          <span class="bar1"></span>
-                          <label>Email</label>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="group">
+                              <textarea class="input2" name="message" required></textarea>
+                              <span class="highlight"></span>
+                              <span class="bar2"></span>
+                              <label>Message</label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="group">      
-                          <textarea class="input2" required></textarea>
-                          <span class="highlight"></span>
-                          <span class="bar2"></span>
-                          <label>Message</label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="contact-send button_slide">Send</button>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="contact-send button_slide">Send</button>
-                    </div>
-                </div>
-            </form>
+                    {{ csrf_field() }}
+                </form>
             </div>
         </div>
     </div>

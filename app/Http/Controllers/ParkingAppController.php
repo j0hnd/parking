@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SignupFormRequest;
+use App\Mail\ContactUs;
 use App\Mail\ForgotPassword;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\Signup;
@@ -386,8 +387,13 @@ class ParkingAppController extends Controller
 		return view ('parking.privacy');
 	}
 
-	public function contact()
+	public function contact(Request $request)
 	{
+		if ($request->isMethod('post')) {
+			$form = $request->only(['from', 'email', 'message']);
+			Mail::to(env('ADMIN_EMAIL'))->send(new ContactUs(['from' => $form['from'], 'email' => $form['email'], 'content' => $form['message']]));
+		}
+
 		return view ('parking.contact');
 	}
 
