@@ -18,7 +18,6 @@ Route::get('/member/login', 'Auth\LoginController@login_member');
 Route::get('/payment/{token?}/{cancel?}', 'ParkingAppController@payment');
 Route::get('/terms','ParkingAppController@terms');
 Route::get('/privacy','ParkingAppController@privacy');
-Route::get('/contact','ParkingAppController@contact');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::get('/paypal/cancel', 'ParkingAppController@paypal_cancel');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
@@ -26,6 +25,8 @@ Route::get('/forgot-password', 'ParkingAppController@forgot_password');
 Route::get('/post/{post}', 'ParkingAppController@show_post');
 Route::get('/signup', 'ParkingAppController@signup');
 Route::get('/affiliate/{code}', 'ParkingAppController@affiliate');
+
+Route::match(['get', 'post'], '/contact','ParkingAppController@contact');
 
 Route::post('/search/filter/{type}/{value}', 'ParkingAppController@filter');
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');
