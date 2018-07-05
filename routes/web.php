@@ -111,6 +111,9 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('/affiliates/search', 'AffiliatesController@search');
 	Route::post('/affiliates/update', 'AffiliatesController@update');
 	Route::post('/affiliates/{id}/delete', 'AffiliatesController@delete');
+
+	Route::resource('coupons', 'CouponController')->except(['update', 'destroy', 'show']);
+	Route::get('/coupons/generate', 'CouponController@generate');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {

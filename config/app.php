@@ -151,6 +151,7 @@ return [
          * Package Service Providers...
          */
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
+        Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
 		Intervention\Image\ImageServiceProvider::class,
 		Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
@@ -163,6 +164,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        Trexology\Promocodes\PromocodesServiceProvider::class,
 
     ],
 
@@ -215,9 +218,11 @@ return [
         'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
+        'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
 		'Image' => Intervention\Image\Facades\Image::class,
 		'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Promocodes' => Trexology\Promocodes\Facades\Promocodes::class,
     ],
 
     'item_per_page' => env('PER_PAGE'),
