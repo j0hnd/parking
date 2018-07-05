@@ -23,10 +23,32 @@
 
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Promo Codes</th>
+                                <th>Discount</th>
+                                <th>Expiry Date</th>
+                            </tr>
+                        </thead>
                         <tbody>
-
+                        @if(count($promocodes))
+                            @foreach($promocodes as $promocode)
+                                @if(strtotime(date('Y-m-d')) < strtotime($promocode->expiry_date))
+                                <tr>
+                                    <td>{{ $promocode->code }}</td>
+                                    <td>{{ $promocode->reward * 100 }}%</td>
+                                    <td>{{ date('d/m/Y', strtotime($promocode->expiry_date)) }}</td>
+                                </tr>
+                                @endif
+                            @endforeach
+                        @endif
                         </tbody>
                         <tfoot>
+                        @if(count($promocodes))
+                            <tr>
+                                <td colspan="3">{{ $promocodes->links() }}</td>
+                            </tr>
+                        @endif
                         </tfoot>
                     </table>
                 </div>

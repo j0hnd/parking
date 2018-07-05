@@ -12,8 +12,8 @@ class CouponController extends Controller
     public function index()
     {
         $page_title = "List of Coupons";
-        $generated_coupons = Promocode::paginate(config('app.item_per_page'));
-        return view('app.Coupon.index', compact('page_title', 'generated_coupons'));
+        $promocodes = Promocode::whereRaw("expiry_date > ?", date('Y-m-d'))->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+        return view('app.Coupon.index', compact('page_title', 'promocodes'));
     }
 
     public function generate()
