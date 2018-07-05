@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Promocode extends Model
+class Promocode extends BaseModel
 {
     /**
      * @var bool
@@ -19,5 +17,6 @@ class Promocode extends Model
     	'reward',
     	'quantity',
         'is_used',
+		'expiry_date'
     ];
 }

@@ -27,13 +27,22 @@
                                 <label class="col-sm-2 control-label">Percent Discount </label>
 
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" name="reward"
-                                           placeholder="Percent Discount (0.1 = 10%)"
+                                    <input type="text" class="form-control" name="reward"
+                                           placeholder="Percent Discount"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Expiration Date </label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" id="expiry-date" class="form-control" name="expiry_date"
+                                           placeholder="Expiration Date"
                                            autocomplete="off">
                                 </div>
                             </div>
                             <!-- form start -->
-                            @include('app.Booking.partials._form_booking')
                         </div>
 
                         {{ csrf_field() }}
@@ -53,7 +62,11 @@
 @section('scripts')
 <script type="text/javascript">
 $(function () {
-
+    $('#expiry-date').datepicker({
+        autoclose: true,
+        orientation: 'bottom',
+        format: 'dd/mm/yyyy'
+    })
 });
 </script>
 @stop
