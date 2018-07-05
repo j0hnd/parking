@@ -59,6 +59,7 @@
                     <li><a href="{{ url('/admin/users') }}">Users</a></li>
                     <li><a href="{{ url('/admin/fees') }}">Fees</a></li>
                     <li><a href="{{ url('/admin/affiliates') }}">Affiliates</a></li>
+                    <li><a href="{{ url('/admin/coupons') }}">Coupons</a></li>
                 </ul>
             </li>
             <li><a href="{{ url('/admin/posts') }}"><i class="fa fa-rss"></i> <span>Posts</span></a></li>
