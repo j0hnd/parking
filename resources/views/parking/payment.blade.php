@@ -118,7 +118,6 @@ Payment |
 									<div class="col-md-12">
 										<i><img src="{{ asset('/img/booking/wheel.png') }}"> Vehicle Details</i>
 									</div>
-
 								</div>
 								<br/>
 								<div class="row">
@@ -144,7 +143,6 @@ Payment |
 							<div id="payment_choice">
 								@if(is_null($details))
 								<h4>Credit / Debit Card</h4>
-								<script src="https://js.stripe.com/v3/"></script>
 								<fieldset>
 									<div class="container">
 										<div class="row">
@@ -166,14 +164,31 @@ Payment |
 										<br/>
 										<div class="row">
 											<div class="col-md-12">
-												<div id="card-element">
-											      <!-- A Stripe Element will be inserted here. -->
-											    </div>
-
-											    <!-- Used to display form errors. -->
-											    <div id="card-errors" role="alert"></div>
+												<label>Card Number:</label>
+												<input type="text" name="card_number" class="form-control">
 											</div>
 										</div>
+										<br/>
+										<div class="row">
+											<div class="col-md-6">
+												<label>Expiration Date:</label>
+												<input type="text" name="expiration" class="form-control">
+											</div>
+											<div class="col-md-6">
+												<label>CV Code:</label>
+												<input type="text" name="cv_code" class="form-control">
+											</div>
+										</div>
+										{{--<div class="row">--}}
+											{{--<div class="col-md-12">--}}
+												{{--<div id="card-element">--}}
+											      {{--<!-- A Stripe Element will be inserted here. -->--}}
+											    {{--</div>--}}
+
+											    {{--<!-- Used to display form errors. -->--}}
+											    {{--<div id="card-errors" role="alert"></div>--}}
+											{{--</div>--}}
+										{{--</div>--}}
 										<br/>
 										<div class="row">
 											<div class="col-md-12">
@@ -484,6 +499,7 @@ Payment |
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
+{{--<script src="https://js.stripe.com/v3/"></script>--}}
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('.datepicker').datepicker();
