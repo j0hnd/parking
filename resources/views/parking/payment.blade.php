@@ -138,8 +138,25 @@ Payment |
 										<input type="text" id="vehicle-color-src" name="vehicle_color" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_color'] }}">
 									</div>
 								</div>
+								<br/>
+								<hr/>
+								<br/>
+								<div class="row">
+									<div class="col-md-12">
+										<i><img src="{{ asset('/img/booking/coupon.png') }}" style="width: 26px; height: 26px;"> Coupons</i>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-12">
+										<label>Coupon Code:</label>
+										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ is_null($details) ? "" : $details['coupon'] }}">
+									</div>
+								</div>
+								<br/>
 							</div>
 							<br/>
+
 							<div id="payment_choice">
 								@if(is_null($details))
 								<h4>Credit / Debit Card</h4>
@@ -189,14 +206,14 @@ Payment |
 											    {{--<div id="card-errors" role="alert"></div>--}}
 											{{--</div>--}}
 										{{--</div>--}}
-										<br/>
-										<div class="row">
-											<div class="col-md-12">
-												<label>Coupon Code:</label>
-												<input type="text" name="coupon" class="form-control">
-											</div>
-										</div>
-										<br/>
+										{{--<br/>--}}
+										{{--<div class="row">--}}
+											{{--<div class="col-md-12">--}}
+												{{--<label>Coupon Code:</label>--}}
+												{{--<input type="text" name="coupon" class="form-control">--}}
+											{{--</div>--}}
+										{{--</div>--}}
+										{{--<br/>--}}
 										{{--<p>Lorem ipsum dolor</p>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -369,6 +386,7 @@ Payment |
 						<input type="hidden" id="car-registration-no" name="car_registration_no">
 						<input type="hidden" id="vehicle-model" name="vehicle_model">
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
+						<input type="hidden" id="coupon" name="coupon">
 						{{ csrf_field() }}
 					</form>
 

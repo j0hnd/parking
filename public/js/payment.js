@@ -302,6 +302,7 @@ $(document).ready(function(){
         $('#car-registration-no').val($('#car-registration-no-src').val());
         $('#vehicle-color').val($('#vehicle-color-src').val());
         $('#vehicle-model').val($('#vehicle-model-src').val());
+        $('#coupon').val($('#coupon-src').val());
 
         var fv = $('#payment_wizard').data('formValidation'),
 
