@@ -18,6 +18,7 @@ use App\Models\Members;
 use App\Models\Messages;
 use App\Models\Posts;
 use App\Models\Products;
+use App\Models\Promocode;
 use App\Models\Tools\CarparkServices;
 use App\Models\Tools\Common;
 use App\Models\Tools\Fees;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Cookie\CookieJar;
 use Srmklive\PayPal\Facades\PayPal;
+use Trexology\Promocodes\Model\Promocodes;
 use Twilio\Rest\Client;
 use DB;
 use Hash;
@@ -418,12 +420,22 @@ class ParkingAppController extends Controller
 				$id = 1;
 			}
 
-
 			$data['invoice_id'] = $id;
 			$data['invoice_description'] = "Order #{$id} Invoice";
 			$data['return_url'] = url('/paypal/success');
 			$data['cancel_url'] = url('/paypal/cancel');
-			$data['total'] = $form['total'];
+
+			// check coupon
+			if (isset($data['coupon'])) {
+				if (Promocodes::check($data['coupon'])) {
+					$coupon = Promocode::where('code', $data['coupon'])->whereRaw("expiry_date > ?", date('Y-m-d'))->first();
+					$data['total'] = $data['total'] - $data['total'] * $coupon->reward;
+				}
+			} else {
+				$data['total'] = $form['total'];
+			}
+
+			dd($data);
 
 			$response = $this->provider->setExpressCheckout($data);
 
