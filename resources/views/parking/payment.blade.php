@@ -151,6 +151,7 @@ Payment |
 									<div class="col-md-12">
 										<label>Coupon Code:</label>
 										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ is_null($details) ? "" : $details['coupon'] }}">
+										<span id="coupon-error" class="d-none" style="color:red"><small>Coupon not valid!</small></span>
 									</div>
 								</div>
 								<br/>
@@ -480,6 +481,14 @@ Payment |
 								</div>
 								<div class="col-6 col-md-6">
 									<p class="receipt-align">£<span id="cancellation-waiver-wrapper">0</span></p>
+								</div>
+							</div>
+							<div id="coupon-container" class="row d-none">
+								<div class="col-6 col-md-6">
+									<p class="receipt-name"><small>Coupon Dis.<span id="coupon-discount" style="color:red; margin-left:5px"></span></small></p>
+								</div>
+								<div class="col-6 col-md-6">
+									<p class="receipt-align">£<span id="coupon-wrapper">0</span></p>
 								</div>
 							</div>
 							<hr>

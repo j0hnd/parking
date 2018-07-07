@@ -400,7 +400,7 @@ class ParkingAppController extends Controller
 		return view ('parking.contact');
 	}
 
-	public function paypal(Request $request)
+	public function paypal(Promocodes $promocodes, Request $request)
 	{
 		try {
 			$form = $request->except(['_token']);
@@ -424,18 +424,15 @@ class ParkingAppController extends Controller
 			$data['invoice_description'] = "Order #{$id} Invoice";
 			$data['return_url'] = url('/paypal/success');
 			$data['cancel_url'] = url('/paypal/cancel');
+			$data['total'] = $form['total'];
 
 			// check coupon
-			if (isset($data['coupon'])) {
-				if (Promocodes::check($data['coupon'])) {
-					$coupon = Promocode::where('code', $data['coupon'])->whereRaw("expiry_date > ?", date('Y-m-d'))->first();
-					$data['total'] = $data['total'] - $data['total'] * $coupon->reward;
+			if (isset($form['coupon'])) {
+				$coupon = Promocode::where('code', $form['coupon'])->whereRaw("expiry_date > ?", date('Y-m-d'))->first();
+				if (count($coupon)) {
+					$data['total'] = $form['total'] - number_format(round($form['total'] * $coupon->reward, PHP_ROUND_HALF_UP), 2);
 				}
-			} else {
-				$data['total'] = $form['total'];
 			}
-
-			dd($data);
 
 			$response = $this->provider->setExpressCheckout($data);
 
@@ -625,5 +622,35 @@ class ParkingAppController extends Controller
 		} catch (\Exception $e) {
 			abort(404);
 		}
+	}
+
+	public function get_coupon(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->only(['total', 'coupon']);
+				$coupon = Promocodes::where('code', $form['coupon'])->whereRaw("expiry_date > ?", date('Y-m-d'));
+				if ($coupon->count()) {
+					$discount = number_format(round($form['total'] * $coupon->first()->reward, PHP_ROUND_HALF_UP), 2);
+					$percent = $coupon->first()->reward * 100;
+					$total = number_format($form['total'] - $discount, 2);
+					$response = [
+						'success' => true,
+						'data'    => [
+							'percent'        => $percent."%",
+							'discount_value' => $discount,
+							'total'          => $total
+						]
+					];
+				}
+			}
+		} catch (Exception $e) {
+			dd($e);
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
 	}
 }

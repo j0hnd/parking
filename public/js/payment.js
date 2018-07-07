@@ -323,6 +323,27 @@ $(document).ready(function(){
 
     });
 
+    $(document).on('blur', '#coupon-src', function (e) {
+        $.ajax({
+            url: '/get/coupon',
+            type: 'post',
+            data: { _token: $('input[name="_token"]').val(), total: $('#total').data('value'), coupon: $(this).val() },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#coupon-container').removeClass('d-none');
+                    $('#coupon-wrapper').html(response.data.discount_value);
+                    $('#coupon-discount').html(response.data.percent);
+                    $('#total').text('£' + response.data.total);
+                } else {
+                    if ($(this).val() != "") {
+                        $('#coupon-error').removeClass('d-none');
+                    }
+                }
+            }
+        });
+    });
+
     if ($('#sms-fee').is(':checked')) {
         var total = $('#total').text().substr(1);
         total = parseFloat(total) + parseFloat($('#sms-fee').val());
