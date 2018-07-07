@@ -324,10 +324,11 @@ $(document).ready(function(){
     });
 
     $(document).on('blur', '#coupon-src', function (e) {
+        var el = $(this);
         $.ajax({
             url: '/get/coupon',
             type: 'post',
-            data: { _token: $('input[name="_token"]').val(), total: $('#total').data('value'), coupon: $(this).val() },
+            data: { _token: $('input[name="_token"]').val(), total: $('#total').data('value'), coupon: el.val() },
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
@@ -336,7 +337,10 @@ $(document).ready(function(){
                     $('#coupon-discount').html(response.data.percent);
                     $('#total').text('£' + response.data.total);
                 } else {
-                    if ($(this).val() != "") {
+                    if ($('#coupon-src').val() == "") {
+                        $('#total').text('£' + $('#total').data('value'));
+                        $('#coupon-container').addClass('d-none');
+                    } else {
                         $('#coupon-error').removeClass('d-none');
                     }
                 }
