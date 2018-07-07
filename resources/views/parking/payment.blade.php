@@ -118,7 +118,6 @@ Payment |
 									<div class="col-md-12">
 										<i><img src="{{ asset('/img/booking/wheel.png') }}"> Vehicle Details</i>
 									</div>
-
 								</div>
 								<br/>
 								<div class="row">
@@ -139,12 +138,29 @@ Payment |
 										<input type="text" id="vehicle-color-src" name="vehicle_color" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_color'] }}">
 									</div>
 								</div>
+								<br/>
+								<hr/>
+								<br/>
+								<div class="row">
+									<div class="col-md-12">
+										<i><img src="{{ asset('/img/booking/coupon.png') }}" style="width: 26px; height: 26px;"> Coupons</i>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-12">
+										<label>Coupon Code:</label>
+										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ is_null($details) ? "" : $details['coupon'] }}">
+										<span id="coupon-error" class="d-none" style="color:red"><small>Coupon not valid!</small></span>
+									</div>
+								</div>
+								<br/>
 							</div>
 							<br/>
+
 							<div id="payment_choice">
 								@if(is_null($details))
 								<h4>Credit / Debit Card</h4>
-								<script src="https://js.stripe.com/v3/"></script>
 								<fieldset>
 									<div class="container">
 										<div class="row">
@@ -166,22 +182,39 @@ Payment |
 										<br/>
 										<div class="row">
 											<div class="col-md-12">
-												<div id="card-element">
-											      <!-- A Stripe Element will be inserted here. -->
-											    </div>
-
-											    <!-- Used to display form errors. -->
-											    <div id="card-errors" role="alert"></div>
+												<label>Card Number:</label>
+												<input type="text" name="card_number" class="form-control">
 											</div>
 										</div>
 										<br/>
 										<div class="row">
-											<div class="col-md-12">
-												<label>Coupon Code:</label>
-												<input type="text" name="coupon" class="form-control">
+											<div class="col-md-6">
+												<label>Expiration Date:</label>
+												<input type="text" name="expiration" class="form-control">
+											</div>
+											<div class="col-md-6">
+												<label>CV Code:</label>
+												<input type="text" name="cv_code" class="form-control">
 											</div>
 										</div>
-										<br/>
+										{{--<div class="row">--}}
+											{{--<div class="col-md-12">--}}
+												{{--<div id="card-element">--}}
+											      {{--<!-- A Stripe Element will be inserted here. -->--}}
+											    {{--</div>--}}
+
+											    {{--<!-- Used to display form errors. -->--}}
+											    {{--<div id="card-errors" role="alert"></div>--}}
+											{{--</div>--}}
+										{{--</div>--}}
+										{{--<br/>--}}
+										{{--<div class="row">--}}
+											{{--<div class="col-md-12">--}}
+												{{--<label>Coupon Code:</label>--}}
+												{{--<input type="text" name="coupon" class="form-control">--}}
+											{{--</div>--}}
+										{{--</div>--}}
+										{{--<br/>--}}
 										{{--<p>Lorem ipsum dolor</p>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -354,6 +387,7 @@ Payment |
 						<input type="hidden" id="car-registration-no" name="car_registration_no">
 						<input type="hidden" id="vehicle-model" name="vehicle_model">
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
+						<input type="hidden" id="coupon" name="coupon">
 						{{ csrf_field() }}
 					</form>
 
@@ -449,6 +483,14 @@ Payment |
 									<p class="receipt-align">£<span id="cancellation-waiver-wrapper">0</span></p>
 								</div>
 							</div>
+							<div id="coupon-container" class="row d-none">
+								<div class="col-6 col-md-6">
+									<p class="receipt-name"><small>Coupon Dis.<span id="coupon-discount" style="color:red; margin-left:5px"></span></small></p>
+								</div>
+								<div class="col-6 col-md-6">
+									<p class="receipt-align">£<span id="coupon-wrapper">0</span></p>
+								</div>
+							</div>
 							<hr>
 							<div class="row">
 								<div class="col-6 col-md-6">
@@ -484,6 +526,7 @@ Payment |
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
+{{--<script src="https://js.stripe.com/v3/"></script>--}}
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('.datepicker').datepicker();

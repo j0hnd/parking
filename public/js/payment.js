@@ -1,24 +1,24 @@
 $(document).ready(function(){
     var hh = $('#top').outerHeight();
     var fh = $('footer').outerHeight();
-    var stripe = Stripe('pk_test_Q6afLKjJu37D4UORsVXbCNfS');
-    var elements = stripe.elements();
-    var style = {
-      base: {
-        color: '#32325d',
-        lineHeight: '18px',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4'
-        }
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
-      }
-    };
+    // var stripe = Stripe('pk_test_Q6afLKjJu37D4UORsVXbCNfS');
+    // var elements = stripe.elements();
+    // var style = {
+    //   base: {
+    //     color: '#32325d',
+    //     lineHeight: '18px',
+    //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    //     fontSmoothing: 'antialiased',
+    //     fontSize: '16px',
+    //     '::placeholder': {
+    //       color: '#aab7c4'
+    //     }
+    //   },
+    //   invalid: {
+    //     color: '#fa755a',
+    //     iconColor: '#fa755a'
+    //   }
+    // };
 
     $('#sidebar').affix({
         offset:{
@@ -302,6 +302,7 @@ $(document).ready(function(){
         $('#car-registration-no').val($('#car-registration-no-src').val());
         $('#vehicle-color').val($('#vehicle-color-src').val());
         $('#vehicle-model').val($('#vehicle-model-src').val());
+        $('#coupon').val($('#coupon-src').val());
 
         var fv = $('#payment_wizard').data('formValidation'),
 
@@ -320,6 +321,31 @@ $(document).ready(function(){
             $('#order-form').submit();
         }
 
+    });
+
+    $(document).on('blur', '#coupon-src', function (e) {
+        var el = $(this);
+        $.ajax({
+            url: '/get/coupon',
+            type: 'post',
+            data: { _token: $('input[name="_token"]').val(), total: $('#total').data('value'), coupon: el.val() },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#coupon-container').removeClass('d-none');
+                    $('#coupon-wrapper').html(response.data.discount_value);
+                    $('#coupon-discount').html(response.data.percent);
+                    $('#total').text('£' + response.data.total);
+                } else {
+                    if ($('#coupon-src').val() == "") {
+                        $('#total').text('£' + $('#total').data('value'));
+                        $('#coupon-container').addClass('d-none');
+                    } else {
+                        $('#coupon-error').removeClass('d-none');
+                    }
+                }
+            }
+        });
     });
 
     if ($('#sms-fee').is(':checked')) {
@@ -347,20 +373,20 @@ $(document).ready(function() {
         document.body.scrollTop = 0;
 }, 0);
     // Create an instance of the card Element.
-    var card = elements.create('card', {style: style});
-
-    // Add an instance of the card Element into the `card-element` <div>.
-    card.mount('#card-element');
-
-    // Handle real-time validation errors from the card Element.
-    card.addEventListener('change', function(event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
+    // var card = elements.create('card', {style: style});
+    //
+    // // Add an instance of the card Element into the `card-element` <div>.
+    // card.mount('#card-element');
+    //
+    // // Handle real-time validation errors from the card Element.
+    // card.addEventListener('change', function(event) {
+    //   var displayError = document.getElementById('card-errors');
+    //   if (event.error) {
+    //     displayError.textContent = event.error.message;
+    //   } else {
+    //     displayError.textContent = '';
+    //   }
+    // });
 
     $(window).scroll(function() {
       if($(this).scrollTop() > 20) {
