@@ -438,6 +438,7 @@ class ParkingAppController extends Controller
 
 			if (!is_null($response['paypal_link'])) {
 				if ($request->session()->has('sess_id')) {
+					dd($form);
 					if (Sessions::where('session_id', session('sess_id'))->update(['booking_id' => $id, 'response' => json_encode($form)])) {
 						return redirect($response['paypal_link']);
 					}
@@ -662,6 +663,27 @@ class ParkingAppController extends Controller
 
 			if ($request->ajax() and $request->isMethod('post')) {
 				$form = $request->except(['_token']);
+
+				$booking = Bookings::select('id')->orderBy('id', 'desc')->first();
+				if ($booking) {
+					$id = $booking->id;
+					$id++;
+				} else {
+					$id = 1;
+				}
+
+				$form['booking_id'] = Bookings::generate_booking_id($id);
+
+				if (!session()->has('sess_id')) {
+					$sessions = Sessions::create(['request_id' => session()->getId(), 'requests' => json_encode($form)]);
+					if ($sessions) {
+						$request->session()->put('sess_id', $sessions->session_id);
+						Sessions::findOrFail($sessions->id)->update(['request' => $form]);
+					} else {
+						abort(502);
+					}
+				}
+
 				dd($form);
 			}
 
