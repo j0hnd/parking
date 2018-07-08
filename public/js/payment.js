@@ -17,9 +17,7 @@ $(document).ready(function(){
         excluded: ':disabled',
         onStepChanging: function (e, currentIndex, newIndex) {
             var fv = $('#payment_wizard').data('formValidation'),
-
-            // The current step container
-            $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
+                $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
 
             // Validate the container
             fv.validateContainer($container);
@@ -69,6 +67,34 @@ $(document).ready(function(){
                         if (response.success) {
                             $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
                         }
+                    }
+                });
+            }
+
+            if (currentIndex == 0 && $('#stripe-container').is(':visible')) {
+                console.log('current index: ' + currentIndex);
+                console.log('stripe container: ' + $('#stripe-container').is(':visible'));
+
+                $('#firstname').val($('#firstname-src').val());
+                $('#lastname').val($('#lastname-src').val());
+                $('#email').val($('#email-src').val());
+                $('#phoneno').val($('#phone-src').val());
+                $('#sms').val($('#sms-fee').val());
+                $('#cancellation').val($('#cancellation-fee').val());
+                $('#car-registration-no').val($('#car-registration-no-src').val());
+                $('#vehicle-color').val($('#vehicle-color-src').val());
+                $('#vehicle-model').val($('#vehicle-model-src').val());
+                $('#coupon').val($('#coupon-src').val());
+
+                var orderForm = $('#order-form').serialize();
+
+                $.ajax({
+                    url: '/stripe/payment',
+                    type: 'post',
+                    data: orderForm,
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response);
                     }
                 });
             }

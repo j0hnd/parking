@@ -661,7 +661,8 @@ class ParkingAppController extends Controller
 		try {
 
 			if ($request->ajax() and $request->isMethod('post')) {
-
+				$form = $request->except(['_token']);
+				dd($form);
 			}
 
 		} catch (Exception $e) {
