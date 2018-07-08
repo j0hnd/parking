@@ -653,4 +653,22 @@ class ParkingAppController extends Controller
 
 		return response()->json($response);
 	}
+
+	public function stripe(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+
+			}
+
+		} catch (Exception $e) {
+			dd($e);
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }

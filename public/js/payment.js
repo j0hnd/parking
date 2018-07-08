@@ -1,24 +1,6 @@
 $(document).ready(function(){
     var hh = $('#top').outerHeight();
     var fh = $('footer').outerHeight();
-    // var stripe = Stripe('pk_test_Q6afLKjJu37D4UORsVXbCNfS');
-    // var elements = stripe.elements();
-    // var style = {
-    //   base: {
-    //     color: '#32325d',
-    //     lineHeight: '18px',
-    //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    //     fontSmoothing: 'antialiased',
-    //     fontSize: '16px',
-    //     '::placeholder': {
-    //       color: '#aab7c4'
-    //     }
-    //   },
-    //   invalid: {
-    //     color: '#fa755a',
-    //     iconColor: '#fa755a'
-    //   }
-    // };
 
     $('#sidebar').affix({
         offset:{
@@ -49,7 +31,21 @@ $(document).ready(function(){
                 return false;
             }
 
-            if (currentIndex == 1) {
+            if (newIndex == 0) {
+                setTimeout(function () {
+                    $('#payment_choice-p-0').show();
+                    $('#payment_choice-p-0').css('left', '0px');
+                }, 500);
+            }
+
+            if (newIndex == 1 && $('#stripe-container').is(':visible')) {
+                $('#payment_wizard-p-1').show();
+                $('#payment_wizard-p-1').css('left', '0px');
+            } else {
+                $('#payment_wizard-p-1').hide();
+            }
+
+            if (currentIndex == 1 && $('#paypal-container').is(':visible')) {
                 var url = $('#booking-details-form').data('url');
 
                 $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
@@ -95,12 +91,6 @@ $(document).ready(function(){
             return true;
         },
         onFinished: function(e, currentIndex) {
-            // Uncomment the following line to submit the form using the defaultSubmit() method
-            // $('#profileForm').formValidation('defaultSubmit');
-
-            // For testing purpose
-            // $('#welcomeModal').modal();
-
             $('body').find('a[href="#previous"]').off('click');
             $('body').find('a[href="#previous"]').parent().addClass('disabled');
 
@@ -178,29 +168,29 @@ $(document).ready(function(){
                     }
                 }
             },
-            card_number: {
-                validators: {
-                    creditCard: {
-                        message: 'The credit card number is not valid'
-                    }
-                }
-            },
-            cv_code: {
-                validators: {
-                    cvv: {
-                        creditCardField: 'card_number',
-                        message: 'The CVV number is not valid'
-                    }
-                }
-            },
-            expiration : {
-                validators: {
-                    date: {
-                        format: 'MM/YYYY',
-                        message: 'The value is not a valid credit card expiration date'
-                    }
-                }
-            },
+            // card_number: {
+            //     validators: {
+            //         creditCard: {
+            //             message: 'The credit card number is not valid'
+            //         }
+            //     }
+            // },
+            // cv_code: {
+            //     validators: {
+            //         cvv: {
+            //             creditCardField: 'card_number',
+            //             message: 'The CVV number is not valid'
+            //         }
+            //     }
+            // },
+            // expiration : {
+            //     validators: {
+            //         date: {
+            //             format: 'MM/YYYY',
+            //             message: 'The value is not a valid credit card expiration date'
+            //         }
+            //     }
+            // },
             drop_off_date: {
                 validators: {
                     notEmpty: {
@@ -250,6 +240,21 @@ $(document).ready(function(){
         titleTemplate: "#title#",
         cssClass: "tabcontrol"
     });
+
+    $.fn.steps.setStep = function (step) {
+        var currentIndex = $(this).steps('getCurrentIndex');
+        console.log($(this));
+        console.log('step: ' + step);
+        console.log('current index: ' + currentIndex);
+        for(var i = 0; i < Math.abs(step - currentIndex); i++){
+            if(step > currentIndex) {
+                $(this).steps('next');
+            }
+            else{
+                $(this).steps('previous');
+            }
+        }
+    };
 
     $(document).on('click', '#sms-fee', function () {
         var total = $('#total').text().substr(1);
@@ -365,51 +370,32 @@ $(document).ready(function(){
         $('#total').text('£'+total.toLocaleString());
         $('#total-amount').val(total.toLocaleString());
     }
-});
 
-$(document).ready(function() {
     setTimeout(function() {
-    document.documentElement.scrollTop =
-        document.body.scrollTop = 0;
-}, 0);
-    // Create an instance of the card Element.
-    // var card = elements.create('card', {style: style});
-    //
-    // // Add an instance of the card Element into the `card-element` <div>.
-    // card.mount('#card-element');
-    //
-    // // Handle real-time validation errors from the card Element.
-    // card.addEventListener('change', function(event) {
-    //   var displayError = document.getElementById('card-errors');
-    //   if (event.error) {
-    //     displayError.textContent = event.error.message;
-    //   } else {
-    //     displayError.textContent = '';
-    //   }
-    // });
+        document.documentElement.scrollTop =
+            document.body.scrollTop = 0;
+    }, 0);
 
     $(window).scroll(function() {
-      if($(this).scrollTop() > 20) {
-          $('.navbar').addClass('solid');
-          $('#sidebar').addClass('sidebar-mar');
-          $('nav').removeClass('bg-dark');
-          $('.Vl').removeClass('vl');
-      } else {
-          $('.navbar').removeClass('solid');
-          $('nav').addClass('bg-dark');
-          $('.Vl').addClass('vl');
-          $('#sidebar').removeClass('sidebar-mar');
-      }
+        if($(this).scrollTop() > 20) {
+            $('.navbar').addClass('solid');
+            $('#sidebar').addClass('sidebar-mar');
+            $('nav').removeClass('bg-dark');
+            $('.Vl').removeClass('vl');
+        } else {
+            $('.navbar').removeClass('solid');
+            $('nav').addClass('bg-dark');
+            $('.Vl').addClass('vl');
+            $('#sidebar').removeClass('sidebar-mar');
+        }
     });
-});
 
-$(document).ready(function() {
     $(window).scroll(function() {
-      if($(this).scrollTop() > 250) {
-          $('#sidebar').addClass('sidebar-mar');
-      } else {
-          $('#sidebar').removeClass('sidebar-mar');
-      }
+        if($(this).scrollTop() > 250) {
+            $('#sidebar').addClass('sidebar-mar');
+        } else {
+            $('#sidebar').removeClass('sidebar-mar');
+        }
     });
 });
 
