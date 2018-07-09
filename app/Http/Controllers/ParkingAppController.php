@@ -28,8 +28,10 @@ use App\Models\Tools\Subcategories;
 use App\Models\User;
 use App\Models\Companies;
 use Carbon\Carbon;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Cookie\CookieJar;
 use Srmklive\PayPal\Facades\PayPal;
@@ -674,17 +676,38 @@ class ParkingAppController extends Controller
 
 				$form['booking_id'] = Bookings::generate_booking_id($id);
 
-				if (!session()->has('sess_id')) {
-					$sessions = Sessions::create(['request_id' => session()->getId(), 'requests' => json_encode($form)]);
+				if (session()->has('sess_id')) {
+					$sessions = Sessions::where('session_id', $request->session()->get('sess_id'))->update([
+						'booking_id' => $booking->id,
+						'response' => json_encode($form)
+					]);
+
 					if ($sessions) {
-						$request->session()->put('sess_id', $sessions->session_id);
-						Sessions::findOrFail($sessions->id)->update(['request' => $form]);
-					} else {
-						abort(502);
+						$customer = Customers::where(['email' => $sessions['email']]);
+						if ($customer->count()) {
+							$customer_id = $customer->first()->id;
+						} else {
+							unset($customer);
+							$customer['first_name'] = $form['firstname'];
+							$customer['last_name'] = $form['lastname'];
+							$customer['email'] = $form['email'];
+							$customer['mobile_no'] = $form['phoneno'];
+							$customer = Customers::create($customer);
+
+							$customer_id = $customer->id;
+						}
+
+						$data = [
+							'customer' => $customer_id,
+							'amount' => $sessions['total'],
+							'description' => 'Payment for ' . $sessions['booking_id']
+						];
+
+						if ($this->charge($data, $request)) {
+							$response = ['success' => true];
+						}
 					}
 				}
-
-				dd($form);
 			}
 
 		} catch (Exception $e) {
@@ -693,5 +716,49 @@ class ParkingAppController extends Controller
 		}
 
 		return response()->json($response);
+	}
+
+	private function charge($data = array(), $request)
+	{
+		if (count($data) == 0) {
+			return null;
+		}
+
+		$data['currency'] = 'GBP';
+
+		try {
+			$charge = Stripe::charge($data);
+
+			if (isset($charge['id'])) {
+				if (session()->has('sess_id')) {
+					$sess_id = $request->session()->get('sess_id');
+					$sessions = Sessions::where('request_id', $sess_id)->first();
+					$response = json_decode($sessions->response, true);
+					$response['charge_id'] = $charge['id'];
+
+					DB::beginTransaction();
+
+					$booking = Bookings::where('booking_id', $response['booking_id']);
+					if ($booking->count()) {
+						// update bookings
+						$booking->update(['is_paid' => 1, 'paid_at' => Carbon::now()]);
+
+						// update session data
+						$sessions->update(['response' => json_encode($response)]);
+
+						DB::commit();
+
+						return true;
+					} else {
+						DB::rollback();
+					}
+				}
+			}
+		} catch (\Exception $e) {
+			dd($e);
+			Log::error(Carbon::now() . " - Error in charging a credit card using stripe. With request id  " . $sess_id . $e->getMessage());
+		}
+
+		return null;
 	}
 }
