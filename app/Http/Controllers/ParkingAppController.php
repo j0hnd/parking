@@ -28,7 +28,8 @@ use App\Models\Tools\Subcategories;
 use App\Models\User;
 use App\Models\Companies;
 use Carbon\Carbon;
-use Cartalyst\Stripe\Laravel\Facades\Stripe;
+use Cartalyst\Stripe\Exception\StripeException;
+use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
@@ -664,7 +665,13 @@ class ParkingAppController extends Controller
 		try {
 
 			if ($request->ajax() and $request->isMethod('post')) {
-				$form = $request->except(['_token']);
+				$form = $request->except(['_token', 'card_name', 'card_number', 'expiration', 'cv_code']);
+				$card = [
+					'card_name' => $request->get('card_name'),
+					'card_number' => $request->get('card_number'),
+					'expiration' => $request->get('expiration'),
+					'cvv' => $request->get('cv_code')
+				];
 
 				$booking = Bookings::select('id')->orderBy('id', 'desc')->first();
 				if ($booking) {
@@ -675,6 +682,8 @@ class ParkingAppController extends Controller
 				}
 
 				$form['booking_id'] = Bookings::generate_booking_id($id);
+
+				$booking = Bookings::create($form);
 
 				if (session()->has('sess_id')) {
 					$sessions = Sessions::where('session_id', $request->session()->get('sess_id'))->update([
@@ -698,12 +707,11 @@ class ParkingAppController extends Controller
 						}
 
 						$data = [
-							'customer' => $customer_id,
-							'amount' => $sessions['total'],
-							'description' => 'Payment for ' . $sessions['booking_id']
+							'amount' => $form['total'],
+							'description' => 'Payment for ' . $form['booking_id']
 						];
 
-						if ($this->charge($data, $request)) {
+						if (self::charge($data, $card, $request)) {
 							$response = ['success' => true];
 						}
 					}
@@ -718,25 +726,41 @@ class ParkingAppController extends Controller
 		return response()->json($response);
 	}
 
-	private function charge($data = array(), $request)
+	private static function charge($data = array(), $card = array(), $request)
 	{
-		if (count($data) == 0) {
+		if (count($data) == 0 and count($card)) {
 			return null;
 		}
 
+		// set currency
 		$data['currency'] = 'GBP';
 
 		try {
-			$charge = Stripe::charge($data);
+			if (session()->has('sess_id')) {
+				$sess_id = $request->session()->get('sess_id');
+				$sessions = Sessions::where('session_id', $sess_id)->first();
+				$response = json_decode($sessions->response, true);
+				list($expiry_month, $expiry_year) = explode('/', $card['expiration']);
 
-			if (isset($charge['id'])) {
-				if (session()->has('sess_id')) {
-					$sess_id = $request->session()->get('sess_id');
-					$sessions = Sessions::where('request_id', $sess_id)->first();
-					$response = json_decode($sessions->response, true);
-					$response['charge_id'] = $charge['id'];
+				$stripe = Stripe::make(config('services.stripe.key'));
+
+				$token = $stripe->tokens()->create([
+					'card' => [
+						'number' => $card['card_number'],
+						'exp_month' => $expiry_month,
+						'exp_year' => $expiry_year,
+						'cvc' => $card['cvv'],
+					]
+				]);
+
+				if (isset($token['id'])) {
+					$data['card'] = $token['id'];
+
+					$charge = $stripe->charges()->create($data);
 
 					DB::beginTransaction();
+
+					$response['charge_id'] = $charge['id'];
 
 					$booking = Bookings::where('booking_id', $response['booking_id']);
 					if ($booking->count()) {
@@ -753,7 +777,11 @@ class ParkingAppController extends Controller
 						DB::rollback();
 					}
 				}
+				// set card
+
 			}
+		} catch (StripeException $se) {
+			dd($se);
 		} catch (\Exception $e) {
 			dd($e);
 			Log::error(Carbon::now() . " - Error in charging a credit card using stripe. With request id  " . $sess_id . $e->getMessage());

@@ -72,9 +72,6 @@ $(document).ready(function(){
             }
 
             if (currentIndex == 0 && $('#stripe-container').is(':visible')) {
-                console.log('current index: ' + currentIndex);
-                console.log('stripe container: ' + $('#stripe-container').is(':visible'));
-
                 $('#firstname').val($('#firstname-src').val());
                 $('#lastname').val($('#lastname-src').val());
                 $('#email').val($('#email-src').val());
@@ -85,6 +82,10 @@ $(document).ready(function(){
                 $('#vehicle-color').val($('#vehicle-color-src').val());
                 $('#vehicle-model').val($('#vehicle-model-src').val());
                 $('#coupon').val($('#coupon-src').val());
+                $('#card-name').val($('#card-name-src').val());
+                $('#card-number').val($('#card-number-src').val());
+                $('#expiration').val($('#expiration-src').val());
+                $('#cv-code').val($('#cv-code-src-src').val());
 
                 var orderForm = $('#order-form').serialize();
 
