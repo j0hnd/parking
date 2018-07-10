@@ -54,7 +54,7 @@
             <select name="country_id" id="countries" class="form-control">
                 @foreach($countries as $country)
                     @if(isset($airport))
-                        @if($country->id == $airport->country_id)
+                        @if($country->id == $airport->country_id or $country->id == old('country_id'))
                         <option value="{{ $country->id }}" selected>{{ $country->country }}</option>
                         @else
                         <option value="{{ $country->id }}">{{ $country->country }}</option>
