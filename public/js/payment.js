@@ -125,16 +125,33 @@ $(document).ready(function(){
                 });
             }
 
-            if (currentIndex == 0 && newIndex == 1 && $('#stripe-container').is(':visible')) {
+            if (currentIndex == 1 && newIndex == 2 && $('#bid').val()) {
                 var bid = $('#bid').val();
-                console.log(bid);
+                $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
+                $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
+                $('#flight_no_going').val($('#departure-src').val());
+                $('#flight_no_return').val($('#arrival-src').val());
+                $('#no_of_passengers_in_vehicle').val($('#no-of-passengers-in-vehicle-src').val());
+
+                var with_oversize_baggage = $('#with-oversize-baggage').is(':checked') ? 1 : 0;
+                var with_children_pwd = $('#with-children-pwd').is(':checked') ? 1 : 0;
+
+                $('#with_oversize_baggage').val(with_oversize_baggage);
+                $('#with_children_pwd').val(with_children_pwd);
+
+                setTimeout(function () {
+                    $('#payment_wizard-p-2').show();
+                    $('#payment_wizard-p-2').css('left', '0px');
+                }, 500);
+
                 $.ajax({
                     url: '/booking/details/'+ bid +'/update',
                     type: 'post',
                     data: $('#booking-details-form').serialize(),
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response);
+                        $('#finish-wrapper').removeClass('d-none');
+                        $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
                     }
                 });
             }

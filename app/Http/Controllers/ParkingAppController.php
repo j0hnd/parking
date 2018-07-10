@@ -229,7 +229,7 @@ class ParkingAppController extends Controller
 					$bookings['price_id'] = $price_id;
 					$bookings['price_value'] = $booking_data['total'];
 					$bookings['revenue_value'] = $revenue_value;
-					$bookings['coupon'] = $booking_data['coupon'];
+					$bookings['coupon'] = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
 					$bookings['cancellation_waiver'] = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
 					$bookings['booking_fees'] = $booking_data['booking_fee'];
@@ -278,6 +278,7 @@ class ParkingAppController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$form = $request->except(['_token']);
+
 			$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 			if ($booking) {
 				$drop_date = str_replace('/', '-', $form['drop_off_at']);
@@ -441,7 +442,6 @@ class ParkingAppController extends Controller
 
 			if (!is_null($response['paypal_link'])) {
 				if ($request->session()->has('sess_id')) {
-					dd($form);
 					if (Sessions::where('session_id', session('sess_id'))->update(['booking_id' => $id, 'response' => json_encode($form)])) {
 						return redirect($response['paypal_link']);
 					}
@@ -681,7 +681,9 @@ class ParkingAppController extends Controller
 						$id = 1;
 					}
 
-					$sess_id = session('sess_id');
+					DB::beginTransaction();
+
+					$sess_id = $request->session()->get('sess_id');
 					$session = Sessions::where('session_id', $sess_id)->first();
 					$session_request = json_decode($session->requests, true);
 					$session_response = json_decode($session->response, true);
@@ -724,6 +726,7 @@ class ParkingAppController extends Controller
 					} else {
 						$booking = Bookings::create($form);
 						$booking_id = $booking->id;
+						BookingDetails::create(['booking_id' => $booking_id]);
 
 						$sessions = Sessions::where('session_id', $sess_id)->update([
 							'booking_id' => $booking->id,
@@ -738,8 +741,13 @@ class ParkingAppController extends Controller
 						];
 
 						if (self::charge($data, $card, $request)) {
+							DB::commit();
 							$response = ['success' => true, 'data' => $booking_id];
+						} else {
+							DB::rollback();
 						}
+					} else {
+						DB::rollback();
 					}
 				}
 			}
@@ -790,7 +798,7 @@ class ParkingAppController extends Controller
 					$booking = Bookings::where('booking_id', $response['booking_id']);
 					if ($booking->count()) {
 						// update bookings
-						$booking->update(['is_paid' => 1, 'paid_at' => Carbon::now()]);
+//						$booking->update(['is_paid' => 1, 'paid_at' => Carbon::now()]);
 
 						// update session data
 						$sessions->update(['response' => json_encode($response)]);
@@ -806,9 +814,8 @@ class ParkingAppController extends Controller
 
 			}
 		} catch (StripeException $se) {
-			dd($se);
+			Log::error(Carbon::now() . " - Stripe error (request ID: ". $sess_id ."): " . $se->getMessage());
 		} catch (\Exception $e) {
-			dd($e);
 			Log::error(Carbon::now() . " - Error in charging a credit card using stripe. With request id  " . $sess_id . $e->getMessage());
 		}
 

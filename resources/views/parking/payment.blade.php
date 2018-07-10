@@ -150,7 +150,7 @@ Payment |
 								<div class="row">
 									<div class="col-md-12">
 										<label>Coupon Code:</label>
-										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ is_null($details) ? "" : $details['coupon'] }}">
+										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ isset($details['coupon']) ? $details['coupon'] : "" }}">
 										<span id="coupon-error" class="d-none" style="color:red"><small>Coupon not valid!</small></span>
 									</div>
 								</div>
