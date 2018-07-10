@@ -7,7 +7,7 @@
             @if($carparks->count())
                 @foreach($carparks->get() as $carpark)
                     @if(isset($product))
-                        @if($product->carpark_id == $carpark->id)
+                        @if($product->carpark_id == $carpark->id or $product->$carpark_id == old('carpark_id'))
                         <option value="{{ $carpark->id }}" selected>{{ $carpark->name }}</option>
                         @else
                         <option value="{{ $carpark->id }}">{{ $carpark->name }}</option>
@@ -30,7 +30,7 @@
                 @foreach($airports->get() as $airport)
                     @if(isset($product->airport))
                         @foreach($product->airport as $product_airport)
-                            @if($airport->id == $product_airport->id)
+                            @if($airport->id == $product_airport->id or $airport->id == old('airport_id'))
                             <option value="{{ $airport->id }}" selected>{{ $airport->airport_name }}</option>
                             @else
                             <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
@@ -52,6 +52,8 @@
         <textarea name="description" id="description" class="form-control" cols="30" rows="10">
             @if(isset($product))
             {{ $product->description }}
+            @else
+            {{ old('description') }}
             @endif
         </textarea>
     </div>
@@ -64,6 +66,8 @@
         <textarea name="on_arrival" id="on_arrival" class="form-control" cols="30" rows="10">
             @if(isset($product))
             {{ $product->on_arrival }}
+            @else
+            {{ old('on_arrival') }}
             @endif
         </textarea>
     </div>
@@ -76,6 +80,8 @@
         <textarea name="on_return" id="on_return" class="form-control" cols="30" rows="10">
             @if(isset($product))
             {{ $product->on_return }}
+            @else
+            {{ old('on_return') }}
             @endif
         </textarea>
     </div>

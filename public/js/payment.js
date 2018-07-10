@@ -1,24 +1,6 @@
 $(document).ready(function(){
     var hh = $('#top').outerHeight();
     var fh = $('footer').outerHeight();
-    // var stripe = Stripe('pk_test_Q6afLKjJu37D4UORsVXbCNfS');
-    // var elements = stripe.elements();
-    // var style = {
-    //   base: {
-    //     color: '#32325d',
-    //     lineHeight: '18px',
-    //     fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    //     fontSmoothing: 'antialiased',
-    //     fontSize: '16px',
-    //     '::placeholder': {
-    //       color: '#aab7c4'
-    //     }
-    //   },
-    //   invalid: {
-    //     color: '#fa755a',
-    //     iconColor: '#fa755a'
-    //   }
-    // };
 
     $('#sidebar').affix({
         offset:{
@@ -35,9 +17,7 @@ $(document).ready(function(){
         excluded: ':disabled',
         onStepChanging: function (e, currentIndex, newIndex) {
             var fv = $('#payment_wizard').data('formValidation'),
-
-            // The current step container
-            $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
+                $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
 
             // Validate the container
             fv.validateContainer($container);
@@ -49,7 +29,44 @@ $(document).ready(function(){
                 return false;
             }
 
-            if (currentIndex == 1) {
+            if (newIndex == 0) {
+                setTimeout(function () {
+                    $('#payment_choice-p-0').show();
+                    $('#payment_choice-p-0').css('left', '0px');
+                }, 500);
+            }
+
+            if (newIndex == 1 && $('#stripe-container').is(':visible')) {
+                $('#payment_wizard-p-1').show();
+                $('#payment_wizard-p-1').css('left', '0px');
+            } else {
+                $('#payment_wizard-p-1').hide();
+            }
+
+            if ($('#sms-fee').is(':checked')) {
+                var total = $('#total').text().substr(1);
+                total = parseFloat(total) + parseFloat($('#sms-fee').val());
+                $('#total').text('£'+total.toLocaleString());
+                $('#total-amount').val(total.toLocaleString());
+                $('#sms-fee-wrapper').text($('#sms-fee').val());
+                $('#sms-confirmation').val(1);
+                $('#sms').val($('#sms-fee').val());
+            } else {
+                $('#sms-confirmation').val(0);
+                $('#sms').val(0);
+            }
+
+            if ($('#cancellation-fee').is(':checked')) {
+                var total = $('#total').text().substr(1);
+                total = parseFloat(total) + parseFloat($('#cancellation').val());
+                $('#total').text('£'+total.toLocaleString());
+                $('#total-amount').val(total.toLocaleString());
+                $('#cancellation').val($('#cancellation-fee').val());
+            } else {
+                $('#cancellation').val(0);
+            }
+
+            if (currentIndex == 1 && $('#paypal-container').is(':visible')) {
                 var url = $('#booking-details-form').data('url');
 
                 $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
@@ -77,6 +94,68 @@ $(document).ready(function(){
                 });
             }
 
+            if (currentIndex == 0 && $('#stripe-container').is(':visible')) {
+                $('#firstname').val($('#firstname-src').val());
+                $('#lastname').val($('#lastname-src').val());
+                $('#email').val($('#email-src').val());
+                $('#phoneno').val($('#phone-src').val());
+                $('#sms').val($('#sms-fee').val());
+                $('#cancellation').val($('#cancellation').val());
+                $('#car-registration-no').val($('#car-registration-no-src').val());
+                $('#vehicle-color').val($('#vehicle-color-src').val());
+                $('#vehicle-model').val($('#vehicle-model-src').val());
+                $('#coupon').val($('#coupon-src').val());
+                $('#card-name').val($('#card-name-src').val());
+                $('#card-number').val($('#card-number-src').val());
+                $('#expiration').val($('#expiration-src').val());
+                $('#cv-code').val($('#cv-code-src-src').val());
+
+                var orderForm = $('#order-form').serialize();
+
+                $.ajax({
+                    url: '/stripe/payment',
+                    type: 'post',
+                    data: orderForm,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#bid').val(response.data);
+                        }
+                    }
+                });
+            }
+
+            if (currentIndex == 1 && newIndex == 2 && $('#bid').val()) {
+                var bid = $('#bid').val();
+                $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
+                $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
+                $('#flight_no_going').val($('#departure-src').val());
+                $('#flight_no_return').val($('#arrival-src').val());
+                $('#no_of_passengers_in_vehicle').val($('#no-of-passengers-in-vehicle-src').val());
+
+                var with_oversize_baggage = $('#with-oversize-baggage').is(':checked') ? 1 : 0;
+                var with_children_pwd = $('#with-children-pwd').is(':checked') ? 1 : 0;
+
+                $('#with_oversize_baggage').val(with_oversize_baggage);
+                $('#with_children_pwd').val(with_children_pwd);
+
+                setTimeout(function () {
+                    $('#payment_wizard-p-2').show();
+                    $('#payment_wizard-p-2').css('left', '0px');
+                }, 500);
+
+                $.ajax({
+                    url: '/booking/details/'+ bid +'/update',
+                    type: 'post',
+                    data: $('#booking-details-form').serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#finish-wrapper').removeClass('d-none');
+                        $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
+                    }
+                });
+            }
+
             return true;
         },
         // Triggered when clicking the Finish button
@@ -95,12 +174,6 @@ $(document).ready(function(){
             return true;
         },
         onFinished: function(e, currentIndex) {
-            // Uncomment the following line to submit the form using the defaultSubmit() method
-            // $('#profileForm').formValidation('defaultSubmit');
-
-            // For testing purpose
-            // $('#welcomeModal').modal();
-
             $('body').find('a[href="#previous"]').off('click');
             $('body').find('a[href="#previous"]').parent().addClass('disabled');
 
@@ -133,7 +206,7 @@ $(document).ready(function(){
                         message: 'The first name is a required field'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9\-]+$/,
+                        regexp: /^[a-zA-Z0-9\- ]+$/,
                         message: 'The first name can only consist of alphabetical, number and hyphen'
                     }
                 }
@@ -144,7 +217,7 @@ $(document).ready(function(){
                         message: 'The last name is a required field'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9\-]+$/,
+                        regexp: /^[a-zA-Z0-9\- ]+$/,
                         message: 'The last name can only consist of alphabetical, number and hyphen'
                     }
                 }
@@ -178,29 +251,29 @@ $(document).ready(function(){
                     }
                 }
             },
-            card_number: {
-                validators: {
-                    creditCard: {
-                        message: 'The credit card number is not valid'
-                    }
-                }
-            },
-            cv_code: {
-                validators: {
-                    cvv: {
-                        creditCardField: 'card_number',
-                        message: 'The CVV number is not valid'
-                    }
-                }
-            },
-            expiration : {
-                validators: {
-                    date: {
-                        format: 'MM/YYYY',
-                        message: 'The value is not a valid credit card expiration date'
-                    }
-                }
-            },
+            // card_number: {
+            //     validators: {
+            //         creditCard: {
+            //             message: 'The credit card number is not valid'
+            //         }
+            //     }
+            // },
+            // cv_code: {
+            //     validators: {
+            //         cvv: {
+            //             creditCardField: 'card_number',
+            //             message: 'The CVV number is not valid'
+            //         }
+            //     }
+            // },
+            // expiration : {
+            //     validators: {
+            //         date: {
+            //             format: 'MM/YYYY',
+            //             message: 'The value is not a valid credit card expiration date'
+            //         }
+            //     }
+            // },
             drop_off_date: {
                 validators: {
                     notEmpty: {
@@ -251,6 +324,21 @@ $(document).ready(function(){
         cssClass: "tabcontrol"
     });
 
+    $.fn.steps.setStep = function (step) {
+        var currentIndex = $(this).steps('getCurrentIndex');
+        console.log($(this));
+        console.log('step: ' + step);
+        console.log('current index: ' + currentIndex);
+        for(var i = 0; i < Math.abs(step - currentIndex); i++){
+            if(step > currentIndex) {
+                $(this).steps('next');
+            }
+            else{
+                $(this).steps('previous');
+            }
+        }
+    };
+
     $(document).on('click', '#sms-fee', function () {
         var total = $('#total').text().substr(1);
         if ($(this).is(':checked')) {
@@ -278,11 +366,13 @@ $(document).ready(function(){
             total = parseFloat(total) + parseFloat($(this).val());
             $('#cancellation-waiver-container').removeClass('d-none');
             $('#cancellation-waiver-wrapper').text($(this).val());
+            $('#cancellation').text($(this).val());
         } else {
             if ($('#total').data('value') < total) {
                 total = parseFloat(total) - parseFloat($(this).val());
             }
 
+            $('#cancellation').text(0);
             $('#cancellation-waiver-wrapper').text(0);
             $('#cancellation-waiver-container').addClass('d-none');
         }
@@ -355,61 +445,47 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
         $('#sms-fee-wrapper').text($('#sms-fee').val());
         $('#sms-confirmation').val(1);
+        $('#sms').val($('#sms-fee').val());
     } else {
         $('#sms-confirmation').val(0);
+        $('#sms').val(0);
     }
 
-    if ($('#cancellation').is(':checked')) {
+    if ($('#cancellation-fee').is(':checked')) {
         var total = $('#total').text().substr(1);
         total = parseFloat(total) + parseFloat($('#cancellation').val());
         $('#total').text('£'+total.toLocaleString());
         $('#total-amount').val(total.toLocaleString());
+        $('#cancellation').val($('#cancellation-fee').val());
+    } else {
+        $('#cancellation').val(0);
     }
-});
 
-$(document).ready(function() {
     setTimeout(function() {
-    document.documentElement.scrollTop =
-        document.body.scrollTop = 0;
-}, 0);
-    // Create an instance of the card Element.
-    // var card = elements.create('card', {style: style});
-    //
-    // // Add an instance of the card Element into the `card-element` <div>.
-    // card.mount('#card-element');
-    //
-    // // Handle real-time validation errors from the card Element.
-    // card.addEventListener('change', function(event) {
-    //   var displayError = document.getElementById('card-errors');
-    //   if (event.error) {
-    //     displayError.textContent = event.error.message;
-    //   } else {
-    //     displayError.textContent = '';
-    //   }
-    // });
+        document.documentElement.scrollTop =
+            document.body.scrollTop = 0;
+    }, 0);
 
     $(window).scroll(function() {
-      if($(this).scrollTop() > 20) {
-          $('.navbar').addClass('solid');
-          $('#sidebar').addClass('sidebar-mar');
-          $('nav').removeClass('bg-dark');
-          $('.Vl').removeClass('vl');
-      } else {
-          $('.navbar').removeClass('solid');
-          $('nav').addClass('bg-dark');
-          $('.Vl').addClass('vl');
-          $('#sidebar').removeClass('sidebar-mar');
-      }
+        if($(this).scrollTop() > 20) {
+            $('.navbar').addClass('solid');
+            $('#sidebar').addClass('sidebar-mar');
+            $('nav').removeClass('bg-dark');
+            $('.Vl').removeClass('vl');
+        } else {
+            $('.navbar').removeClass('solid');
+            $('nav').addClass('bg-dark');
+            $('.Vl').addClass('vl');
+            $('#sidebar').removeClass('sidebar-mar');
+        }
     });
-});
 
-$(document).ready(function() {
     $(window).scroll(function() {
-      if($(this).scrollTop() > 250) {
-          $('#sidebar').addClass('sidebar-mar');
-      } else {
-          $('#sidebar').removeClass('sidebar-mar');
-      }
+        if($(this).scrollTop() > 250) {
+            $('#sidebar').addClass('sidebar-mar');
+        } else {
+            $('#sidebar').removeClass('sidebar-mar');
+        }
     });
 });
 

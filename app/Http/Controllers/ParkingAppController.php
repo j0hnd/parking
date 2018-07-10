@@ -28,8 +28,11 @@ use App\Models\Tools\Subcategories;
 use App\Models\User;
 use App\Models\Companies;
 use Carbon\Carbon;
+use Cartalyst\Stripe\Exception\StripeException;
+use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Cookie\CookieJar;
 use Srmklive\PayPal\Facades\PayPal;
@@ -226,7 +229,7 @@ class ParkingAppController extends Controller
 					$bookings['price_id'] = $price_id;
 					$bookings['price_value'] = $booking_data['total'];
 					$bookings['revenue_value'] = $revenue_value;
-					$bookings['coupon'] = $booking_data['coupon'];
+					$bookings['coupon'] = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
 					$bookings['cancellation_waiver'] = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
 					$bookings['booking_fees'] = $booking_data['booking_fee'];
@@ -275,6 +278,7 @@ class ParkingAppController extends Controller
 	{
 		if ($request->isMethod('post')) {
 			$form = $request->except(['_token']);
+
 			$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 			if ($booking) {
 				$drop_date = str_replace('/', '-', $form['drop_off_at']);
@@ -647,10 +651,174 @@ class ParkingAppController extends Controller
 				}
 			}
 		} catch (Exception $e) {
-			dd($e);
 			$response['message'] = $e->getMessage();
 		}
 
 		return response()->json($response);
+	}
+
+	public function stripe(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->except(['_token', 'card_name', 'card_number', 'expiration', 'cv_code']);
+				$card = [
+					'card_name' => $request->get('card_name'),
+					'card_number' => $request->get('card_number'),
+					'expiration' => $request->get('expiration'),
+					'cvv' => $request->get('cv_code')
+				];
+
+				if (session()->has('sess_id')) {
+					$booking = Bookings::select('id')->orderBy('id', 'desc')->first();
+					if ($booking) {
+						$id = $booking->id;
+						$id++;
+					} else {
+						$id = 1;
+					}
+
+					DB::beginTransaction();
+
+					$sess_id = $request->session()->get('sess_id');
+					$session = Sessions::where('session_id', $sess_id)->first();
+					$session_request = json_decode($session->requests, true);
+					$session_response = json_decode($session->response, true);
+
+					$customer = Customers::where(['email' => $session['email']]);
+					if ($customer->count()) {
+						$customer_id = $customer->first()->id;
+					} else {
+						unset($customer);
+						$customer['first_name'] = $form['firstname'];
+						$customer['last_name']  = $form['lastname'];
+						$customer['email']      = $form['email'];
+						$customer['mobile_no']  = $form['phoneno'];
+						$customer = Customers::create($customer);
+
+						$customer_id = $customer->id;
+					}
+
+					list($product_id, $price_id) = explode(':', $form['ids']);
+					$drop_off  = str_replace('/', '-', $session_request['drop_off']);
+					$return_at = str_replace('/', '-', $session_request['return_at']);
+
+					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
+					$form['product_id']    = $product_id;
+					$form['price_id']      = $price_id;
+					$form['customer_id']   = $customer_id;
+					$form['order_title']   = $form['product'];
+					$form['price_value']   = $form['total'];
+					$form['revenue_value'] = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
+					$form['cancellation_waiver']  = $form['cancellation'];
+					$form['sms_confirmation_fee'] = $form['sms'];
+					$form['booking_fees']         = $form['booking_fee'];
+					$form['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_off));
+					$form['return_at']            = date('Y-m-d H:i:s', strtotime($return_at));
+
+					$_booking = Bookings::where('booking_id', $session_response['booking_id']);
+					if ($_booking->count()) {
+						$booking = Bookings::findOrFail($_booking->first()->id)->update($form);
+						$booking_id = $_booking->first()->id;
+					} else {
+						$booking = Bookings::create($form);
+						$booking_id = $booking->id;
+						BookingDetails::create(['booking_id' => $booking_id]);
+
+						$sessions = Sessions::where('session_id', $sess_id)->update([
+							'booking_id' => $booking->id,
+							'response' => json_encode($form)
+						]);
+					}
+
+					if ($session and $booking) {
+						$data = [
+							'amount' => $form['total'],
+							'description' => 'Payment for ' . $form['booking_id']
+						];
+
+						if (self::charge($data, $card, $request)) {
+							DB::commit();
+							$response = ['success' => true, 'data' => $booking_id];
+						} else {
+							DB::rollback();
+						}
+					} else {
+						DB::rollback();
+					}
+				}
+			}
+
+		} catch (Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
+
+	private static function charge($data = array(), $card = array(), $request)
+	{
+		if (count($data) == 0 and count($card)) {
+			return null;
+		}
+
+		// set currency
+		$data['currency'] = 'GBP';
+
+		try {
+			if (session()->has('sess_id')) {
+				$sess_id = $request->session()->get('sess_id');
+				$sessions = Sessions::where('session_id', $sess_id)->first();
+				$response = json_decode($sessions->response, true);
+				list($expiry_month, $expiry_year) = explode('/', $card['expiration']);
+
+				$stripe = Stripe::make(config('services.stripe.key'));
+
+				$token = $stripe->tokens()->create([
+					'card' => [
+						'number' => $card['card_number'],
+						'exp_month' => $expiry_month,
+						'exp_year' => $expiry_year,
+						'cvc' => $card['cvv'],
+					]
+				]);
+
+				if (isset($token['id'])) {
+					$data['card'] = $token['id'];
+
+					$charge = $stripe->charges()->create($data);
+
+					DB::beginTransaction();
+
+					$response['charge_id'] = $charge['id'];
+
+					$booking = Bookings::where('booking_id', $response['booking_id']);
+					if ($booking->count()) {
+						// update bookings
+//						$booking->update(['is_paid' => 1, 'paid_at' => Carbon::now()]);
+
+						// update session data
+						$sessions->update(['response' => json_encode($response)]);
+
+						DB::commit();
+
+						return true;
+					} else {
+						DB::rollback();
+					}
+				}
+				// set card
+
+			}
+		} catch (StripeException $se) {
+			Log::error(Carbon::now() . " - Stripe error (request ID: ". $sess_id ."): " . $se->getMessage());
+		} catch (\Exception $e) {
+			Log::error(Carbon::now() . " - Error in charging a credit card using stripe. With request id  " . $sess_id . $e->getMessage());
+		}
+
+		return null;
 	}
 }

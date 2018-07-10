@@ -150,7 +150,7 @@ Payment |
 								<div class="row">
 									<div class="col-md-12">
 										<label>Coupon Code:</label>
-										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ is_null($details) ? "" : $details['coupon'] }}">
+										<input type="text" id="coupon-src" name="coupon_src" class="form-control" value="{{ isset($details['coupon']) ? $details['coupon'] : "" }}">
 										<span id="coupon-error" class="d-none" style="color:red"><small>Coupon not valid!</small></span>
 									</div>
 								</div>
@@ -162,7 +162,7 @@ Payment |
 								@if(is_null($details))
 								<h4>Credit / Debit Card</h4>
 								<fieldset>
-									<div class="container">
+									<div class="container" id="stripe-container">
 										<div class="row">
 											<div class="col-md-6">
 												<i><img src="{{ asset('/img/booking/wallet.png') }}"> Payment Details</i>
@@ -175,7 +175,7 @@ Payment |
 										<div class="row">
 											<div class="col-md-12">
 												<label>Name On Card:</label>
-												<input type="text" name="card_name" class="form-control">
+												<input type="text" id="card-name-src" name="card_name" class="form-control">
 
 											</div>
 										</div>
@@ -183,48 +183,26 @@ Payment |
 										<div class="row">
 											<div class="col-md-12">
 												<label>Card Number:</label>
-												<input type="text" name="card_number" class="form-control">
+												<input type="text" id="card-number-src" name="card_number" class="form-control">
 											</div>
 										</div>
 										<br/>
 										<div class="row">
 											<div class="col-md-6">
 												<label>Expiration Date:</label>
-												<input type="text" name="expiration" class="form-control">
+												<input type="text" id="expiration-src" name="expiration" class="form-control">
 											</div>
 											<div class="col-md-6">
 												<label>CV Code:</label>
-												<input type="text" name="cv_code" class="form-control">
+												<input type="text" id="cv-code-src" name="cv_code" class="form-control">
 											</div>
 										</div>
-										{{--<div class="row">--}}
-											{{--<div class="col-md-12">--}}
-												{{--<div id="card-element">--}}
-											      {{--<!-- A Stripe Element will be inserted here. -->--}}
-											    {{--</div>--}}
-
-											    {{--<!-- Used to display form errors. -->--}}
-											    {{--<div id="card-errors" role="alert"></div>--}}
-											{{--</div>--}}
-										{{--</div>--}}
-										{{--<br/>--}}
-										{{--<div class="row">--}}
-											{{--<div class="col-md-12">--}}
-												{{--<label>Coupon Code:</label>--}}
-												{{--<input type="text" name="coupon" class="form-control">--}}
-											{{--</div>--}}
-										{{--</div>--}}
-										{{--<br/>--}}
-										{{--<p>Lorem ipsum dolor</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-										</p>--}}
 									</div>
 								</fieldset>
 
 								<h4>PayPal</h4>
 								<fieldset>
-									<div class="container">
+									<div class="container" id="paypal-container">
 										<div class="row">
 											<div class="col-md-6">
 												<i><img src="{{ asset('/img/booking/wallet.png') }}"> Payment Details</i>
@@ -387,7 +365,10 @@ Payment |
 						<input type="hidden" id="car-registration-no" name="car_registration_no">
 						<input type="hidden" id="vehicle-model" name="vehicle_model">
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
-						<input type="hidden" id="coupon" name="coupon">
+						<input type="hidden" id="card-name" name="card_name">
+						<input type="hidden" id="card-number" name="card_number">
+						<input type="hidden" id="expiration" name="expiration">
+						<input type="hidden" id="cv-code" name="cv_code">
 						{{ csrf_field() }}
 					</form>
 

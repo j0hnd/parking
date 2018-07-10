@@ -37,6 +37,7 @@ Route::post('/booking/details/{id}/update', 'ParkingAppController@update_booking
 Route::post('/filter/search/{filter}', 'ParkingAppController@filter_result');
 Route::post('/process/forgot-password', 'ParkingAppController@process_forgot_password');
 Route::post('/get/coupon', 'ParkingAppController@get_coupon');
+Route::post('/stripe/payment', 'ParkingAppController@stripe');
 
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
