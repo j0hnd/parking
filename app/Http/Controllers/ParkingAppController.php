@@ -651,7 +651,6 @@ class ParkingAppController extends Controller
 				}
 			}
 		} catch (Exception $e) {
-			dd($e);
 			$response['message'] = $e->getMessage();
 		}
 
@@ -673,53 +672,79 @@ class ParkingAppController extends Controller
 					'cvv' => $request->get('cv_code')
 				];
 
-				$booking = Bookings::select('id')->orderBy('id', 'desc')->first();
-				if ($booking) {
-					$id = $booking->id;
-					$id++;
-				} else {
-					$id = 1;
-				}
-
-				$form['booking_id'] = Bookings::generate_booking_id($id);
-
-				$booking = Bookings::create($form);
-
 				if (session()->has('sess_id')) {
-					$sessions = Sessions::where('session_id', $request->session()->get('sess_id'))->update([
-						'booking_id' => $booking->id,
-						'response' => json_encode($form)
-					]);
+					$booking = Bookings::select('id')->orderBy('id', 'desc')->first();
+					if ($booking) {
+						$id = $booking->id;
+						$id++;
+					} else {
+						$id = 1;
+					}
 
-					if ($sessions) {
-						$customer = Customers::where(['email' => $sessions['email']]);
-						if ($customer->count()) {
-							$customer_id = $customer->first()->id;
-						} else {
-							unset($customer);
-							$customer['first_name'] = $form['firstname'];
-							$customer['last_name'] = $form['lastname'];
-							$customer['email'] = $form['email'];
-							$customer['mobile_no'] = $form['phoneno'];
-							$customer = Customers::create($customer);
+					$sess_id = session('sess_id');
+					$session = Sessions::where('session_id', $sess_id)->first();
+					$session_request = json_decode($session->requests, true);
+					$session_response = json_decode($session->response, true);
 
-							$customer_id = $customer->id;
-						}
+					$customer = Customers::where(['email' => $session['email']]);
+					if ($customer->count()) {
+						$customer_id = $customer->first()->id;
+					} else {
+						unset($customer);
+						$customer['first_name'] = $form['firstname'];
+						$customer['last_name']  = $form['lastname'];
+						$customer['email']      = $form['email'];
+						$customer['mobile_no']  = $form['phoneno'];
+						$customer = Customers::create($customer);
 
+						$customer_id = $customer->id;
+					}
+
+					list($product_id, $price_id) = explode(':', $form['ids']);
+					$drop_off  = str_replace('/', '-', $session_request['drop_off']);
+					$return_at = str_replace('/', '-', $session_request['return_at']);
+
+					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
+					$form['product_id']    = $product_id;
+					$form['price_id']      = $price_id;
+					$form['customer_id']   = $customer_id;
+					$form['order_title']   = $form['product'];
+					$form['price_value']   = $form['total'];
+					$form['revenue_value'] = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
+					$form['cancellation_waiver']  = $form['cancellation'];
+					$form['sms_confirmation_fee'] = $form['sms'];
+					$form['booking_fees']         = $form['booking_fee'];
+					$form['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_off));
+					$form['return_at']            = date('Y-m-d H:i:s', strtotime($return_at));
+
+					$_booking = Bookings::where('booking_id', $session_response['booking_id']);
+					if ($_booking->count()) {
+						$booking = Bookings::findOrFail($_booking->first()->id)->update($form);
+						$booking_id = $_booking->first()->id;
+					} else {
+						$booking = Bookings::create($form);
+						$booking_id = $booking->id;
+
+						$sessions = Sessions::where('session_id', $sess_id)->update([
+							'booking_id' => $booking->id,
+							'response' => json_encode($form)
+						]);
+					}
+
+					if ($session and $booking) {
 						$data = [
 							'amount' => $form['total'],
 							'description' => 'Payment for ' . $form['booking_id']
 						];
 
 						if (self::charge($data, $card, $request)) {
-							$response = ['success' => true];
+							$response = ['success' => true, 'data' => $booking_id];
 						}
 					}
 				}
 			}
 
 		} catch (Exception $e) {
-			dd($e);
 			$response['message'] = $e->getMessage();
 		}
 

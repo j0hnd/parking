@@ -43,6 +43,29 @@ $(document).ready(function(){
                 $('#payment_wizard-p-1').hide();
             }
 
+            if ($('#sms-fee').is(':checked')) {
+                var total = $('#total').text().substr(1);
+                total = parseFloat(total) + parseFloat($('#sms-fee').val());
+                $('#total').text('£'+total.toLocaleString());
+                $('#total-amount').val(total.toLocaleString());
+                $('#sms-fee-wrapper').text($('#sms-fee').val());
+                $('#sms-confirmation').val(1);
+                $('#sms').val($('#sms-fee').val());
+            } else {
+                $('#sms-confirmation').val(0);
+                $('#sms').val(0);
+            }
+
+            if ($('#cancellation-fee').is(':checked')) {
+                var total = $('#total').text().substr(1);
+                total = parseFloat(total) + parseFloat($('#cancellation').val());
+                $('#total').text('£'+total.toLocaleString());
+                $('#total-amount').val(total.toLocaleString());
+                $('#cancellation').val($('#cancellation-fee').val());
+            } else {
+                $('#cancellation').val(0);
+            }
+
             if (currentIndex == 1 && $('#paypal-container').is(':visible')) {
                 var url = $('#booking-details-form').data('url');
 
@@ -77,7 +100,7 @@ $(document).ready(function(){
                 $('#email').val($('#email-src').val());
                 $('#phoneno').val($('#phone-src').val());
                 $('#sms').val($('#sms-fee').val());
-                $('#cancellation').val($('#cancellation-fee').val());
+                $('#cancellation').val($('#cancellation').val());
                 $('#car-registration-no').val($('#car-registration-no-src').val());
                 $('#vehicle-color').val($('#vehicle-color-src').val());
                 $('#vehicle-model').val($('#vehicle-model-src').val());
@@ -93,6 +116,22 @@ $(document).ready(function(){
                     url: '/stripe/payment',
                     type: 'post',
                     data: orderForm,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#bid').val(response.data);
+                        }
+                    }
+                });
+            }
+
+            if (currentIndex == 0 && newIndex == 1 && $('#stripe-container').is(':visible')) {
+                var bid = $('#bid').val();
+                console.log(bid);
+                $.ajax({
+                    url: '/booking/details/'+ bid +'/update',
+                    type: 'post',
+                    data: $('#booking-details-form').serialize(),
                     dataType: 'json',
                     success: function (response) {
                         console.log(response);
@@ -150,7 +189,7 @@ $(document).ready(function(){
                         message: 'The first name is a required field'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9\-]+$/,
+                        regexp: /^[a-zA-Z0-9\- ]+$/,
                         message: 'The first name can only consist of alphabetical, number and hyphen'
                     }
                 }
@@ -161,7 +200,7 @@ $(document).ready(function(){
                         message: 'The last name is a required field'
                     },
                     regexp: {
-                        regexp: /^[a-zA-Z0-9\-]+$/,
+                        regexp: /^[a-zA-Z0-9\- ]+$/,
                         message: 'The last name can only consist of alphabetical, number and hyphen'
                     }
                 }
@@ -310,11 +349,13 @@ $(document).ready(function(){
             total = parseFloat(total) + parseFloat($(this).val());
             $('#cancellation-waiver-container').removeClass('d-none');
             $('#cancellation-waiver-wrapper').text($(this).val());
+            $('#cancellation').text($(this).val());
         } else {
             if ($('#total').data('value') < total) {
                 total = parseFloat(total) - parseFloat($(this).val());
             }
 
+            $('#cancellation').text(0);
             $('#cancellation-waiver-wrapper').text(0);
             $('#cancellation-waiver-container').addClass('d-none');
         }
@@ -387,15 +428,20 @@ $(document).ready(function(){
         $('#total-amount').val(total.toLocaleString());
         $('#sms-fee-wrapper').text($('#sms-fee').val());
         $('#sms-confirmation').val(1);
+        $('#sms').val($('#sms-fee').val());
     } else {
         $('#sms-confirmation').val(0);
+        $('#sms').val(0);
     }
 
-    if ($('#cancellation').is(':checked')) {
+    if ($('#cancellation-fee').is(':checked')) {
         var total = $('#total').text().substr(1);
         total = parseFloat(total) + parseFloat($('#cancellation').val());
         $('#total').text('£'+total.toLocaleString());
         $('#total-amount').val(total.toLocaleString());
+        $('#cancellation').val($('#cancellation-fee').val());
+    } else {
+        $('#cancellation').val(0);
     }
 
     setTimeout(function() {
