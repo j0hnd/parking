@@ -250,7 +250,7 @@ class Products extends BaseModel
 				}
 
 				$results[$i]['services'] = $carpark_services;
-                unset($carpark_services);
+				$carpark_services = null;
 
                 $i++;
             }
