@@ -79,8 +79,12 @@ class Products extends BaseModel
 				->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 				->whereNull('product_airports.deleted_at')
 				->where(['airport_id' => $data['search']['airport']])
-				->whereRaw("(TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing)")
-				->whereRaw("(prices.no_of_days = ? OR prices.price_month = ? OR prices.price_year = ?)", [$no_days, date('m'), date('Y')]);
+				->whereNull('products.deleted_at')
+				->whereNull('carparks.deleted_at')
+				->whereNull('airports.deleted_at')
+//				->whereRaw("(TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing)")
+//				->whereRaw("(prices.no_of_days = ? OR prices.price_month = ? OR prices.price_year = ?)", [$no_days, date('m'), date('Y')]);
+				->where('prices.no_of_days', $no_days);
 
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
@@ -128,8 +132,19 @@ class Products extends BaseModel
 
 					// get airports
 					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id")
-						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
+						->join('products', 'products.id', '=', 'product_airports.product_id')
+						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+						->join('prices', 'prices.product_id', '=', 'products.id')
+						->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 						->whereNull('product_airports.deleted_at')
+						->where(['airport_id' => $data['search']['airport']])
+						->whereNull('products.deleted_at')
+						->whereNull('carparks.deleted_at')
+						->whereNull('airports.deleted_at')
+//						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
+//						->whereNull('product_airports.deleted_at')
+						->where('prices.no_of_days', $no_days)
 						->where([
 							'product_airports.airport_id' => $data['search']['airport'],
 							'prices.category_id' => $category_id
@@ -210,6 +225,7 @@ class Products extends BaseModel
             	// prepare prices
 				$price = $product['prices'];
 				$category = PriceCategories::findOrFail($price->category_id);
+
 				$results[$i] = [
 					'product_id' => $product['product_id'],
 					'airport_id' => $product['airport_id'],
@@ -218,7 +234,7 @@ class Products extends BaseModel
 					'carpark_name' => $product['carpark'],
 					'image' => $product['image'],
 					'category' => $category->category_name,
-					'price' => is_null($product['overrides']) ? $product['prices']->price_value : ($product['prices']->price_value * $product['overrides']),
+					'price' => (is_null($product['overrides']) or $product['overrides'] == 0) ? $product['prices']->price_value : $product['prices']->price_value * $product['overrides'],
 					'drop_off' => $product['drop_off'],
 					'return_at' => $product['return_at'],
 					'description' => $product['description'],
