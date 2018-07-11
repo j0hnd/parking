@@ -7,7 +7,7 @@
             @if($carparks->count())
                 @foreach($carparks->get() as $carpark)
                     @if(isset($product))
-                        @if($product->carpark_id == $carpark->id or $product->$carpark_id == old('carpark_id'))
+                        @if($product->carpark_id == $carpark->id)
                         <option value="{{ $carpark->id }}" selected>{{ $carpark->name }}</option>
                         @else
                         <option value="{{ $carpark->id }}">{{ $carpark->name }}</option>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnCouponInBookings extends Migration
+class AddColumn24hrsServiceInCarparks extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddColumnCouponInBookings extends Migration
      */
     public function up()
     {
-		Schema::table('bookings', function($table) {
-			$table->time('coupon')->after('booking_fees')->nullable();
-			$table->index('coupon');
+		Schema::table('carparks', function($table) {
+			$table->tinyInteger('is_24hrs_svc')->after('zipcode')->default(1);
 		});
     }
 
@@ -26,8 +25,8 @@ class AddColumnCouponInBookings extends Migration
      */
     public function down()
     {
-		Schema::table('bookings', function (Blueprint $table) {
-			$table->dropColumn('coupon');
+		Schema::table('carparks', function (Blueprint $table) {
+			$table->dropColumn('is_24hrs_svc');
 		});
     }
 }
