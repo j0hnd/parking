@@ -132,8 +132,19 @@ class Products extends BaseModel
 
 					// get airports
 					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id")
-						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
+						->join('products', 'products.id', '=', 'product_airports.product_id')
+						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+						->join('prices', 'prices.product_id', '=', 'products.id')
+						->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 						->whereNull('product_airports.deleted_at')
+						->where(['airport_id' => $data['search']['airport']])
+						->whereNull('products.deleted_at')
+						->whereNull('carparks.deleted_at')
+						->whereNull('airports.deleted_at')
+//						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
+//						->whereNull('product_airports.deleted_at')
+						->where('prices.no_of_days', $no_days)
 						->where([
 							'product_airports.airport_id' => $data['search']['airport'],
 							'prices.category_id' => $category_id
