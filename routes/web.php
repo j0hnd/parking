@@ -25,6 +25,7 @@ Route::get('/forgot-password', 'ParkingAppController@forgot_password');
 Route::get('/post/{post}', 'ParkingAppController@show_post');
 Route::get('/signup', 'ParkingAppController@signup');
 Route::get('/affiliate/{code}', 'ParkingAppController@affiliate');
+Route::get('/get/vehicle/model', 'ParkingAppController@get_vehicle_models');
 
 Route::match(['get', 'post'], '/contact','ParkingAppController@contact');
 

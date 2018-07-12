@@ -104,6 +104,8 @@ $(document).ready(function(){
                 $('#car-registration-no').val($('#car-registration-no-src').val());
                 $('#vehicle-color').val($('#vehicle-color-src').val());
                 $('#vehicle-model').val($('#vehicle-model-src').val());
+                $('#other-vehicle-model-model').val($('#other-vehicle-model-src').val());
+                $('#vehicle-make').val($('#vehicle-make-src').val());
                 $('#coupon').val($('#coupon-src').val());
                 $('#card-name').val($('#card-name-src').val());
                 $('#card-number').val($('#card-number-src').val());
@@ -436,6 +438,40 @@ $(document).ready(function(){
                 }
             }
         });
+    });
+
+    $(document).on('change', '#vehicle-make-src', function () {
+        var index = $("#vehicle-make-src option:selected").data('index');
+        var make = $(this).val();
+
+        $.ajax({
+            url: '/get/vehicle/model',
+            data: { make: make, index: index },
+            dataType: 'json',
+            success: function (response) {
+                $('#vehicle-model-src')
+                    .empty()
+                    .append(response.options);
+            }
+        });
+    });
+
+    $(document).on('change', '#vehicle-make-src', function () {
+        $('#vehicle-model-src').removeClass('d-none');
+        $('#other-vehicle-model-src').val('');
+        $('#other-vehicle-model-src').addClass('d-none');
+    });
+
+    $(document).on('change', '#vehicle-model-src', function () {
+        var txt = $("#vehicle-model-src option:selected").text();
+        if (txt.indexOf('Other') != -1) {
+            $(this).addClass('d-none');
+            $('#other-vehicle-model-src').removeClass('d-none');
+            $('#other-vehicle-model-src').focus();
+        } else {
+            $(this).removeClass('d-none');
+            $('#other-vehicle-model-src').addClass('d-none');
+        }
     });
 
     if ($('#sms-fee').is(':checked')) {

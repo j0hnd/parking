@@ -58,7 +58,7 @@
 
         <div class="col-sm-9">
             <select class="form-control" id="vehicle-make" name="vehicle_make">
-                <option value="" readonly>-- Vechile Make --</option>
+                <option value="" readonly>-- Vehicle Make --</option>
                 @if(count($vehicle_make))
                     @foreach($vehicle_make as $i => $vm)
                         @if(isset($booking))

@@ -147,6 +147,7 @@ class ParkingAppController extends Controller
 			$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
 
 			$booking_id = session('bid');
+			$vehicle_make = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
 
 			return view('parking.payment', compact(
 				'product',
@@ -167,7 +168,8 @@ class ParkingAppController extends Controller
 				'drop_off_time_interval',
 				'return_at_time_interval',
 				'booking_id',
-				'cancel'
+				'cancel',
+				'vehicle_make'
 			));
 		}
 	}
@@ -234,6 +236,7 @@ class ParkingAppController extends Controller
 					$bookings['cancellation_waiver'] = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
 					$bookings['booking_fees'] = $booking_data['booking_fee'];
 					$bookings['car_registration_no'] = $booking_data['car_registration_no'];
+					$bookings['vehicle_make']  = $booking_data['vehicle_make'];
 					$bookings['vehicle_model'] = $booking_data['vehicle_model'];
 					$bookings['vehicle_color'] = $booking_data['vehicle_color'];
 					$bookings['drop_off_at'] = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
@@ -820,5 +823,20 @@ class ParkingAppController extends Controller
 		}
 
 		return null;
+	}
+
+	public function get_vehicle_models(Request $request)
+	{
+		$vehicle_make = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
+		$model_str = "<option value=\"\" readonly> -- Vehicle Model -- </option>";
+		if (isset($vehicle_make[$request->index])) {
+			$models = $vehicle_make[$request->index]['models'];
+
+			foreach ($models as $model) {
+				$model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
+			}
+		}
+
+		return response()->json(['options' => $model_str]);
 	}
 }

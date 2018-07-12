@@ -5,6 +5,7 @@ Payment |
 @section('css')
 	<link href="{{ asset('/bower_components/form.validation/dist/css/formValidation.css') }}" rel="stylesheet">
 	<link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css') }}" rel="stylesheet">
+	<link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/payment.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
 	<style type="text/css">
@@ -124,18 +125,33 @@ Payment |
 									<div class="col-md-6">
 										<label>Vehicle Registration:</label>
 										<input type="text" id="car-registration-no-src" name="car_registration_no" class="form-control" value="{{ is_null($details) ? "" : $details['car_registration_no'] }}">
-
+									</div>
+									<div class="col-md-6">
+										<label>Vehicle Color:</label>
+										<input type="text" id="vehicle-color-src" name="vehicle_color" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_color'] }}">
+									</div>
+									<div class="col-md-6">
+										<label>Vehicle Make:</label>
+										<select class="form-control" id="vehicle-make-src" name="vehicle_make">
+											<option value="" readonly>-- Vehicle Make --</option>
+											@if(count($vehicle_make))
+												@foreach($vehicle_make as $i => $vm)
+													@if($vm['value'] == $details['vehicle_make'])
+													<option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+													@else
+													<option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+													@endif
+												@endforeach
+											@endif
+										</select>
 									</div>
 									<div class="col-md-6">
 										<label>Vehicle Model:</label>
-										<input type="text" id="vehicle-model-src" name="vehicle_model" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_model'] }}">
-									</div>
-								</div>
-								<br/>
-								<div class="row">
-									<div class="col-md-12">
-										<label>Vehicle Color:</label>
-										<input type="text" id="vehicle-color-src" name="vehicle_color" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_color'] }}">
+										<select class="form-control" name="vehicle_model" id="vehicle-model-src">
+											<option value="" readonly> -- Vehicle Model -- </option>
+										</select>
+										<input type="text" class="form-control d-none" id="other-vehicle-model-src" placeholder="Vehicle Model" name="other_vehicle_model" autocomplete="off">
+										{{--<input type="text" id="vehicle-model-src" name="vehicle_model" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_model'] }}">--}}
 									</div>
 								</div>
 								<br/>
@@ -363,7 +379,9 @@ Payment |
 						<input type="hidden" id="cancellation" name="cancellation">
 						<input type="hidden" id="booking-fee" name="booking_fee" value="{{ $booking_fee->amount }}">
 						<input type="hidden" id="car-registration-no" name="car_registration_no">
+						<input type="hidden" id="vehicle-make" name="vehicle_make">
 						<input type="hidden" id="vehicle-model" name="vehicle_model">
+						<input type="hidden" id="other-vehicle-model-src" name="other_vehicle_model">
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
 						<input type="hidden" id="card-name" name="card_name">
 						<input type="hidden" id="card-number" name="card_number">
@@ -504,6 +522,7 @@ Payment |
 <script src="{{ asset('/bower_components/form.validation/dist/js/formValidation.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/bower_components/form.validation/dist/js/framework/bootstrap.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/bower_components/select2/dist/js/select2.min.js') }}"></script>
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
@@ -511,6 +530,8 @@ Payment |
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('.datepicker').datepicker();
+		$('#vehicle-make').select2();
+		$('#vehicle-model').select2();
     });
 </script>
 @stop
