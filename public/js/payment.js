@@ -393,6 +393,7 @@ $(document).ready(function(){
         $('#cancellation').val($('#cancellation-fee').val());
         $('#car-registration-no').val($('#car-registration-no-src').val());
         $('#vehicle-color').val($('#vehicle-color-src').val());
+        $('#vehicle-make').val($('#vehicle-make-src').val());
         $('#vehicle-model').val($('#vehicle-model-src').val());
         $('#coupon').val($('#coupon-src').val());
 

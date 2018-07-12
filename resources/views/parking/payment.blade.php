@@ -530,8 +530,8 @@ Payment |
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('.datepicker').datepicker();
-		$('#vehicle-make').select2();
-		$('#vehicle-model').select2();
+		$('#vehicle-make-src').select2();
+		$('#vehicle-model-src').select2();
     });
 </script>
 @stop
