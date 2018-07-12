@@ -40,6 +40,14 @@ class CarparkFormRequest extends FormRequest
             'insurance_policy' => 'mimetypes:image/*,application/pdf'
         ];
 
+        if (!empty($input['opening'])) {
+        	$rules['opening'] = ["regex:/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/"];
+		}
+
+		if (!empty($input['closing'])) {
+			$rules['closing'] = ["regex:/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/"];
+		}
+
         if (!empty($input['id'])) {
             $carpark = Carpark::find($input['id']);
             $rules['name'] = 'required|string|unique:carparks,name,'.$carpark->id;

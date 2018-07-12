@@ -129,22 +129,25 @@
                         <h4 class="tab-title">Map</h4>
                         <fieldset class="tab-content">
                             <h2 class="overview-title-first">Map</h2>
-                            <div id="map"></div>
+                            <div id="map-{{ $i }}"></div>
                             <script>
                                 var map;
                                 function initMap() {
-                                    var lat = {{ $result["latitude"] }};
-                                    var lng = {{ $result["longitude"] }};
-                                    map = new google.maps.Map(document.getElementById('map'), {
-                                        center: { lat: lat, lng: lng },
-                                        zoom: 5
-                                    });
+                                    var lat = '{{ $result["latitude"] }}';
+                                    var lng = '{{ $result["longitude"] }}';
 
-                                    var marker = new google.maps.Marker({
-                                        position: { lat: lat, lng: lng },
-                                        map: map,
-                                        title: "{!! $result['airport_name'] !!}"
-                                    });
+                                    if (lat && lng) {
+                                        map = new google.maps.Map(document.getElementById('map-{{ $i }}'), {
+                                            center: { lat: lat, lng: lng },
+                                            zoom: 5
+                                        });
+
+                                        var marker = new google.maps.Marker({
+                                            position: { lat: lat, lng: lng },
+                                            map: map,
+                                            title: "{!! $result['airport_name'] !!}"
+                                        });
+									}
                                 }
                             </script>
                         </fieldset>

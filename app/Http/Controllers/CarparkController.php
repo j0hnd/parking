@@ -47,6 +47,7 @@ class CarparkController extends Controller
                     'zipcode',
                     'longitude',
                     'latitude',
+					'is_24hrs_svc',
 					'opening',
 					'closing'
                 ]);
@@ -180,6 +181,7 @@ class CarparkController extends Controller
                     'zipcode',
                     'longitude',
                     'latitude',
+					'is_24hrs_svc',
 					'opening',
 					'closing'
                 ]);

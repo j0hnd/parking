@@ -19,6 +19,7 @@ class Carpark extends BaseModel
         'country_id',
         'longtitude',
         'latitude',
+		'is_24hrs_svc',
 		'opening',
 		'closing',
         'image',
