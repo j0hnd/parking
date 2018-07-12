@@ -31,6 +31,16 @@
     <script type="text/javascript">
         $(function(){
             $('#countries').select2({ placeholder: '-- Country --' });
+
+            $(document).on('change', '#is-24hr', function () {
+                if ($(this).is(':checked')) {
+                    $('#custom-time-wrapper').addClass('hidden');
+                    $('#opening').val('');
+                    $('#closing').val('');
+                } else {
+                    $('#custom-time-wrapper').removeClass('hidden');
+                }
+            });
         });
     </script>
 @stop

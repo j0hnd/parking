@@ -91,11 +91,42 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Operation Hours</label>
+    <label class="col-sm-2 control-label">Operation Hours <span class="required">*</span></label>
 
-    <div class="col-sm-6">
-        <input type="text" class="form-control margin-bottom5" name="opening" placeholder="Opening Hours" autocomplete="off" value="{{ isset($carpark->opening) ? ($carpark->opening != "00:00:00") ? $carpark->opening : old('opening') : old('opening') }}">
-        <input type="text" class="form-control" name="closing" placeholder="Closing Hours" autocomplete="off" value="{{ isset($carpark->closing) ? ($carpark->closing != "00:00:00") ? $carpark->closing : old('closing') : old('closing') }}">
+    @if(isset($carpark))
+        @php
+            $opening = $carpark->opening;
+			$closing = $carpark->closing;
+        @endphp
+    @else
+        @php
+            $opening = old('opening');
+			$closing = old('closing');
+        @endphp
+    @endif
+
+    @if(!empty($opening) and !empty($closing))
+        @php
+            $hidden_custom_time_wrapper = '';
+            $checked = '';
+        @endphp
+    @else
+        @php
+            $hidden_custom_time_wrapper = 'hidden';
+            $checked = 'checked';
+        @endphp
+    @endif
+
+    <div id="24hrs-wrapper" class="col-sm-6">
+        <label>
+            <input type="checkbox" name="is_24hrs_svc" id="is-24hr" {{ $checked }} value="1"> 24hrs Service
+        </label>
+    </div>
+
+    <div id="custom-time-wrapper" class="col-sm-6 {{ $hidden_custom_time_wrapper }}">
+        <input type="text" id="opening" class="form-control margin-bottom5" name="opening" placeholder="Opening Hours" autocomplete="off" value="{{ isset($carpark->opening) ? ($carpark->opening != "00:00:00") ? $carpark->opening : old('opening') : old('opening') }}">
+        <input type="text" id="closing" class="form-control" name="closing" placeholder="Closing Hours" autocomplete="off" value="{{ isset($carpark->closing) ? ($carpark->closing != "00:00:00") ? $carpark->closing : old('closing') : old('closing') }}">
+        <small style="color: red;">note: time should be in 24-hour format</small>
     </div>
 </div>
 
