@@ -82,7 +82,13 @@ class Products extends BaseModel
 				->whereNull('products.deleted_at')
 				->whereNull('carparks.deleted_at')
 				->whereNull('airports.deleted_at')
-//				->whereRaw("(TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing)")
+//				->whereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year IS NULL)", [$no_days])
+//				->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year IS NULL)", [$no_days, date('n')])
+//				->orWhereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year = ?)", [$no_days, date('Y')])
+//				->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year = ?)", [$no_days, date('n'), date('Y')])
+//				->groupBy('prices.id');
+
+				->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 //				->whereRaw("(prices.no_of_days = ? OR prices.price_month = ? OR prices.price_year = ?)", [$no_days, date('m'), date('Y')]);
 				->where('prices.no_of_days', $no_days);
 
@@ -104,8 +110,17 @@ class Products extends BaseModel
 					$price_to = $price_to == 'Up' ? 5000 : $price_to;
 
 					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id")
-						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
+						->join('products', 'products.id', '=', 'product_airports.product_id')
+						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+						->join('prices', 'prices.product_id', '=', 'products.id')
+						->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 						->whereNull('product_airports.deleted_at')
+						->whereNull('products.deleted_at')
+						->whereNull('carparks.deleted_at')
+						->whereNull('airports.deleted_at')
+						->where('prices.no_of_days', $no_days)
+						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 						->where([
 							'product_airports.airport_id' => $data['search']['airport']
 						])
@@ -138,17 +153,20 @@ class Products extends BaseModel
 						->join('prices', 'prices.product_id', '=', 'products.id')
 						->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 						->whereNull('product_airports.deleted_at')
-						->where(['airport_id' => $data['search']['airport']])
 						->whereNull('products.deleted_at')
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
-//						->join('prices', 'prices.product_id', '=', 'product_airports.product_id')
-//						->whereNull('product_airports.deleted_at')
 						->where('prices.no_of_days', $no_days)
+						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
+//						->whereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year IS NULL)", [$no_days])
+//						->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year IS NULL)", [$no_days, date('n')])
+//						->orWhereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year = ?)", [$no_days, date('Y')])
+//						->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year = ?)", [$no_days, date('n'), date('Y')])
 						->where([
 							'product_airports.airport_id' => $data['search']['airport'],
 							'prices.category_id' => $category_id
-						]);
+						])
+						->groupBy('prices.id');
 				}
 			}
 
@@ -206,6 +224,7 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
 
