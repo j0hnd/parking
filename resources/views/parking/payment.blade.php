@@ -214,6 +214,12 @@ Payment |
 											</div>
 										</div>
 									</div>
+									<div id="stripe-payment-loader" class="row d-none">
+										<div class="col-md-12 text-center">
+											<img src="{{ asset('/img/loader.gif') }}">
+											<p>Please wait, connecting to payment gateway.</p>
+										</div>
+									</div>
 								</fieldset>
 
 								<h4>PayPal</h4>
