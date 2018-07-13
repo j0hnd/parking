@@ -182,7 +182,11 @@ $(document).ready(function(){
                     success: function (response) {
                         if (response.success) {
                             $('#finish-wrapper').removeClass('d-none');
-                            $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
+                            $('#booking-id-wrapper').html("<strong>"+ response.data.id +"</strong>");
+                            $('#customer-name').html(response.data.name);
+                            $('#order-title').html(response.data.order);
+                            $('#drop-off').html(response.data.drop_off);
+                            $('#return-at').html(response.data.return_at);
                             move = true;
                         } else {
                             $('#payment_wizard-p-1').show();

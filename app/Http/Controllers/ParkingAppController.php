@@ -303,6 +303,7 @@ class ParkingAppController extends Controller
 					];
 
 					Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
+					$customer = Customers::findOrFail($booking->customer_id);
 
 					$details = [
 						'booking_id' => $form['bid'],
@@ -321,7 +322,13 @@ class ParkingAppController extends Controller
 						BookingDetails::create($details);
 					}
 
-					$response = ['success' => true, 'data' => $booking->booking_id];
+					$response = ['success' => true, 'data' => [
+						'id' => $booking->booking_id,
+						'name'      => $customer->first_name,
+						'order'     => $booking->order_title,
+						'drop_off'  => $drop_off->format('d/m/Y H:i'),
+						'return_at' => $return_at->format('d/m/Y H:i')
+					]];
 				}
 			}
 		} catch (\Exception $e) {
