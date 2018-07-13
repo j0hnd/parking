@@ -113,18 +113,42 @@ $(document).ready(function(){
                 $('#cv-code').val($('#cv-code-src-src').val());
 
                 var orderForm = $('#order-form').serialize();
+                var move = false;
 
                 $.ajax({
                     url: '/stripe/payment',
                     type: 'post',
                     data: orderForm,
                     dataType: 'json',
+                    async: false,
+                    cache: false,
+                    beforeSend: function () {
+                        $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
+                        $('#payment_choice').find('#stripe-container').addClass('d-none');
+                    },
                     success: function (response) {
+                        $('#stripe-payment-loader').addClass('d-none');
+                        $('#stripe-container').removeClass('d-none');
+
                         if (response.success) {
                             $('#bid').val(response.data);
+                            move = true;
+                        } else {
+                            alert(response.message);
+                            $('#payment_wizard-p-0').show();
+                            $('#payment_wizard-p-1').hide();
+                        }
+                    },
+                    error: function(jqXHR, error, errorThrown) {
+                        if (jqXHR.status&&jqXHR.status == 400) {
+                            alert(jqXHR.responseText);
+                        } else {
+                            alert("Something went wrong");
                         }
                     }
                 });
+
+                return move;
             }
 
             if (currentIndex == 1 && newIndex == 2 && $('#bid').val()) {
@@ -146,16 +170,33 @@ $(document).ready(function(){
                     $('#payment_wizard-p-2').css('left', '0px');
                 }, 500);
 
+                var move = false;
+
                 $.ajax({
                     url: '/booking/details/'+ bid +'/update',
                     type: 'post',
                     data: $('#booking-details-form').serialize(),
                     dataType: 'json',
+                    async: false,
+                    cache: false,
                     success: function (response) {
-                        $('#finish-wrapper').removeClass('d-none');
-                        $('#booking-id-wrapper').html("<strong>"+ response.data +"</strong>");
+                        if (response.success) {
+                            $('#finish-wrapper').removeClass('d-none');
+                            $('#booking-id-wrapper').html("<strong>"+ response.data.id +"</strong>");
+                            $('#customer-name').html(response.data.name);
+                            $('#order-title').html(response.data.order);
+                            $('#drop-off').html(response.data.drop_off);
+                            $('#return-at').html(response.data.return_at);
+                            move = true;
+                        } else {
+                            $('#payment_wizard-p-1').show();
+                            $('#payment_wizard-p-2').hide();
+                            alert(response.message);
+                        }
                     }
                 });
+
+                return move;
             }
 
             return true;

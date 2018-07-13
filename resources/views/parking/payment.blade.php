@@ -214,6 +214,12 @@ Payment |
 											</div>
 										</div>
 									</div>
+									<div id="stripe-payment-loader" class="row d-none">
+										<div class="col-md-12 text-center">
+											<img src="{{ asset('/img/loader.gif') }}">
+											<p>Please wait, connecting to payment gateway.</p>
+										</div>
+									</div>
 								</fieldset>
 
 								<h4>PayPal</h4>
@@ -354,8 +360,9 @@ Payment |
 						<section data-step="2">
 							<div class="container wizard-content">
 								<div class="row">
-									<div id="finish-wrapper" class="col-md-12 text-center d-none" style="font-size: 22px;">
-										<p>Your Booking Reference No. is <span id="booking-id-wrapper"></span></p>
+									<div id="finish-wrapper" class="col-md-12 d-none" style="font-size: 22px;">
+										<p>Hi <span id="customer-name"></span>,</p>
+										<p>The Booking Reference No. is <span id="booking-id-wrapper"></span> for your <span id="order-title"></span> is on <span id="drop-off"></span> to <span id="return-at"></span></p>
 										<p>You will also be receiving an email for the details of your booking.</p>
 									</div>
 									<div id="confirmation-wrapper" class="col-md-12 text-center" style="font-size: 22px;">

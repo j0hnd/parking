@@ -279,48 +279,64 @@ class ParkingAppController extends Controller
 
 	public function update_booking_details(Request $request)
 	{
-		if ($request->isMethod('post')) {
-			$form = $request->except(['_token']);
+		$response = ['success' => false, 'message' => 'Invalid request'];
 
-			$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
-			if ($booking) {
-				$drop_date = str_replace('/', '-', $form['drop_off_at']);
-				$return_date = str_replace('/', '-', $form['return_at']);
+		try {
+			if ($request->isMethod('post')) {
+				$form = $request->except(['_token']);
 
-				$drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
-				$return_at = Carbon::createFromTimestamp(strtotime($return_date));
+				$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
+				if ($booking) {
+					$drop_date = str_replace('/', '-', $form['drop_off_at']);
+					$return_date = str_replace('/', '-', $form['return_at']);
 
-				$update = [
-					'drop_off_at' => $drop_off->format('Y-m-d H:i'),
-					'return_at' => $return_at->format('Y-m-d H:i'),
-					'flight_no_going' => $form['flight_no_going'],
-					'flight_no_return' => $form['flight_no_return'],
-					'is_paid' => 1,
-					'paid_at' => Carbon::now()
-				];
+					$drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
+					$return_at = Carbon::createFromTimestamp(strtotime($return_date));
 
-				Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
+					$update = [
+						'drop_off_at' => $drop_off->format('Y-m-d H:i'),
+						'return_at' => $return_at->format('Y-m-d H:i'),
+						'flight_no_going' => $form['flight_no_going'],
+						'flight_no_return' => $form['flight_no_return'],
+						'is_paid' => 1,
+						'paid_at' => Carbon::now()
+					];
 
-				$details = [
-					'booking_id' => $form['bid'],
-					'no_of_passengers_in_vehicle' => $form['no_of_passengers_in_vehicle'],
-					'with_oversize_baggage' => $form['with_oversize_baggage'],
-					'with_children_pwd' => $form['with_children_pwd'],
-				];
+					Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
+					$customer = Customers::findOrFail($booking->customer_id);
 
-				if (BookingDetails::where(['booking_id' => $form['bid']])->count()) {
-					BookingDetails::where(['booking_id' => $form['bid']])->update([
+					$details = [
+						'booking_id' => $form['bid'],
 						'no_of_passengers_in_vehicle' => $form['no_of_passengers_in_vehicle'],
 						'with_oversize_baggage' => $form['with_oversize_baggage'],
 						'with_children_pwd' => $form['with_children_pwd'],
-					]);
-				} else {
-					BookingDetails::create($details);
-				}
+					];
 
-				return response()->json(['success' => true, 'data' => $booking->booking_id]);
+					if (BookingDetails::where(['booking_id' => $form['bid']])->count()) {
+						BookingDetails::where(['booking_id' => $form['bid']])->update([
+							'no_of_passengers_in_vehicle' => $form['no_of_passengers_in_vehicle'],
+							'with_oversize_baggage' => $form['with_oversize_baggage'],
+							'with_children_pwd' => $form['with_children_pwd'],
+						]);
+					} else {
+						BookingDetails::create($details);
+					}
+
+					$response = ['success' => true, 'data' => [
+						'id' => $booking->booking_id,
+						'name'      => $customer->first_name,
+						'order'     => $booking->order_title,
+						'drop_off'  => $drop_off->format('d/m/Y H:i'),
+						'return_at' => $return_at->format('d/m/Y H:i')
+					]];
+				}
 			}
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
 		}
+
+
+		return response()->json($response);
 	}
 
 	public function booking_destroy(Request $request)
@@ -738,16 +754,30 @@ class ParkingAppController extends Controller
 					}
 
 					if ($session and $booking) {
+						$total = $form['total'];
+
+						// check if transaction includes a coupon
+						if (isset($form['coupon'])) {
+							$coupon = Promocode::where('code', $form['coupon'])->whereRaw("expiry_date > ?", date('Y-m-d'))->first();
+							if (count($coupon)) {
+								$total = $form['total'] - number_format(round($form['total'] * $coupon->reward, PHP_ROUND_HALF_UP), 2);
+							}
+						}
+
 						$data = [
-							'amount' => $form['total'],
+							'amount' => $total,
 							'description' => 'Payment for ' . $form['booking_id']
 						];
 
-						if (self::charge($data, $card, $request)) {
+						$stripe_response = self::charge($data, $card, $request);
+
+						if ($stripe_response['success']) {
 							DB::commit();
 							$response = ['success' => true, 'data' => $booking_id];
 						} else {
 							DB::rollback();
+
+							$response['message'] = $stripe_response['stripe_message'];
 						}
 					} else {
 						DB::rollback();
@@ -767,6 +797,8 @@ class ParkingAppController extends Controller
 		if (count($data) == 0 and count($card)) {
 			return null;
 		}
+
+		$response = ['success' => false];
 
 		// set currency
 		$data['currency'] = 'GBP';
@@ -800,29 +832,34 @@ class ParkingAppController extends Controller
 
 					$booking = Bookings::where('booking_id', $response['booking_id']);
 					if ($booking->count()) {
-						// update bookings
-//						$booking->update(['is_paid' => 1, 'paid_at' => Carbon::now()]);
-
 						// update session data
 						$sessions->update(['response' => json_encode($response)]);
 
 						DB::commit();
 
-						return true;
+						$response = ['success' => true, 'stripe_message' => 'Payment Successful'];
 					} else {
 						DB::rollback();
-					}
-				}
-				// set card
 
+						$response= ['success' => false, 'stripe_message' => "Invalid booking reference"];
+					}
+				} else {
+					Log::error(Carbon::now() . " - Stripe error (request ID: ". $sess_id ."): Missing token ID.");
+
+					$response = ['success' => false, 'stripe_message' => "Missing token ID"];
+				}
 			}
-		} catch (StripeException $se) {
+		} catch (\StripeException $se) {
 			Log::error(Carbon::now() . " - Stripe error (request ID: ". $sess_id ."): " . $se->getMessage());
+
+			$response = ['success' => false, 'stripe_message' =>  $se->getMessage()];
 		} catch (\Exception $e) {
 			Log::error(Carbon::now() . " - Error in charging a credit card using stripe. With request id  " . $sess_id . $e->getMessage());
+
+			$response = ['success' => false, 'stripe_message' => $e->getMessage()];
 		}
 
-		return null;
+		return $response;
 	}
 
 	public function get_vehicle_models(Request $request)
