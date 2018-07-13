@@ -754,8 +754,18 @@ class ParkingAppController extends Controller
 					}
 
 					if ($session and $booking) {
+						$total = $form['total'];
+
+						// check if transaction includes a coupon
+						if (isset($form['coupon'])) {
+							$coupon = Promocode::where('code', $form['coupon'])->whereRaw("expiry_date > ?", date('Y-m-d'))->first();
+							if (count($coupon)) {
+								$total = $form['total'] - number_format(round($form['total'] * $coupon->reward, PHP_ROUND_HALF_UP), 2);
+							}
+						}
+
 						$data = [
-							'amount' => $form['total'],
+							'amount' => $total,
 							'description' => 'Payment for ' . $form['booking_id']
 						];
 
