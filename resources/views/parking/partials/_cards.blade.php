@@ -157,8 +157,8 @@
                 <a class="plus collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapseOne">
                 </a>
                 <div id="collapse{{ $i }}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                    <p class="collapsable-title">Lorem ipsum dolor sit amet</p>
-                    <p class="collapsable-text">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.le VHS.</p>
+                    {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
+                    <p class="collapsable-text">{{ $result['short_description'] }}</p>
                 </div>
             </div>
 

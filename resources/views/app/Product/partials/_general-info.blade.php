@@ -46,6 +46,14 @@
 </div>
 
 <div class="form-group">
+    <label class="col-sm-2 control-label">Short Description <span class="required">*</span></label>
+
+    <div class="col-sm-9">
+        <input type="text" name="short_description" class="form-control" autocomplete="off" value="{{ isset($product) ? $product->short_description : old('short_description') }}">
+    </div>
+</div>
+
+<div class="form-group">
     <label class="col-sm-2 control-label">Description</label>
 
     <div class="col-sm-9">
@@ -91,6 +99,6 @@
     <label class="col-sm-2 control-label">Revenue Share <span class="required">*</span></label>
 
     <div class="col-sm-5">
-        <input type="text" class="form-control" name="revenue_share" value="{{ isset($product) ? $product->revenue_share : old('revenue_share') }}">
+        <input type="text" class="form-control" name="revenue_share" value="{{ isset($product) ? $product->revenue_share : old('revenue_share') }}" autocomplete="off">
     </div>
 </div>

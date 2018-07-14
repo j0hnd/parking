@@ -14,6 +14,7 @@ class Products extends BaseModel
 {
     protected $fillable = [
         'carpark_id',
+		'short_descrption',
         'description',
         'on_arrival',
         'on_return',
@@ -217,6 +218,7 @@ class Products extends BaseModel
 									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
                                     'overrides' => $override_price,
 									'services' => $product->carpark_services,
+									'short_description' => $product->short_description,
 									'description' => $product->description,
 									'on_arrival' => $product->on_arrival,
 									'on_return' => $product->on_return,
@@ -230,7 +232,6 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
-        	dd($e);
             abort(404, $e->getMessage());
         }
 
@@ -262,6 +263,7 @@ class Products extends BaseModel
 					'price' => (is_null($product['overrides']) or $product['overrides'] == 0) ? $product['prices']->price_value : $product['prices']->price_value * $product['overrides'],
 					'drop_off' => $product['drop_off'],
 					'return_at' => $product['return_at'],
+					'short_description' => $product['short_description'],
 					'description' => $product['description'],
 					'on_arrival' => $product['on_arrival'],
 					'on_return' => $product['on_return'],
