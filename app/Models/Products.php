@@ -95,14 +95,21 @@ class Products extends BaseModel
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
 					$service_name = urldecode($data['sub']['value']);
-
-					$product_airports = ProductAirports::whereNull('product_airports.deleted_at')
-						->join('services', 'services.product_id', '=', 'product_airports.product_id')
+					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id")
+						->join('products', 'products.id', '=', 'product_airports.product_id')
+						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+						->join('services', 'services.product_id', '=', 'products.id')
 						->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
-						->where([
-							'carpark_services.service_name' => $service_name,
-							'product_airports.airport_id' => $data['search']['airport']
-						]);
+						->join('prices', 'prices.product_id', '=', 'products.id')
+						->whereNull('product_airports.deleted_at')
+						->whereNull('products.deleted_at')
+						->whereNull('carparks.deleted_at')
+						->whereNull('airports.deleted_at')
+						->where('airport_id', $data['search']['airport'])
+						->where('carpark_services.service_name', $service_name)
+						->where('prices.no_of_days', $no_days)
+						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))");
 				}
 
 				if ($data['sub']['type'] == 'price') {
@@ -165,8 +172,7 @@ class Products extends BaseModel
 						->where([
 							'product_airports.airport_id' => $data['search']['airport'],
 							'prices.category_id' => $category_id
-						])
-						->groupBy('prices.id');
+						]);
 				}
 			}
 
