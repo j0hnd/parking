@@ -725,7 +725,15 @@ class ParkingAppController extends Controller
 					$drop_off  = str_replace('/', '-', $session_request['drop_off']);
 					$return_at = str_replace('/', '-', $session_request['return_at']);
 
+					$user = Sentinel::getUser();
+					if (is_null($user)) {
+						$user_id = 0;
+					} else {
+						$user_id = $user->id;
+					}
+
 					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
+					$form['user_id']       = $user_id;
 					$form['product_id']    = $product_id;
 					$form['price_id']      = $price_id;
 					$form['customer_id']   = $customer_id;

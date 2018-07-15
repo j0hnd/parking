@@ -52,33 +52,33 @@ class MembersController extends Controller
 
 				$affiliate = Affiliates::active()->where('travel_agent_id', $user->id)->first();
 			} else {
-				$company_id = $user->members->company->id;
+				$user_id = $user->id;
 
 				$total_bookings = Bookings::whereNull('bookings.deleted_at')
-					->whereHas('products', function ($query) use ($company_id) {
-						$query->where('vendor_id', $company_id);
+					->whereHas('products', function ($query) use ($user_id) {
+						$query->where('vendor_id', $user_id);
 					})
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('companies', 'companies.id', '=', 'products.vendor_id')
-					->groupBy('products.vendor_id')
+//					->groupBy('products.vendor_id')
 					->get();
 
 				$ongoing_bookings = Bookings::active()
 					->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
-					->whereHas('products', function ($query) use ($company_id) {
-						$query->where('vendor_id', $company_id);
+					->whereHas('products', function ($query) use ($user_id) {
+						$query->where('vendor_id', $user_id);
 					})
 					->get();
 
 				$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
-			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees")
+			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
 					->whereNull('bookings.deleted_at')
-					->whereHas('products', function ($query) use ($company_id) {
-						$query->where('vendor_id', $company_id);
+					->whereHas('products', function ($query) use ($user_id) {
+						$query->where('vendor_id', $user_id);
 					})
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('companies', 'companies.id', '=', 'products.vendor_id')
-					->groupBy('products.vendor_id')
+//					->groupBy('products.vendor_id')
 					->paginate(config('app.item_per_page'));
 			}
 		}
@@ -210,7 +210,8 @@ class MembersController extends Controller
 			->join('prices', 'prices.product_id', '=', 'products.id')
 			->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 			->whereNull('products.deleted_at')
-			->where('products.vendor_id', $user->members->company->id)
+			->where('products.vendor_id', $user->id)
+//			->where('products.vendor_id', $user->members->company->id)
 			->groupBy('prices.product_id')
 			->get();
 
@@ -233,7 +234,8 @@ class MembersController extends Controller
 					->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 					->whereNull('products.deleted_at')
 					->where([
-						'products.vendor_id' => $user->members->company->id,
+						'products.vendor_id' => $user->id,
+//						'products.vendor_id' => $user->members->company->id,
 						'prices.product_id' => $request->id
 					])
 					->get();
@@ -244,7 +246,7 @@ class MembersController extends Controller
 			}
 
 		} catch (\Exception $e) {
-			dd($e);
+			$response['message'] = $e->getMessage();
 		}
 
 		return response()->json($response);
