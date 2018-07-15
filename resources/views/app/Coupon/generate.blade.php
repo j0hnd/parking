@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                        <a href="{{ url('/admin/coupons') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Generate</button>
                     </div>
                 </form>
