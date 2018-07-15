@@ -135,12 +135,17 @@ $(document).ready(function(){
                     async: false,
                     cache: false,
                     beforeSend: function () {
+                        $('#payment_wizard-p-0').show();
+                        $('#payment_wizard-p-1').hide();
                         $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
                         $('#payment_choice').find('#stripe-container').addClass('d-none');
                     },
                     success: function (response) {
-                        $('#stripe-payment-loader').addClass('d-none');
-                        $('#stripe-container').removeClass('d-none');
+                        $('#payment_choice').find('#stripe-payment-loader').addClass('d-none');
+                        $('#payment_choice').find('#stripe-container').removeClass('d-none');
+
+                        $('#payment_wizard-p-0').hide();
+                        $('#payment_wizard-p-1').show();
 
                         if (response.success) {
                             $('#bid').val(response.data);

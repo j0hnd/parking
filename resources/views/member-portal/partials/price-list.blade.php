@@ -20,13 +20,13 @@
 		<tr data-id="{{ $price->product_id }}">
 			<td><a href="javascript:void(0);" class="update-price" data-id="{{ $price->price_id }}">{{ $price->price_id }}</a></td>
 			<td class="text-center">{{ $price->no_of_days }}</td>
-			<td class="text-center">{{ is_null($price->price_month) ? "" : $months[$price->price_month] }}</td>
-			<td class="text-center">{{ $price->price_year }}</td>
+			<td class="text-center">{{ is_null($price->price_month) ? "--" : $months[$price->price_month] }}</td>
+			<td class="text-center">{{ is_null($price->price_year) ? "--" : $price->price_year }}</td>
 			<td class="text-right">£{{ number_format($price->price_value, 2) }}</td>
 		</tr>
 	@endforeach
 @else
 	<tr>
-		<td colspan="4">No prices posted</td>
+		<td colspan="6" class="text-center">No prices posted</td>
 	</tr>
 @endif

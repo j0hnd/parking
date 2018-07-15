@@ -20,6 +20,7 @@
 			@php
 				$cost = 0;
 			@endphp
+
 			<tr id="booking-{{ $booking->id }}" class="tr-shadow">
 				<td>{{ $booking->booking_id }}</td>
 				<td>{{ $booking->order_title }}</td>

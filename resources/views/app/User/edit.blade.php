@@ -14,13 +14,13 @@
                     @include('app.User.partials._form')
 
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                        <a href="{{ url('/admin/users') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Update</button>
                     </div>
                     <!-- /.box-footer -->
 
                     {{ csrf_field() }}
-                    <input type="hidden" name="id" value="{{ $user->id }}">
+                    <input type="hidden" name="id" value="{{ $user_info->id }}">
                 </form>
             </div>
         </div>
@@ -31,6 +31,7 @@
     <script type="text/javascript">
         $(function(){
             $('#role-id').select2({ placeholder: '-- Role --' });
+            $('#company-name').select2({ placeholder: '-- Company --' });
         });
     </script>
 @stop

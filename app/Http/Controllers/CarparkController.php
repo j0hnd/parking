@@ -28,7 +28,8 @@ class CarparkController extends Controller
     {
         $countries = Countries::all();
         $page_title = "Add Carpark";
-        return view('app.Carpark.create', compact('countries', 'page_title'));
+        $companies = Companies::select('id', 'company_name')->active()->orderBy('company_name', 'asc')->get();
+        return view('app.Carpark.create', compact('countries', 'page_title', 'companies'));
     }
 
     public function store(CarparkFormRequest $request)
@@ -109,7 +110,7 @@ class CarparkController extends Controller
                             }
                         }
 
-                        // uplaod park mark
+                        // upload park mark
                         if ($request->hasFile('park_mark')) {
                             $park_mark = \Request::file('park_mark');
                             $filename   = $park_mark->getClientOriginalName();
@@ -162,8 +163,9 @@ class CarparkController extends Controller
     {
         $carpark = Carpark::findOrFail($id);
         $countries = Countries::all();
+		$companies = Companies::select('id', 'company_name')->active()->orderBy('company_name', 'asc')->get();
         $page_title = "Edit ".$carpark->name;
-        return view('app.Carpark.edit', compact('countries', 'page_title', 'carpark'));
+        return view('app.Carpark.edit', compact('countries', 'page_title', 'carpark', 'companies'));
     }
 
     public function update(CarparkFormRequest $request)

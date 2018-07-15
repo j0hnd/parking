@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                        <a href="{{ url('/admin/booking') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
                     </div>
                 </form>

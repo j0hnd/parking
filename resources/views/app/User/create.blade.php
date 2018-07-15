@@ -14,7 +14,7 @@
                     @include('app.User.partials._form')
 
                     <div class="box-footer">
-                        <button type="button" class="btn btn-default pull-right" style="margin-left: 7px;">Cancel</button>
+                        <a href="{{ url('/admin/users') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
                     </div>
                     <!-- /.box-footer -->
@@ -34,6 +34,12 @@
             $(document).on('change', '#role-id', function (e) {
                 if ($(this).val() == 2 || $(this).val() == 3) {
                     $('#company-info-wrapper').removeClass('hidden');
+                    setTimeout(function () {
+                        $('#company-name').select2({
+                            placeholder: '-- Company --',
+                            tags: true
+                        });
+                    }), 300;
                 } else {
                     $('#company-info-wrapper').addClass('hidden');
                 }
