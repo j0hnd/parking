@@ -32,33 +32,34 @@
             var searchRequest = null;
 
             $('#countries').select2({ placeholder: '-- Country --' });
+            $('#company-name').select2({ placeholder: '-- Company Name --' });
 
-            $('#company-name').autocomplete({
-                maxLength: 5,
-                source: function(request, response) {
-                    if (searchRequest !== null) {
-                        searchRequest.abort();
-                    }
-                    searchRequest = $.ajax({
-                        url: '{{ url('/autocomplete/company') }}',
-                        method: 'post',
-                        dataType: "json",
-                        data: { term: request.term, _token: '{{ csrf_token() }}' },
-                        success: function(data) {
-                            searchRequest = null;
-                            response($.map(data.items, function(item) {
-                                return {
-                                    value: item.name,
-                                    label: item.name
-                                };
-                            }));
-                        }
-                    }).fail(function() {
-                        searchRequest = null;
-                    });
-                },
-                appendTo: '#company-name-wrapper'
-            });
+            {{--$('#company-name').autocomplete({--}}
+                {{--maxLength: 5,--}}
+                {{--source: function(request, response) {--}}
+                    {{--if (searchRequest !== null) {--}}
+                        {{--searchRequest.abort();--}}
+                    {{--}--}}
+                    {{--searchRequest = $.ajax({--}}
+                        {{--url: '{{ url('/autocomplete/company') }}',--}}
+                        {{--method: 'post',--}}
+                        {{--dataType: "json",--}}
+                        {{--data: { term: request.term, _token: '{{ csrf_token() }}' },--}}
+                        {{--success: function(data) {--}}
+                            {{--searchRequest = null;--}}
+                            {{--response($.map(data.items, function(item) {--}}
+                                {{--return {--}}
+                                    {{--value: item.name,--}}
+                                    {{--label: item.name--}}
+                                {{--};--}}
+                            {{--}));--}}
+                        {{--}--}}
+                    {{--}).fail(function() {--}}
+                        {{--searchRequest = null;--}}
+                    {{--});--}}
+                {{--},--}}
+                {{--appendTo: '#company-name-wrapper'--}}
+            {{--});--}}
 
             $(document).on('change', '#is-24hr', function () {
                 if ($(this).is(':checked')) {

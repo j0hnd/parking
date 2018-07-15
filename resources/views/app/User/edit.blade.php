@@ -20,7 +20,7 @@
                     <!-- /.box-footer -->
 
                     {{ csrf_field() }}
-                    <input type="hidden" name="id" value="{{ $user->id }}">
+                    <input type="hidden" name="id" value="{{ $user_info->id }}">
                 </form>
             </div>
         </div>
@@ -31,6 +31,7 @@
     <script type="text/javascript">
         $(function(){
             $('#role-id').select2({ placeholder: '-- Role --' });
+            $('#company-name').select2({ placeholder: '-- Company --' });
         });
     </script>
 @stop

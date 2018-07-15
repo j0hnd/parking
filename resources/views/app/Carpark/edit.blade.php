@@ -31,6 +31,7 @@
     <script type="text/javascript">
         $(function(){
             $('#countries').select2({ placeholder: '-- Country --' });
+            $('#company-name').select2({ placeholder: '-- Company --' });
 
             $(document).on('change', '#is-24hr', function () {
                 if ($(this).is(':checked')) {

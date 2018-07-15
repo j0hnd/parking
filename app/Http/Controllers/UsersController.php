@@ -27,7 +27,8 @@ class UsersController extends Controller
         $roles = Roles::all();
         $page_title = "Add User";
         $user_info = null;
-        return view('app.User.create', compact('roles', 'page_title', 'user_info'));
+		$companies = Companies::select('id', 'company_name')->active()->orderBy('company_name', 'asc')->get();
+        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'companies'));
     }
 
     public function store(UserFormRequest $request)
@@ -87,6 +88,7 @@ class UsersController extends Controller
             }
 
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -189,6 +191,7 @@ class UsersController extends Controller
         $user_info = User::findOrFail($id);
         $roles = Roles::all();
         $page_title = "Profile of ".$user_info->members->first_name." ".$user_info->members->last_name;
-        return view('app.User.edit', compact('roles', 'page_title', 'user_info'));
+		$companies = Companies::select('id', 'company_name')->active()->orderBy('company_name', 'asc')->get();
+        return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'companies'));
     }
 }

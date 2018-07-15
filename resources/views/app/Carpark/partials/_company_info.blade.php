@@ -4,12 +4,31 @@
             <label class="col-sm-2 control-label">Company Name <span class="required">*</span></label>
 
             <div id="company-name-wrapper" class="col-sm-9">
-                <input type="text" class="form-control"
-                       id="company-name"
-                       name="company_name"
-                       placeholder="Company Name"
+                <select name="company_name" id="company-nam" class="form-control" style="width: 100%">
+                    <option value="" readonly>-- Company --</option>
+                    @if(count($companies))
+                        @foreach($companies as $company)
+                            @if(isset($carpark))
+                                @if($carpark->company_id == $company->id)
+                                <option value="{{ $company->id }}" selected>{{ $company->company_name }}</option>
+                                @else
+                                <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                @endif
+                            @elseif($company->id == old('company_id'))
+                            <option value="{{ $company->id }}" selected>{{ $company->company_name }}</option>
+                            @else
+                            <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                            @endif
+                        <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                {{--<input type="text" class="form-control"--}}
+                       {{--id="company-name"--}}
+                       {{--name="company_name"--}}
+                       {{--placeholder="Company Name"--}}
                        {{-- autocomplete="off" --}}
-                       value="{{ isset($carpark) ? $carpark->company->company_name : old('company_name') }}">
+                       {{--value="{{ isset($carpark) ? $carpark->company->company_name : old('company_name') }}">--}}
             </div>
         </div>
 

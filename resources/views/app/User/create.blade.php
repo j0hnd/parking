@@ -34,6 +34,12 @@
             $(document).on('change', '#role-id', function (e) {
                 if ($(this).val() == 2 || $(this).val() == 3) {
                     $('#company-info-wrapper').removeClass('hidden');
+                    setTimeout(function () {
+                        $('#company-name').select2({
+                            placeholder: '-- Company --',
+                            tags: true
+                        });
+                    }), 300;
                 } else {
                     $('#company-info-wrapper').addClass('hidden');
                 }
