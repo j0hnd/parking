@@ -100,14 +100,44 @@ Payment |
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
+										@if(is_null($details['sms']))
+											@php
+												$sms_checked = '';
+											@endphp
+										@else
+											@if($details['sms'] == 0)
+												@php
+													$sms_checked = '';
+												@endphp
+											@else
+												@php
+													$sms_checked = 'checked';
+												@endphp
+											@endif
+										@endif
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" {{ isset($details['sms']) ? 'checked' : '' }}>
+											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" {{ $sms_checked }}>
 											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
+										@if(is_null($details['cancellation']))
+											@php
+												$cancel_checked = '';
+											@endphp
+										@else
+											@if($details['cancellation'] == 0)
+												@php
+													$cancel_checked = '';
+												@endphp
+											@else
+												@php
+													$cancel_checked = 'checked';
+												@endphp
+											@endif
+										@endif
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}" {{ isset($details['cancellation']) ? 'checked' : '' }}>
+											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}" {{ $cancel_checked }}>
 											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
