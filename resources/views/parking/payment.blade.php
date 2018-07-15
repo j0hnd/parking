@@ -100,14 +100,44 @@ Payment |
 								<br/>
 								<div class="row">
 									<div class="col-md-6">
+										@if(is_null($details['sms']))
+											@php
+												$sms_checked = '';
+											@endphp
+										@else
+											@if($details['sms'] == 0)
+												@php
+													$sms_checked = '';
+												@endphp
+											@else
+												@php
+													$sms_checked = 'checked';
+												@endphp
+											@endif
+										@endif
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" {{ isset($details['sms']) ? 'checked' : '' }}>
+											<input type="checkbox" class="form-check-input" id="sms-fee" name="sms-fee" value="{{ $sms_confirmation_fee->amount }}" {{ $sms_checked }}>
 											SMS Confirmation + £{{ $sms_confirmation_fee->amount }}
 										</label>
 									</div>
 									<div class="col-md-6">
+										@if(is_null($details['cancellation']))
+											@php
+												$cancel_checked = '';
+											@endphp
+										@else
+											@if($details['cancellation'] == 0)
+												@php
+													$cancel_checked = '';
+												@endphp
+											@else
+												@php
+													$cancel_checked = 'checked';
+												@endphp
+											@endif
+										@endif
 										<label class="form-check-label">
-											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}" {{ isset($details['cancellation']) ? 'checked' : '' }}>
+											<input type="checkbox" class="form-check-input" id="cancellation-fee" name="cancellation-fee" value="{{ $cancellation_waiver->amount }}" {{ $cancel_checked }}>
 											Cancellation Waiver + £{{ $cancellation_waiver->amount }}
 										</label>
 									</div>
@@ -147,10 +177,18 @@ Payment |
 									</div>
 									<div class="col-md-6">
 										<label>Vehicle Model:</label>
+										@if(isset($details))
+										<select class="form-control d-none" name="vehicle_model" id="vehicle-model-src">
+											<option value="" readonly> -- Vehicle Model -- </option>
+										</select>
+										<input type="text" class="form-control" id="other-vehicle-model-src" placeholder="Vehicle Model" name="other_vehicle_model" autocomplete="off" value="{{ $details['vehicle_model'] }}">
+										@else
 										<select class="form-control" name="vehicle_model" id="vehicle-model-src">
 											<option value="" readonly> -- Vehicle Model -- </option>
 										</select>
 										<input type="text" class="form-control d-none" id="other-vehicle-model-src" placeholder="Vehicle Model" name="other_vehicle_model" autocomplete="off">
+										@endif
+
 										{{--<input type="text" id="vehicle-model-src" name="vehicle_model" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_model'] }}">--}}
 									</div>
 								</div>
@@ -536,9 +574,19 @@ Payment |
 {{--<script src="https://js.stripe.com/v3/"></script>--}}
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('.datepicker').datepicker();
-		$('#vehicle-make-src').select2();
-		$('#vehicle-model-src').select2();
+	    var vehicle_model = "{{ $details['vehicle_model'] }}";
+
+        $('.datepicker').datepicker();
+        $('#vehicle-make-src').select2();
+
+		if (vehicle_model == "") {
+            $('#vehicle-model-src').removeClass('d-none');
+            $('#other-vehicle-model-src').addClass('d-none');
+            $('#vehicle-model-src').select2();
+		} else {
+            $('#vehicle-model-src').addClass('d-none');
+            $('#other-vehicle-model-src').removeClass('d-none');
+		}
     });
 </script>
 @stop

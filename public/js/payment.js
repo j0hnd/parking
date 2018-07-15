@@ -99,8 +99,8 @@ $(document).ready(function(){
                 $('#lastname').val($('#lastname-src').val());
                 $('#email').val($('#email-src').val());
                 $('#phoneno').val($('#phone-src').val());
-                $('#sms').val($('#sms-fee').val());
-                $('#cancellation').val($('#cancellation').val());
+                // $('#sms').val($('#sms-fee').val());
+                // $('#cancellation').val($('#cancellation').val());
                 $('#car-registration-no').val($('#car-registration-no-src').val());
                 $('#vehicle-color').val($('#vehicle-color-src').val());
                 $('#vehicle-model').val($('#vehicle-model-src').val());
@@ -111,6 +111,18 @@ $(document).ready(function(){
                 $('#card-number').val($('#card-number-src').val());
                 $('#expiration').val($('#expiration-src').val());
                 $('#cv-code').val($('#cv-code-src-src').val());
+
+                if ($('#sms-fee').is(':checked')) {
+                    $('#sms').val($('#sms-fee').val());
+                } else {
+                    $('#sms').val(0);
+                }
+
+                if ($('#cancellation-fee').is(':checked')) {
+                    $('#cancellation').val($('#cancellation-fee').val());
+                } else {
+                    $('#cancellation').val(0);
+                }
 
                 var orderForm = $('#order-form').serialize();
                 var move = false;
@@ -430,13 +442,23 @@ $(document).ready(function(){
         $('#lastname').val($('#lastname-src').val());
         $('#email').val($('#email-src').val());
         $('#phoneno').val($('#phone-src').val());
-        $('#sms').val($('#sms-fee').val());
-        $('#cancellation').val($('#cancellation-fee').val());
         $('#car-registration-no').val($('#car-registration-no-src').val());
         $('#vehicle-color').val($('#vehicle-color-src').val());
         $('#vehicle-make').val($('#vehicle-make-src').val());
         $('#vehicle-model').val($('#vehicle-model-src').val());
         $('#coupon').val($('#coupon-src').val());
+
+        if ($('#sms-fee').is(':checked')) {
+            $('#sms').val($('#sms-fee').val());
+        } else {
+            $('#sms').val(0);
+        }
+
+        if ($('#cancellation-fee').is(':checked')) {
+            $('#cancellation').val($('#cancellation-fee').val());
+        } else {
+            $('#cancellation').val(0);
+        }
 
         var fv = $('#payment_wizard').data('formValidation'),
 
