@@ -242,9 +242,13 @@ Payment |
 										</div>
 										<br/>
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-3">
 												<label>Expiration Date:</label>
-												<input type="text" id="expiration-src" name="expiration" class="form-control">
+												<input type="text" id="expiration-month-src" name="expiration-month" class="form-control">
+											</div>
+											<div class="col-md-3">
+												<label>Expiration Date:</label>
+												<input type="text" id="expiration-year-src" name="expiration-year" class="form-control">
 											</div>
 											<div class="col-md-6">
 												<label>CV Code:</label>
@@ -430,7 +434,8 @@ Payment |
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
 						<input type="hidden" id="card-name" name="card_name">
 						<input type="hidden" id="card-number" name="card_number">
-						<input type="hidden" id="expiration" name="expiration">
+						<input type="hidden" id="expiration-month" name="expiration-month">
+						<input type="hidden" id="expiration-year" name="expiration-year">
 						<input type="hidden" id="cv-code" name="cv_code">
 						{{ csrf_field() }}
 					</form>

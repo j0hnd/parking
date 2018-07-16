@@ -683,11 +683,12 @@ class ParkingAppController extends Controller
 		try {
 
 			if ($request->ajax() and $request->isMethod('post')) {
-				$form = $request->except(['_token', 'card_name', 'card_number', 'expiration', 'cv_code']);
+				$form = $request->except(['_token', 'card_name', 'card_number', 'expiration-month', 'expiration-year', 'cv_code']);
+				$expiration = $request->get('expiration-month')."/".$request->get('expiration-year');
 				$card = [
 					'card_name' => $request->get('card_name'),
 					'card_number' => $request->get('card_number'),
-					'expiration' => $request->get('expiration'),
+					'expiration' => $expiration,
 					'cvv' => $request->get('cv_code')
 				];
 

@@ -109,8 +109,9 @@ $(document).ready(function(){
                 $('#coupon').val($('#coupon-src').val());
                 $('#card-name').val($('#card-name-src').val());
                 $('#card-number').val($('#card-number-src').val());
-                $('#expiration').val($('#expiration-src').val());
-                $('#cv-code').val($('#cv-code-src-src').val());
+                $('#expiration-month').val($('#expiration-month-src').val());
+                $('#expiration-year').val($('#expiration-year-src').val());
+                $('#cv-code').val($('#cv-code-src').val());
 
                 if ($('#sms-fee').is(':checked')) {
                     $('#sms').val($('#sms-fee').val());
