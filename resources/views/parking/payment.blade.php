@@ -466,8 +466,8 @@ Payment |
 								<div class="col-md-12">
 									<a class="collapsed side-more" data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="false" aria-controls="collapseOne">more info...</a>
 									<div id="collapse" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-				                    <p class="collapsable-title">Lorem ipsum dolor sit amet</p>
-				                    <p class="collapsable-text">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.</p>
+				                    {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
+				                    <p class="collapsable-text">{{ $product->short_description }}</p>
 				                </div>
 								</div>
 							</div>
