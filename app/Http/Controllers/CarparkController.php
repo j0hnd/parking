@@ -303,4 +303,22 @@ class CarparkController extends Controller
             abort(404, $e->getMessage());
         }
     }
+
+    public function get_carpark_info(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+
+			if ($request->ajax()) {
+				$carpark = Carpark::findOrFail($request->id);
+				$response = ['success' => true, 'data' => $carpark];
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }

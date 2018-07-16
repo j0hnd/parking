@@ -242,9 +242,13 @@ Payment |
 										</div>
 										<br/>
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-3">
 												<label>Expiration Date:</label>
-												<input type="text" id="expiration-src" name="expiration" class="form-control">
+												<input type="text" id="expiration-month-src" name="expiration-month" class="form-control">
+											</div>
+											<div class="col-md-3">
+												<label>Expiration Date:</label>
+												<input type="text" id="expiration-year-src" name="expiration-year" class="form-control">
 											</div>
 											<div class="col-md-6">
 												<label>CV Code:</label>
@@ -430,7 +434,8 @@ Payment |
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
 						<input type="hidden" id="card-name" name="card_name">
 						<input type="hidden" id="card-number" name="card_number">
-						<input type="hidden" id="expiration" name="expiration">
+						<input type="hidden" id="expiration-month" name="expiration-month">
+						<input type="hidden" id="expiration-year" name="expiration-year">
 						<input type="hidden" id="cv-code" name="cv_code">
 						{{ csrf_field() }}
 					</form>
@@ -466,8 +471,8 @@ Payment |
 								<div class="col-md-12">
 									<a class="collapsed side-more" data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="false" aria-controls="collapseOne">more info...</a>
 									<div id="collapse" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-				                    <p class="collapsable-title">Lorem ipsum dolor sit amet</p>
-				                    <p class="collapsable-text">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.</p>
+				                    {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
+				                    <p class="collapsable-text">{{ $product->short_description }}</p>
 				                </div>
 								</div>
 							</div>

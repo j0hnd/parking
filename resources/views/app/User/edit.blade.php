@@ -32,6 +32,21 @@
         $(function(){
             $('#role-id').select2({ placeholder: '-- Role --' });
             $('#company-name').select2({ placeholder: '-- Company --' });
+
+
+            $(document).on('change', '#company-name', function () {
+                $.ajax({
+                    url: "{{ url('/admin/carpark/info') }}/" + $(this).val(),
+                    type: 'get',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            var address = response.data.address+" "+response.data.city+", "+response.data.county_state+" "+response.data.zipcode;
+                            $('#address').val(address);
+                        }
+                    }
+                });
+            });
         });
     </script>
 @stop

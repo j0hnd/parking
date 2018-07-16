@@ -14,7 +14,7 @@ class Members extends Model
 
     public $timestamps = true;
 
-    public $with = ['company'];
+    public $with = ['company', 'carpark'];
 
 
     public function users()
@@ -25,5 +25,10 @@ class Members extends Model
     public function company()
 	{
 		return $this->hasOne(Companies::class, 'id', 'company_id');
+	}
+
+	public function carpark()
+	{
+		return $this->hasOne(Carpark::class, 'id', 'company_id');
 	}
 }
