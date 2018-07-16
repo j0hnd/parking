@@ -24,7 +24,7 @@
 						$cancellation_waiver = is_null($booking->cancellation_waiver) ? 0 : $booking->cancellation_waiver;
 						$amount = $booking->price_value + $booking->booking_fee + $sms_fee + $cancellation_waiver;
 
-						if ($booking->affiliate_bookings[0]->affiliates) {
+						if (isset($booking->affiliate_bookings[0]->affiliates)) {
 							$percent_travel_agent = $booking->affiliate_bookings[0]->affiliates[0]->percent_travel_agent;
 							$amount = $amount * round(($percent_travel_agent/ 100), PHP_ROUND_HALF_UP);
 						}
