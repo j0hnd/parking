@@ -582,7 +582,7 @@ Payment |
 									<p>TOTAL PRICE</p>
 								</div>
 								<div class="col-6 col-md-6">
-									<p class="receipt-align total" id="total" data-value="{{ $total }}">£{{ $total }}</p>
+									<p class="receipt-align total" id="total" data-value="{{ $total }}" data-raw-value="{{ $price_value }}">£{{ $total }}</p>
 								</div>
 							</div>
 						</div>

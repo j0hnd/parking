@@ -147,6 +147,7 @@
         </div>
     </div>
 
+    @if(!isset($booking))
     <div class="form-group">
         <label class="col-sm-2 control-label">Price Value (£)</label>
 
@@ -170,6 +171,7 @@
                    readonly>
         </div>
     </div>
+    @endif
     @endif
 
     <div class="form-group">
