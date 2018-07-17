@@ -52,31 +52,38 @@ class MembersController extends Controller
 
 				$affiliate = Affiliates::active()->where('travel_agent_id', $user->id)->first();
 			} else {
-				$carpark_id = $user->members->carpark->id;
+				if (is_null($user->members->carpark)) {
+					$total_bookings = null;
+					$ongoing_bookings = null;
+					$bookings = null;
+				} else {
+					$carpark_id = $user->members->carpark->id;
 
-				$total_bookings = Bookings::whereNull('bookings.deleted_at')
-					->whereHas('products', function ($query) use ($carpark_id) {
-						$query->where('carpark_id', $carpark_id);
-					})
-					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-					->get();
+					$total_bookings = Bookings::whereNull('bookings.deleted_at')
+						->whereHas('products', function ($query) use ($carpark_id) {
+							$query->where('carpark_id', $carpark_id);
+						})
+						->join('products', 'products.id', '=', 'bookings.product_id')
+						->join('companies', 'companies.id', '=', 'products.vendor_id')
+						->get();
 
-				$ongoing_bookings = Bookings::active()
-					->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
-					->whereHas('products', function ($query) use ($carpark_id) {
-						$query->where('carpark_id', $carpark_id);
-					})
-					->get();
+					$ongoing_bookings = Bookings::active()
+						->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+						->whereHas('products', function ($query) use ($carpark_id) {
+							$query->where('carpark_id', $carpark_id);
+						})
+						->get();
 
-				$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
+					$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
 			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
-					->whereNull('bookings.deleted_at')
-					->whereHas('products', function ($query) use ($carpark_id) {
-						$query->where('carpark_id', $carpark_id);
-					})
-					->join('products', 'products.id', '=', 'bookings.product_id')
-					->paginate(config('app.item_per_page'));
+						->whereNull('bookings.deleted_at')
+						->whereHas('products', function ($query) use ($carpark_id) {
+							$query->where('carpark_id', $carpark_id);
+						})
+						->join('products', 'products.id', '=', 'bookings.product_id')
+						->paginate(config('app.item_per_page'));
+				}
+
 			}
 		}
 
