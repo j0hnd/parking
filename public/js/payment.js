@@ -377,20 +377,20 @@ $(document).ready(function(){
         cssClass: "tabcontrol"
     });
 
-    $.fn.steps.setStep = function (step) {
-        var currentIndex = $(this).steps('getCurrentIndex');
-        console.log($(this));
-        console.log('step: ' + step);
-        console.log('current index: ' + currentIndex);
-        for(var i = 0; i < Math.abs(step - currentIndex); i++){
-            if(step > currentIndex) {
-                $(this).steps('next');
-            }
-            else{
-                $(this).steps('previous');
-            }
-        }
-    };
+    // $.fn.steps.setStep = function (step) {
+    //     var currentIndex = $(this).steps('getCurrentIndex');
+    //     console.log($(this));
+    //     console.log('step: ' + step);
+    //     console.log('current index: ' + currentIndex);
+    //     for(var i = 0; i < Math.abs(step - currentIndex); i++){
+    //         if(step > currentIndex) {
+    //             $(this).steps('next');
+    //         }
+    //         else{
+    //             $(this).steps('previous');
+    //         }
+    //     }
+    // };
 
     $(document).on('click', '#sms-fee', function () {
         var total = $('#total').text().substr(1);
