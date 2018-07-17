@@ -106,8 +106,6 @@ $(document).ready(function(){
                 $('#lastname').val($('#lastname-src').val());
                 $('#email').val($('#email-src').val());
                 $('#phoneno').val($('#phone-src').val());
-                // $('#sms').val($('#sms-fee').val());
-                // $('#cancellation').val($('#cancellation').val());
                 $('#car-registration-no').val($('#car-registration-no-src').val());
                 $('#vehicle-color').val($('#vehicle-color-src').val());
                 $('#vehicle-model').val($('#vehicle-model-src').val());
@@ -210,7 +208,7 @@ $(document).ready(function(){
                     success: function (response) {
                         if (response.success) {
                             $('#finish-wrapper').removeClass('d-none');
-                            $('#booking-id-wrapper').html("<strong>"+ response.data.id +"</strong>");
+                            $('#booking-id-wrapper').html(response.data.id);
                             $('#customer-name').html(response.data.name);
                             $('#order-title').html(response.data.order);
                             $('#drop-off').html(response.data.drop_off);
@@ -329,35 +327,6 @@ $(document).ready(function(){
                     }
                 }
             },
-            // card_number: {
-            //     validators: {
-            //         creditCard: {
-            //             message: 'The credit card number is not valid'
-            //         }
-            //     }
-            // },
-            // cv_code: {
-            //     validators: {
-            //         cvv: {
-            //             creditCardField: 'card_number',
-            //             message: 'The CVV number is not valid'
-            //         }
-            //     }
-            // },
-            // expiration_month : {
-            //     validators: {
-            //         numeric: {
-            //             message: 'The value is not a value'
-            //         }
-            //     }
-            // },
-            // expiration_year : {
-            //     validators: {
-            //         numeric: {
-            //             message: 'The value is not a value'
-            //         }
-            //     }
-            // },
             drop_off_date: {
                 validators: {
                     notEmpty: {
@@ -565,6 +534,10 @@ $(document).ready(function(){
             $(this).removeClass('d-none');
             $('#other-vehicle-model-src').addClass('d-none');
         }
+    });
+
+    $(document).on('click', 'a[href="#finish"]', function (e) {
+        $(this).parent().addClass('disabled');
     });
 
     if ($('#sms-fee').is(':checked')) {

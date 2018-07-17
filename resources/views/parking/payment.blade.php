@@ -424,28 +424,26 @@ Payment |
 						<section data-step="2">
 							<div class="container wizard-content">
 								<div class="row">
-									<div id="finish-wrapper" class="col-md-12 d-none" style="font-size: 22px;">
+									<div id="finish-wrapper" class="col-md-12 d-none" style="font-size: 12px;">
 										<p>Hi <span id="customer-name"></span>,</p>
 										<p>Here are your bookings details, please review and confirm if all details are correct:</p>
-										<p><strong>Booking Details</strong></p>
-										<p>Booking Reference: <span id="booking-id-wrapper"></span></p>
-										<p>Order: <span id="order-title"></span></p>
-										<p>Drop Off: <span id="drop-off"></span></p>
-										<p>Return At: <span id="return-at"></span></p>
-										<br>
-										<p><strong>Vendor Details</strong></p>
-										<p>Phone No: <span id="vendor-phone-no"></span></p>
-										<p>Email: <span id="vendor-email"></span></p>
-										<br>
-										<p><strong>Vehicle Details</strong></p>
-										<p>Registration No: <span id="vd-registration-no"></span></p>
-										<p>Make: <span id="vd-vehicle-make"></span></p>
-										<p>Model: <span id="vd-vehicle-model"></span></p>
-										<p>Color: <span id="vd-vehicle-color"></span></p>
-										<br>
-										<p>You will also be receiving an email for the details of your booking.</p>
+										<p><h6>Booking Details</h6></p>
+										<p><strong>Booking Reference</strong>: <span id="booking-id-wrapper"></span></p>
+										<p><strong>Order</strong>: <span id="order-title"></span></p>
+										<p><strong>Drop Off</strong>: <span id="drop-off"></span></p>
+										<p><strong>Return At</strong>: <span id="return-at"></span></p>
+										<hr>
+										<p><h6>Vendor Details</h6></p>
+										<p><strong>Phone No</strong>: <span id="vendor-phone-no"></span></p>
+										<p><strong>Email</strong>: <span id="vendor-email"></span></p>
+										<hr>
+										<p><h6>Vehicle Details</h6></p>
+										<p><strong>Registration No</strong>: <span id="vd-registration-no"></span></p>
+										<p><strong>Make</strong>: <span id="vd-vehicle-make"></span></p>
+										<p><strong>Model</strong>: <span id="vd-vehicle-model"></span></p>
+										<p><strong>Color</strong>: <span id="vd-vehicle-color"></span></p>
 									</div>
-									<div id="confirmation-wrapper" class="col-md-12 text-left" style="font-size: 22px;">
+									<div id="confirmation-wrapper" class="col-md-12 text-center" style="font-size: 13px;">
 										<p>Click the <strong>Finish</strong> button if all your details are correct.</p>
 									</div>
 								</div>
