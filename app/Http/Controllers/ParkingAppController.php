@@ -323,11 +323,17 @@ class ParkingAppController extends Controller
 					}
 
 					$response = ['success' => true, 'data' => [
-						'id' => $booking->booking_id,
-						'name'      => $customer->first_name,
-						'order'     => $booking->order_title,
-						'drop_off'  => $drop_off->format('d/m/Y H:i'),
-						'return_at' => $return_at->format('d/m/Y H:i')
+						'id'              => $booking->booking_id,
+						'name'            => empty($customer->first_name) ? "" : ucwords($customer->first_name),
+						'order'           => $booking->order_title,
+						'drop_off'        => $drop_off->format('d/m/Y H:i'),
+						'return_at'       => $return_at->format('d/m/Y H:i'),
+						'vendor_phone_no' => empty($booking->products[0]->carpark->company->phone_no) ? "N/A" : $booking->products[0]->carpark->company->phone_no,
+						'vendor_email'    => empty($booking->products[0]->carpark->company->email) ? "N/A" : $booking->products[0]->carpark->company->email,
+						'registration_no' => strtoupper($booking->car_registration_no),
+						'vehicle_make'    => $booking->vehicle_make,
+						'vehicle_model'   => $booking->vehicle_model,
+						'vehicle_color'   => ucwords($booking->vehicle_color),
 					]];
 				}
 			}
@@ -708,7 +714,7 @@ class ParkingAppController extends Controller
 					$session_request = json_decode($session->requests, true);
 					$session_response = json_decode($session->response, true);
 
-					$customer = Customers::where(['email' => $session['email']]);
+					$customer = Customers::where(['email' => $session_response['email']]);
 					if ($customer->count()) {
 						$customer_id = $customer->first()->id;
 					} else {
