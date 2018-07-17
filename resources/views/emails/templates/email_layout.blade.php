@@ -251,7 +251,7 @@
 	        <!-- Email Header : BEGIN -->
             <tr>
                 <td style="padding: 20px 0; text-align: center">
-                    <img src="{{ asset('/img/booking-confirmed.png') }}" width="200" height="50" alt="alt_text" border="0" style="height: auto; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+                    <img src="https://mytravelcompared.com/img/booking-confirmed.png" width="200" height="50" alt="alt_text" border="0" style="height: auto; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
                 </td>
             </tr>
 	        <!-- Email Header : END -->
@@ -259,7 +259,7 @@
             <!-- Hero Image, Flush : BEGIN -->
             <tr>
                 <td style="background-color: #ffffff;">
-                    <img src="{{ asset('/img/header-logo.png') }}" width="600" height="" alt="alt_text" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
+                    <img src="https://mytravelcompared.com/img/header-logo.png" width="600" height="300" alt="Hero Image" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
                 </td>
             </tr>
             <!-- Hero Image, Flush : END -->
@@ -286,6 +286,7 @@
 	                <br><br>
 	                My Travel Compared<br><span class="unstyle-auto-detected-links">bookings@mytravelcompared.com<br>(123) 456-7890</span>
 	                <br><br>
+                    <unsubscribe style="color: #888888; text-decoration: underline;">unsubscribe</unsubscribe>
 	            </td>
 	        </tr>
 	    </table>
