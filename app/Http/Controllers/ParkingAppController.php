@@ -330,9 +330,9 @@ class ParkingAppController extends Controller
 						'return_at'       => $return_at->format('d/m/Y H:i'),
 						'vendor_phone_no' => empty($booking->products[0]->carpark->company->phone_no) ? "N/A" : $booking->products[0]->carpark->company->phone_no,
 						'vendor_email'    => empty($booking->products[0]->carpark->company->email) ? "N/A" : $booking->products[0]->carpark->company->email,
-						'registration_no' => strtoupper($booking->car_registration_no),
-						'vehicle_make'    => $booking->vehicle_make,
-						'vehicle_model'   => $booking->vehicle_model,
+						'registration_no' => empty($booking->car_registration_no) ? "N/A" : strtoupper($booking->car_registration_no),
+						'vehicle_make'    => empty($booking->vehicle_make) ? "N/A" : $booking->vehicle_make,
+						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
 						'vehicle_color'   => ucwords($booking->vehicle_color),
 					]];
 				}
