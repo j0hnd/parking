@@ -22,7 +22,7 @@ class Commissions implements FromCollection, WithMapping, WithHeadings
 	{
 		return [
 			$data->booking_id,
-			$data->products[0]->vendors[0]->company_name,
+			$data->products[0]->carpark->name,
 			$data->order_title,
 			$data->customers->first_name." ".$data->customers->last_name,
 			$data->created_at->format('F j, Y'),
