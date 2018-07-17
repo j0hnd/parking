@@ -327,11 +327,17 @@ $(document).ready(function(){
             //         }
             //     }
             // },
-            // expiration : {
+            // expiration_month : {
             //     validators: {
-            //         date: {
-            //             format: 'MM/YYYY',
-            //             message: 'The value is not a valid credit card expiration date'
+            //         numeric: {
+            //             message: 'The value is not a value'
+            //         }
+            //     }
+            // },
+            // expiration_year : {
+            //     validators: {
+            //         numeric: {
+            //             message: 'The value is not a value'
             //         }
             //     }
             // },

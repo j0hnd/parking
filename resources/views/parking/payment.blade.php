@@ -242,15 +242,37 @@ Payment |
 										</div>
 										<br/>
 										<div class="row">
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<label>Expiration Date:</label>
-												<input type="text" id="expiration-month-src" name="expiration-month" class="form-control">
+												<select name="expiration-month" id="expiration-month-src" class="form-control">
+													<option value="" readonly="">-- Month --</option>
+													<option value="1">January</option>
+													<option value="2">February</option>
+													<option value="3">March</option>
+													<option value="4">April</option>
+													<option value="5">May</option>
+													<option value="6">June</option>
+													<option value="7">July</option>
+													<option value="8">August</option>
+													<option value="9">September</option>
+													<option value="10">October</option>
+													<option value="11">November</option>
+													<option value="12">December</option>
+												</select>
+												{{--<input type="text" id="expiration-month-src" name="expiration-month" class="form-control">--}}
 											</div>
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<label>Expiration Date:</label>
-												<input type="text" id="expiration-year-src" name="expiration-year" class="form-control">
+												<select name="expiration_year" id="expiration-year-src" class="form-control">
+													<option value="" readonly="">-- Year --</option>
+													<option value="{{ date('Y') }}">{{ date('Y') }}</option>
+													@for($i = 1; $i <= 10; $i++)
+													<option value="{{ date('Y') + $i }}">{{ date('Y') + $i }}</option>
+													@endfor
+												</select>
+												{{--<input type="text" id="expiration-year-src" name="expiration-year" class="form-control">--}}
 											</div>
-											<div class="col-md-6">
+											<div class="col-md-4">
 												<label>CV Code:</label>
 												<input type="text" id="cv-code-src" name="cv_code" class="form-control">
 											</div>
