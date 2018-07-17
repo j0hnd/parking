@@ -28,8 +28,8 @@
                     @endphp
 
                     <p class="price">£{{ $price }}</p>
-                    <a href="javascript:void(0);" class="book-now toggle-book-now" data-id="{{ $i }}">BOOK NOW</a><br/>
-                    <img src="{{ asset('/img/star-like.png') }}" class="star"><br/>
+                    <a href="javascript:void(0);" class="book-now toggle-book-now" data-id="{{ $i }}">BOOK NOW</a><br/><br/>
+                    {{--<img src="{{ asset('/img/star-like.png') }}" class="star"><br/>--}}
 
                     <input type="hidden" name="products" value="{{ $i }}:{{ $result['product_id'] }}:{{ $result['airport_id'] }}:{{ $result['price_id'] }}:{{ $result['price'] }}">
                     <input type="hidden" name="drop_off" value="{{ $result['drop_off'] }}">
