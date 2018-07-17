@@ -31,31 +31,30 @@ $(function () {
     });
 
     (function (window, document, undefined) {
-      'use strict';
+        'use strict';
 
-      var mediaQuery = window.matchMedia('(max-width: 991px)');
+        var mediaQuery = window.matchMedia('(max-width: 991px)');
 
-      mediaQuery.addListener(doSomething);
+        mediaQuery.addListener(doSomething);
 
-      function doSomething(mediaQuery) {
-        if (mediaQuery.matches) {
-          $('.detail-tab').removeAttr('details-tab');
+        function doSomething(mediaQuery) {
+            if (mediaQuery.matches) {
+                $('.detail-tab').removeAttr('details-tab');
+            } else {
+                $("#details-tab").steps({
+                    headerTag: "h4",
+                    bodyTag: "fieldset",
+                    transitionEffect: "slideLeft",
+                    enableFinishButton: true,
+                    enablePagination: false,
+                    enableAllSteps: true,
+                    titleTemplate: "#title#",
+                    cssClass: "tabcontrol"
+                });
+            }
         }
-        else {
-           $("#details-tab").steps({
-            headerTag: "h4",
-            bodyTag: "fieldset",
-            transitionEffect: "slideLeft",
-            enableFinishButton: true,
-            enablePagination: false,
-            enableAllSteps: true,
-            titleTemplate: "#title#",
-            cssClass: "tabcontrol"
-        });
-        }
-      }
 
-      doSomething(mediaQuery);
+        doSomething(mediaQuery);
 
     })(window, document);
 

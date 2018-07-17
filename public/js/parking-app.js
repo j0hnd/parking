@@ -13,7 +13,6 @@ jQuery(document).ready(function($) {
         format: 'dd/mm/yyyy',
         todayHighlight: true
     }).on('changeDate', function (e) {
-        console.log(e.target.id);
         if (e.target.id == 'drop-off-date') {
             var selected_date = $(this).val().split('/');
             var date = new Date(selected_date[2], selected_date[1], selected_date[0]);

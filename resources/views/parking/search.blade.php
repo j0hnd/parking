@@ -98,10 +98,20 @@ Parking Search |
     <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('app.ggogle_api') }}&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('app.google_api') }}&callback=initMap" async defer></script>
     <script type="text/javascript">
         $(function () {
             $('#airport').select2();
+            $(".detail-tab").steps({
+                headerTag: "h4",
+                bodyTag: "fieldset",
+                transitionEffect: "slideLeft",
+                enableFinishButton: true,
+                enablePagination: false,
+                enableAllSteps: true,
+                titleTemplate: "#title#",
+                cssClass: "tabcontrol"
+            });
         });
     </script>
 @stop
