@@ -3,6 +3,11 @@
 @section('css')
 	<link rel="stylesheet" href="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css') }}">
 	<link href="{{ asset('/css/member-portal.css') }}" rel="stylesheet">
+	<style type="text/css">
+		.update-price {
+			text-decoration: underline;
+		}
+	</style>
 @stop
 
 @section('main-content')
