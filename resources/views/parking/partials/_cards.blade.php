@@ -158,7 +158,7 @@
                 </a>
                 <div id="collapse{{ $i }}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                     {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
-                    <p class="collapsable-text">{{ $result['short_description'] }}</p>
+                    <p class="collapsable-text" style="margin-top: 10px;">{{ $result['short_description'] }}</p>
                 </div>
             </div>
 
