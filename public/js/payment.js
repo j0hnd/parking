@@ -215,6 +215,12 @@ $(document).ready(function(){
                             $('#order-title').html(response.data.order);
                             $('#drop-off').html(response.data.drop_off);
                             $('#return-at').html(response.data.return_at);
+                            $('#vendor-phone-no').html(response.data.vendor_phone_no);
+                            $('#vendor-email').html(response.data.vendor_email);
+                            $('#vd-registration-no').html(response.data.registration_no);
+                            $('#vd-vehicle-make').html(response.data.vehicle_make);
+                            $('#vd-vehicle-model').html(response.data.vehicle_model);
+                            $('#vd-vehicle-color').html(response.data.vehicle_color);
                             move = true;
                         } else {
                             $('#payment_wizard-p-1').show();

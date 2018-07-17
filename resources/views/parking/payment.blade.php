@@ -426,10 +426,26 @@ Payment |
 								<div class="row">
 									<div id="finish-wrapper" class="col-md-12 d-none" style="font-size: 22px;">
 										<p>Hi <span id="customer-name"></span>,</p>
-										<p>The Booking Reference No. is <span id="booking-id-wrapper"></span> for your <span id="order-title"></span> is on <span id="drop-off"></span> to <span id="return-at"></span></p>
+										<p>Here are your bookings details, please review and confirm if all details are correct:</p>
+										<p><strong>Booking Details</strong></p>
+										<p>Booking Reference: <span id="booking-id-wrapper"></span></p>
+										<p>Order: <span id="order-title"></span></p>
+										<p>Drop Off: <span id="drop-off"></span></p>
+										<p>Return At: <span id="return-at"></span></p>
+										<br>
+										<p><strong>Vendor Details</strong></p>
+										<p>Phone No: <span id="vendor-phone-no"></span></p>
+										<p>Email: <span id="vendor-email"></span></p>
+										<br>
+										<p><strong>Vehicle Details</strong></p>
+										<p>Registration No: <span id="vd-registration-no"></span></p>
+										<p>Make: <span id="vd-vehicle-make"></span></p>
+										<p>Model: <span id="vd-vehicle-model"></span></p>
+										<p>Color: <span id="vd-vehicle-color"></span></p>
+										<br>
 										<p>You will also be receiving an email for the details of your booking.</p>
 									</div>
-									<div id="confirmation-wrapper" class="col-md-12 text-center" style="font-size: 22px;">
+									<div id="confirmation-wrapper" class="col-md-12 text-left" style="font-size: 22px;">
 										<p>Click the <strong>Finish</strong> button if all your details are correct.</p>
 									</div>
 								</div>
