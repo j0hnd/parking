@@ -45,6 +45,8 @@ Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
 
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');
+	Route::post('/dashboard', 'MembersController@dashboard');
+
 	Route::get('/profile', 'MembersController@display_profile');
     Route::get('/inbox','MembersController@display_inbox');
     Route::get('/email/{id}','MembersController@display_email');
