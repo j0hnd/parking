@@ -48,7 +48,7 @@
                             @endphp
                         <tr id="booking-{{ $booking->id }}">
                             <td><a href="{{ url('/admin/booking/'.$booking->id.'/edit') }}" target="_blank">{{ $booking->booking_id }}</a></td>
-                            <td>{{ $booking->products[0]->vendors[0]->company_name }}</td>
+                            <td>{{ $booking->products[0]->carpark->name }}</td>
                             <td>{{ $booking->order_title }}</td>
                             <td class="text-left">{{ $booking->customers->first_name }}&nbsp;{{ $booking->customers->last_name }}</td>
                             <td class="text-center">{{ $booking->created_at->format('F j, Y') }}</td>
