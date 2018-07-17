@@ -18,11 +18,11 @@
 @if(count($prices))
 	@foreach($prices as $i => $price)
 		<tr data-id="{{ $price->product_id }}">
-			<td><a href="javascript:void(0);" class="update-price" data-id="{{ $price->price_id }}">{{ $price->price_id }}</a></td>
+			<td>{{ $price->price_id }}</td>
 			<td class="text-center">{{ $price->no_of_days }}</td>
 			<td class="text-center">{{ is_null($price->price_month) ? "--" : $months[$price->price_month] }}</td>
 			<td class="text-center">{{ is_null($price->price_year) ? "--" : $price->price_year }}</td>
-			<td class="text-right">£{{ number_format($price->price_value, 2) }}</td>
+			<td class="text-right"><a href="javascript:void(0);" class="update-price" data-id="{{ $price->price_id }}">£{{ number_format($price->price_value, 2) }}</a></td>
 		</tr>
 	@endforeach
 @else

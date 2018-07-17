@@ -47,6 +47,8 @@ Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
 
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');
+	Route::post('/dashboard', 'MembersController@dashboard');
+
 	Route::get('/profile', 'MembersController@display_profile');
     Route::get('/inbox','MembersController@display_inbox');
     Route::get('/email/{id}','MembersController@display_email');
@@ -74,6 +76,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/carpark/update', 'CarparkController@update');
     Route::post('/carpark/{id}/delete', 'CarparkController@delete');
     Route::post('/carpark/search', 'CarparkController@search');
+    Route::get('/carpark/info/{id}', 'CarparkController@get_carpark_info');
 
     Route::resource('product', 'ProductsController')->except(['update', 'destroy', 'show']);
     Route::post('/product/{id}/delete', 'ProductsController@delete');

@@ -50,6 +50,8 @@ $(function () {
         var id = $(this).data('id');
         var date = $(this).data('date');
 
+        console.log(id);
+
         if ($('.booking-details').is(':visible')) {
             $('.booking-details').addClass('hidden');
         } else {

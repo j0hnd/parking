@@ -26,8 +26,22 @@ class MembersController extends Controller
 		$inbox = null;
 		$affiliate = null;
 
+		if ($request->isMethod('post')) {
+			$form = $request->except(['_token']);
+		}
+
 		if ($user->roles[0]->slug == 'member') {
-			$bookings = Bookings::where('user_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+			if (isset($form)) {
+				$bookings = Bookings::whereNull('deleted_at')
+					->where('user_id', $user->id)
+					->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
+					->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
+					->orderBy('created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			} else {
+				$bookings = Bookings::where('user_id', $user->id)->whereNull('deleted_at')->orderBy('created_at', 'desc')->paginate(config('app.item_per_page'));
+			}
+
 
 			$total_bookings = Bookings::whereNull('bookings.deleted_at')
 				->where('user_id', $user->id)
@@ -45,56 +59,71 @@ class MembersController extends Controller
 					->where('user_id', $user->id)
 					->get();
 
-				$ongoing_bookings = Bookings::active()
-					->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
-					->where('user_id', $user->id)
-					->get();
+				if (isset($form)) {
+					$ongoing_bookings = Bookings::active()
+						->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+						->where('user_id', $user->id)
+						->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
+						->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
+						->get();
+				} else {
+					$ongoing_bookings = Bookings::active()
+						->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+						->where('user_id', $user->id)
+						->get();
+				}
+
 
 				$affiliate = Affiliates::active()->where('travel_agent_id', $user->id)->first();
 			} else {
-				$user_id = $user->id;
+				if (is_null($user->members->carpark)) {
+					$total_bookings = null;
+					$ongoing_bookings = null;
+					$bookings = null;
+				} else {
+					$carpark_id = $user->members->carpark->id;
 
-				$total_bookings = Bookings::whereNull('bookings.deleted_at')
-					->whereHas('products', function ($query) use ($user_id) {
-						$query->where('vendor_id', $user_id);
-					})
-					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-//					->groupBy('products.vendor_id')
-					->get();
+					$total_bookings = Bookings::whereNull('bookings.deleted_at')
+						->whereHas('products', function ($query) use ($carpark_id) {
+							$query->where('carpark_id', $carpark_id);
+						})
+						->join('products', 'products.id', '=', 'bookings.product_id')
+						->join('companies', 'companies.id', '=', 'products.vendor_id')
+						->get();
 
-				$ongoing_bookings = Bookings::active()
-					->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
-					->whereHas('products', function ($query) use ($user_id) {
-						$query->where('vendor_id', $user_id);
-					})
-					->get();
+					$ongoing_bookings = Bookings::active()
+						->whereRaw('DATE_FORMAT(return_at, "%Y-%m-%d") > CURDATE()')
+						->whereHas('products', function ($query) use ($carpark_id) {
+							$query->where('carpark_id', $carpark_id);
+						})
+						->get();
 
-				$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
+					if (isset($form)) {
+						$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
 			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
-					->whereNull('bookings.deleted_at')
-					->whereHas('products', function ($query) use ($user_id) {
-						$query->where('vendor_id', $user_id);
-					})
-					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-//					->groupBy('products.vendor_id')
-					->paginate(config('app.item_per_page'));
+							->whereNull('bookings.deleted_at')
+							->whereHas('products', function ($query) use ($carpark_id) {
+								$query->where('carpark_id', $carpark_id);
+							})
+							->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
+							->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
+							->join('products', 'products.id', '=', 'bookings.product_id')
+							->paginate(config('app.item_per_page'));
+					} else {
+						$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
+			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
+							->whereNull('bookings.deleted_at')
+							->whereHas('products', function ($query) use ($carpark_id) {
+								$query->where('carpark_id', $carpark_id);
+							})
+							->join('products', 'products.id', '=', 'bookings.product_id')
+							->paginate(config('app.item_per_page'));
+					}
+
+				}
+
 			}
 		}
-
-//		if (is_null($user->members->company)) {
-//			$count = 0;
-//			$inbox = null;
-//		} else {
-//			$new_messages = Messages::where('status', 'unread')
-//				->whereIn('booking_id', Bookings::get_user_bookings($user->members->company->id));
-//
-//			$new_messages = Messages::where('user_id', $user->id);
-//
-//			$count = $new_messages->count();
-//			$inbox = $new_messages->get()->toArray();
-//		}
 
 		$new_messages = Messages::where(['user_id' => $user->id, 'status' => 'unread']);
 
@@ -210,7 +239,7 @@ class MembersController extends Controller
 			->join('prices', 'prices.product_id', '=', 'products.id')
 			->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 			->whereNull('products.deleted_at')
-			->where('products.vendor_id', $user->id)
+			->where('products.carpark_id', $user->members->carpark->id)
 //			->where('products.vendor_id', $user->members->company->id)
 			->groupBy('prices.product_id')
 			->get();
@@ -234,7 +263,7 @@ class MembersController extends Controller
 					->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
 					->whereNull('products.deleted_at')
 					->where([
-						'products.vendor_id' => $user->id,
+						'products.carpark_id' => $user->members->carpark->id,
 //						'products.vendor_id' => $user->members->company->id,
 						'prices.product_id' => $request->id
 					])
@@ -312,6 +341,39 @@ class MembersController extends Controller
 			}
 		} catch (\Exception $e) {
 			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
+
+	public function search_booking(Request $request)
+	{
+		$response = ['success' => false];
+
+		try {
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->except(['_token']);
+				$user = Sentinel::getUser();
+				$carpark_id = $user->members->carpark->id;
+
+				$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
+			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
+					->whereNull('bookings.deleted_at')
+					->whereHas('products', function ($query) use ($carpark_id) {
+						$query->where('carpark_id', $carpark_id);
+					})
+					->where('booking_id', '', '%'.$form['searchstr'].'%')
+					->orWhere('order_title', '', '%'.$form['searchstr'].'%')
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->paginate(config('app.item_per_page'));
+
+				$html = view('member-portal.partials.vendor', compact('bookings'))->render();
+
+				$response = ['success' => true, 'html' => $html];
+
+			}
+		} catch (\Exception $e) {
+			abort(500, $e->getMessage());
 		}
 
 		return response()->json($response);

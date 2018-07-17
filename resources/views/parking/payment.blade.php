@@ -242,11 +242,37 @@ Payment |
 										</div>
 										<br/>
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-4">
 												<label>Expiration Date:</label>
-												<input type="text" id="expiration-src" name="expiration" class="form-control">
+												<select name="expiration-month" id="expiration-month-src" class="form-control">
+													<option value="" readonly="">-- Month --</option>
+													<option value="1">January</option>
+													<option value="2">February</option>
+													<option value="3">March</option>
+													<option value="4">April</option>
+													<option value="5">May</option>
+													<option value="6">June</option>
+													<option value="7">July</option>
+													<option value="8">August</option>
+													<option value="9">September</option>
+													<option value="10">October</option>
+													<option value="11">November</option>
+													<option value="12">December</option>
+												</select>
+												{{--<input type="text" id="expiration-month-src" name="expiration-month" class="form-control">--}}
 											</div>
-											<div class="col-md-6">
+											<div class="col-md-4">
+												<label>Expiration Date:</label>
+												<select name="expiration_year" id="expiration-year-src" class="form-control">
+													<option value="" readonly="">-- Year --</option>
+													<option value="{{ date('Y') }}">{{ date('Y') }}</option>
+													@for($i = 1; $i <= 10; $i++)
+													<option value="{{ date('Y') + $i }}">{{ date('Y') + $i }}</option>
+													@endfor
+												</select>
+												{{--<input type="text" id="expiration-year-src" name="expiration-year" class="form-control">--}}
+											</div>
+											<div class="col-md-4">
 												<label>CV Code:</label>
 												<input type="text" id="cv-code-src" name="cv_code" class="form-control">
 											</div>
@@ -398,12 +424,26 @@ Payment |
 						<section data-step="2">
 							<div class="container wizard-content">
 								<div class="row">
-									<div id="finish-wrapper" class="col-md-12 d-none" style="font-size: 22px;">
+									<div id="finish-wrapper" class="col-md-12 d-none" style="font-size: 12px;">
 										<p>Hi <span id="customer-name"></span>,</p>
-										<p>The Booking Reference No. is <span id="booking-id-wrapper"></span> for your <span id="order-title"></span> is on <span id="drop-off"></span> to <span id="return-at"></span></p>
-										<p>You will also be receiving an email for the details of your booking.</p>
+										<p>Here are your bookings details, please review and confirm if all details are correct:</p>
+										<p><h6>Booking Details</h6></p>
+										<p><strong>Booking Reference</strong>: <span id="booking-id-wrapper"></span></p>
+										<p><strong>Order</strong>: <span id="order-title"></span></p>
+										<p><strong>Drop Off</strong>: <span id="drop-off"></span></p>
+										<p><strong>Return At</strong>: <span id="return-at"></span></p>
+										<hr>
+										<p><h6>Vendor Details</h6></p>
+										<p><strong>Phone No</strong>: <span id="vendor-phone-no"></span></p>
+										<p><strong>Email</strong>: <span id="vendor-email"></span></p>
+										<hr>
+										<p><h6>Vehicle Details</h6></p>
+										<p><strong>Registration No</strong>: <span id="vd-registration-no"></span></p>
+										<p><strong>Make</strong>: <span id="vd-vehicle-make"></span></p>
+										<p><strong>Model</strong>: <span id="vd-vehicle-model"></span></p>
+										<p><strong>Color</strong>: <span id="vd-vehicle-color"></span></p>
 									</div>
-									<div id="confirmation-wrapper" class="col-md-12 text-center" style="font-size: 22px;">
+									<div id="confirmation-wrapper" class="col-md-12 text-center" style="font-size: 13px;">
 										<p>Click the <strong>Finish</strong> button if all your details are correct.</p>
 									</div>
 								</div>
@@ -430,7 +470,8 @@ Payment |
 						<input type="hidden" id="vehicle-color" name="vehicle_color">
 						<input type="hidden" id="card-name" name="card_name">
 						<input type="hidden" id="card-number" name="card_number">
-						<input type="hidden" id="expiration" name="expiration">
+						<input type="hidden" id="expiration-month" name="expiration-month">
+						<input type="hidden" id="expiration-year" name="expiration-year">
 						<input type="hidden" id="cv-code" name="cv_code">
 						{{ csrf_field() }}
 					</form>
@@ -466,8 +507,8 @@ Payment |
 								<div class="col-md-12">
 									<a class="collapsed side-more" data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="false" aria-controls="collapseOne">more info...</a>
 									<div id="collapse" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-				                    <p class="collapsable-title">Lorem ipsum dolor sit amet</p>
-				                    <p class="collapsable-text">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.</p>
+				                    {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
+				                    <p class="collapsable-text">{{ $product->short_description }}</p>
 				                </div>
 								</div>
 							</div>

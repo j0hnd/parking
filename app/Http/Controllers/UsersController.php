@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TemporaryPassword;
+use App\Models\Carpark;
 use App\Models\Companies;
 use App\Models\Members;
 use App\Models\Tools\Roles;
@@ -27,8 +28,8 @@ class UsersController extends Controller
         $roles = Roles::all();
         $page_title = "Add User";
         $user_info = null;
-		$companies = Companies::select('id', 'company_name')->active()->orderBy('company_name', 'asc')->get();
-        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'companies'));
+		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
+        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'carparks'));
     }
 
     public function store(UserFormRequest $request)
@@ -144,11 +145,15 @@ class UsersController extends Controller
                 $user = (isset($request->id)) ? User::findOrFail($request->id) : Sentinel::getUser();
 
                 $form_user   = $request->except(['_token', 'first_name', 'last_name', 'password', 'confirm_password']);
-                $form_member = $request->only(['first_name', 'last_name']);
+                $form_member = $request->only(['first_name', 'last_name', 'company']);
 
                 if ($user->update($form_user)) {
                     // update member details
-                    $user->members->update($form_member);
+                    $user->members->update([
+                    	'first_name' => $form_member['first_name'],
+                    	'last_name' => $form_member['last_name'],
+                    	'company_id' => $form_member['company']['company_name'],
+					]);
 
                     // check if role is still the same
                     if ($user->roles[0]->id != $form_user['role_id']) {
@@ -169,6 +174,7 @@ class UsersController extends Controller
             }
 
         } catch (\Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -191,7 +197,7 @@ class UsersController extends Controller
         $user_info = User::findOrFail($id);
         $roles = Roles::all();
         $page_title = "Profile of ".$user_info->members->first_name." ".$user_info->members->last_name;
-		$companies = Companies::select('id', 'company_name')->active()->orderBy('company_name', 'asc')->get();
-        return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'companies'));
+		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
+        return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'carparks'));
     }
 }

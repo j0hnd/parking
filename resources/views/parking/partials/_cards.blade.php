@@ -28,14 +28,14 @@
                     @endphp
 
                     <p class="price">£{{ $price }}</p>
-                    <a href="javascript:void(0);" class="book-now toggle-book-now" data-id="{{ $i }}">BOOK NOW</a><br/>
-                    <img src="{{ asset('/img/star-like.png') }}" class="star"><br/>
+                    <a href="javascript:void(0);" class="book-now toggle-book-now" data-id="{{ $i }}">BOOK NOW</a><br/><br/>
+                    {{--<img src="{{ asset('/img/star-like.png') }}" class="star"><br/>--}}
 
                     <input type="hidden" name="products" value="{{ $i }}:{{ $result['product_id'] }}:{{ $result['airport_id'] }}:{{ $result['price_id'] }}:{{ $result['price'] }}">
                     <input type="hidden" name="drop_off" value="{{ $result['drop_off'] }}">
                     <input type="hidden" name="return_at" value="{{ $result['return_at'] }}">
                 </div>
-                <a href="#popup{{ $i }}" class="more"><i><img src="{{ asset('/img/booking/info.png') }}"></i> MORE INFO</a>
+                <a href="#popup{{ $i }}" class="more" data-index="{{ $i }}"><i><img src="{{ asset('/img/booking/info.png') }}"></i> MORE INFO</a>
                 <br/>
                 <div id="popup{{ $i }}" class="overlay">
                     <div class="popup">
@@ -62,103 +62,103 @@
                                 </div>
                             </div>
                         </div>
-                    <a class="close3" href="#">&times;</a>
-                    <br/><br/>
-                   
-                    <div  id="details-tab" class="detail-tab">
-                        <h4 class="tab-title">Overview</h4>
-                        <fieldset class="tab-content">
-                            {{--<h2 class="overview-title-first">Essentials</h2>--}}
-                            {{--<ul class="tab-ul">--}}
-                                {{--<li>Opening times: 24 Hours / 7 Days</li>--}}
-                                {{--<li>Estimated journey time to airport: 10 minutes</li>--}}
-                                {{--<li>Bus frequency: On Demand</li>--}}
-                                {{--<li>Distance from airport: 10KM</li>--}}
-                                {{--<li>Your keys will stay with the car park whilst you are away.</li>--}}
-                            {{--</ul>--}}
-                            <h2 class="overview-title">Overview</h2>
-                            <p class="tab-con">{!! html_entity_decode($result['description']) !!}</p>
+						<a class="close3" href="#">&times;</a>
+						<br/><br/>
 
-                            {{--<h2 class="overview-title">Why Book This Parking Space?</h2>--}}
-                            {{--<ul class="tab-ul">--}}
-                                {{--<li>Airport parking near BNE airport meeting all your expectations</li>--}}
-                                {{--<li>Airport parking near BNE airport meeting all your expectations</li>--}}
-                                {{--<li>Drivers fully uniformed and fully trained - high level of service</li>--}}
-                                {{--<li>Full range of car servicing & repairs offered on arrival</li>--}}
-                            {{--</ul>--}}
-                            {{--<h2 class="overview-title">Disabled Info</h2>--}}
-                            {{--<strong class="sub-title">Wheelchair Guests</strong>--}}
-                            {{--<p class="tab-con">The car park buses don't have the ability to transfer wheelchair customers to/from the airport terminals.--}}
-                            {{--Assuming you are travelling with at least one adult the wheelchair person should be dropped at the terminal first and the car then driven to the car park.</p>--}}
-                            {{--<h2 class="overview-title">Additional Info</h2>--}}
-                            {{--<strong class="sub-title">Travelling with children</strong>--}}
-                            {{--<p class="tab-con">All of our drivers are trained to fit baby capsules for 0-3 year olds and we have plenty of baby capsules on site. We also carry booster seats for 4-7 year olds in all buses. Young families are always welcome.</p>--}}
-                            {{--<p class="tab-con">Car detailing services available to book on arrival.</p>--}}
-                            {{--<p class="tab-con">Please take a copy of your confirmation details with you on your day of travel.</p>--}}
-                        </fieldset>
+						<div id="details-tab-{{ $i }}" class="detail-tab" data-index="{{ $i }}">
+							<h4 class="tab-title">Overview</h4>
+							<fieldset class="tab-content">
+								{{--<h2 class="overview-title-first">Essentials</h2>--}}
+								{{--<ul class="tab-ul">--}}
+									{{--<li>Opening times: 24 Hours / 7 Days</li>--}}
+									{{--<li>Estimated journey time to airport: 10 minutes</li>--}}
+									{{--<li>Bus frequency: On Demand</li>--}}
+									{{--<li>Distance from airport: 10KM</li>--}}
+									{{--<li>Your keys will stay with the car park whilst you are away.</li>--}}
+								{{--</ul>--}}
+								<h2 class="overview-title">Overview</h2>
+								<p class="tab-con">{!! html_entity_decode($result['description']) !!}</p>
 
-                        <h4 class="tab-title">On Arrival</h4>
-                        <fieldset class="tab-content">
-                            <h2 class="overview-title-first">On Arrival</h2>
-                            <p class="tab-con">{!! html_entity_decode($result['on_arrival']) !!}</p>
-                        </fieldset>
+								{{--<h2 class="overview-title">Why Book This Parking Space?</h2>--}}
+								{{--<ul class="tab-ul">--}}
+									{{--<li>Airport parking near BNE airport meeting all your expectations</li>--}}
+									{{--<li>Airport parking near BNE airport meeting all your expectations</li>--}}
+									{{--<li>Drivers fully uniformed and fully trained - high level of service</li>--}}
+									{{--<li>Full range of car servicing & repairs offered on arrival</li>--}}
+								{{--</ul>--}}
+								{{--<h2 class="overview-title">Disabled Info</h2>--}}
+								{{--<strong class="sub-title">Wheelchair Guests</strong>--}}
+								{{--<p class="tab-con">The car park buses don't have the ability to transfer wheelchair customers to/from the airport terminals.--}}
+								{{--Assuming you are travelling with at least one adult the wheelchair person should be dropped at the terminal first and the car then driven to the car park.</p>--}}
+								{{--<h2 class="overview-title">Additional Info</h2>--}}
+								{{--<strong class="sub-title">Travelling with children</strong>--}}
+								{{--<p class="tab-con">All of our drivers are trained to fit baby capsules for 0-3 year olds and we have plenty of baby capsules on site. We also carry booster seats for 4-7 year olds in all buses. Young families are always welcome.</p>--}}
+								{{--<p class="tab-con">Car detailing services available to book on arrival.</p>--}}
+								{{--<p class="tab-con">Please take a copy of your confirmation details with you on your day of travel.</p>--}}
+							</fieldset>
 
-                        <h4 class="tab-title">On Return</h4>
-                        <fieldset class="tab-content">
-                            <h2 class="overview-title-first">On Return</h2>
-                            <p class="tab-con">{!! html_entity_decode($result['on_return']) !!}</p>
-                        </fieldset>
+							<h4 class="tab-title">On Arrival</h4>
+							<fieldset class="tab-content">
+								<h2 class="overview-title-first">On Arrival</h2>
+								<p class="tab-con">{!! html_entity_decode($result['on_arrival']) !!}</p>
+							</fieldset>
 
-                        {{--<h4 class="tab-title">Directions</h4>--}}
-                        {{--<fieldset class="tab-content">--}}
-                            {{--<h2 class="overview-title-first">Sat Nav Info</h2>--}}
-                            {{--<p class="tab-con">Lorem ipsum dolor sit amet<br/>--}}
-                                {{--Lorem ipsum dolor sit amet<br/>--}}
-                                {{--Lorem ipsum dolor sit amet--}}
-                            {{--</p>--}}
-                            {{--<h2 class="overview-title">Direction</h2>--}}
-                            {{--<strong class="sub-title">Lorem ipsum dolor sit amet</strong>--}}
-                            {{--<p class="tab-con">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod--}}
-                            {{--tempor incididunt ut labore et dolore magna aliqua.</p>--}}
+							<h4 class="tab-title">On Return</h4>
+							<fieldset class="tab-content">
+								<h2 class="overview-title-first">On Return</h2>
+								<p class="tab-con">{!! html_entity_decode($result['on_return']) !!}</p>
+							</fieldset>
 
-                            {{--<strong class="sub-title">Lorem ipsum dolor sit amet</strong>--}}
-                            {{--<p class="tab-con">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod--}}
-                            {{--tempor incididunt ut labore et dolore magna aliqua.</p>--}}
-                        {{--</fieldset>--}}
+							{{--<h4 class="tab-title">Directions</h4>--}}
+							{{--<fieldset class="tab-content">--}}
+								{{--<h2 class="overview-title-first">Sat Nav Info</h2>--}}
+								{{--<p class="tab-con">Lorem ipsum dolor sit amet<br/>--}}
+									{{--Lorem ipsum dolor sit amet<br/>--}}
+									{{--Lorem ipsum dolor sit amet--}}
+								{{--</p>--}}
+								{{--<h2 class="overview-title">Direction</h2>--}}
+								{{--<strong class="sub-title">Lorem ipsum dolor sit amet</strong>--}}
+								{{--<p class="tab-con">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod--}}
+								{{--tempor incididunt ut labore et dolore magna aliqua.</p>--}}
 
-                        <h4 class="tab-title">Map</h4>
-                        <fieldset class="tab-content">
-                            <h2 class="overview-title-first">Map</h2>
-                            <div id="map-{{ $i }}"></div>
-                            <script>
-                                var map;
-                                function initMap() {
-                                    var lat = '{{ $result["latitude"] }}';
-                                    var lng = '{{ $result["longitude"] }}';
+								{{--<strong class="sub-title">Lorem ipsum dolor sit amet</strong>--}}
+								{{--<p class="tab-con">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod--}}
+								{{--tempor incididunt ut labore et dolore magna aliqua.</p>--}}
+							{{--</fieldset>--}}
 
-                                    if (lat && lng) {
-                                        map = new google.maps.Map(document.getElementById('map-{{ $i }}'), {
-                                            center: { lat: lat, lng: lng },
-                                            zoom: 5
-                                        });
+							<h4 class="tab-title">Map</h4>
+							<fieldset class="tab-content">
+								<h2 class="overview-title-first">Map</h2>
+								<div id="map-{{ $i }}"></div>
+								<script>
+									var map;
+									function initMap() {
+										var lat = '{{ $result["latitude"] }}';
+										var lng = '{{ $result["longitude"] }}';
 
-                                        var marker = new google.maps.Marker({
-                                            position: { lat: lat, lng: lng },
-                                            map: map,
-                                            title: "{!! $result['airport_name'] !!}"
-                                        });
+										if (lat && lng) {
+											map = new google.maps.Map(document.getElementById('map-{{ $i }}'), {
+												center: { lat: lat, lng: lng },
+												zoom: 5
+											});
+
+											var marker = new google.maps.Marker({
+												position: { lat: lat, lng: lng },
+												map: map,
+												title: "{!! $result['airport_name'] !!}"
+											});
+										}
 									}
-                                }
-                            </script>
-                        </fieldset>
-                    </div>
+								</script>
+							</fieldset>
+						</div>
                     </div>
                 </div>
                 <a class="plus collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapseOne">
                 </a>
                 <div id="collapse{{ $i }}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                     {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
-                    <p class="collapsable-text">{{ $result['short_description'] }}</p>
+                    <p class="collapsable-text" style="margin-top: 10px;">{{ $result['short_description'] }}</p>
                 </div>
             </div>
 

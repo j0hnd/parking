@@ -19,9 +19,9 @@
 						@if($vendors)
 							@foreach($vendors as $vendor)
 								@if($selected_vendor == $vendor->id)
-									<option value="{{ $vendor->id }}" selected>{{ $vendor->company_name }}</option>
+									<option value="{{ $vendor->id }}" selected>{{ $vendor->name }}</option>
 								@else
-									<option value="{{ $vendor->id }}">{{ $vendor->company_name }}</option>
+									<option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
 								@endif
 							@endforeach
 						@endif

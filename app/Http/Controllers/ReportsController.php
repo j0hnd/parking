@@ -6,12 +6,14 @@ use App\Export\Commissions;
 use App\Export\CompanyRevenues;
 use App\Export\CompletedJobs;
 use App\Models\Bookings;
+use App\Models\Carpark;
 use App\Models\Companies;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 use Maatwebsite\Excel\Excel;
+use Psy\Input\CodeArgument;
 
 
 class ReportsController extends Controller
@@ -33,7 +35,7 @@ class ReportsController extends Controller
 				$vendors_id[] = $vendor->members->company_id;
 			}
 
-			$vendor_list = Companies::active()->whereIn('id', $vendors_id)->orderBy('company_name', 'asc');
+			$vendor_list = Carpark::select('id', 'name')->active()->whereIn('id', $vendors_id)->orderBy('name', 'asc');
 		}
 
 		$this->vendors = $vendor_list;
@@ -52,29 +54,25 @@ class ReportsController extends Controller
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::selectRaw("companies.id AS company_id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
+				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
 					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-//					->leftjoin('affiliate_bookings', 'affiliate_bookings.booking_id', '=', 'bookings.id')
-//					->join('affiliates', 'affiliates.id', '=', 'affiliate_bookings.affiliate_id')
-					->groupBy('products.vendor_id')
-					->orderBy('companies.company_name', 'ASC')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->groupBy('products.carpark_id')
+					->orderBy('carparks.name', 'ASC')
 					->paginate(config('app.item_per_page'));
 			} else {
-				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
+				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
 					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereHas('products', function ($query) use ($form) {
-						$query->where('vendor_id', $form['vendor']);
+						$query->where('carpark_id', $form['vendor']);
 					})
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-//					->leftjoin('affiliate_bookings', 'affiliate_bookings.booking_id', '=', 'bookings.id')
-//					->join('affiliates', 'affiliates.id', '=', 'affiliate_bookings.affiliate_id')
-					->groupBy('products.vendor_id')
-					->orderBy('companies.company_name', 'ASC')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->groupBy('products.carpark_id')
+					->orderBy('carparks.name', 'ASC')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
@@ -110,7 +108,7 @@ class ReportsController extends Controller
 				$bookings = Bookings::active()
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereHas('products', function ($query) use ($form) {
-						$query->where('vendor_id', $form['vendor']);
+						$query->where('carpark_id', $form['vendor']);
 					})
 					->paginate(config('app.item_per_page'));
 
@@ -140,23 +138,23 @@ class ReportsController extends Controller
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-					->groupBy('products.vendor_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->groupBy('products.carpark_id')
 					->paginate(config('app.item_per_page'));
 			} else {
-				$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS revenue")
+				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->whereHas('products', function ($query) use ($form) {
-						$query->where('vendor_id', $form['vendor']);
+						$query->where('carpark_id', $form['vendor']);
 					})
 					->join('products', 'products.id', '=', 'bookings.product_id')
-					->join('companies', 'companies.id', '=', 'products.vendor_id')
-					->groupBy('products.vendor_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->groupBy('products.carpark_id')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
@@ -187,12 +185,12 @@ class ReportsController extends Controller
 						->get();
 
 					if (isset($form['vendor'])) {
-						$company = Companies::findOrFail($form['vendor']);
+						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "Commissions-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::active()
 							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
-								$query->where('vendor_id', $form['vendor']);
+								$query->where('carpark_id', $form['vendor']);
 							})
 							->get();
 					}
@@ -202,60 +200,60 @@ class ReportsController extends Controller
 
 				case "completed_jobs":
 					$filename = "CompletedJobs-".Carbon::now()->format('Ymd').".{$ext}";
-					$bookings = Bookings::selectRaw("companies.id AS company_id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
+					$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
 						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 						->whereNull('bookings.deleted_at')
 						->join('products', 'products.id', '=', 'bookings.product_id')
-						->join('companies', 'companies.id', '=', 'products.vendor_id')
-						->groupBy('products.vendor_id')
-						->orderBy('companies.company_name', 'ASC')
+						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+						->groupBy('products.carpark_id')
+						->orderBy('carparks.name', 'ASC')
 						->get();
 
 					if (isset($form['vendor'])) {
-						$company = Companies::findOrFail($form['vendor']);
+						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
-						$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
+						$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
 							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
-								$query->where('vendor_id', $form['vendor']);
+								$query->where('carpark_id', $form['vendor']);
 							})
 							->whereNull('bookings.deleted_at')
 							->join('products', 'products.id', '=', 'bookings.product_id')
-							->join('companies', 'companies.id', '=', 'products.vendor_id')
-							->groupBy('products.vendor_id')
-							->orderBy('companies.company_name', 'ASC')
+							->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+							->groupBy('products.carpark_id')
+							->orderBy('carparks.name', 'ASC')
 							->get();
 					}
 
-					return $excel->download(new CompletedJobs(				$bookings), $filename);
+					return $excel->download(new CompletedJobs($bookings), $filename);
 					break;
 
 				case "company_revenues":
 					$filename = "CompanyRevenues-".Carbon::now()->format('Ymd').".{$ext}";
-					$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+					$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
 						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 						->whereNull('bookings.deleted_at')
 						->join('products', 'products.id', '=', 'bookings.product_id')
-						->join('companies', 'companies.id', '=', 'products.vendor_id')
-						->groupBy('products.vendor_id')
+						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+						->groupBy('products.carpark_id')
 						->get();
 
 					if (isset($form['vendor'])) {
-						$company = Companies::findOrFail($form['vendor']);
+						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "Revenue Report for ".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
-						$bookings = Bookings::selectRaw("companies.id, companies.company_name, SUM(price_value - revenue_value) AS revenue")
+						$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
 							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
 							->whereNull('bookings.deleted_at')
 							->whereHas('products', function ($query) use ($form) {
-								$query->where('vendor_id', $form['vendor']);
+								$query->where('carpark_id', $form['vendor']);
 							})
 							->join('products', 'products.id', '=', 'bookings.product_id')
-							->join('companies', 'companies.id', '=', 'products.vendor_id')
-							->groupBy('products.vendor_id')
+							->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+							->groupBy('products.carpark_id')
 							->get();
 					}
 
-					return $excel->download(new CompanyRevenues(				$bookings), $filename);
+					return $excel->download(new CompanyRevenues($bookings), $filename);
 					break;
 			}
 		}
@@ -267,7 +265,7 @@ class ReportsController extends Controller
 
 		try {
 
-			if ($request->ajax()) {
+			if ($request->ajax() and $request->isMethod('post')) {
 
 				$date = $request->get('date');
 
@@ -280,7 +278,7 @@ class ReportsController extends Controller
 				$bookings = Bookings::active()
 					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') > ? AND DATE_FORMAT(return_at, '%Y-%m-%d') < ?", [$start, $end])
 					->whereHas('products', function ($query) use ($id) {
-						$query->where('vendor_id', $id);
+						$query->where('carpark_id', $id);
 					})
 					->orderBy('return_at', 'desc')
 					->get();

@@ -8,5 +8,5 @@
 		<li>Return On: {{ $return_at }}</li>
 	</ul>
 	<br>
-	Should you wish to modify your booking details, you can email us at help@parkingapp.com.
+	Should you wish to modify your booking details, you can email us at {{ config('app.company_email') }}.
 </p>

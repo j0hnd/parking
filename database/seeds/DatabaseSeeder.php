@@ -18,6 +18,6 @@ class DatabaseSeeder extends Seeder
          $this->call(UsersSeeder::class);
          $this->call(DefaultFees::class);
          $this->call(DefaultAirports::class);
-         $this->call(FakeCarparks::class);
+//         $this->call(FakeCarparks::class);
     }
 }

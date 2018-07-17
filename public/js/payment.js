@@ -33,6 +33,9 @@ $(document).ready(function(){
                 setTimeout(function () {
                     $('#payment_choice-p-0').show();
                     $('#payment_choice-p-0').css('left', '0px');
+
+                    $('#payment_choice-p-1').hide();
+                    $('#payment_choice-p-2').hide();
                 }, 500);
             }
 
@@ -94,13 +97,15 @@ $(document).ready(function(){
                 });
             }
 
+            if (currentIndex == 1 && newIndex == 0) {
+                $('#payment_wizard-p-2').hide();
+            }
+
             if (currentIndex == 0 && $('#stripe-container').is(':visible')) {
                 $('#firstname').val($('#firstname-src').val());
                 $('#lastname').val($('#lastname-src').val());
                 $('#email').val($('#email-src').val());
                 $('#phoneno').val($('#phone-src').val());
-                // $('#sms').val($('#sms-fee').val());
-                // $('#cancellation').val($('#cancellation').val());
                 $('#car-registration-no').val($('#car-registration-no-src').val());
                 $('#vehicle-color').val($('#vehicle-color-src').val());
                 $('#vehicle-model').val($('#vehicle-model-src').val());
@@ -109,8 +114,9 @@ $(document).ready(function(){
                 $('#coupon').val($('#coupon-src').val());
                 $('#card-name').val($('#card-name-src').val());
                 $('#card-number').val($('#card-number-src').val());
-                $('#expiration').val($('#expiration-src').val());
-                $('#cv-code').val($('#cv-code-src-src').val());
+                $('#expiration-month').val($('#expiration-month-src').val());
+                $('#expiration-year').val($('#expiration-year-src').val());
+                $('#cv-code').val($('#cv-code-src').val());
 
                 if ($('#sms-fee').is(':checked')) {
                     $('#sms').val($('#sms-fee').val());
@@ -137,6 +143,7 @@ $(document).ready(function(){
                     beforeSend: function () {
                         $('#payment_wizard-p-0').show();
                         $('#payment_wizard-p-1').hide();
+                        $('#payment_wizard-p-2').hide();
                         $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
                         $('#payment_choice').find('#stripe-container').addClass('d-none');
                     },
@@ -145,6 +152,7 @@ $(document).ready(function(){
                         $('#payment_choice').find('#stripe-container').removeClass('d-none');
 
                         $('#payment_wizard-p-0').hide();
+                        $('#payment_wizard-p-2').hide();
                         $('#payment_wizard-p-1').show();
 
                         if (response.success) {
@@ -154,6 +162,7 @@ $(document).ready(function(){
                             alert(response.message);
                             $('#payment_wizard-p-0').show();
                             $('#payment_wizard-p-1').hide();
+                            $('#payment_wizard-p-2').hide();
                         }
                     },
                     error: function(jqXHR, error, errorThrown) {
@@ -199,15 +208,22 @@ $(document).ready(function(){
                     success: function (response) {
                         if (response.success) {
                             $('#finish-wrapper').removeClass('d-none');
-                            $('#booking-id-wrapper').html("<strong>"+ response.data.id +"</strong>");
+                            $('#booking-id-wrapper').html(response.data.id);
                             $('#customer-name').html(response.data.name);
                             $('#order-title').html(response.data.order);
                             $('#drop-off').html(response.data.drop_off);
                             $('#return-at').html(response.data.return_at);
+                            $('#vendor-phone-no').html(response.data.vendor_phone_no);
+                            $('#vendor-email').html(response.data.vendor_email);
+                            $('#vd-registration-no').html(response.data.registration_no);
+                            $('#vd-vehicle-make').html(response.data.vehicle_make);
+                            $('#vd-vehicle-model').html(response.data.vehicle_model);
+                            $('#vd-vehicle-color').html(response.data.vehicle_color);
                             move = true;
                         } else {
                             $('#payment_wizard-p-1').show();
                             $('#payment_wizard-p-2').hide();
+                            $('#confirmation-wrapper').addClass('d-none');
                             alert(response.message);
                         }
                     }
@@ -311,29 +327,6 @@ $(document).ready(function(){
                     }
                 }
             },
-            // card_number: {
-            //     validators: {
-            //         creditCard: {
-            //             message: 'The credit card number is not valid'
-            //         }
-            //     }
-            // },
-            // cv_code: {
-            //     validators: {
-            //         cvv: {
-            //             creditCardField: 'card_number',
-            //             message: 'The CVV number is not valid'
-            //         }
-            //     }
-            // },
-            // expiration : {
-            //     validators: {
-            //         date: {
-            //             format: 'MM/YYYY',
-            //             message: 'The value is not a valid credit card expiration date'
-            //         }
-            //     }
-            // },
             drop_off_date: {
                 validators: {
                     notEmpty: {
@@ -384,20 +377,20 @@ $(document).ready(function(){
         cssClass: "tabcontrol"
     });
 
-    $.fn.steps.setStep = function (step) {
-        var currentIndex = $(this).steps('getCurrentIndex');
-        console.log($(this));
-        console.log('step: ' + step);
-        console.log('current index: ' + currentIndex);
-        for(var i = 0; i < Math.abs(step - currentIndex); i++){
-            if(step > currentIndex) {
-                $(this).steps('next');
-            }
-            else{
-                $(this).steps('previous');
-            }
-        }
-    };
+    // $.fn.steps.setStep = function (step) {
+    //     var currentIndex = $(this).steps('getCurrentIndex');
+    //     console.log($(this));
+    //     console.log('step: ' + step);
+    //     console.log('current index: ' + currentIndex);
+    //     for(var i = 0; i < Math.abs(step - currentIndex); i++){
+    //         if(step > currentIndex) {
+    //             $(this).steps('next');
+    //         }
+    //         else{
+    //             $(this).steps('previous');
+    //         }
+    //     }
+    // };
 
     $(document).on('click', '#sms-fee', function () {
         var total = $('#total').text().substr(1);
@@ -541,6 +534,10 @@ $(document).ready(function(){
             $(this).removeClass('d-none');
             $('#other-vehicle-model-src').addClass('d-none');
         }
+    });
+
+    $(document).on('click', 'a[href="#finish"]', function (e) {
+        $(this).parent().addClass('disabled');
     });
 
     if ($('#sms-fee').is(':checked')) {
