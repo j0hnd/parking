@@ -385,15 +385,15 @@ class ParkingAppController extends Controller
 
 				// send sms
 				if ($send_sms) {
-					$message = $this->twilio->messages
-						->create($customer->mobile_no,
-							array(
-								"body" => "SMS Confirmation",
-								"from" => env('TWILIO_NUMBER', '')
-							)
-						);
+					$sms_message = "Thank you for booking your carpark at MyTravelCompared.com. Your booking reference is {$booking->booking_id}";
 
-					$response['twilio'] = $message;
+					$sms_data = [
+						"body" => $sms_message,
+						"from" => env('TWILIO_NUMBER', '')
+					];
+
+					$response['twilio'] = $this->twilio->messages->create($customer->mobile_no, $sms_data);
+					Log::debug($response['twilio']);
 				}
 
 				$sess_id = session('sess_id');
@@ -714,7 +714,7 @@ class ParkingAppController extends Controller
 					$session_request = json_decode($session->requests, true);
 					$session_response = json_decode($session->response, true);
 
-					$customer = Customers::where(['email' => $session_response['email']]);
+					$customer = Customers::where(['email' => $form['email']]);
 					if ($customer->count()) {
 						$customer_id = $customer->first()->id;
 					} else {
