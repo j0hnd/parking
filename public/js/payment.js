@@ -33,6 +33,9 @@ $(document).ready(function(){
                 setTimeout(function () {
                     $('#payment_choice-p-0').show();
                     $('#payment_choice-p-0').css('left', '0px');
+
+                    $('#payment_choice-p-1').hide();
+                    $('#payment_choice-p-2').hide();
                 }, 500);
             }
 
@@ -94,6 +97,10 @@ $(document).ready(function(){
                 });
             }
 
+            if (currentIndex == 1 && newIndex == 0) {
+                $('#payment_wizard-p-2').hide();
+            }
+
             if (currentIndex == 0 && $('#stripe-container').is(':visible')) {
                 $('#firstname').val($('#firstname-src').val());
                 $('#lastname').val($('#lastname-src').val());
@@ -138,6 +145,7 @@ $(document).ready(function(){
                     beforeSend: function () {
                         $('#payment_wizard-p-0').show();
                         $('#payment_wizard-p-1').hide();
+                        $('#payment_wizard-p-2').hide();
                         $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
                         $('#payment_choice').find('#stripe-container').addClass('d-none');
                     },
@@ -146,6 +154,7 @@ $(document).ready(function(){
                         $('#payment_choice').find('#stripe-container').removeClass('d-none');
 
                         $('#payment_wizard-p-0').hide();
+                        $('#payment_wizard-p-2').hide();
                         $('#payment_wizard-p-1').show();
 
                         if (response.success) {
@@ -155,6 +164,7 @@ $(document).ready(function(){
                             alert(response.message);
                             $('#payment_wizard-p-0').show();
                             $('#payment_wizard-p-1').hide();
+                            $('#payment_wizard-p-2').hide();
                         }
                     },
                     error: function(jqXHR, error, errorThrown) {
@@ -209,6 +219,7 @@ $(document).ready(function(){
                         } else {
                             $('#payment_wizard-p-1').show();
                             $('#payment_wizard-p-2').hide();
+                            $('#confirmation-wrapper').addClass('d-none');
                             alert(response.message);
                         }
                     }
