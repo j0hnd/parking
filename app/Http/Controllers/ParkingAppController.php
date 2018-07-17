@@ -884,4 +884,9 @@ class ParkingAppController extends Controller
 
 		return response()->json(['options' => $model_str]);
 	}
+
+	public function email()
+    {
+		return view('emails.booking_customer');
+	}
 }

@@ -27,6 +27,8 @@ Route::get('/signup', 'ParkingAppController@signup');
 Route::get('/affiliate/{code}', 'ParkingAppController@affiliate');
 Route::get('/get/vehicle/model', 'ParkingAppController@get_vehicle_models');
 
+Route::get('/email', 'ParkingAppController@email');
+
 Route::match(['get', 'post'], '/contact','ParkingAppController@contact');
 
 Route::post('/search/filter/{type}/{value}', 'ParkingAppController@filter');
