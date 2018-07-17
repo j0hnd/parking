@@ -215,7 +215,10 @@ class ParkingAppController extends Controller
 
 					// save booking data
 					$products = Products::findOrFail($product_id);
-					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
+//					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
+
+					$price = $booking_data['total'] - $booking_data['cancellation'] - $booking_data['sms'] - $booking_data['booking_fee'];
+					$revenue_value = $price * ($products->revenue_share / 100);
 
 					$user = Sentinel::getUser();
 					if (is_null($user)) {
@@ -229,7 +232,7 @@ class ParkingAppController extends Controller
 					$bookings['customer_id'] = $customer->id;
 					$bookings['product_id'] =  $product_id;
 					$bookings['price_id'] = $price_id;
-					$bookings['price_value'] = $booking_data['total'];
+					$bookings['price_value'] = $price;
 					$bookings['revenue_value'] = $revenue_value;
 					$bookings['coupon'] = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
@@ -739,14 +742,18 @@ class ParkingAppController extends Controller
 						$user_id = $user->id;
 					}
 
+					$product = Products::findOrFail($product_id);
+					$price = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
+					$revenue_value = $price * ($product->revenue_share / 100);
+
 					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
 					$form['user_id']       = $user_id;
 					$form['product_id']    = $product_id;
 					$form['price_id']      = $price_id;
 					$form['customer_id']   = $customer_id;
 					$form['order_title']   = $form['product'];
-					$form['price_value']   = $form['total'];
-					$form['revenue_value'] = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
+					$form['price_value']   = $price;
+					$form['revenue_value'] = number_format($revenue_value, 2);
 					$form['cancellation_waiver']  = $form['cancellation'];
 					$form['sms_confirmation_fee'] = $form['sms'];
 					$form['booking_fees']         = $form['booking_fee'];
