@@ -898,4 +898,27 @@ class ParkingAppController extends Controller
 
 		return response()->json(['options' => $model_str]);
 	}
+
+	/* email template test only - remove when done */
+	public function email()
+    {
+		return view('emails.booking_customer');
+	}
+
+	public function emailCompany()
+    {
+		return view('emails.booking_company');
+	}
+
+	public function sendTestEmail()
+    {
+
+		$test = [];
+		Mail::send('emails.booking_customer', $test, function ($m) {
+            $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
+
+            $m->to("web-99tfj@mail-tester.com", "Viollan")->subject('Booking Confirmed!');
+        });
+	}
+	/* email template test only - remove when done */
 }
