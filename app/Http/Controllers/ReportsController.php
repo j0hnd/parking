@@ -141,23 +141,27 @@ class ReportsController extends Controller
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+//					->selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-					->whereNull('bookings.deleted_at')
+//					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-					->groupBy('products.carpark_id')
+//					->groupBy('products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 			} else {
-				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS revenue")
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+//					->selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-					->whereNull('bookings.deleted_at')
+//					->whereNull('bookings.deleted_at')
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-					->groupBy('products.carpark_id')
+//					->groupBy('products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
