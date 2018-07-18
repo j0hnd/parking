@@ -239,26 +239,24 @@ class ReportsController extends Controller
 
 				case "company_revenues":
 					$filename = "CompanyRevenues-".Carbon::now()->format('Ymd').".{$ext}";
-					$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
+					$bookings = Bookings::whereNull('bookings.deleted_at')
 						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-						->whereNull('bookings.deleted_at')
 						->join('products', 'products.id', '=', 'bookings.product_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-						->groupBy('products.carpark_id')
+						->orderBy('bookings.created_at', 'desc')
 						->get();
 
 					if (isset($form['vendor'])) {
 						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "Revenue Report for ".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
-						$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
+						$bookings = Bookings::whereNull('bookings.deleted_at')
 							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-							->whereNull('bookings.deleted_at')
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
 							->join('products', 'products.id', '=', 'bookings.product_id')
 							->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-							->groupBy('products.carpark_id')
+							->orderBy('bookings.created_at', 'desc')
 							->get();
 					}
 

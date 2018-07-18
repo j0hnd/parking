@@ -30,11 +30,14 @@
 
 					<tbody>
 					@if(count($bookings))
+						@php
+							$total_carpark_amount = 0;
+						@endphp
 						@foreach($bookings as $booking)
-
 							@php
 								list($airport_name, $parking_type) = explode('-', $booking->order_title);
 								$carpark_amount = $booking->price_value - $booking->price_value * round(($booking->products[0]->revenue_share/100), 2);
+								$total_carpark_amount += $carpark_amount;
 							@endphp
 
 						<tr id="booking-{{ $booking->id }}">
@@ -46,11 +49,10 @@
 						</tr>
 						@endforeach
 
-						{{--<tr id="summary" class="bg-aqua">--}}
-							{{--<td></td>--}}
-							{{--<td class="text-right"><strong>£{{ number_format($total, 2) }}</strong></td>--}}
-							{{--<td></td>--}}
-						{{--</tr>--}}
+						<tr id="summary" class="bg-aqua">
+							<td colspan="4" class="text-right">Total</td>
+							<td class="text-right"><strong>£{{ number_format($total_carpark_amount, 2) }}</strong></td>
+						</tr>
 					@else
 						<tr>
 							<td colspan="5" class="text-center"><strong>No data found</strong></td>
