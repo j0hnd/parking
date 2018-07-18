@@ -429,7 +429,8 @@ Payment |
 										<p>Here are your bookings details, please review and confirm if all details are correct:</p>
 										<p><h6>Booking Details</h6></p>
 										<p><strong>Booking Reference</strong>: <span id="booking-id-wrapper"></span></p>
-										<p><strong>Order</strong>: <span id="order-title"></span></p>
+										<p><strong>Airport</strong>: <span id="airport"></span></p>
+										<p><strong>Service</strong>: <span id="service"></span></p>
 										<p><strong>Drop Off</strong>: <span id="drop-off"></span></p>
 										<p><strong>Return At</strong>: <span id="return-at"></span></p>
 										<hr>

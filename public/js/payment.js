@@ -212,7 +212,8 @@ $(document).ready(function(){
                             $('#finish-wrapper').removeClass('d-none');
                             $('#booking-id-wrapper').html(response.data.id);
                             $('#customer-name').html(response.data.name);
-                            $('#order-title').html(response.data.order);
+                            $('#airport').html(response.data.airport);
+                            $('#service').html(response.data.service);
                             $('#drop-off').html(response.data.drop_off);
                             $('#return-at').html(response.data.return_at);
                             $('#vendor-phone-no').html(response.data.vendor_phone_no);
