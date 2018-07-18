@@ -6,6 +6,7 @@ use App\Http\Requests\SignupFormRequest;
 use App\Mail\ContactUs;
 use App\Mail\ForgotPassword;
 use App\Mail\SendBookingConfirmation;
+use App\Mail\SendBookingConfirmationVendor;
 use App\Mail\Signup;
 use App\Models\AffiliateBookings;
 use App\Models\Affiliates;
@@ -354,18 +355,26 @@ class ParkingAppController extends Controller
 
 		try {
 			if ($request->ajax()) {
-				$bid = $request->get('bid');
+				$bid      = $request->get('bid');
 				$send_sms = $request->get('send_sms');
-				$booking = Bookings::findOrFail($bid);
+				$booking  = Bookings::findOrFail($bid);
 				$customer = Customers::findOrFail($booking->customer_id);
+				$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
-				$mail_data = [
-					'booking' => $booking,
-					'customer' => $customer
-				];
+				// get vendor email recipients
+				$vendor_recipients = [];
+				array_push($vendor_recipients, $vendor->email);
+				if (!empty($vendor->poc_contact_email)) {
+					array_push($vendor_recipients, $vendor->poc_contact_email);
+				}
 
 				// send booking confirmation
-				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
+				Mail::to($customer->email)->send(new SendBookingConfirmation(['booking' => $booking, 'customer' => $customer]));
+
+				if (count($vendor_recipients)) {
+					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor(['booking' => $booking, 'customer' => $customer, 'vendor' => $vendor, 'carpark' => $carpark]));
+				}
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
 					->where('booking_id', $booking->booking_id)->first();
