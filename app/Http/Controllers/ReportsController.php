@@ -100,9 +100,11 @@ class ReportsController extends Controller
 			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 			} else {
 				$bookings = Bookings::active()
@@ -110,6 +112,7 @@ class ReportsController extends Controller
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
@@ -182,6 +185,7 @@ class ReportsController extends Controller
 					$filename = "Commissions-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::active()
 						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+						->orderBy('bookings.created_at', 'desc')
 						->get();
 
 					if (isset($form['vendor'])) {
@@ -192,6 +196,7 @@ class ReportsController extends Controller
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
+							->orderBy('bookings.created_at', 'desc')
 							->get();
 					}
 
