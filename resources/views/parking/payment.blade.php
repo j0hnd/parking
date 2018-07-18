@@ -167,9 +167,9 @@ Payment |
 											@if(count($vehicle_make))
 												@foreach($vehicle_make as $i => $vm)
 													@if($vm['value'] == $details['vehicle_make'])
-													<option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+													<option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
 													@else
-													<option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+													<option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
 													@endif
 												@endforeach
 											@endif
