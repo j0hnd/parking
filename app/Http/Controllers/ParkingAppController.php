@@ -326,10 +326,13 @@ class ParkingAppController extends Controller
 						BookingDetails::create($details);
 					}
 
+					list($airport_name, $service_name) = explode('-', $booking->order_title);
+
 					$response = ['success' => true, 'data' => [
 						'id'              => $booking->booking_id,
 						'name'            => empty($customer->first_name) ? "" : ucwords($customer->first_name),
-						'order'           => $booking->order_title,
+						'airport'         => $airport_name,
+						'service'         => $service_name,
 						'drop_off'        => $drop_off->format('d/m/Y H:i'),
 						'return_at'       => $return_at->format('d/m/Y H:i'),
 						'vendor_phone_no' => empty($booking->products[0]->carpark->company->phone_no) ? "N/A" : $booking->products[0]->carpark->company->phone_no,
