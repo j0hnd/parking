@@ -898,7 +898,7 @@ class ParkingAppController extends Controller
 			$models = $vehicle_make[$request->index]['models'];
 
 			foreach ($models as $model) {
-				$model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
+				$model_str .= "<option value='".$model['title']."'>".$model['title']."</option>";
 			}
 		}
 
