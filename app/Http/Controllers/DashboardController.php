@@ -100,5 +100,5 @@ class DashboardController extends Controller
 			'area_months'      => $area_label_months,
 			'area_data'        => $area_data
 		]);
-    }
+	}
 }
