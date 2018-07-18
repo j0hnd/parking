@@ -52,6 +52,7 @@
                             $total_sms_confirmation_fee = 0;
                             $total_cancellation_waiver  = 0;
                             $total_affiliate_cost       = 0;
+                            $grand_total                = 0;
                         @endphp
 
                         @foreach($bookings as $booking)
@@ -90,7 +91,7 @@
                         </tr>
                         @endforeach
                         <tr id="summary" class="bg-aqua">
-                            <td colspan="3"></td>
+                            <td colspan="3">Total</td>
                             <td class="text-right"><strong>£{{ $total_order_value }}</strong></td>
                             <td class="text-right"><strong>£{{ $total_price_value }}</strong></td>
                             <td class="text-right"><strong>£{{ $total_revenue_share }}</strong></td>
@@ -98,6 +99,14 @@
                             <td class="text-right"><strong>£{{ $total_sms_confirmation_fee }}</strong></td>
                             <td class="text-right"><strong>£{{ $total_cancellation_waiver }}</strong></td>
                             <td class="text-right"><strong>£{{ $total_affiliate_cost }}</strong></td>
+                        </tr>
+                        @php
+                            $grand_total = $total_booking_fee + $total_sms_confirmation_fee + $total_cancellation_waiver + $total_affiliate_cost;
+                        @endphp
+                        <tr id="grand-total" class="bg-yellow">
+                            <td colspan="8"></td>
+                            <td class="text-right">Grand Total: </td>
+                            <td class="text-center"><strong><span style="font-size: 22px;">£{{ $grand_total }}</span></strong></td>
                         </tr>
                     @else
                         <tr>
