@@ -20,27 +20,43 @@ class Commissions implements FromCollection, WithMapping, WithHeadings
 
 	public function map($data): array
 	{
+		if (isset($data->affiliate_bookings[0])) {
+			$affiliate_percent = round($data->affiliate_bookings[0]->affiliates[0]->percent_travel_agent / 100, 2);
+			$affiliate_cost = round($data->products[0]->revenue_share * $affiliate_percent, 2);
+		} else {
+			$affiliate_cost = '0';
+		}
+
+		$sms_confirmation_fee = empty($data->sms_confirmation_fee) ? '0' : $data->sms_confirmation_fee;
+		$cancellation_waiver = empty($data->cancellation_waiver) ? '0' : $data->cancellation_waiver;
+
 		return [
 			$data->booking_id,
 			$data->products[0]->carpark->name,
-			$data->order_title,
-			$data->customers->first_name." ".$data->customers->last_name,
-			$data->created_at->format('F j, Y'),
-			$data->drop_off_at->format('F j, Y')."/".$data->return_at->format('F j, Y'),
-			($data->price_value + $data->booking_fee + $data->sms_confirmation_fee + $data->cancellation_waiver) - $data->revenue_value
+			$data->products[0]->revenue_share.'%',
+			$data->price_value + $data->booking_fees + $data->sms_confirmation_fee + $data->cancellation_wavier,
+			$data->price_value,
+			number_format($data->price_value * ($data->products[0]->revenue_share/100), 2),
+			$data->booking_fees,
+			$sms_confirmation_fee,
+			$cancellation_waiver,
+			$affiliate_cost
 		];
 	}
 
 	public function headings(): array
 	{
 		return [
-			'Booking ID',
-			'Vendor',
-			'Order',
-			'Customer Name',
-			'Book Date',
-			'Drop Off At/Return At',
-			'Cost'
+			'Order Number',
+			'Vendor\'s Name',
+			'Commission %',
+			'Total Order Value',
+			'Car Parking Product Value',
+			'Revenue Share',
+			'Booking Fee',
+			'SMS Confirmation Fee',
+			'Cancellation Waiver',
+			'Affiliate Cost'
 		];
 	}
 

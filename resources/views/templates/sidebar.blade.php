@@ -43,7 +43,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="{{ url('/admin/reports/commissions') }}">Commissions</a></li>
+                    <li><a href="{{ url('/admin/reports/commissions') }}">MTC Company Reporting</a></li>
                     <li><a href="{{ url('/admin/reports/completed/jobs') }}">Completed Jobs</a></li>
                     <li><a href="{{ url('/admin/reports/vendor/revenues') }}">Vendor Revenues</a></li>
                 </ul>
