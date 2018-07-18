@@ -88,7 +88,7 @@ class MembersController extends Controller
 							$query->where('carpark_id', $carpark_id);
 						})
 						->join('products', 'products.id', '=', 'bookings.product_id')
-						->join('companies', 'companies.id', '=', 'products.vendor_id')
+						->join('customers', 'customers.id', '=', 'bookings.customer_id')
 						->get();
 
 					$ongoing_bookings = Bookings::active()
@@ -108,15 +108,17 @@ class MembersController extends Controller
 							->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
 							->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
 							->join('products', 'products.id', '=', 'bookings.product_id')
+							->join('customers', 'customers.id', '=', 'bookings.customer_id')
 							->paginate(config('app.item_per_page'));
 					} else {
 						$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
-			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
+			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid, bookings.customer_id")
 							->whereNull('bookings.deleted_at')
 							->whereHas('products', function ($query) use ($carpark_id) {
 								$query->where('carpark_id', $carpark_id);
 							})
 							->join('products', 'products.id', '=', 'bookings.product_id')
+							->join('customers', 'customers.id', '=', 'bookings.customer_id')
 							->paginate(config('app.item_per_page'));
 					}
 

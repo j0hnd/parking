@@ -2,6 +2,11 @@
 
 @section('css')
     <link href="{{ asset('/css/member-portal.css') }}" rel="stylesheet">
+    <style>
+        .customer-details {
+            text-decoration: underline;
+        }
+    </style>
 @stop
 
 @section('main-content')
@@ -140,5 +145,16 @@
 
 @section('js')
 <script type="text/javascript">
+    $(function () {
+        $(document).on('click', '#customer-details', function (e) {
+            var custId = $(this).data('id');
+
+            if ($('#customer-details-' + custId + '-wrapper').is(':visible')) {
+                $('#customer-details-'+ custId +'-wrapper').addClass('d-none');
+            } else {
+                $('#customer-details-' + custId + '-wrapper').removeClass('d-none');
+            }
+        });
+    });
 </script>
 @stop
