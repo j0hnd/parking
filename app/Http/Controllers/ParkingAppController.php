@@ -360,11 +360,8 @@ class ParkingAppController extends Controller
 				$customer = Customers::findOrFail($booking->customer_id);
 
 				$mail_data = [
-					'firstname' => $customer->first_name,
-					'order' => $booking->order_title,
-					'drop_off' => $booking->drop_off_at->format('m/d/Y H:i'),
-					'return_at' => $booking->return_at->format('m/d/Y H:i'),
-					'booking_id' => $booking->booking_id
+					'booking' => $booking,
+					'customer' => $customer
 				];
 
 				// send booking confirmation
