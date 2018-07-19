@@ -153,21 +153,22 @@ class MembersController extends Controller
 				$form = $request->except(['_token']);
 
 				$user = User::findOrFail(Sentinel::getUser()->id);
+
 				if (!empty($form['new_password']) and !empty($form['confirm_password'])) {
 					$user->update(['password' => Hash::make($form['new_password'])]);
 				}
 
 				$member_data = [
 					'first_name' => $form['first_name'],
-					'last_name' => $form['last_name']
+					'last_name'  => $form['last_name']
 				];
 
 				if (isset($form['company'])) {
 					$company_data = [
 						'company_name' => $form['company']['company_name'],
-						'phone_no' => $form['company']['phone_no'],
-						'mobile_no' => $form['company']['mobile_no'],
-						'email' => $form['company']['email'],
+						'phone_no'     => $form['company']['phone_no'],
+						'mobile_no'    => $form['company']['mobile_no'],
+						'email'        => $form['company']['email'],
 					];
 
 					if (Companies::where('id', $form['cid'])->count()) {
