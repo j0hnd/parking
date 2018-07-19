@@ -45,9 +45,25 @@
     </div>
 
     @if(count($user_info))
-        @php($class = ($user_info->roles[0]->slug == 'vendor') ? '' : 'hidden')
+        @php
+            $class = ($user_info->roles[0]->slug == 'vendor' or $user_info->roles[0]->slug == 'travel_agent') ? '' : 'hidden';
+        @endphp
     @else
-        @php($class = 'hidden')
+        @php
+            $class = 'hidden';
+        @endphp
+    @endif
+
+    @if($user_info->roles[0]->slug == 'vendor')
+        @php
+            $carpark_wrapper_class = '';
+            $company_wrapper_class = 'hidden';
+        @endphp
+    @else
+        @php
+            $carpark_wrapper_class = 'hidden';
+            $company_wrapper_class = '';
+        @endphp
     @endif
 
     <fieldset id="company-info-wrapper" class="{{ $class }}">
@@ -55,7 +71,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">Company Name</label>
 
-            <div class="col-sm-9">
+            <div id="carpark-wrapper" class="col-sm-9 {{ $carpark_wrapper_class }}">
                 <select name="company[company_name]" id="company-name" class="form-control" style="width: 100%">
                     <option value="" readonly>-- Company --</option>
                     @if(isset($carparks))
@@ -72,7 +88,25 @@
                         @endforeach
                     @endif
                 </select>
-                {{--<input type="text" class="form-control" name="company[company_name]" placeholder="Company Name" autocomplete="off" value="{{ isset($user_info->members->company->company_name) ? $user_info->members->company->company_name : "" }}">--}}
+            </div>
+
+            <div id="company-wrapper" class="col-sm-9 {{ $company_wrapper_class }}">
+                <select name="company[company_name]" id="company-name" class="form-control" style="width: 100%">
+                    <option value="" readonly>-- Company --</option>
+                    @if(isset($companies))
+                        @foreach($companies as $company)
+                            @if(isset($user_info->members->company_id))
+                                @if($user_info->members->company_id == $company->id)
+                                    <option value="{{ $company->id }}" selected>{{ $company->name }}</option>
+                                @else
+                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endif
+                            @else
+                                <option value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endif
+                        @endforeach
+                    @endif
+                </select>
             </div>
         </div>
 
