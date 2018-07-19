@@ -33,7 +33,14 @@
                         </tr>
                         @if(count($registered_users))
                             @foreach($registered_users as $reg)
-                            <tr>
+
+                                @if(is_null($reg->activations))
+                                    @php($row_color = "#f8bf35")
+                                @else
+                                    @php($row_color = "")
+                                @endif
+
+                            <tr style="background-color: {{ $row_color }}">
                                 <td>
                                     @php($member = json_decode($reg->members, true))
                                     {{ $member['last_name'] }}, {{ $member['first_name'] }}
@@ -42,9 +49,14 @@
                                 <td>{{ $reg->roles[0]->name }}</td>
                                 <td>{{ $reg->created_at->format('m/d/Y') }}</td>
                                 <td>
+                                    @if(is_null($reg->activations))
+                                        <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" title="Delete {{ $reg->members->first_name }} {{ $reg->members->last_name }}" data-id="{{ $reg->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        <button type="button" id="toggle-activate" class="btn bg-green btn-flat" title="Activate {{ $reg->members->first_name }} {{ $reg->members->last_name }}" data-id="{{ $reg->id }}"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                    @else
                                     <a href="{{ url('/admin/users/'.$reg->id.'/edit') }}" class="btn bg-maroon btn-flat" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                     <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" title="Delete {{ $reg->members->first_name }} {{ $reg->members->last_name }}" data-id="{{ $reg->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     <button type="button" id="toggle-reset" class="btn bg-navy btn-flat" title="Reset Password" data-id="{{ $reg->id }}"><i class="fa fa-rotate-left" aria-hidden="true"></i></button>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -98,6 +110,23 @@ $(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response) {
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).on('click', '#toggle-activate', function (e) {
+        var id = $(this).data('id');
+        if (confirm("Activate selected user?")) {
+            $.ajax({
+                url: '/admin/users/' + id + '/activate',
+                type: 'post',
+                data: { _token: '{{ csrf_token() }}' },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        window.location = '/admin/users';
                     }
                 }
             });

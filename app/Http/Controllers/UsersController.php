@@ -9,6 +9,7 @@ use App\Models\Companies;
 use App\Models\Members;
 use App\Models\Tools\Roles;
 use App\Models\User;
+use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Sentinel;
@@ -210,4 +211,20 @@ class UsersController extends Controller
 
         return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'companies', 'carparks'));
     }
+
+	public function activate($id)
+	{
+		$response = ['success' => false];
+		$temporary_password = str_random(8);
+		$user = Sentinel::findById($id);
+
+		if (Activation::create($user)) {
+			if ($user->update(['password' => $temporary_password])) {
+				Mail::to($user->email)->send(new TemporaryPassword(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
+				$response = ['success' => true];
+			}
+		}
+
+		return response()->json($response);
+	}
 }

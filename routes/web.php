@@ -92,6 +92,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/users/update', 'UsersController@update');
     Route::post('/users/{id}/delete', 'UsersController@delete');
     Route::post('/users/{id}/reset', 'UsersController@reset');
+    Route::post('/users/{id}/activate', 'UsersController@activate');
 
     Route::resource('booking', 'BookingsController')->except(['update', 'destroy', 'show']);
     Route::post('/booking/search', 'BookingsController@search');
