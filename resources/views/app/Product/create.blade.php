@@ -51,8 +51,12 @@
             var row_limit = 15;
             var row_count = '{{ $row_count }}';
 
-            $(document).on('keyup', '.price-value', function (e) {
-                $(this).val($(this).val().replace(/[^0-9]/g, ''));
+            $(document).on('blur', '.price-value', function (e) {
+                if (/^[0-9]+(\.[0-9]{1,2})?$/.test($(this).val())) {
+                    return true;
+                } else {
+                    $(this).val('0');
+                }
             });
 
             $(document).on('click', '#toggle-create-row', function () {
