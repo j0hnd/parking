@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SignupFormRequest;
 use App\Mail\ContactUs;
 use App\Mail\ForgotPassword;
+use App\Mail\RegistrationConfirmation;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\SendBookingConfirmationVendor;
 use App\Mail\Signup;
@@ -545,8 +546,14 @@ class ParkingAppController extends Controller
 
 			DB::beginTransaction();
 
-			if ($user = Sentinel::registerAndActivate($form_user)) {
-				if (isset($form['company_nam'])) {
+			if ($form['member_type'] == 'member') {
+				$user = Sentinel::registerAndActivate($form_user);
+			} else {
+				$user = Sentinel::register($form_user);
+			}
+
+			if ($user) {
+				if (isset($form['company_name'])) {
 					$company = Companies::create(['company_name' => $form['company_name']]);
 					$member_data = [
 						'user_id'    => $user->id,
@@ -571,11 +578,18 @@ class ParkingAppController extends Controller
 				$role = Sentinel::findRoleById($role[$form['member_type']]);
 				$role->users()->attach($user);
 
-				Mail::to($form['email'])->send(new Signup([
-					'first_name' => $form['first_name'],
-					'email'      => $form['email'],
-					'password'   => $temporary_password
-				]));
+				if ($form['member_type'] == 'member') {
+					Mail::to($form['email'])->send(new Signup([
+						'first_name' => $form['first_name'],
+						'email'      => $form['email'],
+						'password'   => $temporary_password
+					]));
+				} else {
+					Mail::to($form['email'])->send(new RegistrationConfirmation([
+						'first_name' => $form['first_name']
+					]));
+				}
+
 
 				DB::commit();
 
