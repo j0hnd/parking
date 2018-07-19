@@ -33,7 +33,7 @@ class User extends EloquentUser implements UserInterface
         'password', 'remember_token',
     ];
 
-    protected $with = ['members', 'roles', 'affiliate'];
+    protected $with = ['members', 'roles', 'affiliate', 'activations'];
 
 
     public function scopeActive($query)
@@ -54,6 +54,11 @@ class User extends EloquentUser implements UserInterface
     public function affiliate()
 	{
 		return $this->hasOne(Affiliates::class, 'id', 'travel_agent_id');
+	}
+
+	public function activations()
+	{
+		return $this->hasOne(Activations::class, 'user_id', 'id');
 	}
 
     public static function search($search_str)
