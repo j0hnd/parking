@@ -31,11 +31,11 @@
 @section('book-details')
  <!-- 2 Even Columns : BEGIN -->
  <tr>
-	            <td valign="top" style="padding: 10px; background-color: #ffffff;">
+	            <td style="padding: 10px; background-color: #ffffff;">
 	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
 	                    <tr>
 	                        <!-- Column : BEGIN -->
-	                        <td class="stack-column-center">
+	                        <td class="stack-column-center" valign="top">
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tr>
                                     <td style="padding: 10px; text-align: center">
@@ -57,20 +57,20 @@
                                                     <td width="8">&nbsp;</td>
                                                     <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Parking Price:</td>
                                                     <td width="8">&nbsp;</td>
-                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="156">£43.00</td>
+                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="100">£43.00</td>
                                                   </tr>
                                                   <tr>
                                                     <td width="8">&nbsp;</td>
                                                     <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Booking Fee:</td>
                                                     <td width="8">&nbsp;</td>
-                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£1.95</td>
+                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">£1.95</td>
                                                   </tr>
                                                   <tr>
                                                     <td width="8">&nbsp;</td>
                                                     <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Overall
                                                       Cost:</td>
                                                     <td width="8">&nbsp;</td>
-                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£44.95</td>
+                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">£44.95</td>
                                                   </tr>
                                                 </tbody>
                                               </table>
@@ -80,7 +80,7 @@
 	                        </td>
 	                        <!-- Column : END -->
 	                        <!-- Column : BEGIN -->
-	                        <td class="stack-column-center">
+	                        <td class="stack-column-center" valign="top">
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tr>
                                     <td style="padding: 10px; text-align: center">
@@ -151,19 +151,19 @@
                                                 <tbody>
                                                   <tr>
                                                     <td width="8">&nbsp;</td>
-                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;" width="100">Location:</td>
+                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight:bold;" width="100">Location:</td>
                                                     <td width="8">&nbsp;</td>
                                                     <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">Wonderland</td>
                                                   </tr>
                                                   <tr>
                                                     <td width="8">&nbsp;</td>
-                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Drop Off Date:</td>
+                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight:bold;" width="100">Drop Off Date:</td>
                                                     <td width="8">&nbsp;</td>
                                                     <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">10 Jan 2018 12:00</td>
                                                   </tr>
                                                   <tr>
                                                     <td width="8">&nbsp;</td>
-                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Return Date:</td>
+                                                    <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight:bold;" width="100">Return Date:</td>
                                                     <td width="8">&nbsp;</td>
                                                     <td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">16 Jan 2018 12:00</td>
                                                   </tr>
