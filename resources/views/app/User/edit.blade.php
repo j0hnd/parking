@@ -30,9 +30,34 @@
 @section('scripts')
     <script type="text/javascript">
         $(function(){
-            $('#role-id').select2({ placeholder: '-- Role --' });
+            $('#role-id').select2({ placeholder: '-- Roles --' });
             $('#company-name').select2({ placeholder: '-- Company --' });
 
+            $(document).on('change', '#role-id', function (e) {
+                if ($(this).val() == 2 ) {
+                    $('#company-info-wrapper').removeClass('hidden');
+                    $('#carpark-wrapper').removeClass('hidden');
+                    $('#company-wrapper').addClass('hidden');
+                    setTimeout(function () {
+                        $('#company-name').select2({
+                            placeholder: '-- Company --',
+                            tags: true
+                        });
+                    }), 300;
+                } else if ($(this).val() == 3) {
+                    $('#company-info-wrapper').removeClass('hidden');
+                    $('#company-wrapper').removeClass('hidden');
+                    $('#carpark-wrapper').addClass('hidden');
+                    setTimeout(function () {
+                        $('#company-name').select2({
+                            placeholder: '-- Company --',
+                            tags: true
+                        });
+                    }), 300;
+                } else {
+                    $('#company-info-wrapper').addClass('hidden');
+                }
+            });
 
             $(document).on('change', '#company-name', function () {
                 $.ajax({

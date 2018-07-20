@@ -167,9 +167,9 @@ Payment |
 											@if(count($vehicle_make))
 												@foreach($vehicle_make as $i => $vm)
 													@if($vm['value'] == $details['vehicle_make'])
-													<option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+													<option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
 													@else
-													<option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+													<option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
 													@endif
 												@endforeach
 											@endif
@@ -429,7 +429,8 @@ Payment |
 										<p>Here are your bookings details, please review and confirm if all details are correct:</p>
 										<p><h6>Booking Details</h6></p>
 										<p><strong>Booking Reference</strong>: <span id="booking-id-wrapper"></span></p>
-										<p><strong>Order</strong>: <span id="order-title"></span></p>
+										<p><strong>Airport</strong>: <span id="airport"></span></p>
+										<p><strong>Service</strong>: <span id="service"></span></p>
 										<p><strong>Drop Off</strong>: <span id="drop-off"></span></p>
 										<p><strong>Return At</strong>: <span id="return-at"></span></p>
 										<hr>
@@ -582,7 +583,7 @@ Payment |
 									<p>TOTAL PRICE</p>
 								</div>
 								<div class="col-6 col-md-6">
-									<p class="receipt-align total" id="total" data-value="{{ $total }}">£{{ $total }}</p>
+									<p class="receipt-align total" id="total" data-value="{{ $total }}" data-raw-value="{{ $price_value }}">£{{ $total }}</p>
 								</div>
 							</div>
 						</div>

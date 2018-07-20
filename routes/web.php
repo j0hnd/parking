@@ -92,6 +92,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/users/update', 'UsersController@update');
     Route::post('/users/{id}/delete', 'UsersController@delete');
     Route::post('/users/{id}/reset', 'UsersController@reset');
+    Route::post('/users/{id}/activate', 'UsersController@activate');
 
     Route::resource('booking', 'BookingsController')->except(['update', 'destroy', 'show']);
     Route::post('/booking/search', 'BookingsController@search');
@@ -109,6 +110,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::match(['get', 'post'], '/reports/commissions', 'ReportsController@commissions');
     Route::match(['get', 'post'], '/reports/completed/jobs', 'ReportsController@completed_jobs');
     Route::match(['get', 'post'], '/reports/vendor/revenues', 'ReportsController@company_revenues');
+    Route::match(['get', 'post'], '/reports/travel/agents', 'ReportsController@travel_agents');
 
     Route::resource('posts', 'PostsController')->except(['update', 'destroy', 'show']);
 	Route::post('/posts/update', 'PostsController@update');

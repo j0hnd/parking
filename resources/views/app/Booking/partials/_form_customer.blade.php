@@ -48,6 +48,7 @@
                 </div>
             </div>
 
+            @if(!isset($booking))
             <div class="form-group">
                 <label class="col-sm-2 control-label">Email Address</label>
 
@@ -59,6 +60,7 @@
                            autocomplete="off">
                 </div>
             </div>
+            @endif
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">Mobile No.</label>

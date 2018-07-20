@@ -20,17 +20,26 @@ class CompanyRevenues implements FromCollection, WithMapping, WithHeadings
 
 	public function map($data): array
 	{
+		list($airport_name, $parking_type) = explode('-', $data->order_title);
+		$carpark_amount = $data->price_value - $data->price_value * round(($data->products[0]->revenue_share/100), 2);
+
 		return [
-			$data->company_name,
-			"£".number_format($data->revenue, 2)
+			$data->booking_id,
+			$data->products[0]->carpark->name,
+			$data->products[0]->airport[0]->airport_name,
+			$parking_type,
+			"£".$carpark_amount
 		];
 	}
 
 	public function headings(): array
 	{
 		return [
-			'Vendor',
-			'Revenue'
+			'Order Number',
+			'Vendor Name',
+			'Airport',
+			'Parking Type',
+			'Carpark Amount'
 		];
 	}
 

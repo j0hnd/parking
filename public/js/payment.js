@@ -46,28 +46,28 @@ $(document).ready(function(){
                 $('#payment_wizard-p-1').hide();
             }
 
-            if ($('#sms-fee').is(':checked')) {
-                var total = $('#total').text().substr(1);
-                total = parseFloat(total) + parseFloat($('#sms-fee').val());
-                $('#total').text('£'+total.toLocaleString());
-                $('#total-amount').val(total.toLocaleString());
-                $('#sms-fee-wrapper').text($('#sms-fee').val());
-                $('#sms-confirmation').val(1);
-                $('#sms').val($('#sms-fee').val());
-            } else {
-                $('#sms-confirmation').val(0);
-                $('#sms').val(0);
-            }
-
-            if ($('#cancellation-fee').is(':checked')) {
-                var total = $('#total').text().substr(1);
-                total = parseFloat(total) + parseFloat($('#cancellation').val());
-                $('#total').text('£'+total.toLocaleString());
-                $('#total-amount').val(total.toLocaleString());
-                $('#cancellation').val($('#cancellation-fee').val());
-            } else {
-                $('#cancellation').val(0);
-            }
+            // if ($('#sms-fee').is(':checked')) {
+            //     var total = $('#total').text().substr(1);
+            //     total = parseFloat(total) + parseFloat($('#sms-fee').val());
+            //     $('#total').text('£'+total.toLocaleString());
+            //     $('#total-amount').val(total.toLocaleString());
+            //     $('#sms-fee-wrapper').text($('#sms-fee').val());
+            //     $('#sms-confirmation').val(1);
+            //     $('#sms').val($('#sms-fee').val());
+            // } else {
+            //     $('#sms-confirmation').val(0);
+            //     $('#sms').val(0);
+            // }
+            //
+            // if ($('#cancellation-fee').is(':checked')) {
+            //     var total = $('#total').text().substr(1);
+            //     total = parseFloat(total) + parseFloat($('#cancellation').val());
+            //     $('#total').text('£'+total.toLocaleString());
+            //     $('#total-amount').val(total.toLocaleString());
+            //     $('#cancellation').val($('#cancellation-fee').val());
+            // } else {
+            //     $('#cancellation').val(0);
+            // }
 
             if (currentIndex == 1 && $('#paypal-container').is(':visible')) {
                 var url = $('#booking-details-form').data('url');
@@ -116,7 +116,9 @@ $(document).ready(function(){
                 $('#card-number').val($('#card-number-src').val());
                 $('#expiration-month').val($('#expiration-month-src').val());
                 $('#expiration-year').val($('#expiration-year-src').val());
-                $('#cv-code').val($('#cv-code-src').val());
+                $('#cv-code').val($('#cv-code-src').val())
+
+                console.log($('#total').text());
 
                 if ($('#sms-fee').is(':checked')) {
                     $('#sms').val($('#sms-fee').val());
@@ -210,7 +212,8 @@ $(document).ready(function(){
                             $('#finish-wrapper').removeClass('d-none');
                             $('#booking-id-wrapper').html(response.data.id);
                             $('#customer-name').html(response.data.name);
-                            $('#order-title').html(response.data.order);
+                            $('#airport').html(response.data.airport);
+                            $('#service').html(response.data.service);
                             $('#drop-off').html(response.data.drop_off);
                             $('#return-at').html(response.data.return_at);
                             $('#vendor-phone-no').html(response.data.vendor_phone_no);

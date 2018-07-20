@@ -9,6 +9,7 @@ use App\Models\Companies;
 use App\Models\Members;
 use App\Models\Tools\Roles;
 use App\Models\User;
+use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Sentinel;
@@ -148,11 +149,19 @@ class UsersController extends Controller
                 $form_member = $request->only(['first_name', 'last_name', 'company']);
 
                 if ($user->update($form_user)) {
+                	$company = Companies::where('company_name', $form_member['company']['company_name'])->orWhere('id', $form_member['company']['company_name']);
+                	if ($company->count() == 0) {
+                		$company = $company->create(['company_name' => $form_member['company']['company_name']]);
+                		$company_id = $company->id;
+					} else {
+                		$company_id = $form_member['company']['company_name'];
+					}
+
                     // update member details
                     $user->members->update([
                     	'first_name' => $form_member['first_name'],
-                    	'last_name' => $form_member['last_name'],
-                    	'company_id' => $form_member['company']['company_name'],
+                    	'last_name'  => $form_member['last_name'],
+                    	'company_id' => $company_id
 					]);
 
                     // check if role is still the same
@@ -197,7 +206,25 @@ class UsersController extends Controller
         $user_info = User::findOrFail($id);
         $roles = Roles::all();
         $page_title = "Profile of ".$user_info->members->first_name." ".$user_info->members->last_name;
+		$companies = Companies::selectRaw("id, company_name AS name")->active()->orderBy('company_name', 'asc')->get();
 		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
-        return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'carparks'));
+
+        return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'companies', 'carparks'));
     }
+
+	public function activate($id)
+	{
+		$response = ['success' => false];
+		$temporary_password = str_random(8);
+		$user = Sentinel::findById($id);
+
+		if (Activation::create($user)) {
+			if ($user->update(['password' => $temporary_password])) {
+				Mail::to($user->email)->send(new TemporaryPassword(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
+				$response = ['success' => true];
+			}
+		}
+
+		return response()->json($response);
+	}
 }

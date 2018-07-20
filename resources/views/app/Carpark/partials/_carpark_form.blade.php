@@ -124,9 +124,9 @@
     </div>
 
     <div id="custom-time-wrapper" class="col-sm-6 {{ $hidden_custom_time_wrapper }}">
-        <input type="text" id="opening" class="form-control margin-bottom5" name="opening" placeholder="Opening Hours" autocomplete="off" value="{{ isset($carpark->opening) ? ($carpark->opening != "00:00:00") ? $carpark->opening : old('opening') : old('opening') }}">
-        <input type="text" id="closing" class="form-control" name="closing" placeholder="Closing Hours" autocomplete="off" value="{{ isset($carpark->closing) ? ($carpark->closing != "00:00:00") ? $carpark->closing : old('closing') : old('closing') }}">
-        <small style="color: red;">note: time should be in 24-hour format</small>
+        <input type="text" id="opening" class="form-control margin-bottom5" name="opening" placeholder="Opening Hours (HH:mm)" autocomplete="off" value="{{ isset($carpark->opening) ? ($carpark->opening != "00:00:00") ? $carpark->opening : old('opening') : old('opening') }}">
+        <input type="text" id="closing" class="form-control" name="closing" placeholder="Closing Hours (HH:mm)" autocomplete="off" value="{{ isset($carpark->closing) ? ($carpark->closing != "00:00:00") ? $carpark->closing : old('closing') : old('closing') }}">
+        <small style="color: red;">note: time should be in 24-hour format. e.g. 5:00</small>
     </div>
 </div>
 

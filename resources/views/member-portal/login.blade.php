@@ -13,6 +13,20 @@
 					<a href="{{ url('/') }}" class="back">
 						<i class="fas fa-arrow-left"></i>
 					</a>
+
+					@if ($errors->any())
+						<div class="error-container">
+							<div class="alert alert-danger">
+								<strong>Whoops!</strong> Something went wrong...<br>
+								<ul class="error-wrapper" style="padding-left: 17px;">
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+						</div>
+					@endif
+
 					<span class="login100-form-title p-b-43">Login to continue</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">

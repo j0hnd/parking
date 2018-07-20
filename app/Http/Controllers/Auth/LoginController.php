@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -43,18 +44,18 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         try {
-            if ($request->isMethod('post')) {
-                // Try to log the user in
-                if ($user = Sentinel::authenticate($request->only(['email', 'password']), $request->get('remember-me', false))) {
-                    return redirect($this->redirectTo);
-                } else {
-                    return back()->withErrors('Invalid Username and/or Password');
-                }
-            } else {
-                return view('app.Auth.login');
-            }
-        } catch (NotActivatedException $e) {
-            return back()->withInput()->withErrors('auth/message.account_not_activated');
+			if ($request->isMethod('post')) {
+				// Try to log the user in
+				if ($user = Sentinel::authenticate($request->only(['email', 'password']), $request->get('remember-me', false))) {
+					return redirect($this->redirectTo);
+				} else {
+					return back()->withErrors('Invalid Username and/or Password');
+				}
+			} else {
+				return view('app.Auth.login');
+			}
+		} catch (NotActivatedException $e) {
+			return back()->withInput()->withErrors('auth/message.account_not_activated');
 
         } catch (ThrottlingException $e) {
             return back()->withInput()->withErrors('auth/message.account_suspended');

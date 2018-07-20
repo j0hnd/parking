@@ -147,8 +147,9 @@
         </div>
     </div>
 
+    @if(!isset($booking))
     <div class="form-group">
-        <label class="col-sm-2 control-label">Price Value (£)</label>
+        <label class="col-sm-2 control-label">Total Value (£)</label>
 
         <div class="col-sm-5">
             <input type="text" class="form-control" id="price-value" name="price_value"
@@ -160,7 +161,7 @@
 
     @if($user->roles[0]->slug == 'administrator')
     <div class="form-group">
-        <label class="col-sm-2 control-label">Revenue Value (£)</label>
+        <label class="col-sm-2 control-label">MTC Revenue (£)</label>
 
         <div class="col-sm-5">
             <input type="text" class="form-control" id="revenue-share" name="revenue_value"
@@ -170,6 +171,7 @@
                    readonly>
         </div>
     </div>
+    @endif
     @endif
 
     <div class="form-group">

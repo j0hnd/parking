@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SignupFormRequest;
 use App\Mail\ContactUs;
 use App\Mail\ForgotPassword;
+use App\Mail\RegistrationConfirmation;
 use App\Mail\SendBookingConfirmation;
+use App\Mail\SendBookingConfirmationVendor;
 use App\Mail\Signup;
 use App\Models\AffiliateBookings;
 use App\Models\Affiliates;
@@ -215,7 +217,10 @@ class ParkingAppController extends Controller
 
 					// save booking data
 					$products = Products::findOrFail($product_id);
-					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
+//					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
+
+					$price = $booking_data['total'] - $booking_data['cancellation'] - $booking_data['sms'] - $booking_data['booking_fee'];
+					$revenue_value = $price * ($products->revenue_share / 100);
 
 					$user = Sentinel::getUser();
 					if (is_null($user)) {
@@ -229,7 +234,7 @@ class ParkingAppController extends Controller
 					$bookings['customer_id'] = $customer->id;
 					$bookings['product_id'] =  $product_id;
 					$bookings['price_id'] = $price_id;
-					$bookings['price_value'] = $booking_data['total'];
+					$bookings['price_value'] = $price;
 					$bookings['revenue_value'] = $revenue_value;
 					$bookings['coupon'] = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
@@ -322,10 +327,13 @@ class ParkingAppController extends Controller
 						BookingDetails::create($details);
 					}
 
+					list($airport_name, $service_name) = explode('-', $booking->order_title);
+
 					$response = ['success' => true, 'data' => [
 						'id'              => $booking->booking_id,
 						'name'            => empty($customer->first_name) ? "" : ucwords($customer->first_name),
-						'order'           => $booking->order_title,
+						'airport'         => $airport_name,
+						'service'         => $service_name,
 						'drop_off'        => $drop_off->format('d/m/Y H:i'),
 						'return_at'       => $return_at->format('d/m/Y H:i'),
 						'vendor_phone_no' => empty($booking->products[0]->carpark->company->phone_no) ? "N/A" : $booking->products[0]->carpark->company->phone_no,
@@ -351,21 +359,26 @@ class ParkingAppController extends Controller
 
 		try {
 			if ($request->ajax()) {
-				$bid = $request->get('bid');
+				$bid      = $request->get('bid');
 				$send_sms = $request->get('send_sms');
-				$booking = Bookings::findOrFail($bid);
+				$booking  = Bookings::findOrFail($bid);
 				$customer = Customers::findOrFail($booking->customer_id);
+				$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
-				$mail_data = [
-					'firstname' => $customer->first_name,
-					'order' => $booking->order_title,
-					'drop_off' => $booking->drop_off_at->format('m/d/Y H:i'),
-					'return_at' => $booking->return_at->format('m/d/Y H:i'),
-					'booking_id' => $booking->booking_id
-				];
+				// get vendor email recipients
+				$vendor_recipients = [];
+				array_push($vendor_recipients, $vendor->email);
+				if (!empty($vendor->poc_contact_email)) {
+					array_push($vendor_recipients, $vendor->poc_contact_email);
+				}
 
 				// send booking confirmation
-				Mail::to($customer->email)->send(new SendBookingConfirmation($mail_data));
+				Mail::to($customer->email)->send(new SendBookingConfirmation(['booking' => $booking, 'customer' => $customer]));
+
+				if (count($vendor_recipients)) {
+					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor(['booking' => $booking, 'customer' => $customer, 'vendor' => $vendor, 'carpark' => $carpark]));
+				}
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
 					->where('booking_id', $booking->booking_id)->first();
@@ -533,8 +546,14 @@ class ParkingAppController extends Controller
 
 			DB::beginTransaction();
 
-			if ($user = Sentinel::registerAndActivate($form_user)) {
-				if (isset($form['company_nam'])) {
+			if ($form['member_type'] == 'member') {
+				$user = Sentinel::registerAndActivate($form_user);
+			} else {
+				$user = Sentinel::register($form_user);
+			}
+
+			if ($user) {
+				if (isset($form['company_name'])) {
 					$company = Companies::create(['company_name' => $form['company_name']]);
 					$member_data = [
 						'user_id'    => $user->id,
@@ -559,11 +578,18 @@ class ParkingAppController extends Controller
 				$role = Sentinel::findRoleById($role[$form['member_type']]);
 				$role->users()->attach($user);
 
-				Mail::to($form['email'])->send(new Signup([
-					'first_name' => $form['first_name'],
-					'email'      => $form['email'],
-					'password'   => $temporary_password
-				]));
+				if ($form['member_type'] == 'member') {
+					Mail::to($form['email'])->send(new Signup([
+						'first_name' => $form['first_name'],
+						'email'      => $form['email'],
+						'password'   => $temporary_password
+					]));
+				} else {
+					Mail::to($form['email'])->send(new RegistrationConfirmation([
+						'first_name' => $form['first_name']
+					]));
+				}
+
 
 				DB::commit();
 
@@ -739,14 +765,18 @@ class ParkingAppController extends Controller
 						$user_id = $user->id;
 					}
 
+					$product = Products::findOrFail($product_id);
+					$price = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
+					$revenue_value = $price * ($product->revenue_share / 100);
+
 					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
 					$form['user_id']       = $user_id;
 					$form['product_id']    = $product_id;
 					$form['price_id']      = $price_id;
 					$form['customer_id']   = $customer_id;
 					$form['order_title']   = $form['product'];
-					$form['price_value']   = $form['total'];
-					$form['revenue_value'] = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
+					$form['price_value']   = $price;
+					$form['revenue_value'] = number_format($revenue_value, 2);
 					$form['cancellation_waiver']  = $form['cancellation'];
 					$form['sms_confirmation_fee'] = $form['sms'];
 					$form['booking_fees']         = $form['booking_fee'];
@@ -885,7 +915,7 @@ class ParkingAppController extends Controller
 			$models = $vehicle_make[$request->index]['models'];
 
 			foreach ($models as $model) {
-				$model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
+				$model_str .= "<option value='".$model['title']."'>".$model['title']."</option>";
 			}
 		}
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Export\Commissions;
 use App\Export\CompanyRevenues;
 use App\Export\CompletedJobs;
+use App\Export\TravelAgents;
 use App\Models\Bookings;
 use App\Models\Carpark;
 use App\Models\Companies;
@@ -100,9 +101,11 @@ class ReportsController extends Controller
 			$form = $request->only(['vendor', 'date', 'export']);
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 			} else {
 				$bookings = Bookings::active()
@@ -110,6 +113,7 @@ class ReportsController extends Controller
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
@@ -138,23 +142,27 @@ class ReportsController extends Controller
 			list($start, $end) = explode(':', $form['date']);
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
-				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+//					->selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-					->whereNull('bookings.deleted_at')
+//					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-					->groupBy('products.carpark_id')
+//					->groupBy('products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 			} else {
-				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS revenue")
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+//					->selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS revenue")
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-					->whereNull('bookings.deleted_at')
+//					->whereNull('bookings.deleted_at')
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-					->groupBy('products.carpark_id')
+//					->groupBy('products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 
 				$selected_vendor = $form['vendor'];
@@ -162,6 +170,48 @@ class ReportsController extends Controller
 		}
 
 		return view('app.Reports.company-revenue', [
+			'page_title'      => $page_title,
+			'vendors'         => $vendors,
+			'bookings'        => $bookings,
+			'selected_vendor' => $selected_vendor,
+			'selected_date'   => $selected_date
+		]);
+	}
+
+	public function travel_agents(Request $request)
+	{
+		$page_title = "Travel Agents";
+		$vendors = $this->vendors->get();
+		$bookings = null;
+		$selected_vendor = null;
+		$selected_date = "";
+
+		if ($request->isMethod('post')) {
+			$form = $request->only(['vendor', 'date', 'export']);
+			list($start, $end) = explode(':', $form['date']);
+			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+
+			if (is_null($form['vendor'])) {
+				$bookings = Bookings::active()
+					->has('affiliate_bookings')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			} else {
+				$bookings = Bookings::active()
+					->has('affiliate_bookings')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->orderBy('bookings.created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+
+				$selected_vendor = $form['vendor'];
+			}
+		}
+
+		return view('app.Reports.travel-agents', [
 			'page_title'      => $page_title,
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
@@ -182,6 +232,7 @@ class ReportsController extends Controller
 					$filename = "Commissions-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::active()
 						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+						->orderBy('bookings.created_at', 'desc')
 						->get();
 
 					if (isset($form['vendor'])) {
@@ -192,6 +243,7 @@ class ReportsController extends Controller
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
+							->orderBy('bookings.created_at', 'desc')
 							->get();
 					}
 
@@ -230,30 +282,50 @@ class ReportsController extends Controller
 
 				case "company_revenues":
 					$filename = "CompanyRevenues-".Carbon::now()->format('Ymd').".{$ext}";
-					$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
+					$bookings = Bookings::whereNull('bookings.deleted_at')
 						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-						->whereNull('bookings.deleted_at')
 						->join('products', 'products.id', '=', 'bookings.product_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-						->groupBy('products.carpark_id')
+						->orderBy('bookings.created_at', 'desc')
 						->get();
 
 					if (isset($form['vendor'])) {
 						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "Revenue Report for ".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
-						$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
+						$bookings = Bookings::whereNull('bookings.deleted_at')
 							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
-							->whereNull('bookings.deleted_at')
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
 							->join('products', 'products.id', '=', 'bookings.product_id')
 							->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-							->groupBy('products.carpark_id')
+							->orderBy('bookings.created_at', 'desc')
 							->get();
 					}
 
 					return $excel->download(new CompanyRevenues($bookings), $filename);
+					break;
+
+				case "travel_agents":
+					$filename = "TravelAgents-".Carbon::now()->format('Ymd').".{$ext}";
+					$bookings = Bookings::active()
+						->has('affiliate_bookings')
+						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+						->orderBy('bookings.created_at', 'desc')
+						->get();
+
+					if (isset($form['vendor'])) {
+						$bookings = Bookings::active()
+							->has('affiliate_bookings')
+							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') >= ? AND DATE_FORMAT(return_at, '%Y-%m-%d') <= ?", [$start, $end])
+							->whereHas('products', function ($query) use ($form) {
+								$query->where('carpark_id', $form['vendor']);
+							})
+							->orderBy('bookings.created_at', 'desc')
+							->get();
+					}
+
+					return $excel->download(new TravelAgents($bookings), $filename);
 					break;
 			}
 		}

@@ -5,6 +5,7 @@
 		<th class="text-center">Booking Date</th>
 		<th class="text-center">Drop of Date</th>
 		<th class="text-center">Return Date</th>
+		<th class="text-center">Customer</th>
 		<th class="text-center">Completed</th>
 		<th class="text-right">Total Cost</th>
 	</tr>
@@ -28,6 +29,9 @@
 				<td class="text-center">{{ $booking->drop_off_at->format('d/m/Y') }}</td>
 				<td class="text-center">{{ $booking->return_at->format('d/m/Y') }}</td>
 				<td class="text-center">
+					<a href="javascript:void(0)" id="customer-details" class="customer-details" data-id="{{ $booking->customer_id }}">{{ ucwords($booking->customers->first_name) }} {{ ucwords($booking->customers->last_name) }}</a>
+				</td>
+				<td class="text-center">
 					 @if(strtotime('now') > strtotime($booking->return_at))
 					 <i class="fas fa-check-square" aria-hidden="true"></i>
 					 @endif
@@ -41,10 +45,23 @@
 					£{{ number_format($cost, 2) }}
 				</td>
 			</tr>
+			<tr id="customer-details-{{ $booking->customer_id }}-wrapper" class="customer-details-wrapper d-none" style="background-color: #b9ca4a">
+				<td colspan="8" style="background-color: #b9ca4a">
+					<table class="table table-data2" style="background-color: #b9ca4a">
+						<tr style="background-color: #b9ca4a">
+							<td>Customer Name: {{ ucwords($booking->customers->first_name) }} {{ ucwords($booking->customers->last_name) }}</td>
+						</tr>
+						<tr style="background-color: #b9ca4a">
+							<td>Mobile No: {{ empty($booking->customers->mobile_no) ? "N/A" : $booking->customers->mobile_no }}</td>
+							<td>Email: {{ empty($booking->customers->email) ? "N/A" : $booking->customers->email }}</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
 		@endforeach
 
 		<tr id="summary" class="bg-aqua tr-shadow">
-			<td colspan="6"></td>
+			<td colspan="7"></td>
 			<td class="text-right"><strong>£{{ number_format($total_cost, 2) }}</strong></td>
 		</tr>
 	@else
