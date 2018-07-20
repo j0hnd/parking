@@ -46,29 +46,6 @@ $(document).ready(function(){
                 $('#payment_wizard-p-1').hide();
             }
 
-            // if ($('#sms-fee').is(':checked')) {
-            //     var total = $('#total').text().substr(1);
-            //     total = parseFloat(total) + parseFloat($('#sms-fee').val());
-            //     $('#total').text('£'+total.toLocaleString());
-            //     $('#total-amount').val(total.toLocaleString());
-            //     $('#sms-fee-wrapper').text($('#sms-fee').val());
-            //     $('#sms-confirmation').val(1);
-            //     $('#sms').val($('#sms-fee').val());
-            // } else {
-            //     $('#sms-confirmation').val(0);
-            //     $('#sms').val(0);
-            // }
-            //
-            // if ($('#cancellation-fee').is(':checked')) {
-            //     var total = $('#total').text().substr(1);
-            //     total = parseFloat(total) + parseFloat($('#cancellation').val());
-            //     $('#total').text('£'+total.toLocaleString());
-            //     $('#total-amount').val(total.toLocaleString());
-            //     $('#cancellation').val($('#cancellation-fee').val());
-            // } else {
-            //     $('#cancellation').val(0);
-            // }
-
             if (currentIndex == 1 && $('#paypal-container').is(':visible')) {
                 var url = $('#booking-details-form').data('url');
 
@@ -97,86 +74,9 @@ $(document).ready(function(){
                 });
             }
 
-            if (currentIndex == 1 && newIndex == 0) {
+            if (currentIndex == 0 && newIndex == 1) {
+                $('#payment_wizard-p-1').show();
                 $('#payment_wizard-p-2').hide();
-            }
-
-            if (currentIndex == 0 && $('#stripe-container').is(':visible')) {
-                $('#firstname').val($('#firstname-src').val());
-                $('#lastname').val($('#lastname-src').val());
-                $('#email').val($('#email-src').val());
-                $('#phoneno').val($('#phone-src').val());
-                $('#car-registration-no').val($('#car-registration-no-src').val());
-                $('#vehicle-color').val($('#vehicle-color-src').val());
-                $('#vehicle-model').val($('#vehicle-model-src').val());
-                $('#other-vehicle-model-model').val($('#other-vehicle-model-src').val());
-                $('#vehicle-make').val($('#vehicle-make-src').val());
-                $('#coupon').val($('#coupon-src').val());
-                $('#card-name').val($('#card-name-src').val());
-                $('#card-number').val($('#card-number-src').val());
-                $('#expiration-month').val($('#expiration-month-src').val());
-                $('#expiration-year').val($('#expiration-year-src').val());
-                $('#cv-code').val($('#cv-code-src').val())
-
-                console.log($('#total').text());
-
-                if ($('#sms-fee').is(':checked')) {
-                    $('#sms').val($('#sms-fee').val());
-                } else {
-                    $('#sms').val(0);
-                }
-
-                if ($('#cancellation-fee').is(':checked')) {
-                    $('#cancellation').val($('#cancellation-fee').val());
-                } else {
-                    $('#cancellation').val(0);
-                }
-
-                var orderForm = $('#order-form').serialize();
-                var move = false;
-
-                $.ajax({
-                    url: '/stripe/payment',
-                    type: 'post',
-                    data: orderForm,
-                    dataType: 'json',
-                    async: false,
-                    cache: false,
-                    beforeSend: function () {
-                        $('#payment_wizard-p-0').show();
-                        $('#payment_wizard-p-1').hide();
-                        $('#payment_wizard-p-2').hide();
-                        $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
-                        $('#payment_choice').find('#stripe-container').addClass('d-none');
-                    },
-                    success: function (response) {
-                        $('#payment_choice').find('#stripe-payment-loader').addClass('d-none');
-                        $('#payment_choice').find('#stripe-container').removeClass('d-none');
-
-                        $('#payment_wizard-p-0').hide();
-                        $('#payment_wizard-p-2').hide();
-                        $('#payment_wizard-p-1').show();
-
-                        if (response.success) {
-                            $('#bid').val(response.data);
-                            move = true;
-                        } else {
-                            alert(response.message);
-                            $('#payment_wizard-p-0').show();
-                            $('#payment_wizard-p-1').hide();
-                            $('#payment_wizard-p-2').hide();
-                        }
-                    },
-                    error: function(jqXHR, error, errorThrown) {
-                        if (jqXHR.status&&jqXHR.status == 400) {
-                            alert(jqXHR.responseText);
-                        } else {
-                            alert("Something went wrong");
-                        }
-                    }
-                });
-
-                return move;
             }
 
             if (currentIndex == 1 && newIndex == 2 && $('#bid').val()) {
@@ -198,15 +98,11 @@ $(document).ready(function(){
                     $('#payment_wizard-p-2').css('left', '0px');
                 }, 500);
 
-                var move = false;
-
                 $.ajax({
                     url: '/booking/details/'+ bid +'/update',
                     type: 'post',
                     data: $('#booking-details-form').serialize(),
                     dataType: 'json',
-                    async: false,
-                    cache: false,
                     success: function (response) {
                         if (response.success) {
                             $('#finish-wrapper').removeClass('d-none');
@@ -222,17 +118,13 @@ $(document).ready(function(){
                             $('#vd-vehicle-make').html(response.data.vehicle_make);
                             $('#vd-vehicle-model').html(response.data.vehicle_model);
                             $('#vd-vehicle-color').html(response.data.vehicle_color);
-                            move = true;
                         } else {
                             $('#payment_wizard-p-1').show();
                             $('#payment_wizard-p-2').hide();
                             $('#confirmation-wrapper').addClass('d-none');
-                            alert(response.message);
                         }
                     }
                 });
-
-                return move;
             }
 
             return true;

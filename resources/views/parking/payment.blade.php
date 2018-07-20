@@ -259,7 +259,6 @@ Payment |
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												{{--<input type="text" id="expiration-month-src" name="expiration-month" class="form-control">--}}
 											</div>
 											<div class="col-md-4">
 												<label>Expiration Date:</label>
@@ -270,18 +269,27 @@ Payment |
 													<option value="{{ date('Y') + $i }}">{{ date('Y') + $i }}</option>
 													@endfor
 												</select>
-												{{--<input type="text" id="expiration-year-src" name="expiration-year" class="form-control">--}}
 											</div>
 											<div class="col-md-4">
-												<label>CV Code:</label>
+												<label>Security Number (CVV):</label>
 												<input type="text" id="cv-code-src" name="cv_code" class="form-control">
 											</div>
 										</div>
+										<br>
+										<br>
+										<a href="javascript:void(0)" id="toggle-stripe" class="btn btn-primary btn-block" style="padding:14px;">Confirm Booking</a>
+										<p class="text-center" style="margin-top: 7px;"><small>Once submitted we will send you a confirmation email</small>
+											<br><small>By clicking <strong>Confirm Booking</strong> you agree to our <a href="{{ url('/terms') }}" target="_blank">terms and conditions</a> </small></p>
 									</div>
 									<div id="stripe-payment-loader" class="row d-none">
 										<div class="col-md-12 text-center">
 											<img src="{{ asset('/img/loader.gif') }}">
 											<p>Please wait, connecting to payment gateway.</p>
+										</div>
+									</div>
+									<div id="stripe-message-wrapper" class="row d-none">
+										<div class="col-md-12 text-center">
+											<p class="text-center" style="margin-top: 20px;"></p>
 										</div>
 									</div>
 								</fieldset>
@@ -304,6 +312,8 @@ Payment |
 												<a href="javascript:void(0)" id="toggle-paypal" class="paypal-button"><i class="fab fa-paypal"></i> PayPal</a>
 											</div>
 										</div>
+										<p class="text-center" style="margin-top: 17px;"><small>Once submitted we will send you a confirmation email</small>
+											<br><small>By clicking <strong>Paypal</strong> button you agree to our <a href="{{ url('/terms') }}" target="_blank">terms and conditions</a> </small></p>
 									</div>
 								</fieldset>
 								@else
@@ -354,33 +364,33 @@ Payment |
 									</div>
 								</div>
 								<br/>
-								<div class="row">
-									<div class="col-md-4">
-										<label>Drop Off Date:</label>
-										<input type="text" id="drop-off-date-src" name="drop_off_date" class="form-control datepicker" value="{{ $drop_off_date }}" data-validation="required">
-									</div>
-									<div class="col-md-2">
-										<label>Time:</label>
-										<select class="form-control" id="drop-off-time-src" name="drop_off_time" data-validation="required">
-											@if(isset($drop_off_time_interval))
-												{!! $drop_off_time_interval !!}
-											@endif
-										</select>
-									</div>
+								{{--<div class="row">--}}
+									{{--<div class="col-md-4">--}}
+										{{--<label>Drop Off Date:</label>--}}
+										{{--<input type="text" id="drop-off-date-src" name="drop_off_date" class="form-control datepicker" value="{{ $drop_off_date }}" data-validation="required">--}}
+									{{--</div>--}}
+									{{--<div class="col-md-2">--}}
+										{{--<label>Time:</label>--}}
+										{{--<select class="form-control" id="drop-off-time-src" name="drop_off_time" data-validation="required">--}}
+											{{--@if(isset($drop_off_time_interval))--}}
+												{{--{!! $drop_off_time_interval !!}--}}
+											{{--@endif--}}
+										{{--</select>--}}
+									{{--</div>--}}
 
-									<div class="col-md-4">
-										<label>Return Date:</label>
-										<input type="text" id="return-at-date-src" name="return_at_date" class="form-control datepicker" value="{{ $return_at_date }}" data-validation="required">
-									</div>
-									<div class="col-md-2">
-										<label>Time:</label>
-										<select class="form-control" id="return-at-time-src" name="return_at_time" data-validation="required">
-											@if(isset($return_at_time_interval))
-												{!! $return_at_time_interval !!}
-											@endif
-										</select>
-									</div>
-								</div>
+									{{--<div class="col-md-4">--}}
+										{{--<label>Return Date:</label>--}}
+										{{--<input type="text" id="return-at-date-src" name="return_at_date" class="form-control datepicker" value="{{ $return_at_date }}" data-validation="required">--}}
+									{{--</div>--}}
+									{{--<div class="col-md-2">--}}
+										{{--<label>Time:</label>--}}
+										{{--<select class="form-control" id="return-at-time-src" name="return_at_time" data-validation="required">--}}
+											{{--@if(isset($return_at_time_interval))--}}
+												{{--{!! $return_at_time_interval !!}--}}
+											{{--@endif--}}
+										{{--</select>--}}
+									{{--</div>--}}
+								{{--</div>--}}
 								<br/>
 
 								<div class="row">
@@ -516,18 +526,18 @@ Payment |
 							<br/>
 							<div class="row">
 								<div class="col-6 col-md-6">
-									<p>From Date</p>
+									<p>Drop Off Date</p>
 								</div>
 								<div class="col-6 col-md-6">
-									<p class="receipt-align">{{ $drop_off_date }}</p>
+									<p class="receipt-align">{{ $drop_off_date }} {{ $drop_off_time }}</p>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-6 col-md-6">
-									<p>To Date</p>
+									<p>Return Date</p>
 								</div>
 								<div class="col-6 col-md-6">
-									<p class="receipt-align">{{ $return_at_date }}</p>
+									<p class="receipt-align">{{ $return_at_date }} {{ $return_at_time }}</p>
 								</div>
 							</div>
 							<hr>
@@ -613,7 +623,6 @@ Payment |
 <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/js/payment.js') }}" type="text/javascript"></script>
-{{--<script src="https://js.stripe.com/v3/"></script>--}}
 <script type="text/javascript">
 	$(document).ready(function () {
 	    var vehicle_model = "{{ $details['vehicle_model'] }}";
@@ -629,6 +638,77 @@ Payment |
             $('#vehicle-model-src').addClass('d-none');
             $('#other-vehicle-model-src').removeClass('d-none');
 		}
+
+        setTimeout(function () {
+            $("a[href='#next']").parent().addClass("disabled").attr("aria-disabled", "true");
+        }, 300);
+
+		$(document).on('click', '#toggle-stripe', function (e) {
+            $('#firstname').val($('#firstname-src').val());
+            $('#lastname').val($('#lastname-src').val());
+            $('#email').val($('#email-src').val());
+            $('#phoneno').val($('#phone-src').val());
+            $('#car-registration-no').val($('#car-registration-no-src').val());
+            $('#vehicle-color').val($('#vehicle-color-src').val());
+            $('#vehicle-model').val($('#vehicle-model-src').val());
+            $('#other-vehicle-model-model').val($('#other-vehicle-model-src').val());
+            $('#vehicle-make').val($('#vehicle-make-src').val());
+            $('#coupon').val($('#coupon-src').val());
+            $('#card-name').val($('#card-name-src').val());
+            $('#card-number').val($('#card-number-src').val());
+            $('#expiration-month').val($('#expiration-month-src').val());
+            $('#expiration-year').val($('#expiration-year-src').val());
+            $('#cv-code').val($('#cv-code-src').val())
+
+            if ($('#sms-fee').is(':checked')) {
+                $('#sms').val($('#sms-fee').val());
+            } else {
+                $('#sms').val(0);
+            }
+
+            if ($('#cancellation-fee').is(':checked')) {
+                $('#cancellation').val($('#cancellation-fee').val());
+            } else {
+                $('#cancellation').val(0);
+            }
+
+            $.ajax({
+                url: '/stripe/payment',
+                type: 'post',
+                data: $('#order-form').serialize(),
+                dataType: 'json',
+                async: false,
+                cache: false,
+                beforeSend: function () {
+                    $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
+                    $('#payment_choice').find('#stripe-container').addClass('d-none');
+                },
+                success: function (response) {
+                    $('#payment_choice').find('#stripe-payment-loader').addClass('d-none');
+                    $('#payment_choice').find('#stripe-container').removeClass('d-none');
+
+                    if (response.success) {
+                        $('#payment_choice').find('#stripe-container').addClass('d-none');
+                        $('#payment_choice').find('#stripe-message-wrapper').removeClass('d-none');
+                        $('#payment_choice').find('#stripe-message-wrapper p').html("<h4>Your payment has been confirmed!</h4><br>Please proceed with the next step in completing this booking.<br>Thank you.");
+
+                        $('#bid').val(response.data);
+
+                        $("#toggle-stripe").addClass("disabled").attr("aria-disabled", "true");
+                        $("a[href='#next']").parent().removeClass("disabled").attr("aria-disabled", "false");
+                    } else {
+                        $('#payment_choice').find('#stripe-container').addClass('d-none');
+                        $('#payment_choice').find('#stripe-message-wrapper').removeClass('d-none');
+                        $('#payment_choice').find('#stripe-message-wrapper p').html("<h4>Oops! Something went wrong in processing your payment.</h4><br>" + response.message);
+
+                        setTimeout(function () {
+                            $('#payment_choice').find('#stripe-container').removeClass('d-none');
+                            $('#payment_choice').find('#stripe-message-wrapper').addClass('d-none');
+                        }, 3000);
+                    }
+                }
+            });
+        });
     });
 </script>
 @stop

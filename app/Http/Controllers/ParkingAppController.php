@@ -299,8 +299,8 @@ class ParkingAppController extends Controller
 					$return_at = Carbon::createFromTimestamp(strtotime($return_date));
 
 					$update = [
-						'drop_off_at' => $drop_off->format('Y-m-d H:i'),
-						'return_at' => $return_at->format('Y-m-d H:i'),
+//						'drop_off_at' => $drop_off->format('Y-m-d H:i'),
+//						'return_at' => $return_at->format('Y-m-d H:i'),
 						'flight_no_going' => $form['flight_no_going'],
 						'flight_no_return' => $form['flight_no_return'],
 						'is_paid' => 1,
