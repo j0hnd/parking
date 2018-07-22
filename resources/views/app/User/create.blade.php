@@ -27,37 +27,49 @@
 @stop
 
 @section('scripts')
-    <script type="text/javascript">
-        $(function(){
-            $('#role-id').select2({ placeholder: '-- Roles --' });
+<script type="text/javascript">
+    $(function(){
+        $('#role-id').select2({ placeholder: '-- Roles --' });
 
-            $(document).on('change', '#role-id', function (e) {
-                if ($(this).val() == 2 || $(this).val() == 3) {
-                    $('#company-info-wrapper').removeClass('hidden');
-                    setTimeout(function () {
-                        $('#company-name').select2({
-                            placeholder: '-- Company --',
-                            tags: true
-                        });
-                    }), 300;
-                } else {
-                    $('#company-info-wrapper').addClass('hidden');
+        $(document).on('change', '#role-id', function (e) {
+            if ($(this).val() == 2 ) {
+                $('#company-info-wrapper').removeClass('hidden');
+                $('#carpark-wrapper').removeClass('hidden');
+                $('#company-wrapper').addClass('hidden');
+                setTimeout(function () {
+                    $('#carpark-name').select2({
+                        placeholder: '-- Company --',
+                        tags: true
+                    });
+                }), 300;
+            } else if ($(this).val() == 3) {
+                $('#company-info-wrapper').removeClass('hidden');
+                $('#company-wrapper').removeClass('hidden');
+                $('#carpark-wrapper').addClass('hidden');
+                setTimeout(function () {
+                    $('#company-name').select2({
+                        placeholder: '-- Company --',
+                        tags: true
+                    });
+                }), 300;
+            } else {
+                $('#company-info-wrapper').addClass('hidden');
+            }
+        });
+
+        $(document).on('change', '#company-name', function () {
+            $.ajax({
+                url: "{{ url('/admin/carpark/info') }}/" + $(this).val(),
+                type: 'get',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        var address = response.data.address+" "+response.data.city+", "+response.data.county_state+" "+response.data.zipcode;
+                        $('#address').val(address);
+                    }
                 }
             });
-
-            $(document).on('change', '#company-name', function () {
-                $.ajax({
-                    url: "{{ url('/admin/carpark/info') }}/" + $(this).val(),
-                    type: 'get',
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.success) {
-                            var address = response.data.address+" "+response.data.city+", "+response.data.county_state+" "+response.data.zipcode;
-                            $('#address').val(address);
-                        }
-                    }
-                });
-            });
         });
-    </script>
+    });
+</script>
 @stop

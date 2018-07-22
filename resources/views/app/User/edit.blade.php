@@ -39,7 +39,7 @@
                     $('#carpark-wrapper').removeClass('hidden');
                     $('#company-wrapper').addClass('hidden');
                     setTimeout(function () {
-                        $('#company-name').select2({
+                        $('#carpark-name').select2({
                             placeholder: '-- Company --',
                             tags: true
                         });
