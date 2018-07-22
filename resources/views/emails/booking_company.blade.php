@@ -31,7 +31,7 @@
 			<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
 				<tr>
 					<!-- Column : BEGIN -->
-					<td class="stack-column-center">
+					<td class="stack-column-center" valign="top">
 						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
 							<tr>
 								<td style="padding: 10px; text-align: center">
@@ -54,7 +54,8 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="156">£{{ $booking->price_value }}</td>
 										</tr>
-										<tr>
+										<!--
+                                        <tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Booking Fee:</td>
 											<td width="8">&nbsp;</td>
@@ -79,8 +80,8 @@
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Overall
 												Cost:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->price_value + $booking->booking_fees + $booking->sms_confirmation_fee + $booking->cancellation_waiver }}</td>
-										</tr>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->price_value + $booking->booking_fees + $booking->sms_confirmation_fee + $booking->cancellation_waiver }}</td> 
+										</tr>-->
 										</tbody>
 									</table>
 								</td>
@@ -89,7 +90,7 @@
 					</td>
 					<!-- Column : END -->
 					<!-- Column : BEGIN -->
-					<td class="stack-column-center">
+					<td class="stack-column-center" valign="top">
 						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
 							<tr>
 								<td style="padding: 10px; text-align: center">
@@ -112,12 +113,12 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($customer->mobile_no) ? "N/A" : $customer->mobile_no }}</td>
 										</tr>
-										<tr>
+										<!--<tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Email:</td>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($customer->email) ? "N/A" : $customer->email }}</td>
-										</tr>
+										</tr>-->
 										<tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Vehicle Registration:</td>
