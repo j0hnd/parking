@@ -6,6 +6,7 @@ use App\Http\Requests\BookingFormRequest;
 use App\Models\Bookings;
 use App\Models\Products;
 use App\Models\Customers;
+use App\Models\Airports;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -36,11 +37,11 @@ class BookingsController extends Controller
                         } else if (!empty($prices->price_month)) {
                             $duration = $prices->price_month;
                         } else {
-                            $duration = $prices->price_start_day." - ".$prices->price_end_day;
+                            $duration = "No of days: ".$prices->no_of_days;
                         }
 
                         $products_list[] = [
-                            'order_id'     => $product->id.";".$prices->id,
+                            'order_id'     => $product->id.";".$prices->id.";".$product->airport[0]->id,
                             'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [".$duration." - £".$prices->price_value."]"
                         ];
                     }
@@ -140,12 +141,14 @@ class BookingsController extends Controller
 
     public function edit($id)
     {
-        $booking = Bookings::findOrFail($id);
-        $page_title = "Edit Booking";
-        $products_list = null;
-        $customers     = Customers::active()->orderBy('last_name', 'asc');
-        $products      = Products::active()->orderBy('created_at', 'desc');
-        $vehicle_make  = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
+        $booking          = Bookings::findOrFail($id);
+        $page_title       = "Edit Booking";
+        $products_list    = null;
+        $customers        = Customers::active()->orderBy('last_name', 'asc');
+        $products         = Products::active()->orderBy('created_at', 'desc');
+        $vehicle_make     = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
+        $airport          = Airports::findOrFail($booking->products[0]->airport[0]->id);
+        $terminal_options = null;
 
         if (count($vehicle_make)) {
             foreach ($vehicle_make as $make) {
@@ -154,6 +157,12 @@ class BookingsController extends Controller
         } else {
             $vehicle_make_name = null;
         }
+
+        if (isset($airport->subcategories)) {
+			foreach ($airport->subcategories as $terminal) {
+				$terminal_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+			}
+		}
 
         $vehicle_make_key = array_search($booking->vehicle_make, array_column($vehicle_make, 'value'));
         $vehicle_models = $vehicle_make[$vehicle_make_key]['models'];
@@ -167,11 +176,11 @@ class BookingsController extends Controller
                         } else if (!empty($prices->price_month)) {
                             $duration = $prices->price_month;
                         } else {
-                            $duration = $prices->price_start_day." - ".$prices->price_end_day;
+                            $duration = "No of days: ".$prices->no_of_days;
                         }
 
                         $products_list[] = [
-                            'order_id'     => $product->id.";".$prices->id,
+                            'order_id'     => $product->id.";".$prices->id.";".$product->airport[0]->id,
                             'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [".$duration." - £".$prices->price_value."]"
                         ];
                     }
@@ -179,7 +188,7 @@ class BookingsController extends Controller
             }
         }
 
-        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name'));
+        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name', 'terminal_options'));
     }
 
     public function get_vehicle_models(Request $request)
@@ -219,7 +228,9 @@ class BookingsController extends Controller
                     'return_at_date',
                     'drop_off_time',
                     'return_at_time',
-                    'other_vehicle_model'
+                    'other_vehicle_model',
+                    'departure_terminal',
+                    'arrival_terminal'
                 ]);
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
@@ -246,7 +257,9 @@ class BookingsController extends Controller
                 $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['drop_off_time']));
                 $form_booking['return_at']   = $return_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['return_at_time']));
 
-                $form_booking['revenue_value'] = number_format($form_booking['price_value'] * ($product->revenue_share / 100), 2);
+                if (isset($form_booking['price_value'])) {
+                    $form_booking['revenue_value'] = number_format($form_booking['price_value'] * ($product->revenue_share / 100), 2);
+                }
 
                 unset($form_booking['drop_off_date']);
                 unset($form_booking['drop_off_time']);

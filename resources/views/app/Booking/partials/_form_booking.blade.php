@@ -8,7 +8,10 @@
                 @if(!is_null($products_list))
                     @foreach($products_list as $product)
                         @if(isset($booking))
-                            @php($order_id = $booking->product_id.";".$booking->price_id)
+                            @php
+                                $order_id = $booking->product_id.";".$booking->price_id.";".$booking->products[0]->airport[0]->id;
+                            @endphp
+
                             @if($order_id == $product['order_id'])
                             <option value="{{ $product['order_id'] }}" selected>{{ $product['product_name'] }}</option>
                             @else
@@ -35,6 +38,16 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2 control-label">Dparture Terminal</label>
+
+        <div class="col-sm-9">
+            <select name="departure_terminal" id="departure-terminal" class="form-control">
+                <option value="" readonly>-- Terminals --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">Flight No. <small>(Arrival)</small> </label>
 
         <div class="col-sm-9">
@@ -42,6 +55,16 @@
                    placeholder="Flight No."
                    value="{{ isset($booking) ? $booking->flight_no_return : "" }}"
                    autocomplete="off">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Arrival Terminal</label>
+
+        <div class="col-sm-9">
+            <select name="arrival_terminal" id="arrival-terminal" class="form-control">
+                <option value="" readonly>-- Terminals --</option>
+            </select>
         </div>
     </div>
 

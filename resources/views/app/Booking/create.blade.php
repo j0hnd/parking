@@ -86,11 +86,18 @@ $(function () {
         $('#order-title-str').val($("#order-title option:selected").text());
         $.ajax({
             url: '{{ url('/admin/get/price') }}',
-            data: { product_id: ref[0], price_id: ref[1] },
+            data: { product_id: ref[0], price_id: ref[1], airport_id: ref[2] },
             dataType: 'json',
             success: function (response) {
                 if (response) {
                     $('#price-value').val(response.price_value);
+                    $('#departure-terminal')
+                        .empty()
+                        .append(response.terminals);
+                    $('#arrival-terminal')
+                        .empty()
+                        .append(response.terminals);
+
                     revenue_value = parseFloat(response.price_value * (response.revenue_share / 100)).toFixed(2);
                 } else {
                     $('#price-value').val(0);
@@ -152,6 +159,16 @@ $(function () {
     $('#drop-off-date').datepicker({
         autoclose: true
     })
+
+    $("#departure-terminal").select2({
+        placeholder: '-- Departure Terminal --',
+        tags: true
+    });
+
+    $("#arrival-terminal").select2({
+        placeholder: '-- Arrival Terminal --',
+        tags: true
+    });
 
     $('#drop-off-time').timepicker();
     $('#return-at-time').timepicker();
