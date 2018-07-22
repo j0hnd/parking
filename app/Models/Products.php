@@ -62,9 +62,11 @@ class Products extends BaseModel
         $products = null;
 
         try {
-			// get number of days between the dates in the search parameters
+			$today = Carbon::now();
 			$begin = Carbon::createFromFormat('d/m/Y', $data['search']['drop-off-date']);
 			$end   = Carbon::createFromFormat('d/m/Y', $data['search']['return-at-date']);
+
+            // get number of days between the dates in the search parameters
 			$no_days = $begin->diffInDays($end);
 
 			if ($no_days === 0) {
@@ -182,14 +184,11 @@ class Products extends BaseModel
 
                 foreach ($product_airports->get() as $pa) {
                     if ($pa->no_bookings_not_less_than_24hrs == 1) {
-                        $today     = Carbon::now();
-                        $drop_off  = str_replace('/' , '-', $data['search']['drop-off-date']);
-                        $drop_off  = date('Y-m-d', strtotime($drop_off));
-                        $drop_off  = $drop_off.' '.$data['search']['drop-off-time'].':00';
+                        $drop_off  = $begin->format('Y-m-d').' '.$data['search']['drop-off-time'].':00';
                         $drop_off  = Carbon::createFromFormat('Y-m-d H:i:s', $drop_off);
                         $time_diff = $drop_off->diffInHours($today);
 
-                        if ($time_diff < 24) {
+                        if ($time_diff <= 24) {
                             break;
                         }
                     }
