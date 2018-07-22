@@ -110,17 +110,21 @@ class ParkingAppController extends Controller
 
     public function payment(Request $request)
 	{
+        $payment_confirm = 0;
+        $cancel = 0;
+
 		if ($request->isMethod('post') || isset($request->token)) {
 			$form = $request->only(['products', 'drop_off', 'return_at']);
 			$token = null;
 			$details = null;
-			$cancel = isset($request->cancel) ? $request->cancel : 0;
+			$cancel = isset($request->cancel) ? 1 : 0;
 
 			if (isset($request->token)) {
 				$sessions = Sessions::where('session_id', session('sess_id'))->first();
 				$details = json_decode($sessions->response, true);
 				$form = json_decode($sessions->requests, true);
 				$token = $request->token;
+				$payment_confirm = 1;
 			} else {
 				if (!session()->has('sess_id')) {
 					$sessions = Sessions::create(['request_id' => session()->getId(), 'requests' => json_encode($form)]);
@@ -171,7 +175,8 @@ class ParkingAppController extends Controller
 				'return_at_time_interval',
 				'booking_id',
 				'cancel',
-				'vehicle_make'
+				'vehicle_make',
+                'payment_confirm'
 			));
 		}
 	}
@@ -292,15 +297,13 @@ class ParkingAppController extends Controller
 
 				$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 				if ($booking) {
-					$drop_date = str_replace('/', '-', $form['drop_off_at']);
-					$return_date = str_replace('/', '-', $form['return_at']);
+					$drop_off = $booking->drop_off_at;
+					$return_at = $booking->return_at;
 
-					$drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
-					$return_at = Carbon::createFromTimestamp(strtotime($return_date));
+					// $drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
+					// $return_at = Carbon::createFromTimestamp(strtotime($return_date));
 
 					$update = [
-//						'drop_off_at' => $drop_off->format('Y-m-d H:i'),
-//						'return_at' => $return_at->format('Y-m-d H:i'),
 						'flight_no_going' => $form['flight_no_going'],
 						'flight_no_return' => $form['flight_no_return'],
 						'is_paid' => 1,
@@ -343,6 +346,8 @@ class ParkingAppController extends Controller
 						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
 						'vehicle_color'   => ucwords($booking->vehicle_color),
 					]];
+				} else {
+					$response = ['success' => true];
 				}
 			}
 		} catch (\Exception $e) {
