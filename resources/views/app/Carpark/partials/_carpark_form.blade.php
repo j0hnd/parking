@@ -118,7 +118,7 @@
     @endif
 
     <div id="24hrs-wrapper" class="col-sm-6">
-        <label>
+        <label style="font-weight: normal">
             <input type="checkbox" name="is_24hrs_svc" id="is-24hr" {{ $checked }} value="1"> 24hrs Service
         </label>
     </div>
@@ -127,6 +127,26 @@
         <input type="text" id="opening" class="form-control margin-bottom5" name="opening" placeholder="Opening Hours (HH:mm)" autocomplete="off" value="{{ isset($carpark->opening) ? ($carpark->opening != "00:00:00") ? $carpark->opening : old('opening') : old('opening') }}">
         <input type="text" id="closing" class="form-control" name="closing" placeholder="Closing Hours (HH:mm)" autocomplete="off" value="{{ isset($carpark->closing) ? ($carpark->closing != "00:00:00") ? $carpark->closing : old('closing') : old('closing') }}">
         <small style="color: red;">note: time should be in 24-hour format. e.g. 5:00</small>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label"></label>
+
+    @if(isset($carpark))
+        @php
+            $no_less_than_24hrs_checked = ($carpark->no_bookings_not_less_than_24hrs == 1) ? 'checked' : '';
+        @endphp
+    @else
+        @php
+            $no_less_than_24hrs_checked = '';
+        @endphp
+    @endif
+
+    <div id="no-less-than-24hrs-wrapper" class="col-sm-6">
+        <label style="font-weight: normal">
+            <input type="checkbox" name="no_bookings_not_less_than_24hrs" id="no-less-than-24hrs" {{ $no_less_than_24hrs_checked }} value="1"> Will not accept bookings less than 24hrs
+        </label>
     </div>
 </div>
 

@@ -23,7 +23,8 @@ class Carpark extends BaseModel
 		'opening',
 		'closing',
         'image',
-        'deleted_at'
+        'deleted_at',
+        'no_bookings_not_less_than_24hrs'
     ];
 
     protected $with = ['country', 'company'];
