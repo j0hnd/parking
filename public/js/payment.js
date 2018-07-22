@@ -16,9 +16,6 @@ $(document).ready(function(){
     autoFocus: true,
     excluded: ':disabled',
     onStepChanging: function (e, currentIndex, newIndex) {
-      console.log(e);
-      console.log(currentIndex+', '+newIndex);
-
       if (currentIndex == 0 && newIndex == 1) {
         $('#payment_wizard-p-0').hide();
         $('#payment_wizard-p-1').show();
@@ -45,10 +42,12 @@ $(document).ready(function(){
         $('#payment_wizard-p-2').show();
 
         var bid = $('#bid').val();
-        $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
-        $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
+        // $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
+        // $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
         $('#flight_no_going').val($('#departure-src').val());
         $('#flight_no_return').val($('#arrival-src').val());
+        $('#departure_terminal').val($('#departure-terminal-src').val());
+        $('#arrival_terminal').val($('#arrival-terminal-src').val());
         $('#no_of_passengers_in_vehicle').val($('#no-of-passengers-in-vehicle-src').val());
 
         var with_oversize_baggage = $('#with-oversize-baggage').is(':checked') ? 1 : 0;
@@ -84,6 +83,8 @@ $(document).ready(function(){
                 $('#flight-no-arrival').html(response.data.flight_no_return);
                 $('#vendor-name').html(response.data.vendor_name);
                 $('#vendor-poc-name').html(response.data.vendor_contact);
+                $('#flight-departure-terminal').html(response.data.departure_terminal);
+                $('#flight-arrival-terminal').html(response.data.arrival_terminal);
               } else {
                 $('#payment_wizard-p-1').show();
                 $('#payment_wizard-p-2').hide();
