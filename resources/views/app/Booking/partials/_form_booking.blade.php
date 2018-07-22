@@ -90,12 +90,12 @@
                     @foreach($vehicle_make as $i => $vm)
                         @if(isset($booking))
                             @if($booking->vehicle_make == $vm['title'])
-                            <option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+                            <option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
                             @else
-                            <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                            <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                             @endif
                         @else
-                        <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                         @endif
 
                     @endforeach
@@ -115,9 +115,9 @@
                     @if(isset($booking))
                         @foreach($vehicle_models as $model)
                             @if($model['value'] == $booking->vehicle_model)
-                            <option value="{{ $model['value'] }}" selected>{{ $model['title'] }}</option>
+                            <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
                             @else
-                            <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                            <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                             @endif
                         @endforeach
                     @endif
@@ -129,9 +129,9 @@
                         @if(isset($booking))
                             @foreach($vehicle_models as $model)
                                 @if($model['value'] == $booking->vehicle_model)
-                                <option value="{{ $model['value'] }}" selected>{{ $model['title'] }}</option>
+                                <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
                                 @else
-                                <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                                <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                                 @endif
                             @endforeach
                         @endif
@@ -142,7 +142,7 @@
                         <option value="" readonly> -- Vehicle Model -- </option>
                         @if(isset($booking))
                             @foreach($vehicle_models as $model)
-                            <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                            <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                             @endforeach
                         @endif
                     </select>

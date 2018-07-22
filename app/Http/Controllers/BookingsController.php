@@ -141,14 +141,15 @@ class BookingsController extends Controller
 
     public function edit($id)
     {
-        $booking          = Bookings::findOrFail($id);
-        $page_title       = "Edit Booking";
-        $products_list    = null;
-        $customers        = Customers::active()->orderBy('last_name', 'asc');
-        $products         = Products::active()->orderBy('created_at', 'desc');
-        $vehicle_make     = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
-        $airport          = Airports::findOrFail($booking->products[0]->airport[0]->id);
-        $terminal_options = null;
+        $booking           = Bookings::findOrFail($id);
+        $page_title        = "Edit Booking";
+        $products_list     = null;
+        $customers         = Customers::active()->orderBy('last_name', 'asc');
+        $products          = Products::active()->orderBy('created_at', 'desc');
+        $vehicle_make      = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
+        $airport           = Airports::findOrFail($booking->products[0]->airport[0]->id);
+        $departure_options = null;
+        $arrival_options   = null;
 
         if (count($vehicle_make)) {
             foreach ($vehicle_make as $make) {
@@ -160,7 +161,27 @@ class BookingsController extends Controller
 
         if (isset($airport->subcategories)) {
 			foreach ($airport->subcategories as $terminal) {
-				$terminal_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+                if (isset($booking)) {
+                    if ($booking->departure_terminal == $terminal->id) {
+                        $departure_options .= "<option value='".$terminal->id."' selected>".$terminal->subcategory_name."</option>";
+                    } else {
+                        $departure_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+                    }
+                } else {
+                    $departure_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+                }
+			}
+
+            foreach ($airport->subcategories as $terminal) {
+                if (isset($booking)) {
+                    if ($booking->arrival_terminal == $terminal->id) {
+                        $arrival_options .= "<option value='".$terminal->id."' selected>".$terminal->subcategory_name."</option>";
+                    } else {
+                        $arrival_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+                    }
+                } else {
+                    $arrival_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+                }
 			}
 		}
 
@@ -188,7 +209,7 @@ class BookingsController extends Controller
             }
         }
 
-        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name', 'terminal_options'));
+        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name', 'departure_options', 'arrival_options'));
     }
 
     public function get_vehicle_models(Request $request)
