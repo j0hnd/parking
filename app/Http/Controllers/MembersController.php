@@ -235,17 +235,29 @@ class MembersController extends Controller
 		$count = $new_messages->count();
 		$inbox = $new_messages->get()->toArray();
 
-		$products = Products::selectRaw("products.id as product_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name")
-			->join('product_airports', 'product_airports.product_id', '=', 'products.id')
-			->join('airports', 'airports.id', '=', 'product_airports.airport_id')
-			->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-			->join('prices', 'prices.product_id', '=', 'products.id')
-			->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
-			->whereNull('products.deleted_at')
-			->where('products.carpark_id', $user->members->carpark->id)
-//			->where('products.vendor_id', $user->members->company->id)
-			->groupBy('prices.product_id')
-			->get();
+		if ($user->roles[0]->slug == 'vendor') {
+			$products = Products::selectRaw("products.id as product_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name")
+				->join('product_airports', 'product_airports.product_id', '=', 'products.id')
+				->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+				->join('prices', 'prices.product_id', '=', 'products.id')
+				->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+				->whereNull('products.deleted_at')
+				->where('products.carpark_id', $user->members->carpark->id)
+				->groupBy('prices.product_id')
+				->get();
+		} else {
+			$products = Products::selectRaw("products.id as product_id, airports.airport_name, price_categories.category_name, carparks.name as carpark_name")
+				->join('product_airports', 'product_airports.product_id', '=', 'products.id')
+				->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+				->join('prices', 'prices.product_id', '=', 'products.id')
+				->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+				->whereNull('products.deleted_at')
+				->where('products.carpark_id', $user->members->company->id)
+				->groupBy('prices.product_id')
+				->get();
+		}
 
 		return view('member-portal.products', compact('inbox', 'count', 'products'));
 	}
