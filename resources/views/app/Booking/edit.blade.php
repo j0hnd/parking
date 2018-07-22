@@ -197,10 +197,10 @@ $(function () {
 
     $('#departure-terminal')
         .empty()
-        .append("{!! html_entity_decode($terminal_options) !!}");
+        .append("{!! html_entity_decode($departure_options) !!}");
     $('#arrival-terminal')
         .empty()
-        .append("{!! html_entity_decode($terminal_options) !!}");
+        .append("{!! html_entity_decode($arrival_options) !!}");
 });
 </script>
 @stop
