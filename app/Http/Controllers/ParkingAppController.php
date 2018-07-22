@@ -300,9 +300,6 @@ class ParkingAppController extends Controller
 					$drop_off = $booking->drop_off_at;
 					$return_at = $booking->return_at;
 
-					// $drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
-					// $return_at = Carbon::createFromTimestamp(strtotime($return_date));
-
 					$update = [
 						'flight_no_going' => $form['flight_no_going'],
 						'flight_no_return' => $form['flight_no_return'],
@@ -312,6 +309,7 @@ class ParkingAppController extends Controller
 
 					Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
 					$customer = Customers::findOrFail($booking->customer_id);
+                    $company  = Companies::findOrFail($booking->products[0]->carpark->company_id);
 
 					$details = [
 						'booking_id' => $form['bid'],
@@ -339,12 +337,16 @@ class ParkingAppController extends Controller
 						'service'         => $service_name,
 						'drop_off'        => $drop_off->format('d/m/Y H:i'),
 						'return_at'       => $return_at->format('d/m/Y H:i'),
-						'vendor_phone_no' => empty($booking->products[0]->carpark->company->phone_no) ? "N/A" : $booking->products[0]->carpark->company->phone_no,
-						'vendor_email'    => empty($booking->products[0]->carpark->company->email) ? "N/A" : $booking->products[0]->carpark->company->email,
+                        'vendor_name'     => $booking->products[0]->carpark->name,
+                        'vendor_contact'  => empty($booking->products[0]->carpark->company->poc_name) ? "N/A" : $booking->products[0]->carpark->company->poc_name,
+						'vendor_phone_no' => empty($booking->products[0]->carpark->company->poc_contact_no) ? "N/A" : $booking->products[0]->carpark->company->poc_contact_no,
+						'vendor_email'    => empty($booking->products[0]->carpark->company->poc_contact_email) ? "N/A" : $booking->products[0]->carpark->company->poc_contact_email,
 						'registration_no' => empty($booking->car_registration_no) ? "N/A" : strtoupper($booking->car_registration_no),
 						'vehicle_make'    => empty($booking->vehicle_make) ? "N/A" : $booking->vehicle_make,
 						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
 						'vehicle_color'   => ucwords($booking->vehicle_color),
+                        'flight_no_going'   => $form['flight_no_going'],
+                        'flight_no_return'  => $form['flight_no_return']
 					]];
 				} else {
 					$response = ['success' => true];

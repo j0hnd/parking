@@ -411,10 +411,16 @@
                         <p><strong>Booking Reference</strong>: <span id="booking-id-wrapper"></span></p>
                         <p><strong>Airport</strong>: <span id="airport"></span></p>
                         <p><strong>Service</strong>: <span id="service"></span></p>
+                        <hr>
+                        <p><h6>Flight Details</h6></p>
+                        <p><strong>Flight No. (Departure)</strong>: <span id="flight-no-departure"></span> </p>
+                        <p><strong>Flight No. (Arrival)</strong>: <span id="flight-no-arrival"></span> </p>
                         <p><strong>Drop Off</strong>: <span id="drop-off"></span></p>
                         <p><strong>Return At</strong>: <span id="return-at"></span></p>
                         <hr>
                         <p><h6>Vendor Details</h6></p>
+                        <p><strong>Carpark Name</strong>: <span id="vendor-name"></span></p>
+                        <p><strong>Contact Person: </strong>: <span id="vendor-poc-name"></span></p>
                         <p><strong>Phone No</strong>: <span id="vendor-phone-no"></span></p>
                         <p><strong>Email</strong>: <span id="vendor-email"></span></p>
                         <hr>

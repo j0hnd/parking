@@ -80,6 +80,10 @@ $(document).ready(function(){
                 $('#vd-vehicle-make').html(response.data.vehicle_make);
                 $('#vd-vehicle-model').html(response.data.vehicle_model);
                 $('#vd-vehicle-color').html(response.data.vehicle_color);
+                $('#flight-no-departure').html(response.data.flight_no_going);
+                $('#flight-no-arrival').html(response.data.flight_no_return);
+                $('#vendor-name').html(response.data.vendor_name);
+                $('#vendor-poc-name').html(response.data.vendor_contact);
               } else {
                 $('#payment_wizard-p-1').show();
                 $('#payment_wizard-p-2').hide();
