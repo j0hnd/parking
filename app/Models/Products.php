@@ -72,7 +72,7 @@ class Products extends BaseModel
 			}
 
 			// get airports
-			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id	")
+			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 				->join('products', 'products.id', '=', 'product_airports.product_id')
 				->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -96,7 +96,7 @@ class Products extends BaseModel
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
 					$service_name = urldecode($data['sub']['value']);
-					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id")
+					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
 						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -117,7 +117,7 @@ class Products extends BaseModel
 					list($price_from, $price_to) = explode('-', $data['sub']['value']);
 					$price_to = $price_to == 'Up' ? 5000 : $price_to;
 
-					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id")
+					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
 						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -154,7 +154,7 @@ class Products extends BaseModel
 					}
 
 					// get airports
-					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id")
+					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
 						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -181,6 +181,19 @@ class Products extends BaseModel
                 $i = 0;
 
                 foreach ($product_airports->get() as $pa) {
+                    if ($pa->no_bookings_not_less_than_24hrs == 1) {
+                        $today     = Carbon::now();
+                        $drop_off  = str_replace('/' , '-', $data['search']['drop-off-date']);
+                        $drop_off  = date('Y-m-d', strtotime($drop_off));
+                        $drop_off  = $drop_off.' '.$data['search']['drop-off-time'].':00';
+                        $drop_off  = Carbon::createFromFormat('Y-m-d H:i:s', $drop_off);
+                        $time_diff = $drop_off->diffInHours($today);
+
+                        if ($time_diff < 24) {
+                            break;
+                        }
+                    }
+
 					$override_price = null;
 					$product = Products::findOrFail($pa->product_id);
 					$airport = Airports::findOrFail($pa->airport_id);
