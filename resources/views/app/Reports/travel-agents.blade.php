@@ -50,7 +50,7 @@
 								} elseif(!empty($booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->first_name) and
 								         !empty($booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->last_name)) {
 
-							 		$affiliate_name = $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->first_name." ". $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->last_name
+							 		$affiliate_name = $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->first_name." ". $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->last_name;
 								} else {
 									$affiliate_name = "N/A";
 								}
