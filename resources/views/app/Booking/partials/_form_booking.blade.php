@@ -49,7 +49,11 @@
         <label class="col-sm-2 control-label">Car Registration No.</label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="car_registration_no" placeholder="Car Registration No." autocomplete="off">
+            <input type="text" class="form-control"
+                   name="car_registration_no"
+                   placeholder="Car Registration No."
+                   autocomplete="off"
+                   value="{{ isset($booking) ? $booking->car_registration_no : '' }}">
         </div>
     </div>
 
@@ -62,7 +66,7 @@
                 @if(count($vehicle_make))
                     @foreach($vehicle_make as $i => $vm)
                         @if(isset($booking))
-                            @if($booking->vehicle_make == $vm['value'])
+                            @if($booking->vehicle_make == $vm['title'])
                             <option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
                             @else
                             <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
@@ -203,6 +207,53 @@
                <input id="return-at-time" type="text" class="form-control input-small" name="return_at_time" value="{{ isset($booking) ? $booking->return_at->format('h:i A') : "" }}">
                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">No of Passengers:</label>
+
+        <div class="col-sm-5">
+            <input type="number" id="no-of-passengers" class="form-control" name="no_of_passengers"
+                   placeholder="No of Passengers"
+                   value="{{ isset($booking->booking_details->no_of_passengers_in_vehicle) ? $booking->booking_details->no_of_passengers_in_vehicle : '' }}"
+                   autocomplete="off">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+
+        @php($checked = '')
+
+        @if(isset($booking->booking_details->with_oversize_baggage))
+            @if($booking->booking_details->no_of_passengers_in_vehicle > 0)
+                @php($checked = 'checked')
+            @endif
+        @endif
+
+        <div class="col-sm-5 checkbox">
+            <label>
+                <input type="checkbox" {{ $checked }}> Travelling with sports or oversize baggage
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+
+        @php($checked = '')
+
+        @if(isset($booking->booking_details->with_oversize_baggage))
+            @if($booking->booking_details->with_oversize_baggage > 0)
+                @php($checked = 'checked')
+            @endif
+        @endif
+
+        <div class="col-sm-5 checkbox">
+            <label>
+                <input type="checkbox" {{ $checked }}> Travelling with children or disabled passengers
+            </label>
         </div>
     </div>
 </div>
