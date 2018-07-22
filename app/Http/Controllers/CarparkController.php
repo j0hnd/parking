@@ -50,7 +50,8 @@ class CarparkController extends Controller
                     'latitude',
 					'is_24hrs_svc',
 					'opening',
-					'closing'
+					'closing',
+                    'no_bookings_not_less_than_24hrs'
                 ]);
 
                 $company_form = $request->only([
@@ -185,7 +186,8 @@ class CarparkController extends Controller
                     'latitude',
 					'is_24hrs_svc',
 					'opening',
-					'closing'
+					'closing',
+                    'no_bookings_not_less_than_24hrs'
                 ]);
 
                 $company_form = $request->only([
