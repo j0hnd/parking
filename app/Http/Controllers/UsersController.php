@@ -29,8 +29,9 @@ class UsersController extends Controller
         $roles = Roles::all();
         $page_title = "Add User";
         $user_info = null;
+        $companies = Companies::selectRaw("id, company_name AS name")->active()->orderBy('company_name', 'asc')->get();
 		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
-        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'carparks'));
+        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'companies', 'carparks'));
     }
 
     public function store(UserFormRequest $request)

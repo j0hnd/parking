@@ -54,15 +54,22 @@
         @endphp
     @endif
 
-    @if($user_info->roles[0]->slug == 'vendor')
+    @if(count($user_info))
+        @if($user_info->roles[0]->slug == 'vendor')
+            @php
+                $carpark_wrapper_class = '';
+                $company_wrapper_class = 'hidden';
+            @endphp
+        @else
+            @php
+                $carpark_wrapper_class = 'hidden';
+                $company_wrapper_class = '';
+            @endphp
+        @endif
+    @else
         @php
             $carpark_wrapper_class = '';
             $company_wrapper_class = 'hidden';
-        @endphp
-    @else
-        @php
-            $carpark_wrapper_class = 'hidden';
-            $company_wrapper_class = '';
         @endphp
     @endif
 
@@ -72,7 +79,7 @@
             <label class="col-sm-2 control-label">Company Name</label>
 
             <div id="carpark-wrapper" class="col-sm-9 {{ $carpark_wrapper_class }}">
-                <select name="company[company_name]" id="company-name" class="form-control" style="width: 100%">
+                <select name="company[company_name]" id="carpark-name" class="form-control" style="width: 100%">
                     <option value="" readonly>-- Company --</option>
                     @if(isset($carparks))
                         @foreach($carparks as $carpark)
