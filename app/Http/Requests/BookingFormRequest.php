@@ -25,7 +25,7 @@ class BookingFormRequest extends FormRequest
     {
         return [
             'order_title'    => 'required',
-            'price_value'    => 'required',
+            // 'price_value'    => 'required',
             'drop_off_date'  => 'date',
             'return_at_date' => 'date'
         ];

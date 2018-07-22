@@ -25,7 +25,9 @@ class Bookings extends BaseModel
 		'vehicle_color',
 		'sms_confirmation_fee',
 		'cancellation_waiver',
-		'booking_fees'
+		'booking_fees',
+		'departure_terminal',
+		'arrival_terminal'
 	];
 
 	protected $dates = ['drop_off_at', 'return_at', 'deleted_at'];

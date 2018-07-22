@@ -6,6 +6,7 @@ use App\Models\Members;
 use App\Models\Messages;
 use App\Models\PriceHistory;
 use App\Models\Products;
+use App\Models\Airports;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
 use Sentinel;
@@ -17,10 +18,23 @@ class PricesController extends Controller
 {
     public function get_price(Request $request)
     {
-        $product = Products::findOrFail($request->product_id);
-        $price = Prices::findOrFail($request->price_id);
+        $product          = Products::findOrFail($request->product_id);
+        $price            = Prices::findOrFail($request->price_id);
+		$airport          = Airports::findOrFail($request->airport_id);
+		$terminal_options = null;
 
-        return response()->json(['id' => $price->id, 'price_value' => $price->price_value, 'revenue_share' => $product->revenue_share]);
+		if (isset($airport->subcategories)) {
+			foreach ($airport->subcategories as $terminal) {
+				$terminal_options .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+			}
+		}
+
+        return response()->json([
+            'id'            => $price->id,
+            'price_value'   => $price->price_value,
+            'revenue_share' => $product->revenue_share,
+			'terminals'     => $terminal_options
+        ]);
     }
 
     public function get_price_requests(Request $request)
