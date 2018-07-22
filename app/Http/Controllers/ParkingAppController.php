@@ -942,10 +942,11 @@ class ParkingAppController extends Controller
     {
 
 		$test = [];
-		Mail::send('emails.booking_customer', $test, function ($m) {
+		Mail::send('emails.booking_company', $test, function ($m) {
             $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
 
-            $m->to("web-99tfj@mail-tester.com", "Viollan")->subject('Booking Confirmed!');
+			$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
+			//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
         });
 	}
 	/* email template test only - remove when done */
