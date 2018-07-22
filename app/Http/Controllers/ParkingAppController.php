@@ -341,19 +341,19 @@ class ParkingAppController extends Controller
 
 					list($airport_name, $service_name) = explode('-', $booking->order_title);
 
-                    if ($form['departure_terminal']) {
-                        $departure_terminal = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['departure_terminal']])->first();
+                    if (!empty($form['departure_terminal'])) {
+                        $departure_terminal      = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['departure_terminal']])->first();
+                        $departure_terminal_name = $departure_terminal->subcategory_name;
                     } else {
-                        $departure_terminal = "N/A";
+                        $departure_terminal_name = "N/A";
                     }
 
-                    if ($form['arrival_terminal']) {
-                        $arrival_terminal = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['arrival_terminal']])->first();
+                    if (!empty($form['arrival_terminal'])) {
+                        $arrival_terminal      = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['arrival_terminal']])->first();
+                        $arrival_terminal_name = $arrival_terminal->subcategory_name;
                     } else {
-                        $arrival_terminal = "N/A";
+                        $arrival_terminal_name = "N/A";
                     }
-
-
 
 					$response = ['success' => true, 'data' => [
 						'id'              => $booking->booking_id,
@@ -370,10 +370,10 @@ class ParkingAppController extends Controller
 						'vehicle_make'    => empty($booking->vehicle_make) ? "N/A" : $booking->vehicle_make,
 						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
 						'vehicle_color'   => ucwords($booking->vehicle_color),
-                        'flight_no_going'   => $form['flight_no_going'],
-                        'flight_no_return'  => $form['flight_no_return'],
-                        'departure_terminal' => $departure_terminal->subcategory_name,
-                        'arrival_terminal' => $arrival_terminal->subcategory_name
+                        'flight_no_going'    => $form['flight_no_going'],
+                        'flight_no_return'   => $form['flight_no_return'],
+                        'departure_terminal' => $departure_terminal_name,
+                        'arrival_terminal'   => $arrival_terminal_name
 					]];
 				} else {
 					$response = ['success' => true];
