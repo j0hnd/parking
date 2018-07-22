@@ -373,6 +373,23 @@
                         <input type="text" id="arrival-src" name="flight_no_return" class="form-control" data-validation="required">
                       </div>
                     </div>
+                    <br>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label>Terminal (Deperture):</label>
+                        <select class="form-control" id="departure-terminal-src" name="departure_terminal" style="width:100% !important">
+                          <option value="" readonly> -- Terminal --</option>
+                          {!! $terminals !!}
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Terminal (Arrival):</label>
+                        <select class="form-control" id="arrival-terminal-src" name="arrival_terminal" style="width:100% !important">
+                          <option value="" readonly> -- Terminal --</option>
+                          {!! $terminals !!}
+                        </select>
+                      </div>
+                    </div>
                     <br/>
 
                     <br/>
@@ -413,8 +430,8 @@
                         <p><strong>Service</strong>: <span id="service"></span></p>
                         <hr>
                         <p><h6>Flight Details</h6></p>
-                        <p><strong>Flight No. (Departure)</strong>: <span id="flight-no-departure"></span> </p>
-                        <p><strong>Flight No. (Arrival)</strong>: <span id="flight-no-arrival"></span> </p>
+                        <p><strong>Flight No. (Departure)</strong>: <span id="flight-no-departure"></span>, <strong>Terminal</strong>: <span id=flight-departure-terminal></span> </p>
+                        <p><strong>Flight No. (Arrival)</strong>: <span id="flight-no-arrival"></span>, <strong>Terminal</strong>: <span id="flight-arrival-terminal"></span> </p>
                         <p><strong>Drop Off</strong>: <span id="drop-off"></span></p>
                         <p><strong>Return At</strong>: <span id="return-at"></span></p>
                         <hr>
@@ -464,13 +481,15 @@
               </form>
 
               <form id="booking-details-form" data-url="{{ url('/booking/details/'. $booking_id .'/update') }}">
-                <input type="hidden" id="drop_off_at" name="drop_off_at">
-                <input type="hidden" id="return_at" name="return_at">
+                {{-- <input type="hidden" id="drop_off_at" name="drop_off_at">
+                <input type="hidden" id="return_at" name="return_at"> --}}
                 <input type="hidden" id="flight_no_going" name="flight_no_going">
                 <input type="hidden" id="flight_no_return" name="flight_no_return">
                 <input type="hidden" id="no_of_passengers_in_vehicle" name="no_of_passengers_in_vehicle">
                 <input type="hidden" id="with_oversize_baggage" name="with_oversize_baggage">
                 <input type="hidden" id="with_children_pwd" name="with_children_pwd">
+                <input type="hidden" id="departure_terminal" name="departure_terminal">
+                <input type="hidden" id="arrival_terminal" name="arrival_terminal">
                 <input type="hidden" id="bid" name="bid" value="{{ $booking_id }}">
                 {{ csrf_field() }}
               </form>
@@ -624,6 +643,8 @@
 
         $('.datepicker').datepicker();
         $('#vehicle-make-src').select2();
+        $('#departure-terminal-src').select2();
+        $('#arrival-terminal-src').select2();
 
         if (vehicle_model == "") {
           $('#vehicle-model-src').removeClass('d-none');

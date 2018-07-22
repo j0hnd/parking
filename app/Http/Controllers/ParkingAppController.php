@@ -114,10 +114,11 @@ class ParkingAppController extends Controller
         $cancel = 0;
 
 		if ($request->isMethod('post') || isset($request->token)) {
-			$form = $request->only(['products', 'drop_off', 'return_at']);
-			$token = null;
-			$details = null;
-			$cancel = isset($request->cancel) ? 1 : 0;
+			$form      = $request->only(['products', 'drop_off', 'return_at']);
+			$token     = null;
+			$details   = null;
+			$cancel    = isset($request->cancel) ? 1 : 0;
+			$terminals = null;
 
 			if (isset($request->token)) {
 				$sessions = Sessions::where('session_id', session('sess_id'))->first();
@@ -152,6 +153,12 @@ class ParkingAppController extends Controller
 			$drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes');
 			$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
 
+			if (isset($airport->subcategories)) {
+				foreach ($airport->subcategories as $terminal) {
+	                $terminals .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+				}
+			}
+
 			$booking_id = session('bid');
 			$vehicle_make = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
 
@@ -176,7 +183,8 @@ class ParkingAppController extends Controller
 				'booking_id',
 				'cancel',
 				'vehicle_make',
-                'payment_confirm'
+                'payment_confirm',
+                'terminals'
 			));
 		}
 	}
@@ -297,12 +305,15 @@ class ParkingAppController extends Controller
 
 				$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 				if ($booking) {
-					$drop_off = $booking->drop_off_at;
-					$return_at = $booking->return_at;
+					$drop_off   = $booking->drop_off_at;
+					$return_at  = $booking->return_at;
+                    $airport_id = $booking->products[0]->airport[0]->id;
 
 					$update = [
-						'flight_no_going' => $form['flight_no_going'],
-						'flight_no_return' => $form['flight_no_return'],
+						'flight_no_going'    => $form['flight_no_going'],
+						'flight_no_return'   => $form['flight_no_return'],
+                        'departure_terminal' => $form['departure_terminal'],
+                        'arrival_terminal'   => $form['arrival_terminal'],
 						'is_paid' => 1,
 						'paid_at' => Carbon::now()
 					];
@@ -330,6 +341,20 @@ class ParkingAppController extends Controller
 
 					list($airport_name, $service_name) = explode('-', $booking->order_title);
 
+                    if ($form['departure_terminal']) {
+                        $departure_terminal = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['departure_terminal']])->first();
+                    } else {
+                        $departure_terminal = "N/A";
+                    }
+
+                    if ($form['arrival_terminal']) {
+                        $arrival_terminal = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['arrival_terminal']])->first();
+                    } else {
+                        $arrival_terminal = "N/A";
+                    }
+
+
+
 					$response = ['success' => true, 'data' => [
 						'id'              => $booking->booking_id,
 						'name'            => empty($customer->first_name) ? "" : ucwords($customer->first_name),
@@ -346,7 +371,9 @@ class ParkingAppController extends Controller
 						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
 						'vehicle_color'   => ucwords($booking->vehicle_color),
                         'flight_no_going'   => $form['flight_no_going'],
-                        'flight_no_return'  => $form['flight_no_return']
+                        'flight_no_return'  => $form['flight_no_return'],
+                        'departure_terminal' => $departure_terminal->subcategory_name,
+                        'arrival_terminal' => $arrival_terminal->subcategory_name
 					]];
 				} else {
 					$response = ['success' => true];
