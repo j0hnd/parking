@@ -11,7 +11,7 @@ class ServicesAdditionalValues extends Seeder
      */
     public function run()
     {
-        $services = ['Suitable for large Equipment / Sport', 'Disable Friendly'];
+        $services = ["Suitable for large Equipment / Sport", 'Disable Friendly'];
         $icons    = ['fa-random', 'fa-wheelchair'];
 
         foreach ($services as $i => $service) {
