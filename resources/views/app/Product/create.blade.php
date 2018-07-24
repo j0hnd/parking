@@ -21,7 +21,7 @@
                     @include('app.Product.partials._form')
 
                     <div class="box-footer">
-                        <a href="{{ url('/admin/products') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
+                        <a href="{{ url('/admin/product') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
                     </div>
                     <!-- /.box-footer -->

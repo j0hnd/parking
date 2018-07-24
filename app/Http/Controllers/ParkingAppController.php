@@ -407,8 +407,23 @@ class ParkingAppController extends Controller
 					array_push($vendor_recipients, $vendor->poc_contact_email);
 				}
 
+                $airport_address = $booking->products[0]->airport[0]->airport_name;
+                if (!empty($booking->departure_terminal)) {
+                    $airport_address = $airport_address. " " . $booking->departure_terminal;
+                }
+
+                $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+
 				// send booking confirmation
-				Mail::to($customer->email)->send(new SendBookingConfirmation(['booking' => $booking, 'customer' => $customer]));
+				Mail::to($customer->email)->send(new SendBookingConfirmation([
+					'booking' => $booking,
+					'customer' => $customer,
+                    'carpark_name' => $carpark->name,
+                    'carpark_contact_no' => isset($carpark->company->poc_contact_no) ? $carpark->company->poc_contact_no : "N/A",
+                    'airport_details' => $airport_address,
+                    'on_arrival' => $booking->products[0]->on_arrival,
+                    'on_return' => $bookings->products[0]->on_return
+				]));
 
 				if (count($vendor_recipients)) {
 					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor(['booking' => $booking, 'customer' => $customer, 'vendor' => $vendor, 'carpark' => $carpark]));

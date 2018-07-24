@@ -69,7 +69,7 @@ class ProductsController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->only(['carpark_id', 'short_description', 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'overrides']);
+                $form = $request->only(['carpark_id', 'short_description', 'description', 'on_arrival', 'on_return', 'directions', 'revenue_share', 'prices', 'services', 'overrides']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -213,7 +213,7 @@ class ProductsController extends Controller
 
             if ($request->isMethod('post')) {
                 $product = Products::findOrFail($request->product_id);
-                $form = $request->only(['carpark_id', 'short_description', 'description', 'on_arrival', 'on_return', 'revenue_share', 'prices', 'services', 'overrides']);
+                $form = $request->only(['carpark_id', 'short_description', 'description', 'on_arrival', 'on_return', 'directions', 'revenue_share', 'prices', 'services', 'overrides']);
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -222,6 +222,7 @@ class ProductsController extends Controller
                 $product->description       = $form['description'];
                 $product->on_arrival        = $form['on_arrival'];
                 $product->on_return         = $form['on_return'];
+                $product->directions        = $form['directions'];
                 $product->revenue_share     = $form['revenue_share'];
 
                 if ($product->save()) {
@@ -306,7 +307,6 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             abort(404, $e->getMessage());
         }
     }

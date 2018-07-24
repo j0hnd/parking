@@ -237,7 +237,7 @@
 				</tr>
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
-						<b>Car Park Contact Number:</b> The chauffeur number is <b>05532 584120</b>
+						<b>Car Park Contact Number:</b> {{ $carpark_name }} number is <b>{{ $carpark_contact_no }}</b>
 						<br><br>
 						mytravelcompared.com are agents for the featured car parks and customers will be contracting with the individual car park and will be subject to their terms and conditions which contain certain exemption clauses and limit each company`s liability.
 						<br><br>
@@ -266,7 +266,7 @@
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
 						<b>Sat Nav</b>
-						<p>Gatwick (LGW) South Terminal Departure – Postcode RH6 0NP</p>
+						<p>{{ $airport_details }}</p>
 						<hr>
 						<p>Gatwick is 28 miles (45km) south of London, linked directly to the M23 at Junction 9 and to the A23 London-Brighton road.</p>
 						<br>
@@ -296,14 +296,10 @@
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
 						<b>On Arrival</b>
-						<p>Please call 07716 063 663 when you are 10 minutes from the airport for example the M25/M23 junction.</p>
-						<p>Please follow the signs to your terminal and then follow the signs to PASSENGER DROP OFF where you should park on the forecourt.</p>
-						<p>North Terminal – PLEASE NOTE – you must park in the right lane of the PASSENGER DROP OFF zone, between the Sofitel Hotel and the central reservation. We will find you.</p>
+						<p>{{ $on_arrival }}</p>
 						<hr>
 						<b>On Return</b>
-						<p>Please call 07716 063 663 only when you have collected ALL of your luggage. Your car will be returned to the area where you dropped it off.</p>
-						<p>You will be given a returns card at departure that will act as a receipt for your vehicle and also has maps to get you from the terminal back to the passenger drop off area.</p>
-						<p>Please note if you have hand luggage only please call as soon as you can.</p>
+						{{ $on_return }}
 					</td>
 				</tr>
 			</table>
