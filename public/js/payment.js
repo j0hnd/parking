@@ -119,7 +119,7 @@ $(document).ready(function(){
         dataType: 'json',
         success: function (response) {
           if (response.success) {
-            // window.location = '/';
+            window.location = '/';
           } else {
             alert(response.message);
           }
