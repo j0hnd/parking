@@ -430,11 +430,16 @@ class ParkingAppController extends Controller
                     'carpark_contact_no' => isset($carpark->company->poc_contact_no) ? $carpark->company->poc_contact_no : "N/A",
                     'airport_details' => $airport_address,
                     'on_arrival' => $booking->products[0]->on_arrival,
-                    'on_return' => $bookings->products[0]->on_return
+                    'on_return' => $booking->products[0]->on_return
 				]));
 
 				if (count($vendor_recipients)) {
-					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor(['booking' => $booking, 'customer' => $customer, 'vendor' => $vendor, 'carpark' => $carpark]));
+					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
+						'booking' => $booking,
+						'customer' => $customer,
+						'vendor' => $vendor,
+						'carpark' => $carpark
+					]));
 				}
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
@@ -473,6 +478,7 @@ class ParkingAppController extends Controller
 				$response['success'] = true;
 			}
 		} catch (\Exception $e) {
+            dd($e);
 			$response['message'] = $e->getMessage();
 		}
 
@@ -992,14 +998,26 @@ class ParkingAppController extends Controller
 
 	public function sendTestEmail()
     {
+        $booking  = Bookings::findOrFail(16);
+        $customer = Customers::findOrFail($booking->customer_id);
+        $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+        $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
 		$test = [];
-		Mail::send('emails.booking_company', $test, function ($m) {
-            $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
 
-			$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
-			//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
-        });
+        Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([
+            'booking' => $booking,
+            'customer' => $customer,
+            'vendor' => $vendor,
+            'carpark' => $carpark
+        ]));
+
+		// Mail::send('emails.booking_company', $test, function ($m) {
+        //     $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
+        //
+		// 	$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
+		// 	//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
+        // });
 	}
 	/* email template test only - remove when done */
 }

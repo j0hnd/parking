@@ -30,6 +30,11 @@ class SendBookingConfirmationVendor extends Mailable
 	{
 		return $this->view('emails.booking_company')
 			->subject("My Travel Compared Booking Confirmation")
-			->with($this->data);
+			->with([
+				'booking' => $this->data['booking'],
+				'customer' => $this->data['customer'],
+				'vendor' => $this->data['vendor'],
+				'carpark' => $this->data['carpark']
+			]);
 	}
 }
