@@ -96,6 +96,14 @@
 </div>
 
 <div class="form-group">
+    <label class="col-sm-2 control-label">Directions </label>
+
+    <div class="col-sm-9">
+        <input type="text" class="form-control" name="directions" value="{{ isset($product) ? $product->directions : old('directions') }}" autocomplete="off">
+    </div>
+</div>
+
+<div class="form-group">
     <label class="col-sm-2 control-label">Revenue Share <span class="required">*</span></label>
 
     <div class="col-sm-5">

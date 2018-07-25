@@ -43,6 +43,7 @@ use Twilio\Rest\Client;
 use DB;
 use Hash;
 use Sentinel;
+use DateTimeZone;
 
 
 class ParkingAppController extends Controller
@@ -67,8 +68,15 @@ class ParkingAppController extends Controller
 		}
 
         $airports = Airports::active()->get();
-		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
-		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+
+        $selected = Carbon::now(new DateTimeZone(config('app.timezone')));
+        $seconds = strtotime($selected->format('H:i'));
+        $rounded = round($seconds / (5 * 60)) * (5 * 60);
+        $selected_time = date('H:i', $rounded);
+
+		$drop_off_time_interval = Common::get_times($selected_time, '+5 minutes');
+		$return_at_time_interval = Common::get_times($selected_time, '+5 minutes');
+
 		$posts = Posts::active()->published()->orderBy('created_at', 'desc')->take(3)->get();
         return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'posts'));
     }
@@ -407,11 +415,31 @@ class ParkingAppController extends Controller
 					array_push($vendor_recipients, $vendor->poc_contact_email);
 				}
 
+                $airport_address = $booking->products[0]->airport[0]->airport_name;
+                if (!empty($booking->departure_terminal)) {
+                    $airport_address = $airport_address. " " . $booking->departure_terminal;
+                }
+
+                $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+
 				// send booking confirmation
-				Mail::to($customer->email)->send(new SendBookingConfirmation(['booking' => $booking, 'customer' => $customer]));
+				Mail::to($customer->email)->send(new SendBookingConfirmation([
+					'booking' => $booking,
+					'customer' => $customer,
+                    'carpark_name' => $carpark->name,
+                    'carpark_contact_no' => isset($carpark->company->poc_contact_no) ? $carpark->company->poc_contact_no : "N/A",
+                    'airport_details' => $airport_address,
+                    'on_arrival' => $booking->products[0]->on_arrival,
+                    'on_return' => $booking->products[0]->on_return
+				]));
 
 				if (count($vendor_recipients)) {
-					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor(['booking' => $booking, 'customer' => $customer, 'vendor' => $vendor, 'carpark' => $carpark]));
+					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
+						'booking' => $booking,
+						'customer' => $customer,
+						'vendor' => $vendor,
+						'carpark' => $carpark
+					]));
 				}
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
@@ -450,6 +478,7 @@ class ParkingAppController extends Controller
 				$response['success'] = true;
 			}
 		} catch (\Exception $e) {
+            dd($e);
 			$response['message'] = $e->getMessage();
 		}
 
@@ -969,14 +998,26 @@ class ParkingAppController extends Controller
 
 	public function sendTestEmail()
     {
+        $booking  = Bookings::findOrFail(16);
+        $customer = Customers::findOrFail($booking->customer_id);
+        $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+        $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
 		$test = [];
-		Mail::send('emails.booking_company', $test, function ($m) {
-            $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
 
-			$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
-			//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
-        });
+        Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([
+            'booking' => $booking,
+            'customer' => $customer,
+            'vendor' => $vendor,
+            'carpark' => $carpark
+        ]));
+
+		// Mail::send('emails.booking_company', $test, function ($m) {
+        //     $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
+        //
+		// 	$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
+		// 	//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
+        // });
 	}
 	/* email template test only - remove when done */
 }

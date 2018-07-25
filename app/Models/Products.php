@@ -18,6 +18,7 @@ class Products extends BaseModel
         'description',
         'on_arrival',
         'on_return',
+        'directions',
         'revenue_share',
         'deleted_at'
     ];
