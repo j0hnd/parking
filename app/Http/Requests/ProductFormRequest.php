@@ -25,10 +25,12 @@ class ProductFormRequest extends FormRequest
     {
         return [
             'carpark_id'  => 'required|numeric',
+            'airport_id'  => 'required',
 			'short_description' => 'required|string',
-            'description' => 'string',
-            'on_arrival'  => 'string',
-            'on_return'   => 'string',
+            'description' => 'required|string',
+            'on_arrival'  => 'required|string',
+            'on_return'   => 'required|string',
+            'directions'  => 'required|string',
 			'revenue_share' => 'required'
         ];
     }

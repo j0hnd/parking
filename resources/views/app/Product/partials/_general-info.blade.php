@@ -22,7 +22,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Airport</label>
+    <label class="col-sm-2 control-label">Airport <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <select name="airport_id[]" id="airport-id" class="form-control" multiple="multiple">
@@ -30,12 +30,20 @@
                 @foreach($airports->get() as $airport)
                     @if(isset($product->airport))
                         @foreach($product->airport as $product_airport)
-                            @if($airport->id == $product_airport->id or $airport->id == old('airport_id'))
+                            @if($airport->id == $product_airport->id)
                             <option value="{{ $airport->id }}" selected>{{ $airport->airport_name }}</option>
                             @else
                             <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
                             @endif
                         @endforeach
+                    @elseif(!is_null(old('airport_id')))
+                        @php($selected_airport_id = old('airport_id'))
+                        
+                        @if($selected_airport_id[0] == $airport->id)
+                        <option value="{{ $airport->id }}" selected>{{ $airport->airport_name }}</option>
+                        @else
+                        <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
+                        @endif
                     @else
                     <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
                     @endif
@@ -54,7 +62,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Description</label>
+    <label class="col-sm-2 control-label">Description <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <textarea name="description" id="description" class="form-control" cols="30" rows="10">
@@ -68,7 +76,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">On Arrival</label>
+    <label class="col-sm-2 control-label">On Arrival <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <textarea name="on_arrival" id="on_arrival" class="form-control" cols="30" rows="10">
@@ -82,7 +90,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">On Return</label>
+    <label class="col-sm-2 control-label">On Return <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <textarea name="on_return" id="on_return" class="form-control" cols="30" rows="10">
@@ -96,7 +104,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-2 control-label">Directions </label>
+    <label class="col-sm-2 control-label">Directions <span class="required">*</span></label>
 
     <div class="col-sm-9">
         <input type="text" class="form-control" name="directions" value="{{ isset($product) ? $product->directions : old('directions') }}" autocomplete="off">

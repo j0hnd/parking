@@ -52,7 +52,7 @@
             var row_count = '{{ $row_count }}';
 
             $(document).on('blur', '.price-value', function (e) {
-                if (/^[0-9]+(\.[0-9]{1,2})?$/.test($(this).val())) {
+                if (/^[0-9]+(\.[0-9]{1,3})?$/.test($(this).val())) {
                     return true;
                 } else {
                     $(this).val('0');

@@ -12,6 +12,26 @@
                     {{ $service->service_name }}
                 </label>
             </div>
+            @elseif(!is_null(old('services')))
+                @php($services = old('services'))
+
+                @if(in_array($service->id, $services))
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="services[]" value="{{ $service->id }}" checked>
+                        <a href="#"><i class="fa {{ $service->icon }}"></i></a>
+                        {{ $service->service_name }}
+                    </label>
+                </div>
+                @else
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="services[]" value="{{ $service->id }}">
+                        <a href="#"><i class="fa {{ $service->icon }} margin-right5 margin-left5"></i></a>
+                        {{ $service->service_name }}
+                    </label>
+                </div>
+                @endif
             @else
             <div class="checkbox">
                 <label>
