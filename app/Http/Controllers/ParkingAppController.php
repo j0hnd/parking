@@ -371,9 +371,9 @@ class ParkingAppController extends Controller
 						'drop_off'        => $drop_off->format('d/m/Y H:i'),
 						'return_at'       => $return_at->format('d/m/Y H:i'),
                         'vendor_name'     => $booking->products[0]->carpark->name,
-                        'vendor_contact'  => empty($booking->products[0]->carpark->company->poc_name) ? "N/A" : $booking->products[0]->carpark->company->poc_name,
-						'vendor_phone_no' => empty($booking->products[0]->carpark->company->poc_contact_no) ? "N/A" : $booking->products[0]->carpark->company->poc_contact_no,
-						'vendor_email'    => empty($booking->products[0]->carpark->company->poc_contact_email) ? "N/A" : $booking->products[0]->carpark->company->poc_contact_email,
+                        'vendor_contact'  => empty($booking->products[0]->contact_details->contact_person_name) ? "N/A" : $booking->products[0]->contact_details->contact_person_name,
+						'vendor_phone_no' => empty($booking->products[0]->contact_details->contact_person_phone_no) ? "N/A" : $booking->products[0]->contact_details->contact_person_phone_no,
+						'vendor_email'    => empty($booking->products[0]->contact_details->contact_person_email) ? "N/A" : $booking->products[0]->contact_details->contact_person_email,
 						'registration_no' => empty($booking->car_registration_no) ? "N/A" : strtoupper($booking->car_registration_no),
 						'vehicle_make'    => empty($booking->vehicle_make) ? "N/A" : $booking->vehicle_make,
 						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
@@ -424,21 +424,21 @@ class ParkingAppController extends Controller
 
 				// send booking confirmation
 				Mail::to($customer->email)->send(new SendBookingConfirmation([
-					'booking' => $booking,
-					'customer' => $customer,
-                    'carpark_name' => $carpark->name,
-                    'carpark_contact_no' => isset($carpark->company->poc_contact_no) ? $carpark->company->poc_contact_no : "N/A",
-                    'airport_details' => $airport_address,
-                    'on_arrival' => $booking->products[0]->on_arrival,
-                    'on_return' => $booking->products[0]->on_return
+					'booking'            => $booking,
+					'customer'           => $customer,
+                    'carpark_name'       => $carpark->name,
+                    'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+                    'airport_details'    => $airport_address,
+                    'on_arrival'         => $booking->products[0]->on_arrival,
+                    'on_return'          => $booking->products[0]->on_return
 				]));
 
 				if (count($vendor_recipients)) {
 					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
-						'booking' => $booking,
+						'booking'  => $booking,
 						'customer' => $customer,
-						'vendor' => $vendor,
-						'carpark' => $carpark
+						'vendor'   => $vendor,
+						'carpark'  => $carpark
 					]));
 				}
 
@@ -447,14 +447,14 @@ class ParkingAppController extends Controller
 
 				if ($message == null) {
 					Messages::create([
-						'subject' => 'My Travel Compared Booking Confirmation',
-						'message' => 'My Travel Compared Booking Confirmation',
+						'subject'    => 'My Travel Compared Booking Confirmation',
+						'message'    => 'My Travel Compared Booking Confirmation',
 						'booking_id' => $booking->booking_id,
-						'drop_off' => $booking->drop_off_at,
-						'return_at' => $booking->return_at,
-						'order' => $booking->order_title,
-						'name' => $customer->first_name,
-						'status' => 'unread'
+						'drop_off'   => $booking->drop_off_at,
+						'return_at'  => $booking->return_at,
+						'order'      => $booking->order_title,
+						'name'       => $customer->first_name,
+						'status'     => 'unread'
 					]);
 				}
 
@@ -478,7 +478,6 @@ class ParkingAppController extends Controller
 				$response['success'] = true;
 			}
 		} catch (\Exception $e) {
-            dd($e);
 			$response['message'] = $e->getMessage();
 		}
 
@@ -781,10 +780,10 @@ class ParkingAppController extends Controller
 				$form = $request->except(['_token', 'card_name', 'card_number', 'expiration-month', 'expiration-year', 'cv_code']);
 				$expiration = $request->get('expiration-month')."/".$request->get('expiration-year');
 				$card = [
-					'card_name' => $request->get('card_name'),
+					'card_name'   => $request->get('card_name'),
 					'card_number' => $request->get('card_number'),
-					'expiration' => $expiration,
-					'cvv' => $request->get('cv_code')
+					'expiration'  => $expiration,
+					'cvv'         => $request->get('cv_code')
 				];
 
 				if (session()->has('sess_id')) {
@@ -922,10 +921,10 @@ class ParkingAppController extends Controller
 
 				$token = $stripe->tokens()->create([
 					'card' => [
-						'number' => $card['card_number'],
+						'number'    => $card['card_number'],
 						'exp_month' => $expiry_month,
-						'exp_year' => $expiry_year,
-						'cvc' => $card['cvv'],
+						'exp_year'  => $expiry_year,
+						'cvc'       => $card['cvv'],
 					]
 				]);
 
@@ -1010,8 +1009,6 @@ class ParkingAppController extends Controller
 
         $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-
-
 		$test = [];
 
         // Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([
@@ -1025,7 +1022,7 @@ class ParkingAppController extends Controller
 			'booking' => $booking,
 			'customer' => $customer,
 			'carpark_name' => $carpark->name,
-			'carpark_contact_no' => isset($carpark->company->poc_contact_no) ? $carpark->company->poc_contact_no : "N/A",
+			'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
 			'airport_details' => $airport_address,
 			'on_arrival' => $booking->products[0]->on_arrival,
 			'on_return' => $booking->products[0]->on_return
