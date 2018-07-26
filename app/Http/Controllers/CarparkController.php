@@ -60,10 +60,7 @@ class CarparkController extends Controller
                     'phone_no',
                     'mobile_no',
                     'vat_no',
-                    'company_reg',
-                    'poc_name',
-                    'poc_contact_no',
-                    'poc_contact_email'
+                    'company_reg'
                 ]);
 
                 $current = Carbon::now();
@@ -196,10 +193,7 @@ class CarparkController extends Controller
                     'phone_no',
                     'mobile_no',
                     'vat_no',
-                    'company_reg',
-                    'poc_name',
-                    'poc_contact_no',
-                    'poc_contact_email'
+                    'company_reg'
                 ]);
 
                 $id = $request->get('id');
