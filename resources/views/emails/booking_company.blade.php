@@ -102,7 +102,11 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Name:</td>
 											<td width="8">&nbsp;</td>
+											@if(!empty($booking->client_first_name) and !empty($booking->client_last_name))
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($booking->client_first_name) }} {{ ucwords($booking->client_last_name) }}</td>
+											@else
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($customer->first_name) }} {{ ucwords($customer->last_name) }}</td>
+											@endif
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>

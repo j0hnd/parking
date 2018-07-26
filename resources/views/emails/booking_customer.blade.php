@@ -9,7 +9,11 @@
 					<!-- Column : BEGIN -->
 
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+						@if(!empty($booking->client_first_name))
+						<h1 style="margin: 0 0 10px; font-size: 20px; line-height: 30px; color: #333333; font-weight: normal;">Dear {{ ucwords($booking->client_first_name) }}</h1>
+						@else
 						<h1 style="margin: 0 0 10px; font-size: 20px; line-height: 30px; color: #333333; font-weight: normal;">Dear {{ ucwords($customer->first_name) }}</h1>
+						@endif
 						<p style="margin: 0 0 10px;">Thank you for booking with My Travel Compared.</p>
 					</td>
 					<!-- Column : END -->
@@ -108,7 +112,11 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Name:</td>
 											<td width="8">&nbsp;</td>
+											@if(!empty($booking->client_first_name) and !empty($booking->client_last_name))
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($booking->client_first_name) }} {{ ucwords($booking->client_last_name) }}</td>
+											@else
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($customer->first_name) }} {{ ucwords($customer->last_name) }}</td>
+											@endif
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>

@@ -158,8 +158,8 @@ class ParkingAppController extends Controller
 			$sms_confirmation_fee = Fees::active()->where('fee_name', 'sms_confirmation_fee')->first();
 			$cancellation_waiver  = Fees::active()->where('fee_name', 'cancellation_waiver')->first();
 
-			$drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes');
-			$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+			// $drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes');
+			// $return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
 
 			if (isset($airport->subcategories)) {
 				foreach ($airport->subcategories as $terminal) {
@@ -186,8 +186,8 @@ class ParkingAppController extends Controller
 				'token',
 				'details',
 				'form',
-				'drop_off_time_interval',
-				'return_at_time_interval',
+				// 'drop_off_time_interval',
+				// 'return_at_time_interval',
 				'booking_id',
 				'cancel',
 				'vehicle_make',
@@ -238,7 +238,6 @@ class ParkingAppController extends Controller
 
 					// save booking data
 					$products = Products::findOrFail($product_id);
-//					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
 
 					$price = $booking_data['total'] - $booking_data['cancellation'] - $booking_data['sms'] - $booking_data['booking_fee'];
 					$revenue_value = $price * ($products->revenue_share / 100);
@@ -363,9 +362,17 @@ class ParkingAppController extends Controller
                         $arrival_terminal_name = "N/A";
                     }
 
+                    if (!empty($booking->client_first_name)) {
+                        $name = ucwords($booking->client_first_name);
+                    } elseif (!empty($customer->first_name)) {
+                        $name = ucwords($customer->first_name);
+                    } else {
+                        $name = "";
+                    }
+
 					$response = ['success' => true, 'data' => [
 						'id'              => $booking->booking_id,
-						'name'            => empty($customer->first_name) ? "" : ucwords($customer->first_name),
+						'name'            => $name,
 						'airport'         => $airport_name,
 						'service'         => $service_name,
 						'drop_off'        => $drop_off->format('d/m/Y H:i'),
@@ -799,10 +806,11 @@ class ParkingAppController extends Controller
 
 					$sess_id = $request->session()->get('sess_id');
 					$session = Sessions::where('session_id', $sess_id)->first();
-					$session_request = json_decode($session->requests, true);
+					$session_request  = json_decode($session->requests, true);
 					$session_response = json_decode($session->response, true);
 
 					$customer = Customers::where(['email' => $form['email']]);
+
 					if ($customer->count()) {
 						$customer_id = $customer->first()->id;
 					} else {
@@ -831,14 +839,17 @@ class ParkingAppController extends Controller
 					$price = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
 					$revenue_value = $price * ($product->revenue_share / 100);
 
-					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
-					$form['user_id']       = $user_id;
-					$form['product_id']    = $product_id;
-					$form['price_id']      = $price_id;
-					$form['customer_id']   = $customer_id;
-					$form['order_title']   = $form['product'];
-					$form['price_value']   = $price;
-					$form['revenue_value'] = number_format($revenue_value, 2);
+					$form['booking_id']           = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
+					$form['user_id']              = $user_id;
+					$form['product_id']           = $product_id;
+					$form['price_id']             = $price_id;
+					$form['customer_id']          = $customer_id;
+                    $form['client_first_name']    = $form['firstname'];
+                    $form['client_last_name']     = $form['lastname'];
+                    $form['client_email']         = $form['email'];
+					$form['order_title']          = $form['product'];
+					$form['price_value']          = $price;
+					$form['revenue_value']        = number_format($revenue_value, 2);
 					$form['cancellation_waiver']  = $form['cancellation'];
 					$form['sms_confirmation_fee'] = $form['sms'];
 					$form['booking_fees']         = $form['booking_fee'];
