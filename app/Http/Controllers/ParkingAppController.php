@@ -1003,14 +1003,31 @@ class ParkingAppController extends Controller
         $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
         $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
+        $airport_address = $booking->products[0]->airport[0]->airport_name;
+        if (!empty($booking->departure_terminal)) {
+            $airport_address = $airport_address. " " . $booking->departure_terminal;
+        }
+
+        $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+
 		$test = [];
 
-        Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([
-            'booking' => $booking,
-            'customer' => $customer,
-            'vendor' => $vendor,
-            'carpark' => $carpark
-        ]));
+        // Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([
+        //     'booking' => $booking,
+        //     'customer' => $customer,
+        //     'vendor' => $vendor,
+        //     'carpark' => $carpark
+        // ]));
+
+		Mail::to($customer->email)->send(new SendBookingConfirmation([
+			'booking' => $booking,
+			'customer' => $customer,
+			'carpark_name' => $carpark->name,
+			'carpark_contact_no' => isset($carpark->company->poc_contact_no) ? $carpark->company->poc_contact_no : "N/A",
+			'airport_details' => $airport_address,
+			'on_arrival' => $booking->products[0]->on_arrival,
+			'on_return' => $booking->products[0]->on_return
+		]));
 
 		// Mail::send('emails.booking_company', $test, function ($m) {
         //     $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
