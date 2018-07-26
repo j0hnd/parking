@@ -14,7 +14,7 @@ class Products extends BaseModel
 {
     protected $fillable = [
         'carpark_id',
-		'short_descrption',
+		'short_description',
         'description',
         'on_arrival',
         'on_return',
@@ -25,7 +25,7 @@ class Products extends BaseModel
 
     protected $guarded = ['carpark_id', 'revenue_share'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors', 'contact_details'];
 
 
     public function carpark()
@@ -57,6 +57,11 @@ class Products extends BaseModel
 	{
 		return $this->hasMany(Companies::class, 'id', 'vendor_id');
 	}
+
+    public function contact_details()
+    {
+        return $this->hasOne(ProductContactDetails::class, 'product_id', 'id');
+    }
 
     public static function search($data)
     {

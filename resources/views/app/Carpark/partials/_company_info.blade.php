@@ -4,31 +4,11 @@
             <label class="col-sm-3 control-label">Company Name <span class="required">*</span></label>
 
             <div id="company-name-wrapper" class="col-sm-8">
-                {{--<select name="company_name" id="company-name" class="form-control" style="width: 100%">--}}
-                    {{--<option value="" readonly>-- Company --</option>--}}
-                    {{--@if(count($companies))--}}
-                        {{--@foreach($companies as $company)--}}
-                            {{--@if(isset($carpark))--}}
-                                {{--@if($carpark->company_id == $company->id)--}}
-                                {{--<option value="{{ $company->id }}" selected>{{ $company->company_name }}</option>--}}
-                                {{--@else--}}
-                                {{--<option value="{{ $company->id }}">{{ $company->company_name }}</option>--}}
-                                {{--@endif--}}
-                            {{--@elseif($company->id == old('company_id'))--}}
-                            {{--<option value="{{ $company->id }}" selected>{{ $company->company_name }}</option>--}}
-                            {{--@else--}}
-                            {{--<option value="{{ $company->id }}">{{ $company->company_name }}</option>--}}
-                            {{--@endif--}}
-                        {{--@endforeach--}}
-                    {{--@else--}}
-                    {{--<option value="{{ $company->id }}">{{ $company->company_name }}</option>--}}
-                    {{--@endif--}}
-                {{--</select>--}}
                 <input type="text" class="form-control"
                        id="company-name"
                        name="company_name"
                        placeholder="Company Name"
-                        autocomplete="off"
+                       autocomplete="off"
                        value="{{ isset($carpark) ? $carpark->company->company_name : old('company_name') }}">
             </div>
         </div>
@@ -37,7 +17,11 @@
             <label class="col-sm-3 control-label">Email <span class="required">*</span></label>
 
             <div class="col-sm-8">
-                <input type="text" class="form-control" name="email" placeholder="Email" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->email : old('email') }}">
+                <input type="text" class="form-control"
+                       name="email"
+                       placeholder="Email"
+                       autocomplete="off"
+                       value="{{ isset($carpark) ? $carpark->company->email : old('email') }}">
             </div>
         </div>
 
@@ -45,7 +29,11 @@
             <label class="col-sm-3 control-label">Phone No.</label>
 
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="phone_no" placeholder="Phone No." autocomplete="off" value="{{ isset($carpark) ? $carpark->company->phone_no : old('phone_no') }}">
+                <input type="text" class="form-control"
+                       name="phone_no"
+                       placeholder="Phone No."
+                       autocomplete="off"
+                       value="{{ isset($carpark) ? $carpark->company->phone_no : old('phone_no') }}">
             </div>
         </div>
 
@@ -53,7 +41,11 @@
             <label class="col-sm-3 control-label">Mobile No.</label>
 
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="mobile_no" placeholder="Mobile No." autocomplete="off" value="{{ isset($carpark) ? $carpark->company->mobile_no : old('mobile_no') }}">
+                <input type="text" class="form-control"
+                       name="mobile_no"
+                       placeholder="Mobile No."
+                       autocomplete="off"
+                       value="{{ isset($carpark) ? $carpark->company->mobile_no : old('mobile_no') }}">
             </div>
         </div>
 
@@ -61,7 +53,11 @@
             <label class="col-sm-3 control-label">VAT No.</label>
 
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="vat_no" placeholder="VAT No." autocomplete="off" value="{{ isset($carpark) ? $carpark->company->vat_no : old('vat_no') }}">
+                <input type="text" class="form-control"
+                       name="vat_no"
+                       placeholder="VAT No."
+                       autocomplete="off"
+                       value="{{ isset($carpark) ? $carpark->company->vat_no : old('vat_no') }}">
             </div>
         </div>
 
@@ -69,7 +65,11 @@
             <label class="col-sm-3 control-label">Company Registration</label>
 
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="company_reg" placeholder="Company Registration" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->company_reg : old('company_reg') }}">
+                <input type="text" class="form-control"
+                       name="company_reg"
+                       placeholder="Company Registration"
+                       autocomplete="off"
+                       value="{{ isset($carpark) ? $carpark->company->company_reg : old('company_reg') }}">
             </div>
         </div>
 
@@ -109,34 +109,6 @@
                         @endif
                     </a>
                     @endif
-                </div>
-            </div>
-        </fieldset>
-
-
-        <fieldset>
-            <h4>Contact Person</h4>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Name <span class="required">*</span></label>
-
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" name="poc_name" placeholder="Contact Person Name" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->poc_name : old('poc_name') }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Email <span class="required">*</span></label>
-
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" name="poc_contact_email" placeholder="Email" autocomplete="off" value="{{ isset($carpark) ? $carpark->company->poc_contact_email : old('poc_contact_email') }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Phone No./Mobile No.</label>
-
-                <div class="col-sm-5">
-                    <input type="text" class="form-control" name="poc_contact_no" placeholder="Contact No." autocomplete="off" value="{{ isset($carpark) ? $carpark->company->poc_contact_no : old('poc_contact_no') }}">
                 </div>
             </div>
         </fieldset>
