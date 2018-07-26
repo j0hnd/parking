@@ -1010,6 +1010,8 @@ class ParkingAppController extends Controller
 
         $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
+
+
 		$test = [];
 
         // Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([

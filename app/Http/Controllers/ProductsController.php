@@ -9,6 +9,7 @@ use App\Models\Overrides;
 use App\Models\ProductAirports;
 use App\Models\Products;
 use App\Models\Services;
+use App\Models\ProductContactDetails;
 use App\Models\Tools\CarparkServices;
 use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
@@ -69,7 +70,22 @@ class ProductsController extends Controller
         try {
 
             if ($request->isMethod('post')) {
-                $form = $request->only(['carpark_id', 'short_description', 'description', 'on_arrival', 'on_return', 'directions', 'revenue_share', 'prices', 'services', 'overrides']);
+                $form = $request->only([
+                    'carpark_id',
+                    'short_description',
+                    'description',
+                    'on_arrival',
+                    'on_return',
+                    'directions',
+                    'revenue_share',
+                    'prices',
+                    'services',
+                    'overrides',
+                    'contact_details'
+                ]);
+
+                $form_contact_details = $request->only(['contact_person_name', 'contact_person_email', 'contact_person_phone_no']);
+
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -86,17 +102,30 @@ class ProductsController extends Controller
                         ]);
                     }
 
+                    if (isset($form_contact_details)) {
+                        $contact_details = [
+                            'carpark_id'              => $form['carpark_id'],
+                            'product_id'              => $products->id,
+                            'contact_person_name'     => $form_contact_details['contact_person_name'],
+                            'contact_person_email'    => $form_contact_details['contact_person_email'],
+                            'contact_person_phone_no' => $form_contact_details['contact_person_phone_no'],
+                            'is_active'               => 1
+                        ];
+
+                        ProductContactDetails::create($contact_details);
+                    }
+
                     if (isset($form['prices'])) {
                         foreach ($form['prices'] as $field => $prices) {
                             foreach ($prices as $key => $values) {
                                 foreach ($values as $i => $val) {
                                     $prices_form[$i] = [
-                                        'product_id'      => $products->id,
-                                        'category_id'     => $form['prices']['category_id'][0][0],
-                                        'no_of_days'      => $form['prices']['no_of_days'][1][$i],
-                                        'price_month'     => $form['prices']['price_month'][2][$i],
-                                        'price_year'      => $form['prices']['price_year'][3][$i],
-                                        'price_value'     => $form['prices']['price_value'][4][$i]
+                                        'product_id'  => $products->id,
+                                        'category_id' => $form['prices']['category_id'][0][0],
+                                        'no_of_days'  => $form['prices']['no_of_days'][1][$i],
+                                        'price_month' => $form['prices']['price_month'][2][$i],
+                                        'price_year'  => $form['prices']['price_year'][3][$i],
+                                        'price_value' => $form['prices']['price_value'][4][$i]
                                     ];
                                 }
                             }
@@ -160,12 +189,13 @@ class ProductsController extends Controller
 
     public function edit($id)
     {
-        $product = Products::findOrFail($id);
         $page_title = "Edit Product";
-        $carparks = Carpark::active()->orderBy('name', 'desc');
-        $airports = Airports::active()->orderBy('airport_name', 'desc');
+        $product    = Products::findOrFail($id);
+        $carparks   = Carpark::active()->orderBy('name', 'desc');
+        $airports   = Airports::active()->orderBy('airport_name', 'desc');
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
+
         $row_count = count($product->prices) ? count($product->prices) : 1;
 
         // get selected services
@@ -213,7 +243,22 @@ class ProductsController extends Controller
 
             if ($request->isMethod('post')) {
                 $product = Products::findOrFail($request->product_id);
-                $form = $request->only(['carpark_id', 'short_description', 'description', 'on_arrival', 'on_return', 'directions', 'revenue_share', 'prices', 'services', 'overrides']);
+                $form = $request->only([
+                    'carpark_id',
+                    'short_description',
+                    'description',
+                    'on_arrival',
+                    'on_return',
+                    'directions',
+                    'revenue_share',
+                    'prices',
+                    'services',
+                    'overrides',
+                    'contact_details'
+                ]);
+
+                $form_contact_details = $request->only(['contact_person_name', 'contact_person_email', 'contact_person_phone_no']);
+
                 $airports = $request->get('airport_id');
 
                 DB::beginTransaction();
@@ -226,6 +271,16 @@ class ProductsController extends Controller
                 $product->revenue_share     = $form['revenue_share'];
 
                 if ($product->save()) {
+                    // update contact details
+                    if (count($form_contact_details)) {
+                        $contact_details = ProductContactDetails::findOrFail($product->contact_details->id);
+                        $contact_details->contact_person_name     = $form_contact_details['contact_person_name'];
+                        $contact_details->contact_person_email    = $form_contact_details['contact_person_email'];
+                        $contact_details->contact_person_phone_no = $form_contact_details['contact_person_phone_no'];
+
+                        $contact_details->save();
+                    }
+
                     // update airports
                     if (count($airports)) {
                         $product->airport()->detach();

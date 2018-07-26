@@ -27,7 +27,7 @@ class Carpark extends BaseModel
         'no_bookings_not_less_than_24hrs'
     ];
 
-    protected $with = ['country', 'company'];
+    protected $with = ['country', 'company', 'product_contact_details'];
 
 
     public function country()
@@ -38,6 +38,11 @@ class Carpark extends BaseModel
     public function company()
     {
         return $this->belongsTo(Companies::class, 'company_id', 'id');
+    }
+
+    public function product_contact_details()
+    {
+        return $this->hasOne(ProductContactDetails::class, 'carpark_id', 'id');
     }
 
     public static function search($search_str)
