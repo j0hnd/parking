@@ -126,7 +126,7 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Vehicle Registration:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($booking->car_registion_no) ? "N/A" : $booking->car_registion_no }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($booking->car_registration_no) ? "N/A" : $booking->car_registration_no }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
@@ -268,7 +268,7 @@
 						<b>Sat Nav</b>
 						<p>{{ $airport_details }}</p>
 						<hr>
-						<p>Gatwick is 28 miles (45km) south of London, linked directly to the M23 at Junction 9 and to the A23 London-Brighton road.</p>
+						<p>{{ $booking->products[0]->directions }}</p>
 						<br>
 						<b>Additional Information:</b>
 						<p>Please take a copy of your confirmation details by print make sure you can access the details via electronic device.</p>
@@ -296,10 +296,10 @@
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
 						<b>On Arrival</b>
-						<p>{{ $on_arrival }}</p>
+						<p>{!! $on_arrival !!}</p>
 						<hr>
 						<b>On Return</b>
-						{{ $on_return }}
+						<p>{!! $on_return !!}</p>
 					</td>
 				</tr>
 			</table>
