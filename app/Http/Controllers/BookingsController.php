@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookingFormRequest;
 use App\Models\Bookings;
+use App\Models\BookingDetails;
 use App\Models\Products;
 use App\Models\Customers;
 use App\Models\Airports;
@@ -42,7 +43,7 @@ class BookingsController extends Controller
 
                         $products_list[] = [
                             'order_id'     => $product->id.";".$prices->id.";".$product->airport[0]->id,
-                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [".$duration." - £".$prices->price_value."]"
+                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [£".$prices->price_value."]"
                         ];
                     }
                 }
@@ -251,7 +252,15 @@ class BookingsController extends Controller
                     'return_at_time',
                     'other_vehicle_model',
                     'departure_terminal',
-                    'arrival_terminal'
+                    'arrival_terminal',
+                    'client_first_name',
+                    'client_last_name',
+                ]);
+
+                $form_booking_details = $request->only([
+                    'with_children_pwd',
+                    'with_oversize_baggage',
+                    'no_of_passengers'
                 ]);
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
@@ -294,6 +303,12 @@ class BookingsController extends Controller
                 $form_booking['customer_id'] = $form_customer['customer_id'];
 
                 if (Bookings::findOrFail($id)->update($form_booking)) {
+                    $booking_details = BookingDetails::where('booking_id', $id)->first();
+                    $booking_details->no_of_passengers_in_vehicle = $form_booking_details['no_of_passengers'];
+                    $booking_details->with_oversize_baggage       = isset($form_booking_details['with_oversize_baggage']) ? 1 : 0;
+                    $booking_details->with_children_pwd           = isset($form_booking_details['with_children_pwd']) ? 1 : 0;
+                    $booking_details->save();
+
                     DB::commit();
 
                     return redirect('/admin/booking')->with('success', 'Booking has been updated');

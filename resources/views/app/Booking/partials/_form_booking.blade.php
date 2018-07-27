@@ -250,14 +250,14 @@
         @php($checked = '')
 
         @if(isset($booking->booking_details->with_oversize_baggage))
-            @if($booking->booking_details->no_of_passengers_in_vehicle > 0)
+            @if($booking->booking_details->with_oversize_baggage > 0)
                 @php($checked = 'checked')
             @endif
         @endif
 
         <div class="col-sm-5 checkbox">
             <label>
-                <input type="checkbox" {{ $checked }}> Travelling with sports or oversize baggage
+                <input type="checkbox" {{ $checked }} name="with_oversize_baggage"> Travelling with sports or oversize baggage
             </label>
         </div>
     </div>
@@ -267,15 +267,15 @@
 
         @php($checked = '')
 
-        @if(isset($booking->booking_details->with_oversize_baggage))
-            @if($booking->booking_details->with_oversize_baggage > 0)
+        @if(isset($booking->booking_details->with_children_pwd))
+            @if($booking->booking_details->with_children_pwd > 0)
                 @php($checked = 'checked')
             @endif
         @endif
 
         <div class="col-sm-5 checkbox">
             <label>
-                <input type="checkbox" {{ $checked }}> Travelling with children or disabled passengers
+                <input type="checkbox" {{ $checked }} name="with_children_pwd"> Travelling with children or disabled passengers
             </label>
         </div>
     </div>
