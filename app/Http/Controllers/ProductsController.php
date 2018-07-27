@@ -237,7 +237,7 @@ class ProductsController extends Controller
         ));
     }
 
-    public function update(Request $request)
+    public function update(ProductFormRequest $request)
     {
         try {
 
@@ -362,6 +362,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
