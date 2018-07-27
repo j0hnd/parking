@@ -43,7 +43,7 @@ class BookingsController extends Controller
 
                         $products_list[] = [
                             'order_id'     => $product->id.";".$prices->id.";".$product->airport[0]->id,
-                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [".$duration." - £".$prices->price_value."]"
+                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [£".$prices->price_value."]"
                         ];
                     }
                 }

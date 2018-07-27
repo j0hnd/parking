@@ -456,8 +456,8 @@
               </form>
 
               <form id="order-form" action="{{ url('/paypal') }}" method="post">
-                <input type="hidden" id="product" name="product" value="{{ $airport->airport_name }}-{{ $price->categories->category_name }}">
-                <input type="hidden" id="ids" name="ids"  value="{{ $product->id }}:{{ $price->id }}">
+                <input type="hidden" id="product" name="product" value="{{ $airport->airport_name }} - {{ $product->carpark->name }} - {{ $price->categories->category_name }} [£{{ $price->price_value }}]">
+                <input type="hidden" id="ids" name="ids"  value="{{ $product->id }}:{{ $price->id }}:{{ $product->airport[0]->id }}">
                 <input type="hidden" id="total-amount" name="total"  value="{{ $total }}">
                 <input type="hidden" id="firstname" name="firstname" />
                 <input type="hidden" id="lastname" name="lastname" />
