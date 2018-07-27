@@ -249,23 +249,26 @@ class ParkingAppController extends Controller
 						$user_id = $user->id;
 					}
 
-					$bookings['order_title'] = $booking_data['product'];
-					$bookings['user_id'] = $user_id;
-					$bookings['customer_id'] = $customer->id;
-					$bookings['product_id'] =  $product_id;
-					$bookings['price_id'] = $price_id;
-					$bookings['price_value'] = $price;
-					$bookings['revenue_value'] = $revenue_value;
-					$bookings['coupon'] = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
+					$bookings['order_title']          = $booking_data['product'];
+					$bookings['user_id']              = $user_id;
+					$bookings['customer_id']          = $customer->id;
+					$bookings['product_id']           = $product_id;
+					$bookings['price_id']             = $price_id;
+					$bookings['price_value']          = $price;
+					$bookings['revenue_value']        = $revenue_value;
+					$bookings['client_first_name']    = $form['firstname'];
+                    $bookings['client_last_name']     = $form['lastname'];
+                    $bookings['client_email']         = $form['email'];
+					$bookings['coupon']               = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
-					$bookings['cancellation_waiver'] = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
-					$bookings['booking_fees'] = $booking_data['booking_fee'];
-					$bookings['car_registration_no'] = $booking_data['car_registration_no'];
-					$bookings['vehicle_make']  = $booking_data['vehicle_make'];
-					$bookings['vehicle_model'] = $booking_data['vehicle_model'];
-					$bookings['vehicle_color'] = $booking_data['vehicle_color'];
-					$bookings['drop_off_at'] = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
-					$bookings['return_at'] = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
+					$bookings['cancellation_waiver']  = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
+					$bookings['booking_fees']         = $booking_data['booking_fee'];
+					$bookings['car_registration_no']  = $booking_data['car_registration_no'];
+					$bookings['vehicle_make']         = $booking_data['vehicle_make'];
+					$bookings['vehicle_model']        = $booking_data['vehicle_model'];
+					$bookings['vehicle_color']        = $booking_data['vehicle_color'];
+					$bookings['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
+					$bookings['return_at']            = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
 
 					$booking = Bookings::create($bookings);
 					if (!empty($booking)) {
