@@ -272,13 +272,20 @@ class ProductsController extends Controller
 
                 if ($product->save()) {
                     // update contact details
-                    if (count($form_contact_details)) {
-                        $contact_details = ProductContactDetails::findOrFail($product->contact_details->id);
-                        $contact_details->contact_person_name     = $form_contact_details['contact_person_name'];
-                        $contact_details->contact_person_email    = $form_contact_details['contact_person_email'];
-                        $contact_details->contact_person_phone_no = $form_contact_details['contact_person_phone_no'];
+                    if (!is_null($form_contact_details)) {
+                        if(is_null($product->contact_details)) {
+                            $form_contact_details['product_id'] = $product->id;
+                            $form_contact_details['carpark_id'] = $form['carpark_id'];
+                            ProductContactDetails::create($form_contact_details);
+                        } else {
+                            $contact_details = ProductContactDetails::findOrFail($product->contact_details->id);
 
-                        $contact_details->save();
+                            $contact_details->contact_person_name     = $form_contact_details['contact_person_name'];
+                            $contact_details->contact_person_email    = $form_contact_details['contact_person_email'];
+                            $contact_details->contact_person_phone_no = $form_contact_details['contact_person_phone_no'];
+
+                            $contact_details->save();
+                        }
                     }
 
                     // update airports
