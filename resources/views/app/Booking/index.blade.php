@@ -28,6 +28,7 @@
                                 <th>Booking ID</th>
                                 <th>Order Title</th>
                                 <th>Customer</th>
+                                <th>Reservation Name</th>
                                 <th>Date Posted</th>
                                 <th></th>
                             </tr>
@@ -37,6 +38,11 @@
                                     <td><a href="{{ url('/admin/booking/'.$booking->id.'/edit') }}">{{ $booking->booking_id }}</a></td>
                                     <td>{{ $booking->order_title }}</td>
                                     <td>{{ $booking->customers->first_name }} {{ $booking->customers->last_name }}</td>
+                                    @if(empty($booking->client_first_name) and empty($booking->client_last_name))
+                                    <td>N/A</td>
+                                    @else
+                                    <td>{{ $booking->client_first_name }} {{ $booking->client_first_name }}</td>
+                                    @endif
                                     <td>{{ $booking->created_at->format('m/d/Y') }}</td>
                                     <td></td>
                                 </tr>
