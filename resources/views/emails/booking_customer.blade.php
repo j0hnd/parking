@@ -97,7 +97,7 @@
 					</td>
 					<!-- Column : END -->
 					<!-- Column : BEGIN -->
-					<td class="stack-column-center">
+					<td class="stack-column-center" style="vertical-align:top">
 						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
 							<tr>
 								<td style="padding: 10px; text-align: center">

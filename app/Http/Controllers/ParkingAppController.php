@@ -1042,55 +1042,55 @@ class ParkingAppController extends Controller
 	}
 
 	/* email template test only - remove when done */
-	public function email()
-    {
-		return view('emails.booking_customer');
-	}
-
-	public function emailCompany()
-    {
-		return view('emails.booking_company');
-	}
-
-	public function sendTestEmail()
-    {
-        $booking  = Bookings::findOrFail(13);
-        $customer = Customers::findOrFail($booking->customer_id);
-        $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
-        $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
-
-        $airport_address = $booking->products[0]->airport[0]->airport_name;
-        if (!empty($booking->departure_terminal)) {
-            $airport_address = $airport_address. " " . $booking->departure_terminal;
-        }
-
-        $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
-
-		$test = [];
-
-        Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
-            'booking' => $booking,
-            'customer' => $customer,
-            'vendor' => $vendor,
-            'carpark' => $carpark
-        ]));
-
-		Mail::to($customer->email)->send(new SendBookingConfirmation([
-			'booking' => $booking,
-			'customer' => $customer,
-			'carpark_name' => $carpark->name,
-			'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-			'airport_details' => $airport_address,
-			'on_arrival' => $booking->products[0]->on_arrival,
-			'on_return' => $booking->products[0]->on_return
-		]));
-
-		// Mail::send('emails.booking_company', $test, function ($m) {
-        //     $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
-        //
-		// 	$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
-		// 	//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
-        // });
-	}
+	// public function email()
+    // {
+	// 	return view('emails.booking_customer');
+	// }
+    //
+	// public function emailCompany()
+    // {
+	// 	return view('emails.booking_company');
+	// }
+    //
+	// public function sendTestEmail()
+    // {
+    //     $booking  = Bookings::findOrFail(69);
+    //     $customer = Customers::findOrFail($booking->customer_id);
+    //     $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+    //     $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+    //
+    //     $airport_address = $booking->products[0]->airport[0]->airport_name;
+    //     if (!empty($booking->departure_terminal)) {
+    //         $airport_address = $airport_address. " " . $booking->departure_terminal;
+    //     }
+    //
+    //     $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+    //
+	// 	$test = [];
+    //
+    //     Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+    //         'booking' => $booking,
+    //         'customer' => $customer,
+    //         'vendor' => $vendor,
+    //         'carpark' => $carpark
+    //     ]));
+    //
+	// 	Mail::to($customer->email)->send(new SendBookingConfirmation([
+	// 		'booking' => $booking,
+	// 		'customer' => $customer,
+	// 		'carpark_name' => $carpark->name,
+	// 		'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+	// 		'airport_details' => $airport_address,
+	// 		'on_arrival' => $booking->products[0]->on_arrival,
+	// 		'on_return' => $booking->products[0]->on_return
+	// 	]));
+    //
+	// 	// Mail::send('emails.booking_company', $test, function ($m) {
+    //     //     $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
+    //     //
+	// 	// 	$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
+	// 	// 	//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
+    //     // });
+	// }
 	/* email template test only - remove when done */
 }
