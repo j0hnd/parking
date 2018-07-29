@@ -425,7 +425,8 @@ class ParkingAppController extends Controller
 				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
                 // check if email address is already a customer and have an account
-                if (User::where('email', $booking->client_email)->count() == 0) {
+                $user = User::where('email', $booking->client_email);
+                if ($user->count() == 0) {
                     $temporary_password = str_random(12);
 
         			DB::beginTransaction();
@@ -448,6 +449,10 @@ class ParkingAppController extends Controller
         				$role = Sentinel::findRoleById(4);
         				$role->users()->attach($user);
 
+						// link current booking to account
+						$booking->user_id = $user->id;
+						$booking->save();
+
                         Mail::to($booking->client_email)->send(new NewSignUp([
                             'first_name' => $booking->client_first_name,
                             'email'      => $booking->client_email,
@@ -456,6 +461,9 @@ class ParkingAppController extends Controller
 
         				DB::commit();
                     }
+                } else {
+                    $booking->user_id = $user->first()->id;
+                    $booking->save();
                 }
 
 				// get vendor email recipients
