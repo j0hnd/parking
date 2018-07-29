@@ -419,11 +419,11 @@ class ParkingAppController extends Controller
 				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
 				// get vendor email recipients
-				$vendor_recipients = [];
-				array_push($vendor_recipients, $vendor->email);
-				if (!empty($vendor->poc_contact_email)) {
-					array_push($vendor_recipients, $vendor->poc_contact_email);
-				}
+				$vendor_recipients = $booking->products[0]->contact_details->contact_person_email;
+				// array_push($vendor_recipients, $booking->products[0]->contact_details->contact_person_email);
+				// if (!empty($vendor->poc_contact_email)) {
+				// 	array_push($vendor_recipients, $vendor->poc_contact_email);
+				// }
 
                 $airport_address = $booking->products[0]->airport[0]->airport_name;
                 if (!empty($booking->departure_terminal)) {
@@ -443,7 +443,7 @@ class ParkingAppController extends Controller
                     'on_return'          => $booking->products[0]->on_return
 				]));
 
-				if (count($vendor_recipients)) {
+				if (!empty($vendor_recipients)) {
 					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
 						'booking'  => $booking,
 						'customer' => $customer,
@@ -1011,7 +1011,7 @@ class ParkingAppController extends Controller
 
 	public function sendTestEmail()
     {
-        $booking  = Bookings::findOrFail(16);
+        $booking  = Bookings::findOrFail(13);
         $customer = Customers::findOrFail($booking->customer_id);
         $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
         $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
@@ -1025,12 +1025,12 @@ class ParkingAppController extends Controller
 
 		$test = [];
 
-        // Mail::to('johnd@mytravelcompared.com')->send(new SendBookingConfirmationVendor([
-        //     'booking' => $booking,
-        //     'customer' => $customer,
-        //     'vendor' => $vendor,
-        //     'carpark' => $carpark
-        // ]));
+        Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+            'booking' => $booking,
+            'customer' => $customer,
+            'vendor' => $vendor,
+            'carpark' => $carpark
+        ]));
 
 		Mail::to($customer->email)->send(new SendBookingConfirmation([
 			'booking' => $booking,
