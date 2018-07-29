@@ -500,10 +500,10 @@
                 <div class="container receipt">
                   <div class="row align-rec-img">
                     <div class="col-md-12">
-                      @if(empty($carpark->image))
+                      @if(empty($product->image))
                         <img src="{{ asset('/img/default.png') }}" class="receipt-img">
                       @else
-                        <img src="{{ asset($carpark->image) }}" class="receipt-img">
+                        <img src="{{ asset($product->image) }}" class="receipt-img">
                       @endif
                       <br/>
                       <hr>
