@@ -23,7 +23,7 @@ class Common
             if (empty($selected)) {
 				$sel = ( $time == $default ) ? ' selected' : '';
 			} else {
-				$sel = ( $time == $default ) ? ' selected' : '';
+				$sel = ( $time == $selected ) ? ' selected' : '';
 			}
 
 			$output .= "<option value=\"{$time}\"{$sel}>" . date( 'H:i', $current ) .'</option>';
