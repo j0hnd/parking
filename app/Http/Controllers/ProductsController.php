@@ -199,7 +199,6 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -420,7 +419,6 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             abort(404, $e->getMessage());
         }
     }

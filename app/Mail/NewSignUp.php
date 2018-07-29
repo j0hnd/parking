@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Signup extends Mailable
+class NewSignUp extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class Signup extends Mailable
      */
     public function build()
     {
-		return $this->view('emails.signup')
+		return $this->view('emails.new')
 			->subject("Welcome to MyTravel Compared")
 			->with([
 				'first_name' => $this->data['first_name'],

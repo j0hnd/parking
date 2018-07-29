@@ -9,6 +9,7 @@ use App\Mail\RegistrationConfirmation;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\SendBookingConfirmationVendor;
 use App\Mail\Signup;
+use App\Mail\NewSignUp;
 use App\Models\AffiliateBookings;
 use App\Models\Affiliates;
 use App\Models\Airports;
@@ -423,12 +424,42 @@ class ParkingAppController extends Controller
 				$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
 				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
+                // check if email address is already a customer and have an account
+                if (User::where('email', $booking->client_email)->count() == 0) {
+                    $temporary_password = str_random(12);
+
+        			DB::beginTransaction();
+
+        			$user = Sentinel::registerAndActivate([
+                        'email'    => $booking->client_email,
+                        'password' => $temporary_password
+                    ]);
+
+        			if ($user) {
+        				// create member info
+        				$member = Members::create([
+                            'user_id'    => $user->id,
+                            'first_name' => $booking->client_first_name,
+                            'last_name'  => $booking->client_last_name,
+                            'is_active'  => 1
+                        ]);
+
+        				// assign role to a user
+        				$role = Sentinel::findRoleById(4);
+        				$role->users()->attach($user);
+
+                        Mail::to($booking->client_email)->send(new NewSignUp([
+                            'first_name' => $booking->client_first_name,
+                            'email'      => $booking->client_email,
+                            'password'   => $temporary_password
+                        ]));
+
+        				DB::commit();
+                    }
+                }
+
 				// get vendor email recipients
 				$vendor_recipients = $booking->products[0]->contact_details->contact_person_email;
-				// array_push($vendor_recipients, $booking->products[0]->contact_details->contact_person_email);
-				// if (!empty($vendor->poc_contact_email)) {
-				// 	array_push($vendor_recipients, $vendor->poc_contact_email);
-				// }
 
                 $airport_address = $booking->products[0]->airport[0]->airport_name;
                 if (!empty($booking->departure_terminal)) {
@@ -474,7 +505,7 @@ class ParkingAppController extends Controller
 				}
 
 				// send sms
-				if ($send_sms) {
+				if ($send_sms and !empty($customer->mobile_no)) {
 					$sms_message = "Thank you for booking your carpark at MyTravelCompared.com. Your booking reference is {$booking->booking_id}";
 
 					$sms_data = [
@@ -486,8 +517,7 @@ class ParkingAppController extends Controller
 					Log::debug($response['twilio']);
 				}
 
-				$sess_id = session('sess_id');
-				Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
+				Sessions::where('booking_id', $booking->id)->update(['deleted_at' => Carbon::now()]);
 				session()->flush();
 
 				$response['success'] = true;
