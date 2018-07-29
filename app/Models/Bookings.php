@@ -87,6 +87,8 @@ class Bookings extends BaseModel
 				$query->orWhere('customers.first_name', 'like', "{$search_str}%");
 				$query->orWhere('customers.last_name', 'like', "{$search_str}%");
 				$query->orWhere('customers.email', 'like', "{$search_str}%");
+				$query->orWhere('bookings.client_first_name', 'like', "{$search_str}%");
+				$query->orWhere('bookings.client_last_name', 'like', "{$search_str}%");
 			});
 
 		if ($result->count()) {
