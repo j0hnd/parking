@@ -230,7 +230,7 @@ class Products extends BaseModel
 									'airport_id' => $pa->airport_id,
 									'airport_name' => $airport->airport_name,
 									'carpark' => $product->carpark->name,
-									'image' => $product->carpark->image,
+									'image' => $product->image,
 									'price_id' => $price->id,
                                     'prices' => $price,
 									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
