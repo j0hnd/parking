@@ -17,7 +17,7 @@
                 @endif
 
                 <!-- form start -->
-                <form id="carpark-form" class="form-horizontal" method="post" action="{{ $action_url }}">
+                <form id="carpark-form" class="form-horizontal" method="post" action="{{ $action_url }}" enctype="multipart/form-data">
                     @include('app.Product.partials._form')
 
                     <div class="box-footer">

@@ -17,6 +17,8 @@ use Carbon\Carbon;
 use Sentinel;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProductsController extends Controller
 {
@@ -88,6 +90,8 @@ class ProductsController extends Controller
 
                 $airports = $request->get('airport_id');
 
+                $current = Carbon::now();
+
                 DB::beginTransaction();
 
                 $user = Sentinel::getUser();
@@ -95,6 +99,28 @@ class ProductsController extends Controller
 				$form['vendor_id'] = ($role[0]->slug == 'vendor') ? $user->id : 0;
 
                 if ($products = Products::create($form)) {
+                    $path = 'uploads/products/' . $current->format('Y-m-d');
+                    if ($request->hasFile('image')) {
+                        $image = \Request::file('image');
+                        $filename   = $image->getClientOriginalName();
+                        $image_path = "{$path}/".$products->id;
+
+						// check if upload folder is existing, if not create it
+						if (!File::exists(public_path($path))) {
+							File::makeDirectory(public_path($path));
+						}
+
+						if (!File::exists(public_path($image_path))) {
+							File::makeDirectory(public_path($image_path));
+						}
+
+						$image_resize = Image::make($image->getRealPath());
+						$image_resize->resize(219, 129);
+
+						$image_resize->save(public_path("{$image_path}/{$filename}"));
+						Products::where('id', $products->id)->update(['image' => $image_path."/".$filename]);
+                    }
+
                     foreach ($airports as $airport) {
                         ProductAirports::create([
                             'product_id' => $products->id,
@@ -173,6 +199,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -271,6 +298,9 @@ class ProductsController extends Controller
                 $product->revenue_share     = $form['revenue_share'];
 
                 if ($product->save()) {
+                    $current = Carbon::now();
+                    $path = 'uploads/products/' . $current->format('Y-m-d');
+
                     // update contact details
                     if (!is_null($form_contact_details)) {
                         if(is_null($product->contact_details)) {
@@ -286,6 +316,27 @@ class ProductsController extends Controller
 
                             $contact_details->save();
                         }
+                    }
+
+                    if ($request->hasFile('image')) {
+                        $image = \Request::file('image');
+                        $filename   = $image->getClientOriginalName();
+                        $image_path = "{$path}/".$product->id;
+
+                        // check if upload folder is existing, if not create it
+                        if (!File::exists(public_path($path))) {
+							File::makeDirectory(public_path($path));
+						}
+
+						if (!File::exists(public_path($image_path))) {
+							File::makeDirectory(public_path($image_path));
+						}
+
+						$image_resize = Image::make($image->getRealPath());
+                        $image_resize->resize(219, 129);
+
+						$image_resize->save(public_path("{$image_path}/{$filename}"));
+						Products::where('id', $product->id)->update(['image' => $image_path."/".$filename]);
                     }
 
                     // update airports
@@ -369,6 +420,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             abort(404, $e->getMessage());
         }
     }

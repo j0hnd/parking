@@ -38,7 +38,7 @@
                         @endforeach
                     @elseif(!is_null(old('airport_id')))
                         @php($selected_airport_id = old('airport_id'))
-                        
+
                         @if($selected_airport_id[0] == $airport->id)
                         <option value="{{ $airport->id }}" selected>{{ $airport->airport_name }}</option>
                         @else
@@ -116,5 +116,18 @@
 
     <div class="col-sm-5">
         <input type="text" class="form-control" name="revenue_share" value="{{ isset($product) ? $product->revenue_share : old('revenue_share') }}" autocomplete="off">
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">Upload Image</label>
+
+    <div class="col-sm-6">
+        <input type="file" class="form-control margin-bottom10" name="image">
+        @if(!empty($product->image))
+        <a href="{{ URL::asset($product->image) }}" target="_blank">
+            <img src="{{ asset($product->image) }}" style="max-width: 30%" alt="Carpark Image">
+        </a>
+        @endif
     </div>
 </div>
