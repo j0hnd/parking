@@ -273,7 +273,7 @@
 	        @yield('important-notice')
 
             @yield('direction-notice')
-            
+
             @yield('what-to-do-notice')
 
 	    </table>
@@ -284,7 +284,7 @@
 	        <tr>
 	            <td style="padding: 20px; font-family: sans-serif; font-size: 12px; line-height: 15px; text-align: center; color: #888888;">
 	                <br><br>
-	                My Travel Compared<br><span class="unstyle-auto-detected-links">bookings@mytravelcompared.com<br>(123) 456-7890</span>
+	                My Travel Compared<br><span class="unstyle-auto-detected-links">{{ config('app.company_email') }}<br>(123) 456-7890</span>
 	                <br><br>
                     <unsubscribe style="color: #888888; text-decoration: underline;">unsubscribe</unsubscribe>
 	            </td>
