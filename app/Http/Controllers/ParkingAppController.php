@@ -454,17 +454,12 @@ class ParkingAppController extends Controller
                             'password'   => $temporary_password
                         ]));
 
-
         				DB::commit();
                     }
                 }
 
 				// get vendor email recipients
 				$vendor_recipients = $booking->products[0]->contact_details->contact_person_email;
-				// array_push($vendor_recipients, $booking->products[0]->contact_details->contact_person_email);
-				// if (!empty($vendor->poc_contact_email)) {
-				// 	array_push($vendor_recipients, $vendor->poc_contact_email);
-				// }
 
                 $airport_address = $booking->products[0]->airport[0]->airport_name;
                 if (!empty($booking->departure_terminal)) {
@@ -510,7 +505,7 @@ class ParkingAppController extends Controller
 				}
 
 				// send sms
-				if ($send_sms) {
+				if ($send_sms and !empty($customer->mobile_no)) {
 					$sms_message = "Thank you for booking your carpark at MyTravelCompared.com. Your booking reference is {$booking->booking_id}";
 
 					$sms_data = [
@@ -522,9 +517,7 @@ class ParkingAppController extends Controller
 					Log::debug($response['twilio']);
 				}
 
-				$sess_id  = session('sess_id');
-				Sessions::where('session_id', $sess_id)->delete();
-				// Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
+				Sessions::where('booking_id', $booking->id)->update(['deleted_at' => Carbon::now()]);
 				session()->flush();
 
 				$response['success'] = true;
