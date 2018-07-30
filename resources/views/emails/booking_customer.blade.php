@@ -52,6 +52,12 @@
 										<tbody>
 										<tr>
 											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Booking ID:</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="100">{{ $booking->booking_id }}</td>
+										</tr>
+										<tr>
+											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Car Park:</td>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="100">{{ $booking->order_title }}</td>
