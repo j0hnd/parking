@@ -28,9 +28,9 @@ Route::get('/affiliate/{code}', 'ParkingAppController@affiliate');
 Route::get('/get/vehicle/model', 'ParkingAppController@get_vehicle_models');
 
 /* email template test only - remove when done */
-Route::get('/email', 'ParkingAppController@email');
-Route::get('/emailCompany', 'ParkingAppController@emailCompany');
-Route::get('/sendTestEmail', 'ParkingAppController@sendTestEmail');
+// Route::get('/email', 'ParkingAppController@email');
+// Route::get('/emailCompany', 'ParkingAppController@emailCompany');
+// Route::get('/sendTestEmail', 'ParkingAppController@sendTestEmail');
 /* email template test only - remove when done */
 
 Route::match(['get', 'post'], '/contact','ParkingAppController@contact');
