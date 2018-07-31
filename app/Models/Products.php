@@ -191,9 +191,9 @@ class Products extends BaseModel
 
                 foreach ($product_airports->get() as $pa) {
                     if ($pa->no_bookings_not_less_than_24hrs == 1) {
-                        $drop_off  = $begin->format('Y-m-d').' '.$data['search']['drop-off-time'].':00';
-                        $drop_off  = Carbon::createFromFormat('Y-m-d H:i:s', $drop_off);
-                        $time_diff = $drop_off->diffInHours($today);
+                        $drop_off = $begin->format('Y-m-d').' '.$data['search']['drop-off-time'].':00';
+                        $drop_off = Carbon::createFromFormat('Y-m-d H:i:s', $drop_off);
+                        $time_diff  = $drop_off->diffInHours(Carbon::now());
 
                         if ($time_diff <= 24) {
                             break;
@@ -214,36 +214,36 @@ class Products extends BaseModel
 						// check for overrides
 						if (count($product->overrides)) {
 							foreach ($product->overrides as $overrides) {
-								list($begin, $end) = explode(' - ', $overrides->override_dates);
-								$begin = new Carbon($begin);
-								$end = new Carbon($end);
+								list($_begin, $_end) = explode(' - ', $overrides->override_dates);
+								$_begin = new Carbon($_begin);
+								$_end = new Carbon($_end);
 
-								if (strtotime($data['search']['drop-off-date']) >= strtotime($begin) and strtotime($data['search']['return-at-date']) <= strtotime($end)) {
+								if (strtotime($data['search']['drop-off-date']) >= strtotime($_begin->format('d/m/Y')) and strtotime($_end->format('d/m/Y')) <= strtotime($data['search']['return-at-date'])) {
 									$override_price = $overrides->override_price * $no_days;
 								}
 							}
 						}
 
                         foreach ($prices as $price) {
-                                $products[$i] = [
-                                    'product_id' => $product->id,
-									'airport_id' => $pa->airport_id,
-									'airport_name' => $airport->airport_name,
-									'carpark' => $product->carpark->name,
-									'image' => $product->image,
-									'price_id' => $price->id,
-                                    'prices' => $price,
-									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-                                    'overrides' => $override_price,
-									'services' => $product->carpark_services,
-									'short_description' => $product->short_description,
-									'description' => $product->description,
-									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return,
-									'latitude' => $airport->latitude,
-									'longitude' => $airport->longitude
-                                ];
+                            $products[$i] = [
+                                'product_id' => $product->id,
+								'airport_id' => $pa->airport_id,
+								'airport_name' => $airport->airport_name,
+								'carpark' => $product->carpark->name,
+								'image' => $product->image,
+								'price_id' => $price->id,
+                                'prices' => $price,
+								'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+								'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+                                'overrides' => $override_price,
+								'services' => $product->carpark_services,
+								'short_description' => $product->short_description,
+								'description' => $product->description,
+								'on_arrival' => $product->on_arrival,
+								'on_return' => $product->on_return,
+								'latitude' => $airport->latitude,
+								'longitude' => $airport->longitude
+                            ];
 
 							$i++;
                         }
@@ -251,6 +251,7 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
+            dd($e);
             abort(404, $e->getMessage());
         }
 
