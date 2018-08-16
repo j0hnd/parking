@@ -35,8 +35,16 @@
         <script type="text/javascript">
             cdn_url = 'http://mytravelcompared.com';
         </script>
+        <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
         @yield('tags')
         @yield('css')
+        <style media="screen">
+            .cookie-consent {
+                text-align: center;
+                padding: 10px;
+                background-color: #ffe5cc;
+            }
+        </style>
     </head>
 
     <body>
@@ -48,6 +56,8 @@
             {{-- footer --}}
             @include('parking.templates.footer')
         </main>
+
+        @include('cookieConsent::index')
     </body>
 
     {{-- scripts --}}
