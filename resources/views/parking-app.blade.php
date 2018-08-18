@@ -37,7 +37,7 @@
         <script type="text/javascript">
             cdn_url = 'http://mytravelcompared.com';
         </script>
-        {{-- <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script> --}}
+        <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
         @yield('tags')
         @yield('css')
         <style media="screen">
