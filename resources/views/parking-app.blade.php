@@ -37,7 +37,7 @@
         <script type="text/javascript">
             cdn_url = 'http://mytravelcompared.com';
         </script>
-        <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
+        {{-- <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script> --}}
         @yield('tags')
         @yield('css')
         <style media="screen">
@@ -66,8 +66,9 @@
     @include('parking.templates.scripts')
     @yield('js')
     @php
-        $start_date = date('d/m/Y', strtotime('+2 days'));
-        $end_date = date('d/m/Y', strtotime($start_date . ' +1 week'));
+        $mydate = date('Y-m-d', strtotime('+2 days'));
+        $start_date = date('d/m/Y', strtotime($mydate));
+        $end_date = date('d/m/Y', strtotime($mydate . ' +1 week'));
     @endphp
     <script type="text/javascript">
         $(function () {

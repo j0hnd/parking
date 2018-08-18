@@ -96,7 +96,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	{{-- sections --}}
 	@include('parking.templates.sections')
 @stop
-
+@php
+	$mydate = date('Y-m-d', strtotime('+7 days'));
+	$start_date = date('d/m/Y', strtotime($mydate));
+	$end_date = date('d/m/Y', strtotime($mydate . ' +1 week'));
+@endphp
 @section('js')
 	<script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
@@ -105,6 +109,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<script type="text/javascript">
         $(function () {
             $('#airport').select2();
+
+			$(document).on('click', '#book-stansted', function () {
+				$('#airport option[value="5"]').attr('selected', 'selected').trigger('change');
+				$('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
+				$('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
+				$('#return-at-date').val('{{ $end_date }}');
+				// $('#search').trigger('click');
+			});
         });
 	</script>
 @stop

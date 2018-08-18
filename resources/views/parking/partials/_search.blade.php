@@ -33,7 +33,6 @@
             </select>
         </div>
         <div class="col-xl-2 input2">
-
             <div class="home-label"> <i><img src="{{ asset('/img/calendar.png') }}"></i> Drop off <br/></div>
             <input type='text' name="search[drop-off-date]" id="drop-off-date" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="{{ empty($drop_off_date) ? date('d/m/Y') : $drop_off_date }}" />
         </div>
@@ -47,7 +46,7 @@
         </div>
         <div class="col-xl-2 input4">
             <div class="home-label"><i><img src="{{ asset('img/calendar.png') }}"></i> Return at<br/></div>
-            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" placeholder="dd/mm/yyyy" value="{{ empty($return_at_date) ? date('d/m/Y', strtotime('+7 day')) : $return_at_date }}" readonly />
+            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" placeholder="dd/mm/yyyy" value="{{ empty($return_at_date) ? date('d/m/Y', strtotime($drop_off_date . ' +7 day')) : $return_at_date }}" readonly />
         </div>
         <div class="col-xl-1 input5">
            <div class="home-label"><br></div>
@@ -58,7 +57,7 @@
             </select>
         </div>
         <div class="col-xl-3 input6">
-            <button type="submit" class="btn btn-primary btn-sm"><i><img src="{{ asset('/img/search.png') }}"/></i> Search Car Park</button>
+            <button type="submit" id="search" class="btn btn-primary btn-sm"><i><img src="{{ asset('/img/search.png') }}"/></i> Search Car Park</button>
         </div>
     </div>
     {{ csrf_field() }}
