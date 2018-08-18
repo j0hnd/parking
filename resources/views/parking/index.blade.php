@@ -99,7 +99,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 @section('js')
 	<script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
-
 	<script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
 	<script src='{{ asset('/js/slick.min.js') }}' type="text/javascript"></script>
 	<script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>

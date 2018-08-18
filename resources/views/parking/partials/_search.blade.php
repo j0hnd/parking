@@ -39,7 +39,7 @@
         </div>
         <div class="col-xl-1 input3">
             <div class="home-label"><br></div>
-            <select class="form-control-sm time-width" name="search[drop-off-time]">
+            <select class="form-control-sm time-width" id="drop-off-time" name="search[drop-off-time]">
                 @if(isset($drop_off_time_interval))
                 {!! $drop_off_time_interval !!}
                 @endif
@@ -47,11 +47,11 @@
         </div>
         <div class="col-xl-2 input4">
             <div class="home-label"><i><img src="{{ asset('img/calendar.png') }}"></i> Return at<br/></div>
-            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="{{ empty($return_at_date) ? date('d/m/Y', strtotime('+7 day')) : $return_at_date }}" />
+            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" placeholder="dd/mm/yyyy" value="{{ empty($return_at_date) ? date('d/m/Y', strtotime('+7 day')) : $return_at_date }}" readonly />
         </div>
         <div class="col-xl-1 input5">
            <div class="home-label"><br></div>
-            <select class="form-control-sm time-width" name="search[return-at-time]">
+            <select class="form-control-sm time-width" id="return-at-time" name="search[return-at-time]">
                 @if(isset($return_at_time_interval))
                 {!! $return_at_time_interval !!}
                 @endif

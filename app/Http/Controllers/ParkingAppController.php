@@ -88,6 +88,8 @@ class ParkingAppController extends Controller
 
         if ($request->isMethod('post')) {
 			$form = $request->except(['_token']);
+            $drop_off_date = explode('-', $form['search']['drop-off-date']);
+            $form['search']['drop-off-date'] = trim($drop_off_date[0]);
 			$products = Products::search($form);
 			$results = Products::prepare_data($products);
 			$drop_off_time = $form['search']['drop-off-time'];

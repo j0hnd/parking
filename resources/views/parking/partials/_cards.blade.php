@@ -168,6 +168,18 @@
     @endforeach
 @else
     <div class="col-md-12 bg-danger">
-        <p class="text-center padding-10" style="color: #fff"><strong>No results found on the given criteria.</strong></p>
+        <p class="text-center" style="color: #fff; margin-top:10px; padding-top:10px;">
+            <strong style="font-size: 24px;">No Car Parks Found!</strong>
+            <div class="row" style="color: #FFFFFF">
+                <div class="col-md-12" style="padding: 20px;">
+                    Unfortunately for the dates and times you have requested there are no available car parks.
+                    This may be because we're all booked up for the times you searched for.<br/><br/>
+                    Suggestions:<br/>
+                    Adjust your arrival or departures times slightly using the form above
+                    Please note that at some airports certain car parks aren’t available at certain times of the day
+                    Contact our customer services if you are still experiencing problems.
+                </div>
+            </div>
+        </p>
     </div>
 @endif
