@@ -251,7 +251,6 @@ class Products extends BaseModel
                 }
             }
         } catch (\Exception $e) {
-            dd($e);
             abort(404, $e->getMessage());
         }
 
