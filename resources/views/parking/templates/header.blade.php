@@ -11,15 +11,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-12 text-center" style="color:#ffffff; font-size:20px; margin-top:55px; margin-bottom:-45px;">
+        <div class="col-md-12 text-center search-notes" style="color:#ffffff; font-size:20px; margin-top:55px; margin-bottom:-45px;">
             <h4>Select your dates below to start booking your First Meet and Greet Parking Now</h4>
         </div>
     </div>
 
     @include('parking.partials._search')
 
-    <div class="row">
-        <div class="col-xl-12 text-center padding-10">
+    <div class="row" id="toggle-book-now">
+        <div class="col-xl-md padding-10" style="margin-left:auto; margin-right:auto;">
             <button type="button" id="book-stansted" class="btn btn-info">Book Now at Stansted!</button>
         </div>
     </div>
