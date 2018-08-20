@@ -26,7 +26,6 @@
   .fullscreen-bg__video {
     width: 100%;
     height: auto;
-
   }
 
 }
@@ -36,8 +35,30 @@
     width: auto;
     height: 100%;
   }
-
 }
+
+@media only screen and (max-width: 700px) {
+  .search-notes {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+  }
+
+  #toggle-book-now {
+    margin-top: -30px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .btn .btn-primary .btn-sm {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  #toggle-book-now {
+    margin-top: 82px;
+  }
+}
+
 .main-header{
   text-align: center;
   position: relative;
