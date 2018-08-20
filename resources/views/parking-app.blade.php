@@ -90,6 +90,7 @@
 		        "alwaysShowCalendars": true,
 		        "startDate": "{{ $start_date }}",
 		        "endDate": "{{ $end_date }}",
+                "applyButtonClasses": "btn-info",
 				"locale": {
 					format: "DD/MM/YYYY"
 				}

@@ -115,7 +115,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				$('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
 				$('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
 				$('#return-at-date').val('{{ $end_date }}');
-				// $('#search').trigger('click');
+				$('#search').trigger('click');
 			});
         });
 	</script>
