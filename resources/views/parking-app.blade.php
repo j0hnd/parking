@@ -103,6 +103,9 @@
 
             $('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
             $('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
+            // $('#airport').select2().select2('val', 5);
+            $('#airport').select2().select2('val', $('#airport option:eq(5)').val());
+
         });
 	</script>
 </html>
