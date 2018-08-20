@@ -87,7 +87,7 @@
 				}
 		    }, function(start, end, label) {
 		        // console.log('New date range selected: ' + start.format('HH:mm') + ' to ' + end.format('HH:mm') + ' (predefined range: ' + label + ')');
-				$('#return-at-date').val(end.format('MM/DD/YYYY'));
+				$('#return-at-date').val(end.format('DD/MM/YYYY'));
 				$('#drop-off-time option[value="'+ start.format('HH:mm') +'"]').attr('selected', 'selected');
 				$('#return-at-time option[value="'+ end.format('HH:mm') +'"]').attr('selected', 'selected');
 		    });
