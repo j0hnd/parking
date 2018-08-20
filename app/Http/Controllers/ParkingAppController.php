@@ -90,6 +90,8 @@ class ParkingAppController extends Controller
 			$form = $request->except(['_token']);
             $drop_off_date = explode('-', $form['search']['drop-off-date']);
             $form['search']['drop-off-date'] = trim($drop_off_date[0]);
+			$drop_date = trim($drop_off_date[0]);
+			$return_date = $form['search']['return-at-date'];
 			$products = Products::search($form);
 			$results = Products::prepare_data($products);
 			$drop_off_time = $form['search']['drop-off-time'];
@@ -120,7 +122,9 @@ class ParkingAppController extends Controller
 			'results' => $results,
 			'form' => $form,
 			'services' => $services,
-			'terminals' => $terminals
+			'terminals' => $terminals,
+            'drop_date' => trim($drop_off_date[0]),
+			'return_date' => $form['search']['return-at-date']
 		]);
     }
 
