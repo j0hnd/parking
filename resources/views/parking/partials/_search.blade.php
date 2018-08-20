@@ -34,7 +34,7 @@
         </div>
         <div class="col-xl-2 input2">
             <div class="home-label"> <i><img src="{{ asset('/img/calendar.png') }}"></i> Drop off <br/></div>
-            <input type='text' name="search[drop-off-date]" id="drop-off-date" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="{{ empty($drop_off_date) ? date('d/m/Y') : $drop_off_date }}" />
+            <input type='text' name="search[drop-off-date]" id="drop-off-date" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="" />
         </div>
         <div class="col-xl-1 input3">
             <div class="home-label"><br></div>

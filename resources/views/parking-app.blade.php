@@ -69,6 +69,14 @@
         $mydate = date('Y-m-d', strtotime('+2 days'));
         $start_date = date('d/m/Y', strtotime($mydate));
         $end_date = date('d/m/Y', strtotime($mydate . ' +1 week'));
+
+        if (isset($drop_date)) {
+            $start_date = $drop_date;
+        }
+
+        if (isset($return_date)) {
+            $end_date = $return_date;
+        }
     @endphp
     <script type="text/javascript">
         $(function () {
@@ -91,6 +99,9 @@
 				$('#drop-off-time option[value="'+ start.format('HH:mm') +'"]').attr('selected', 'selected');
 				$('#return-at-time option[value="'+ end.format('HH:mm') +'"]').attr('selected', 'selected');
 		    });
+
+            $('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
+            $('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
         });
 	</script>
 </html>
