@@ -97,9 +97,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	@include('parking.templates.sections')
 @stop
 @php
-	$mydate = date('Y-m-d', strtotime('+7 days'));
-	$start_date = date('d/m/Y', strtotime($mydate));
-	$end_date = date('d/m/Y', strtotime($mydate . ' +1 week'));
+	$mydate = date('Y-m-d H:i', strtotime('+7 days'));
+	$start_date = date('d/m/Y H:i', strtotime($mydate));
+	$end_date = date('d/m/Y H:i', strtotime($mydate . ' +1 week'));
 @endphp
 @section('js')
 	<script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
