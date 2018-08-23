@@ -46,7 +46,7 @@
         </div>
         <div class="col-xl-2 input4">
             <div class="home-label"><i><img src="{{ asset('img/calendar.png') }}"></i> Return at<br/></div>
-            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" placeholder="dd/mm/yyyy" value="{{ empty($return_at_date) ? date('d/m/Y', strtotime($drop_off_date . ' +7 day')) : $return_at_date }}" readonly />
+            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" placeholder="dd/mm/yyyy" value="" readonly />
         </div>
         <div class="col-xl-1 input5">
            <div class="home-label"><br></div>

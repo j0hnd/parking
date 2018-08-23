@@ -68,7 +68,7 @@
     @php
         $mydate = date('Y-m-d H:i', strtotime('+2 days'));
         $start_date = date('d/m/Y H:i', strtotime($mydate));
-        $end_date = date('d/m/Y H:i', strtotime($mydate . ' +1 week'));
+        $end_date = date('d/m/Y H:i', strtotime($mydate . ' +7 days'));
 
         if (isset($drop_date)) {
             $start_date = $drop_date;
@@ -103,9 +103,8 @@
 
             $('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
             $('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
-            // $('#airport').select2().select2('val', 5);
             $('#airport').select2().select2('val', $('#airport option:eq(5)').val());
-
+            $('#return-at-date').val('{{ date('d/m/Y', strtotime($mydate . ' +7 days')) }}');
         });
 	</script>
 </html>
