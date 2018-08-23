@@ -18,10 +18,10 @@ Terms |
     <br/><br/><br/><br/><br/>
 
     <nav class="navbar-expand-lg navbar-light bg-light navbar-2">
-        
+
     </nav>
     <div class="navbar-2-mobile">
-            
+
         </div>
 
         <div class="container outer-con">
@@ -31,7 +31,7 @@ Terms |
         			<div class="container inner-con2">
         				<div class="row">
         					<div class="col-md-12">
-        						<p class="term-head">Terms and Conditions for Airport Parking</p>
+        						<p class="term-head">Terms and Conditions for My Travel Compared Group Ltd.</p>
         						<hr>
         						<p class="term-content"> This is a legal document which contains contractual provisions (the “Terms and Conditions”). The customer’s Statutory Rights are not affected. These terms and conditions of booking are governed by English Law and are subject to the exclusive jurisdiction of the English courts. If any of these terms or part of any term are found to be invalid illegal or unenforceable then such term(s) shall be deemed modified to the minimum extent necessary to make it/them valid, legal and enforceable. If such modification is not possible the relevant provision or part-provision shall be deemed deleted. Any such modification to or deletion of a term or part term shall not affect the validity and enforceability of the rest of these terms.</p>
         					</div>
@@ -41,11 +41,11 @@ Terms |
         			<div class="container">
         				<div class="row">
         					<div class="col-md-8 inner-con">
-        						
+
         						<p class="term-t">Definitions</p>
         						<hr/>
         					<ul class="list">
-        						<li class="term-li">The “company” refers to My Travel Compared (a company registered in England with number 0000000).
+        						<li class="term-li">The “company” refers to My Travel Compared Group Ltd. (a company registered in England with number 11405304).
         						</li>
 								<li class="term-li">The “customer” refers to the person or persons using or proposing to use the services of the company.
 								</li>
@@ -121,7 +121,7 @@ Terms |
         	</div>
         </div>
 
-    
+
 @stop
 
 @section('js')
