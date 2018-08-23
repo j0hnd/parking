@@ -66,9 +66,9 @@
     @include('parking.templates.scripts')
     @yield('js')
     @php
-        $mydate = date('Y-m-d', strtotime('+2 days'));
-        $start_date = date('d/m/Y', strtotime($mydate));
-        $end_date = date('d/m/Y', strtotime($mydate . ' +1 week'));
+        $mydate = date('Y-m-d H:i', strtotime('+2 days'));
+        $start_date = date('d/m/Y H:i', strtotime($mydate));
+        $end_date = date('d/m/Y H:i', strtotime($mydate . ' +1 week'));
 
         if (isset($drop_date)) {
             $start_date = $drop_date;
@@ -92,7 +92,7 @@
 		        "endDate": "{{ $end_date }}",
                 "applyButtonClasses": "btn-info",
 				"locale": {
-					format: "DD/MM/YYYY"
+					format: "DD/MM/YYYY H:mm"
 				}
 		    }, function(start, end, label) {
 		        // console.log('New date range selected: ' + start.format('HH:mm') + ' to ' + end.format('HH:mm') + ' (predefined range: ' + label + ')');
