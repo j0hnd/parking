@@ -154,9 +154,9 @@
 						</div>
                     </div>
                 </div>
-                <a class="plus collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapseOne">
+                <a class="plus" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapseOne">
                 </a>
-                <div id="collapse{{ $i }}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div id="collapse{{ $i }}" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
                     {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
                     <p class="collapsable-text" style="margin-top: 10px;">{{ $result['short_description'] }}</p>
                 </div>
