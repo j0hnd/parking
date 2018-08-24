@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123341298-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-123341298-1');
+        </script>
         <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, width=device-width">
         <title>@yield('title') {{ config('app.name') }}</title>
         <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -38,18 +46,10 @@
             cdn_url = 'http://mytravelcompared.com';
         </script>
         <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123341298-1"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'UA-123341298-1');
-        </script>
+
         <!-- Matomo -->
         <script type="text/javascript">
         var paq = paq || [];
-        / tracker methods like "setCustomDimension" should be called before "trackPageView" /
         _paq.push(['trackPageView']);
         _paq.push(['enableLinkTracking']);
         (function() {
