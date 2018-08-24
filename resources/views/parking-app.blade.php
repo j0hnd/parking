@@ -103,6 +103,8 @@
     @endphp
     <script type="text/javascript">
         $(function () {
+            var county_slug = ['london', 'heathrow', 'gatwick', 'luton', 'stansted', 'southend'];
+
 			$('.datepicker').daterangepicker({
 		        "minYear": {{ date('Y') }},
 		        "maxYear": {{ date('Y', strtotime('+30 years')) }},
@@ -130,6 +132,16 @@
                 $('#airport').select2().select2('val', $('#airport option:eq(5)').val());
                 $('#return-at-date').val('{{ date('d/m/Y', strtotime($mydate . ' +7 days')) }}');
             }
+
+            $(document).on('click', '#search', function (e) {
+                var aid = $('#airport').val() - 1;
+                var slug = county_slug[aid];
+                var country = 'uk';
+                var url = "/search/"+ country +'/airport-parking/search-results/'+ slug;
+
+                $('#search-form').attr('action', url);
+                $('#search-form').trigger('submit');
+            });
         });
 	</script>
 </html>

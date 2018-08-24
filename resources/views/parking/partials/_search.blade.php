@@ -57,7 +57,7 @@
             </select>
         </div>
         <div class="col-xl-3 input6">
-            <button type="submit" id="search" class="btn btn-primary btn-sm"><i><img src="{{ asset('/img/search.png') }}"/></i> Search Car Park</button>
+            <button type="button" id="search" class="btn btn-primary btn-sm"><i><img src="{{ asset('/img/search.png') }}"/></i> Search Car Park</button>
         </div>
     </div>
     {{ csrf_field() }}
