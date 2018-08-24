@@ -128,6 +128,7 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('/affiliates/{id}/delete', 'AffiliatesController@delete');
 
 	Route::resource('coupons', 'CouponController')->except(['update', 'destroy', 'show']);
+	Route::post('/coupons/delete/{id}', 'CouponController@delete');
 	Route::get('/coupons/generate', 'CouponController@generate');
 });
 
