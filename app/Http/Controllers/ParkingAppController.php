@@ -98,34 +98,57 @@ class ParkingAppController extends Controller
 			$return_at_time = $form['search']['return-at-time'];
 			$services = CarparkServices::active()->orderBy('service_name', 'asc')->get();
 			$terminals = Subcategories::groupBy('subcategory_name')->orderBy('subcategory_name', 'asc')->get();
-        } else {
-        	$drop_off_time = "";
-        	$return_at_time = "";
-        	$results = null;
-        	$services = null;
-        	$terminals = null;
+
+			$selected = Carbon::now(new DateTimeZone(config('app.timezone')));
+	        $seconds = strtotime($selected->format('H:i'));
+	        $rounded = round($seconds / (5 * 60)) * (5 * 60);
+	        $selected_time = date('H:i', $rounded);
+
+	        $airports = Airports::active()->get();
+	        $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
+	        $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
+
+	        return view('parking.search', [
+				'airports' => $airports,
+				'drop_off_time_interval' => $drop_off_time_interval,
+				'return_at_time_interval' => $return_at_time_interval,
+				'results' => $results,
+				'form' => $form,
+				'services' => $services,
+				'terminals' => $terminals,
+	            'drop_date' => trim($drop_off_date[0]),
+				'return_date' => $form['search']['return-at-date']
+			]);
+        // } else {
+        // 	$drop_off_time = "";
+        // 	$return_at_time = "";
+        // 	$results = null;
+        // 	$services = null;
+        // 	$terminals = null;
 		}
 
-		$selected = Carbon::now(new DateTimeZone(config('app.timezone')));
-        $seconds = strtotime($selected->format('H:i'));
-        $rounded = round($seconds / (5 * 60)) * (5 * 60);
-        $selected_time = date('H:i', $rounded);
+		abort(404);
 
-        $airports = Airports::active()->get();
-        $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
-        $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
-
-        return view('parking.search', [
-			'airports' => $airports,
-			'drop_off_time_interval' => $drop_off_time_interval,
-			'return_at_time_interval' => $return_at_time_interval,
-			'results' => $results,
-			'form' => $form,
-			'services' => $services,
-			'terminals' => $terminals,
-            'drop_date' => trim($drop_off_date[0]),
-			'return_date' => $form['search']['return-at-date']
-		]);
+		// $selected = Carbon::now(new DateTimeZone(config('app.timezone')));
+        // $seconds = strtotime($selected->format('H:i'));
+        // $rounded = round($seconds / (5 * 60)) * (5 * 60);
+        // $selected_time = date('H:i', $rounded);
+		//
+        // $airports = Airports::active()->get();
+        // $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
+        // $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
+		//
+        // return view('parking.search', [
+		// 	'airports' => $airports,
+		// 	'drop_off_time_interval' => $drop_off_time_interval,
+		// 	'return_at_time_interval' => $return_at_time_interval,
+		// 	'results' => $results,
+		// 	'form' => $form,
+		// 	'services' => $services,
+		// 	'terminals' => $terminals,
+        //     'drop_date' => trim($drop_off_date[0]),
+		// 	'return_date' => $form['search']['return-at-date']
+		// ]);
     }
 
     public function payment(Request $request)
