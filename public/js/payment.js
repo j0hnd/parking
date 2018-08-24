@@ -16,6 +16,19 @@ $(document).ready(function(){
     autoFocus: true,
     excluded: ':disabled',
     onStepChanging: function (e, currentIndex, newIndex) {
+      var fv = $('#payment_wizard').data('formValidation'),
+        $container = $('#payment_wizard').find('section[data-step="' + currentIndex +'"]');
+
+      // Validate the container
+      fv.validateContainer($container);
+
+      var isValidStep = fv.isValidContainer($container);
+
+      if (isValidStep === false || isValidStep === null) {
+        // Do not jump to the next step
+        return false;
+      }
+
       if (currentIndex == 0 && newIndex == 1) {
         $('#payment_wizard-p-0').hide();
         $('#payment_wizard-p-1').show();
@@ -42,8 +55,6 @@ $(document).ready(function(){
         $('#payment_wizard-p-2').show();
 
         var bid = $('#bid').val();
-        // $('#drop_off_at').val($('#drop-off-date-src').val() + ' ' + $('#drop-off-time-src').val());
-        // $('#return_at').val($('#return-at-date-src').val() + ' ' + $('#return-at-time-src').val());
         $('#flight_no_going').val($('#departure-src').val());
         $('#flight_no_return').val($('#arrival-src').val());
         $('#departure_terminal').val($('#departure-terminal-src').val());
@@ -126,6 +137,98 @@ $(document).ready(function(){
         }
       });
     }
+  })
+  .formValidation({
+      framework: 'bootstrap',
+      fields: {
+          firstname: {
+              validators: {
+                  notEmpty: {
+                      message: 'The first name is a required field'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9\- ]+$/,
+                      message: 'The first name can only consist of alphabetical, number and hyphen'
+                  }
+              }
+          },
+          lastname: {
+              validators: {
+                  notEmpty: {
+                      message: 'The last name is a required field'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9\- ]+$/,
+                      message: 'The last name can only consist of alphabetical, number and hyphen'
+                  }
+              }
+          },
+          email: {
+              validators: {
+                  notEmpty: {
+                      message: 'The email address is required'
+                  },
+                  emailAddress: {
+                      message: 'The input is not a valid email address'
+                  }
+              }
+          },
+          confirm_email: {
+              validators: {
+                  notEmpty: {
+                      message: 'The confirm email is required'
+                  },
+                  identical: {
+                      field: 'email',
+                      message: 'The confirm email must be the same as the value in email field'
+                  }
+              }
+          },
+          phone: {
+              validators: {
+                  phone: {
+                      country: 'country_code',
+                      message: 'The value is not valid %s phone number'
+                  }
+              }
+          },
+          drop_off_date: {
+              validators: {
+                  notEmpty: {
+                      message: 'The drop off date is a required field'
+                  },
+                  date: {
+                      format: 'DD/MM/YYYY',
+                      message: 'The value is not a valid date'
+                  }
+              }
+          },
+          return_at_date: {
+              validators: {
+                  notEmpty: {
+                      message: 'The return at date is a required field'
+                  },
+                  date: {
+                      format: 'DD/MM/YYYY',
+                      message: 'The value is not a valid date'
+                  }
+              }
+          },
+          flight_no_going: {
+              validators: {
+                  notEmpty: {
+                      message: 'The departure flight no is a required field'
+                  }
+              }
+          },
+          flight_no_return: {
+              validators: {
+                  notEmpty: {
+                      message: 'The arrival flight no is a required field'
+                  }
+              }
+          }
+      }
   });
 
   // $("#payment_wizard").steps({
