@@ -28,20 +28,11 @@
                                 <th>Promo Codes</th>
                                 <th>Discount</th>
                                 <th>Expiry Date</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                        @if(count($promocodes))
-                            @foreach($promocodes as $promocode)
-                                @if(strtotime(date('Y-m-d')) < strtotime($promocode->expiry_date))
-                                <tr>
-                                    <td>{{ $promocode->code }}</td>
-                                    <td>{{ $promocode->reward * 100 }}%</td>
-                                    <td>{{ date('d/m/Y', strtotime($promocode->expiry_date)) }}</td>
-                                </tr>
-                                @endif
-                            @endforeach
-                        @endif
+                        <tbody id="coupons-container">
+                            @include('app.Coupon.partials._coupons')
                         </tbody>
                         <tfoot>
                         @if(count($promocodes))
@@ -60,7 +51,26 @@
 @section('scripts')
 <script type="text/javascript">
 $(function () {
-
+	$(document).on('click', '#toggle-delete', function (e) {
+		e.preventDefault();
+        var id = $(this).data('id');
+        if (confirm("Delete this coupon?")) {
+            $.ajax({
+                url: "{{ url('/admin/coupons/delete') }}/" + id,
+                type: 'post',
+                data: { _token: "{{ csrf_token() }}" },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        $('#coupons-container').html(response.html);
+                        alert('Coupon has been deleted');
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+		}
+    });
 });
 </script>
 @stop

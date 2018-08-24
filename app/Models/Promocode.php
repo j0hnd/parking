@@ -17,6 +17,7 @@ class Promocode extends BaseModel
     	'reward',
     	'quantity',
         'is_used',
-		'expiry_date'
+		'expiry_date',
+        'deleted_at'
     ];
 }
