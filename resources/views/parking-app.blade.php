@@ -38,6 +38,29 @@
             cdn_url = 'http://mytravelcompared.com';
         </script>
         <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123341298-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-123341298-1');
+        </script>
+        <!-- Matomo -->
+        <script type="text/javascript">
+        var paq = paq || [];
+        / tracker methods like "setCustomDimension" should be called before "trackPageView" /
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+        var u="//analytics.mysocialcampaign.com/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '33']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+        </script>
+        <!-- End Matomo Code -->
         @yield('tags')
         @yield('css')
         <style media="screen">
