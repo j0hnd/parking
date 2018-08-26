@@ -7,7 +7,7 @@
                 <div class="box-header">
                     <a href="{{ url('/admin/coupons/generate') }}" class="btn bg-navy btn-flat">Generate Coupons</a>
 
-                    <div class="box-tools" style="margin-top: 7px">
+                    {{-- <div class="box-tools" style="margin-top: 7px">
                         <form action="{{ url('/admin/users/search') }}" method="post">
                             <div class="input-group input-group-sm" style="width: 150px;">
                                 <input type="text" name="search" class="form-control pull-right" placeholder="Search">
@@ -18,7 +18,7 @@
                             </div>
                             {{ csrf_field() }}
                         </form>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="box-body table-responsive no-padding">

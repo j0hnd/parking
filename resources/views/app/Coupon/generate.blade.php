@@ -54,6 +54,7 @@
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Generate</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
