@@ -6,7 +6,19 @@
     }
 @endphp
 
-@if($mode != 'edit')
+@if($mode == 'edit')
+<div class="form-group">
+    <label class="col-sm-2 control-label">Coupon Code </label>
+
+    <div class="col-sm-9">
+        <input type="text" class="form-control" name="no_coupons"
+               placeholder="Number of Coupon"
+               value="{{ $coupon->code }}"
+               readonly
+               autocomplete="off">
+    </div>
+</div>
+@else
 <div class="form-group">
     <label class="col-sm-2 control-label">Number of Coupons </label>
 
