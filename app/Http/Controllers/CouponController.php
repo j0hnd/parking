@@ -75,4 +75,29 @@ class CouponController extends Controller
 
 		return response()->json($response);
 	}
+
+	public function edit(Request $request)
+	{
+		$page_title = "Edit Coupon";
+		$coupon = Promocode::findOrFail($request->coupon);
+		return view('app.Coupon.edit', compact('page_title', 'coupon'));
+	}
+
+    public function update(Request $request)
+    {
+		$current = Carbon::now();
+
+		if ($request->isMethod('post')) {
+			$form = $request->only(['id', 'reward', 'expiry_date']);
+			$form['reward'] = $form['reward'] / 100;
+			$form['expiry_date'] = date('Y-m-d', strtotime(str_replace('/', '-', $form['expiry_date'])));
+			$promocode = Promocode::findOrFail($form['id']);
+
+			if ($promocode->update($form)) {
+				return redirect('/admin/coupons')->with('success', 'Coupon has been updated');
+			} else {
+				return back()->withErrors(['error' => 'Unable to update coupon']);
+			}
+		}
+    }
 }
