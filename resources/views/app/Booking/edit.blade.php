@@ -37,6 +37,7 @@
                     </div>
 
                     <div class="box-footer">
+                        <button type="button" id="toggle-edit" class="btn btn-warning pull-left">Edit</button>
                         <a href="{{ url('/admin/booking') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Update</button>
                     </div>
@@ -161,6 +162,41 @@ $(function () {
         });
     });
 
+    $(document).on('click', '#toggle-edit', function () {
+        if ($(this).text() == 'Edit') {
+            $(this).text('Cancel');
+            $(this).removeClass('btn-warning');
+            $(this).addClass('btn-default');
+
+            // order title
+            $('#order-title-container-default').addClass('hidden');
+            $('#order-title-container-edit').removeClass('hidden');
+
+            // drop off
+            $('#drop-off-container-default').addClass('hidden');
+            $('#drop-off-container-edit').removeClass('hidden');
+
+            // return at
+            $('#return-at-container-default').addClass('hidden');
+            $('#return-at-container-edit').removeClass('hidden');
+        } else {
+            $(this).text('Edit');
+            $(this).removeClass('btn-default');
+            $(this).addClass('btn-warning');
+
+            // order title
+            $('#order-title-container-default').removeClass('hidden');
+            $('#order-title-container-edit').addClass('hidden');
+
+            // drop off
+            $('#drop-off-container-default').removeClass('hidden');
+            $('#drop-off-container-edit').addClass('hidden');
+
+            // return at
+            $('#return-at-container-default').removeClass('hidden');
+            $('#return-at-container-edit').addClass('hidden');
+        }
+    });
 
     $("#order-title").select2({
         placeholder: '-- Order Title --'

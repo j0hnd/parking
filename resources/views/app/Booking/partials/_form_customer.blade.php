@@ -77,7 +77,7 @@
 
         <div class="new-customer-container {{ (isset($booking)) ? "" : "hidden" }}">
             <div class="box-header with-border">
-                <h4 class="box-title">Reserverion For</h4>
+                <h4 class="box-title">Reservation For</h4>
             </div>
 
             <div class="box-body">
