@@ -304,6 +304,7 @@ class ParkingAppController extends Controller
 					$bookings['vehicle_color']        = $booking_data['vehicle_color'];
 					$bookings['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
 					$bookings['return_at']            = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
+                    $bookings['payment_method']       = 'paypal';
 
 					$booking = Bookings::create($bookings);
 					if (!empty($booking)) {
@@ -900,8 +901,12 @@ class ParkingAppController extends Controller
 					}
 
 					list($product_id, $price_id) = explode(':', $form['ids']);
-					$drop_off  = str_replace('/', '-', $session_request['drop_off']);
-					$return_at = str_replace('/', '-', $session_request['return_at']);
+
+                    list($drop_off, $x1, $x2) = explode(' ', $session_request['drop_off']);
+                    list($return_at, $x1) = explode(' ', $session_request['return_at']);
+
+					$drop_off  = str_replace('/', '-', $drop_off);
+					$return_at = str_replace('/', '-', $return_at);
 
 					$user = Sentinel::getUser();
 					if (is_null($user)) {
@@ -930,6 +935,7 @@ class ParkingAppController extends Controller
 					$form['booking_fees']         = $form['booking_fee'];
 					$form['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_off));
 					$form['return_at']            = date('Y-m-d H:i:s', strtotime($return_at));
+					$form['payment_method']       = 'stripe';
 
 					$_booking = Bookings::where('booking_id', $session_response['booking_id']);
 					if ($_booking->count()) {
