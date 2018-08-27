@@ -901,8 +901,12 @@ class ParkingAppController extends Controller
 					}
 
 					list($product_id, $price_id) = explode(':', $form['ids']);
-					$drop_off  = str_replace('/', '-', $session_request['drop_off']);
-					$return_at = str_replace('/', '-', $session_request['return_at']);
+
+                    list($drop_off, $x1, $x2) = explode(' ', $session_request['drop_off']);
+                    list($return_at, $x1) = explode(' ', $session_request['return_at']);
+
+					$drop_off  = str_replace('/', '-', $drop_off);
+					$return_at = str_replace('/', '-', $return_at);
 
 					$user = Sentinel::getUser();
 					if (is_null($user)) {
