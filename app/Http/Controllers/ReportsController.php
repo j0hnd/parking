@@ -31,14 +31,15 @@ class ReportsController extends Controller
 			$query->where('slug', 'vendor');
 		});
 
-		if ($vendors->count()) {
-			foreach ($vendors->get() as $vendor) {
-				$vendors_id[] = $vendor->members->company_id;
-			}
+		// if ($vendors->count()) {
+		// 	foreach ($vendors->get() as $vendor) {
+		// 		$vendors_id[] = $vendor->members->company_id;
+		// 	}
+		//
+		// 	$vendor_list = Carpark::select('id', 'name')->active()->whereIn('id', $vendors_id)->orderBy('name', 'asc');
+		// }
 
-			$vendor_list = Carpark::select('id', 'name')->active()->whereIn('id', $vendors_id)->orderBy('name', 'asc');
-		}
-
+		$vendor_list = Carpark::select('id', 'name')->active()->orderBy('name', 'asc');
 		$this->vendors = $vendor_list;
 	}
 
