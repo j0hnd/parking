@@ -45,6 +45,16 @@
 							@php
 								$revenue_share = number_format($booking->price_value * ($booking->products[0]->revenue_share/100), 2);
 
+								if (isset($booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->company->company_name)) {
+									$affiliate_name = $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->company->company_name;
+								} elseif(!empty($booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->first_name) and
+								         !empty($booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->last_name)) {
+
+							 		$affiliate_name = $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->first_name." ". $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->last_name;
+								} else {
+									$affiliate_name = "N/A";
+								}
+
 								if (isset($booking->affiliate_bookings[0])) {
 									$affiliate_percent = round($booking->affiliate_bookings[0]->affiliates[0]->percent_travel_agent / 100, 2);
 									$commission = round($revenue_share * $affiliate_percent, 2);
@@ -57,7 +67,7 @@
 								<td class="text-center ">{{ $booking->customers->first_name }} {{ $booking->customers->last_name }}</td>
 								<td class="text-center">{{ $booking->products[0]->airport[0]->airport_name }}</td>
 								<td class="text-right">£{{ $booking->price_value }}</td>
-								<td class="text-center">{{ $booking->affiliate_bookings[0]->affiliates[0]->travel_agent->members->company->company_name }}</td>
+								<td class="text-center">{{ $affiliate_name }}</td>
 								<td class="text-right">£{{ $commission }}</td>
 							</tr>
 						@endforeach

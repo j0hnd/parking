@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserFormRequest;
 use App\Mail\TemporaryPassword;
+use App\Mail\ActivatedAccount;
 use App\Models\Carpark;
 use App\Models\Companies;
 use App\Models\Members;
@@ -29,8 +30,9 @@ class UsersController extends Controller
         $roles = Roles::all();
         $page_title = "Add User";
         $user_info = null;
+        $companies = Companies::selectRaw("id, company_name AS name")->active()->orderBy('company_name', 'asc')->get();
 		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
-        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'carparks'));
+        return view('app.User.create', compact('roles', 'page_title', 'user_info', 'companies', 'carparks'));
     }
 
     public function store(UserFormRequest $request)
@@ -72,7 +74,7 @@ class UsersController extends Controller
                     $role = Sentinel::findRoleById($form_user['role_id']);
                     $role->users()->attach($user);
 
-                    Mail::to($form_user['email'])->send(new TemporaryPassword(['password' => $temporary_password]));
+                    Mail::to($form_user['email'])->send(new TemporaryPassword(['first_name' => $form_member['first_name'], 'password' => $temporary_password]));
 
                     DB::commit();
 
@@ -194,7 +196,7 @@ class UsersController extends Controller
         $temporary_password = str_random(8);
         $user = User::findOrFail($id);
         if ($user->update(['password' => $temporary_password])) {
-            Mail::to($user->email)->send(new TemporaryPassword(['password' => $temporary_password]));
+            Mail::to($user->email)->send(new TemporaryPassword(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
             $response = ['success' => true];
         }
 
@@ -220,7 +222,7 @@ class UsersController extends Controller
 
 		if (Activation::create($user)) {
 			if ($user->update(['password' => $temporary_password])) {
-				Mail::to($user->email)->send(new TemporaryPassword(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
+				Mail::to($user->email)->send(new ActivatedAccount(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
 				$response = ['success' => true];
 			}
 		}

@@ -12,6 +12,9 @@ class Bookings extends BaseModel
 		'product_id',
 		'price_id',
 		'customer_id',
+		'client_first_name',
+		'client_last_name',
+		'client_email',
 		'order_title',
 		'price_value',
 		'revenue_value',
@@ -25,7 +28,9 @@ class Bookings extends BaseModel
 		'vehicle_color',
 		'sms_confirmation_fee',
 		'cancellation_waiver',
-		'booking_fees'
+		'booking_fees',
+		'departure_terminal',
+		'arrival_terminal'
 	];
 
 	protected $dates = ['drop_off_at', 'return_at', 'deleted_at'];
@@ -82,6 +87,8 @@ class Bookings extends BaseModel
 				$query->orWhere('customers.first_name', 'like', "{$search_str}%");
 				$query->orWhere('customers.last_name', 'like', "{$search_str}%");
 				$query->orWhere('customers.email', 'like', "{$search_str}%");
+				$query->orWhere('bookings.client_first_name', 'like', "{$search_str}%");
+				$query->orWhere('bookings.client_last_name', 'like', "{$search_str}%");
 			});
 
 		if ($result->count()) {

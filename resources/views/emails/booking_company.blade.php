@@ -44,6 +44,12 @@
 										<tbody>
 										<tr>
 											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Booking ID:</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="100">{{ $booking->booking_id }}</td>
+										</tr>
+										<tr>
+											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Car Park:</td>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="100">{{ $booking->order_title }}</td>
@@ -54,34 +60,31 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="156">£{{ $booking->price_value }}</td>
 										</tr>
-										<!--
                                         <tr>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Booking Fee:</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">No. of Passengers:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->booking_fees }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->booking_details->no_of_passengers_in_vehicle }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">SMS Fee
-												Cost:</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Travelling with large baggage:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->sms_confirmation_fee }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->booking_details->with_oversize_baggage == 1 ? 'Yes' : 'No' }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Cancellation Waiver
-												Cost:</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Travelling with children or disabled person:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->cancellation_waiver }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->booking_details->with_children_pwd == 1 ? 'Yes' : 'No' }}</td>
 										</tr>
-										<tr>
+										{{-- <tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Overall
 												Cost:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->price_value + $booking->booking_fees + $booking->sms_confirmation_fee + $booking->cancellation_waiver }}</td> 
-										</tr>-->
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->price_value + $booking->booking_fees + $booking->sms_confirmation_fee + $booking->cancellation_waiver }}</td>
+										</tr> --}}
 										</tbody>
 									</table>
 								</td>
@@ -105,7 +108,11 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Name:</td>
 											<td width="8">&nbsp;</td>
+											@if(!empty($booking->client_first_name) and !empty($booking->client_last_name))
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($booking->client_first_name) }} {{ ucwords($booking->client_last_name) }}</td>
+											@else
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($customer->first_name) }} {{ ucwords($customer->last_name) }}</td>
+											@endif
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
@@ -123,7 +130,7 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Vehicle Registration:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($booking->car_registion_no) ? "N/A" : $booking->car_registion_no }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($booking->car_registration_no) ? "N/A" : $booking->car_registration_no }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
@@ -179,15 +186,39 @@
 										<tbody>
 										<tr>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Drop Off Date:</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Departure Date:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->drop_off_at->format('d M Y H:i') }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->drop_off_at->format('d M Y') }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Return Date:</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Departure Time:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->return_at->format('d M Y H:i') }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->drop_off_at->format('H:i') }}</td>
+										</tr>
+										<tr>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Arrival Date:</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->return_at->format('d M Y') }}</td>
+										</tr>
+										<tr>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Arrival Time:</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->return_at->format('H:i') }}</td>
+										</tr>
+										<tr>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Flight No. (Departure):</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->flight_no_going }}</td>
+										</tr>
+										<tr>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top" width="100">Flight No. (Arrival):</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->flight_no_return }}</td>
 										</tr>
 										</tbody>
 									</table>
@@ -246,4 +277,3 @@
 	<!-- 1 Column Text : END -->
 
 @stop
-

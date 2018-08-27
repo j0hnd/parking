@@ -9,6 +9,7 @@ use App\Mail\RegistrationConfirmation;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\SendBookingConfirmationVendor;
 use App\Mail\Signup;
+use App\Mail\NewSignUp;
 use App\Models\AffiliateBookings;
 use App\Models\Affiliates;
 use App\Models\Airports;
@@ -43,6 +44,7 @@ use Twilio\Rest\Client;
 use DB;
 use Hash;
 use Sentinel;
+use DateTimeZone;
 
 
 class ParkingAppController extends Controller
@@ -67,8 +69,15 @@ class ParkingAppController extends Controller
 		}
 
         $airports = Airports::active()->get();
-		$drop_off_time_interval = Common::get_times(date('H:i'), '+5 minutes');
-		$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+
+        $selected = Carbon::now(new DateTimeZone(config('app.timezone')));
+        $seconds = strtotime($selected->format('H:i'));
+        $rounded = round($seconds / (5 * 60)) * (5 * 60);
+        $selected_time = date('H:i', $rounded);
+
+		$drop_off_time_interval = Common::get_times($selected_time, '+5 minutes');
+		$return_at_time_interval = Common::get_times($selected_time, '+5 minutes');
+
 		$posts = Posts::active()->published()->orderBy('created_at', 'desc')->take(3)->get();
         return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'posts'));
     }
@@ -79,48 +88,87 @@ class ParkingAppController extends Controller
 
         if ($request->isMethod('post')) {
 			$form = $request->except(['_token']);
+            $drop_off_date = explode('-', $form['search']['drop-off-date']);
+            $form['search']['drop-off-date'] = trim($drop_off_date[0]);
+			$drop_date = trim($drop_off_date[0]);
+			$return_date = $form['search']['return-at-date'];
 			$products = Products::search($form);
 			$results = Products::prepare_data($products);
 			$drop_off_time = $form['search']['drop-off-time'];
 			$return_at_time = $form['search']['return-at-time'];
 			$services = CarparkServices::active()->orderBy('service_name', 'asc')->get();
 			$terminals = Subcategories::groupBy('subcategory_name')->orderBy('subcategory_name', 'asc')->get();
-        } else {
-        	$drop_off_time = "";
-        	$return_at_time = "";
-        	$results = null;
-        	$services = null;
-        	$terminals = null;
+
+			$selected = Carbon::now(new DateTimeZone(config('app.timezone')));
+	        $seconds = strtotime($selected->format('H:i'));
+	        $rounded = round($seconds / (5 * 60)) * (5 * 60);
+	        $selected_time = date('H:i', $rounded);
+
+	        $airports = Airports::active()->get();
+	        $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
+	        $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
+
+	        return view('parking.search', [
+				'airports' => $airports,
+				'drop_off_time_interval' => $drop_off_time_interval,
+				'return_at_time_interval' => $return_at_time_interval,
+				'results' => $results,
+				'form' => $form,
+				'services' => $services,
+				'terminals' => $terminals,
+	            'drop_date' => trim($drop_off_date[0]),
+				'return_date' => $form['search']['return-at-date']
+			]);
+        // } else {
+        // 	$drop_off_time = "";
+        // 	$return_at_time = "";
+        // 	$results = null;
+        // 	$services = null;
+        // 	$terminals = null;
 		}
 
-        $airports = Airports::active()->get();
-        $drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes', $drop_off_time);
-        $return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes', $return_at_time);
+		abort(404);
 
-        return view('parking.search', [
-			'airports' => $airports,
-			'drop_off_time_interval' => $drop_off_time_interval,
-			'return_at_time_interval' => $return_at_time_interval,
-			'results' => $results,
-			'form' => $form,
-			'services' => $services,
-			'terminals' => $terminals
-		]);
+		// $selected = Carbon::now(new DateTimeZone(config('app.timezone')));
+        // $seconds = strtotime($selected->format('H:i'));
+        // $rounded = round($seconds / (5 * 60)) * (5 * 60);
+        // $selected_time = date('H:i', $rounded);
+		//
+        // $airports = Airports::active()->get();
+        // $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
+        // $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
+		//
+        // return view('parking.search', [
+		// 	'airports' => $airports,
+		// 	'drop_off_time_interval' => $drop_off_time_interval,
+		// 	'return_at_time_interval' => $return_at_time_interval,
+		// 	'results' => $results,
+		// 	'form' => $form,
+		// 	'services' => $services,
+		// 	'terminals' => $terminals,
+        //     'drop_date' => trim($drop_off_date[0]),
+		// 	'return_date' => $form['search']['return-at-date']
+		// ]);
     }
 
     public function payment(Request $request)
 	{
+        $payment_confirm = 0;
+        $cancel = 0;
+
 		if ($request->isMethod('post') || isset($request->token)) {
-			$form = $request->only(['products', 'drop_off', 'return_at']);
-			$token = null;
-			$details = null;
-			$cancel = isset($request->cancel) ? $request->cancel : 0;
+			$form      = $request->only(['products', 'drop_off', 'return_at']);
+			$token     = null;
+			$details   = null;
+			$cancel    = isset($request->cancel) ? 1 : 0;
+			$terminals = null;
 
 			if (isset($request->token)) {
 				$sessions = Sessions::where('session_id', session('sess_id'))->first();
 				$details = json_decode($sessions->response, true);
 				$form = json_decode($sessions->requests, true);
 				$token = $request->token;
+				$payment_confirm = 1;
 			} else {
 				if (!session()->has('sess_id')) {
 					$sessions = Sessions::create(['request_id' => session()->getId(), 'requests' => json_encode($form)]);
@@ -145,8 +193,14 @@ class ParkingAppController extends Controller
 			$sms_confirmation_fee = Fees::active()->where('fee_name', 'sms_confirmation_fee')->first();
 			$cancellation_waiver  = Fees::active()->where('fee_name', 'cancellation_waiver')->first();
 
-			$drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes');
-			$return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+			// $drop_off_time_interval  = Common::get_times(date('H:i'), '+5 minutes');
+			// $return_at_time_interval = Common::get_times(date('H:i'), '+5 minutes');
+
+			if (isset($airport->subcategories)) {
+				foreach ($airport->subcategories as $terminal) {
+	                $terminals .= "<option value='".$terminal->id."'>".$terminal->subcategory_name."</option>";
+				}
+			}
 
 			$booking_id = session('bid');
 			$vehicle_make = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
@@ -167,11 +221,13 @@ class ParkingAppController extends Controller
 				'token',
 				'details',
 				'form',
-				'drop_off_time_interval',
-				'return_at_time_interval',
+				// 'drop_off_time_interval',
+				// 'return_at_time_interval',
 				'booking_id',
 				'cancel',
-				'vehicle_make'
+				'vehicle_make',
+                'payment_confirm',
+                'terminals'
 			));
 		}
 	}
@@ -217,7 +273,6 @@ class ParkingAppController extends Controller
 
 					// save booking data
 					$products = Products::findOrFail($product_id);
-//					$revenue_value = number_format(($booking_data['total'] * 1) * ($products->revenue_share / 100), 2);
 
 					$price = $booking_data['total'] - $booking_data['cancellation'] - $booking_data['sms'] - $booking_data['booking_fee'];
 					$revenue_value = $price * ($products->revenue_share / 100);
@@ -229,23 +284,26 @@ class ParkingAppController extends Controller
 						$user_id = $user->id;
 					}
 
-					$bookings['order_title'] = $booking_data['product'];
-					$bookings['user_id'] = $user_id;
-					$bookings['customer_id'] = $customer->id;
-					$bookings['product_id'] =  $product_id;
-					$bookings['price_id'] = $price_id;
-					$bookings['price_value'] = $price;
-					$bookings['revenue_value'] = $revenue_value;
-					$bookings['coupon'] = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
+					$bookings['order_title']          = $booking_data['product'];
+					$bookings['user_id']              = $user_id;
+					$bookings['customer_id']          = $customer->id;
+					$bookings['product_id']           = $product_id;
+					$bookings['price_id']             = $price_id;
+					$bookings['price_value']          = $price;
+					$bookings['revenue_value']        = $revenue_value;
+					$bookings['client_first_name']    = $form['firstname'];
+                    $bookings['client_last_name']     = $form['lastname'];
+                    $bookings['client_email']         = $form['email'];
+					$bookings['coupon']               = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
-					$bookings['cancellation_waiver'] = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
-					$bookings['booking_fees'] = $booking_data['booking_fee'];
-					$bookings['car_registration_no'] = $booking_data['car_registration_no'];
-					$bookings['vehicle_make']  = $booking_data['vehicle_make'];
-					$bookings['vehicle_model'] = $booking_data['vehicle_model'];
-					$bookings['vehicle_color'] = $booking_data['vehicle_color'];
-					$bookings['drop_off_at'] = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
-					$bookings['return_at'] = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
+					$bookings['cancellation_waiver']  = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
+					$bookings['booking_fees']         = $booking_data['booking_fee'];
+					$bookings['car_registration_no']  = $booking_data['car_registration_no'];
+					$bookings['vehicle_make']         = $booking_data['vehicle_make'];
+					$bookings['vehicle_model']        = $booking_data['vehicle_model'];
+					$bookings['vehicle_color']        = $booking_data['vehicle_color'];
+					$bookings['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
+					$bookings['return_at']            = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
 
 					$booking = Bookings::create($bookings);
 					if (!empty($booking)) {
@@ -292,23 +350,22 @@ class ParkingAppController extends Controller
 
 				$booking = Bookings::where(['id' => $form['bid'], 'is_paid' => 0])->first();
 				if ($booking) {
-					$drop_date = str_replace('/', '-', $form['drop_off_at']);
-					$return_date = str_replace('/', '-', $form['return_at']);
-
-					$drop_off = Carbon::createFromTimestamp(strtotime($drop_date));
-					$return_at = Carbon::createFromTimestamp(strtotime($return_date));
+					$drop_off   = $booking->drop_off_at;
+					$return_at  = $booking->return_at;
+                    $airport_id = $booking->products[0]->airport[0]->id;
 
 					$update = [
-						'drop_off_at' => $drop_off->format('Y-m-d H:i'),
-						'return_at' => $return_at->format('Y-m-d H:i'),
-						'flight_no_going' => $form['flight_no_going'],
-						'flight_no_return' => $form['flight_no_return'],
+						'flight_no_going'    => $form['flight_no_going'],
+						'flight_no_return'   => $form['flight_no_return'],
+                        'departure_terminal' => $form['departure_terminal'],
+                        'arrival_terminal'   => $form['arrival_terminal'],
 						'is_paid' => 1,
 						'paid_at' => Carbon::now()
 					];
 
 					Bookings::where(['id' => $booking->id, 'is_paid' => 0])->update($update);
 					$customer = Customers::findOrFail($booking->customer_id);
+                    $company  = Companies::findOrFail($booking->products[0]->carpark->company_id);
 
 					$details = [
 						'booking_id' => $form['bid'],
@@ -329,20 +386,50 @@ class ParkingAppController extends Controller
 
 					list($airport_name, $service_name) = explode('-', $booking->order_title);
 
+                    if (!empty($form['departure_terminal'])) {
+                        $departure_terminal      = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['departure_terminal']])->first();
+                        $departure_terminal_name = $departure_terminal->subcategory_name;
+                    } else {
+                        $departure_terminal_name = "N/A";
+                    }
+
+                    if (!empty($form['arrival_terminal'])) {
+                        $arrival_terminal      = Subcategories::where(['airport_id' => $airport_id, 'id' => $form['arrival_terminal']])->first();
+                        $arrival_terminal_name = $arrival_terminal->subcategory_name;
+                    } else {
+                        $arrival_terminal_name = "N/A";
+                    }
+
+                    if (!empty($booking->client_first_name)) {
+                        $name = ucwords($booking->client_first_name);
+                    } elseif (!empty($customer->first_name)) {
+                        $name = ucwords($customer->first_name);
+                    } else {
+                        $name = "";
+                    }
+
 					$response = ['success' => true, 'data' => [
 						'id'              => $booking->booking_id,
-						'name'            => empty($customer->first_name) ? "" : ucwords($customer->first_name),
+						'name'            => $name,
 						'airport'         => $airport_name,
 						'service'         => $service_name,
 						'drop_off'        => $drop_off->format('d/m/Y H:i'),
 						'return_at'       => $return_at->format('d/m/Y H:i'),
-						'vendor_phone_no' => empty($booking->products[0]->carpark->company->phone_no) ? "N/A" : $booking->products[0]->carpark->company->phone_no,
-						'vendor_email'    => empty($booking->products[0]->carpark->company->email) ? "N/A" : $booking->products[0]->carpark->company->email,
+                        'vendor_name'     => $booking->products[0]->carpark->name,
+                        'vendor_contact'  => empty($booking->products[0]->contact_details->contact_person_name) ? "N/A" : $booking->products[0]->contact_details->contact_person_name,
+						'vendor_phone_no' => empty($booking->products[0]->contact_details->contact_person_phone_no) ? "N/A" : $booking->products[0]->contact_details->contact_person_phone_no,
+						'vendor_email'    => empty($booking->products[0]->contact_details->contact_person_email) ? "N/A" : $booking->products[0]->contact_details->contact_person_email,
 						'registration_no' => empty($booking->car_registration_no) ? "N/A" : strtoupper($booking->car_registration_no),
 						'vehicle_make'    => empty($booking->vehicle_make) ? "N/A" : $booking->vehicle_make,
 						'vehicle_model'   => empty($booking->vehicle_model) ? "N/A" : $booking->vehicle_model,
 						'vehicle_color'   => ucwords($booking->vehicle_color),
+                        'flight_no_going'    => $form['flight_no_going'],
+                        'flight_no_return'   => $form['flight_no_return'],
+                        'departure_terminal' => $departure_terminal_name,
+                        'arrival_terminal'   => $arrival_terminal_name
 					]];
+				} else {
+					$response = ['success' => true];
 				}
 			}
 		} catch (\Exception $e) {
@@ -366,18 +453,76 @@ class ParkingAppController extends Controller
 				$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
 				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
 
+                // check if email address is already a customer and have an account
+                $user = User::where('email', $booking->client_email);
+                if ($user->count() == 0) {
+                    $temporary_password = str_random(12);
+
+        			DB::beginTransaction();
+
+        			$user = Sentinel::registerAndActivate([
+                        'email'    => $booking->client_email,
+                        'password' => $temporary_password
+                    ]);
+
+        			if ($user) {
+        				// create member info
+        				$member = Members::create([
+                            'user_id'    => $user->id,
+                            'first_name' => $booking->client_first_name,
+                            'last_name'  => $booking->client_last_name,
+                            'is_active'  => 1
+                        ]);
+
+        				// assign role to a user
+        				$role = Sentinel::findRoleById(4);
+        				$role->users()->attach($user);
+
+						// link current booking to account
+						$booking->user_id = $user->id;
+						$booking->save();
+
+                        Mail::to($booking->client_email)->send(new NewSignUp([
+                            'first_name' => $booking->client_first_name,
+                            'email'      => $booking->client_email,
+                            'password'   => $temporary_password
+                        ]));
+
+        				DB::commit();
+                    }
+                } else {
+                    $booking->user_id = $user->first()->id;
+                    $booking->save();
+                }
+
 				// get vendor email recipients
-				$vendor_recipients = [];
-				array_push($vendor_recipients, $vendor->email);
-				if (!empty($vendor->poc_contact_email)) {
-					array_push($vendor_recipients, $vendor->poc_contact_email);
-				}
+				$vendor_recipients = $booking->products[0]->contact_details->contact_person_email;
+
+                $airport_address = $booking->products[0]->airport[0]->airport_name;
+                if (!empty($booking->departure_terminal)) {
+                    $airport_address = $airport_address. " " . $booking->departure_terminal;
+                }
+
+                $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
 				// send booking confirmation
-				Mail::to($customer->email)->send(new SendBookingConfirmation(['booking' => $booking, 'customer' => $customer]));
+				Mail::to($customer->email)->send(new SendBookingConfirmation([
+					'booking'            => $booking,
+					'customer'           => $customer,
+                    'carpark_name'       => $carpark->name,
+                    'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+                    'airport_details'    => $airport_address,
+                    'on_arrival'         => $booking->products[0]->on_arrival,
+                    'on_return'          => $booking->products[0]->on_return
+				]));
 
-				if (count($vendor_recipients)) {
-					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor(['booking' => $booking, 'customer' => $customer, 'vendor' => $vendor, 'carpark' => $carpark]));
+				if (!empty($vendor_recipients)) {
+					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
+						'booking'  => $booking,
+						'customer' => $customer,
+						'vendor'   => $vendor,
+						'carpark'  => $carpark
+					]));
 				}
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
@@ -385,19 +530,19 @@ class ParkingAppController extends Controller
 
 				if ($message == null) {
 					Messages::create([
-						'subject' => 'My Travel Compared Booking Confirmation',
-						'message' => 'My Travel Compared Booking Confirmation',
+						'subject'    => 'My Travel Compared Booking Confirmation',
+						'message'    => 'My Travel Compared Booking Confirmation',
 						'booking_id' => $booking->booking_id,
-						'drop_off' => $booking->drop_off_at,
-						'return_at' => $booking->return_at,
-						'order' => $booking->order_title,
-						'name' => $customer->first_name,
-						'status' => 'unread'
+						'drop_off'   => $booking->drop_off_at,
+						'return_at'  => $booking->return_at,
+						'order'      => $booking->order_title,
+						'name'       => $customer->first_name,
+						'status'     => 'unread'
 					]);
 				}
 
 				// send sms
-				if ($send_sms) {
+				if ($send_sms and !empty($customer->mobile_no)) {
 					$sms_message = "Thank you for booking your carpark at MyTravelCompared.com. Your booking reference is {$booking->booking_id}";
 
 					$sms_data = [
@@ -409,8 +554,7 @@ class ParkingAppController extends Controller
 					Log::debug($response['twilio']);
 				}
 
-				$sess_id = session('sess_id');
-				Sessions::where('session_id', $sess_id)->update(['deleted_at' => Carbon::now()]);
+				Sessions::where('booking_id', $booking->id)->update(['deleted_at' => Carbon::now()]);
 				session()->flush();
 
 				$response['success'] = true;
@@ -718,10 +862,10 @@ class ParkingAppController extends Controller
 				$form = $request->except(['_token', 'card_name', 'card_number', 'expiration-month', 'expiration-year', 'cv_code']);
 				$expiration = $request->get('expiration-month')."/".$request->get('expiration-year');
 				$card = [
-					'card_name' => $request->get('card_name'),
+					'card_name'   => $request->get('card_name'),
 					'card_number' => $request->get('card_number'),
-					'expiration' => $expiration,
-					'cvv' => $request->get('cv_code')
+					'expiration'  => $expiration,
+					'cvv'         => $request->get('cv_code')
 				];
 
 				if (session()->has('sess_id')) {
@@ -737,10 +881,11 @@ class ParkingAppController extends Controller
 
 					$sess_id = $request->session()->get('sess_id');
 					$session = Sessions::where('session_id', $sess_id)->first();
-					$session_request = json_decode($session->requests, true);
+					$session_request  = json_decode($session->requests, true);
 					$session_response = json_decode($session->response, true);
 
 					$customer = Customers::where(['email' => $form['email']]);
+
 					if ($customer->count()) {
 						$customer_id = $customer->first()->id;
 					} else {
@@ -769,14 +914,17 @@ class ParkingAppController extends Controller
 					$price = $form['total'] - $form['cancellation'] - $form['sms'] - $form['booking_fee'];
 					$revenue_value = $price * ($product->revenue_share / 100);
 
-					$form['booking_id']    = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
-					$form['user_id']       = $user_id;
-					$form['product_id']    = $product_id;
-					$form['price_id']      = $price_id;
-					$form['customer_id']   = $customer_id;
-					$form['order_title']   = $form['product'];
-					$form['price_value']   = $price;
-					$form['revenue_value'] = number_format($revenue_value, 2);
+					$form['booking_id']           = isset($session_response['booking_id']) ? $session_response['booking_id'] : Bookings::generate_booking_id($id);
+					$form['user_id']              = $user_id;
+					$form['product_id']           = $product_id;
+					$form['price_id']             = $price_id;
+					$form['customer_id']          = $customer_id;
+                    $form['client_first_name']    = $form['firstname'];
+                    $form['client_last_name']     = $form['lastname'];
+                    $form['client_email']         = $form['email'];
+					$form['order_title']          = $form['product'];
+					$form['price_value']          = $price;
+					$form['revenue_value']        = number_format($revenue_value, 2);
 					$form['cancellation_waiver']  = $form['cancellation'];
 					$form['sms_confirmation_fee'] = $form['sms'];
 					$form['booking_fees']         = $form['booking_fee'];
@@ -859,10 +1007,10 @@ class ParkingAppController extends Controller
 
 				$token = $stripe->tokens()->create([
 					'card' => [
-						'number' => $card['card_number'],
+						'number'    => $card['card_number'],
 						'exp_month' => $expiry_month,
-						'exp_year' => $expiry_year,
-						'cvc' => $card['cvv'],
+						'exp_year'  => $expiry_year,
+						'cvc'       => $card['cvv'],
 					]
 				]);
 
@@ -923,26 +1071,55 @@ class ParkingAppController extends Controller
 	}
 
 	/* email template test only - remove when done */
-	public function email()
-    {
-		return view('emails.booking_customer');
-	}
-
-	public function emailCompany()
-    {
-		return view('emails.booking_company');
-	}
-
-	public function sendTestEmail()
-    {
-
-		$test = [];
-		Mail::send('emails.booking_company', $test, function ($m) {
-            $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
-
-			$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
-			//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
-        });
-	}
+	// public function email()
+    // {
+	// 	return view('emails.booking_customer');
+	// }
+    //
+	// public function emailCompany()
+    // {
+	// 	return view('emails.booking_company');
+	// }
+    //
+	// public function sendTestEmail()
+    // {
+    //     $booking  = Bookings::findOrFail(69);
+    //     $customer = Customers::findOrFail($booking->customer_id);
+    //     $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+    //     $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+    //
+    //     $airport_address = $booking->products[0]->airport[0]->airport_name;
+    //     if (!empty($booking->departure_terminal)) {
+    //         $airport_address = $airport_address. " " . $booking->departure_terminal;
+    //     }
+    //
+    //     $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+    //
+	// 	$test = [];
+    //
+    //     Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+    //         'booking' => $booking,
+    //         'customer' => $customer,
+    //         'vendor' => $vendor,
+    //         'carpark' => $carpark
+    //     ]));
+    //
+	// 	Mail::to($customer->email)->send(new SendBookingConfirmation([
+	// 		'booking' => $booking,
+	// 		'customer' => $customer,
+	// 		'carpark_name' => $carpark->name,
+	// 		'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+	// 		'airport_details' => $airport_address,
+	// 		'on_arrival' => $booking->products[0]->on_arrival,
+	// 		'on_return' => $booking->products[0]->on_return
+	// 	]));
+    //
+	// 	// Mail::send('emails.booking_company', $test, function ($m) {
+    //     //     $m->from('bookings@mytravelcompared.com', 'My Travel Compared');
+    //     //
+	// 	// 	$m->to("aarondityalux@gmail.com", "Aaron")->subject('Booking Confirmed!');
+	// 	// 	//$m->to("viollan.hermosilla@gmail.com", "Viollan")->subject('Booking Confirmed!');
+    //     // });
+	// }
 	/* email template test only - remove when done */
 }

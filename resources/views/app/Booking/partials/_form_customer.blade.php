@@ -75,6 +75,42 @@
             </div>
         </div>
 
+        <div class="new-customer-container {{ (isset($booking)) ? "" : "hidden" }}">
+            <div class="box-header with-border">
+                <h4 class="box-title">Reserverion For</h4>
+            </div>
+
+            <div class="box-body">
+                <!-- form start -->
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">First Name</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="first-name"
+                                   name="client_first_name"
+                                   placeholder="First Name"
+                                   value="{{ !empty($booking->client_first_name) ? $booking->client_first_name : "" }}"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Last Name</label>
+
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="last-name"
+                                   name="client_last_name"
+                                   placeholder="Last Name"
+                                   value="{{ !empty($booking->client_last_name) ? $booking->client_last_name : "" }}"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="col-xs-12 pull-right margin-top10">
             <button type="button" id="toggle-show-search" class="btn btn-link pull-right">Hide Form</button>
         </div>

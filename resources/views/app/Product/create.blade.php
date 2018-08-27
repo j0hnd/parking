@@ -17,11 +17,11 @@
                 @endif
 
                 <!-- form start -->
-                <form id="carpark-form" class="form-horizontal" method="post" action="{{ $action_url }}">
+                <form id="carpark-form" class="form-horizontal" method="post" action="{{ $action_url }}" enctype="multipart/form-data">
                     @include('app.Product.partials._form')
 
                     <div class="box-footer">
-                        <a href="{{ url('/admin/products') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
+                        <a href="{{ url('/admin/product') }}" class="btn btn-default pull-right margin-left5" >Cancel</a>
                         <button type="submit" id="toggle-save" class="btn btn-info pull-right">Save</button>
                     </div>
                     <!-- /.box-footer -->
@@ -52,7 +52,7 @@
             var row_count = '{{ $row_count }}';
 
             $(document).on('blur', '.price-value', function (e) {
-                if (/^[0-9]+(\.[0-9]{1,2})?$/.test($(this).val())) {
+                if (/^[0-9]+(\.[0-9]{1,3})?$/.test($(this).val())) {
                     return true;
                 } else {
                     $(this).val('0');

@@ -89,6 +89,12 @@ $(function () {
             success: function (response) {
                 if (response) {
                     $('#price-value').val(response.price_value);
+                    $('#departure-terminal')
+                        .empty()
+                        .append(response.terminals);
+                    $('#arrival-terminal')
+                        .empty()
+                        .append(response.terminals);
                     revenue_value = parseFloat(response.price_value * (response.revenue_share / 100)).toFixed(2);
                 } else {
                     $('#price-value').val(0);
@@ -168,6 +174,16 @@ $(function () {
         placeholder: '-- Vehicle Make --'
     });
 
+    $("#departure-terminal").select2({
+        placeholder: '-- Departure Terminal --',
+        tags: true
+    });
+
+    $("#arrival-terminal").select2({
+        placeholder: '-- Arrival Terminal --',
+        tags: true
+    });
+
     $('#drop-off-date').datepicker({
         autoclose: true
     })
@@ -178,6 +194,13 @@ $(function () {
     $('#return-at-date').datepicker({
         autoclose: true
     })
+
+    $('#departure-terminal')
+        .empty()
+        .append("{!! html_entity_decode($departure_options) !!}");
+    $('#arrival-terminal')
+        .empty()
+        .append("{!! html_entity_decode($arrival_options) !!}");
 });
 </script>
 @stop

@@ -26,6 +26,7 @@
 
 						if (isset($booking->affiliate_bookings[0]->affiliates)) {
 							$percent_travel_agent = $booking->affiliate_bookings[0]->affiliates[0]->percent_travel_agent;
+							$amount = $booking->revenue_value;
 							$amount = $amount * round(($percent_travel_agent/ 100), PHP_ROUND_HALF_UP);
 						}
 					@endphp

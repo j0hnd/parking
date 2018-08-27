@@ -34,8 +34,8 @@ class Signup extends Mailable
 			->subject("Welcome to MyTravel Compared")
 			->with([
 				'first_name' => $this->data['first_name'],
-				'email' => $this->data['email'],
-				'password' => $this->data['password']
+				'email'      => $this->data['email'],
+				'password'   => $this->data['password']
 			]);
     }
 }

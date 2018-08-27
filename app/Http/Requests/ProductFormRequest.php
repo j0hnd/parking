@@ -24,12 +24,17 @@ class ProductFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'carpark_id'  => 'required|numeric',
-			'short_description' => 'required|string',
-            'description' => 'string',
-            'on_arrival'  => 'string',
-            'on_return'   => 'string',
-			'revenue_share' => 'required'
+            'carpark_id'              => 'required|numeric',
+            'airport_id'              => 'required',
+			'short_description'       => 'required|string',
+            'description'             => 'required|string',
+            'on_arrival'              => 'required|string',
+            'on_return'               => 'required|string',
+            'directions'              => 'required|string',
+			'revenue_share'           => 'required',
+            'contact_person_name'     => 'required',
+            'contact_person_email'    => 'required|email',
+            'contact_person_phone_no' => 'required',
         ];
     }
 }

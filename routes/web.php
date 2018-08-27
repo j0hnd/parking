@@ -28,9 +28,9 @@ Route::get('/affiliate/{code}', 'ParkingAppController@affiliate');
 Route::get('/get/vehicle/model', 'ParkingAppController@get_vehicle_models');
 
 /* email template test only - remove when done */
-Route::get('/email', 'ParkingAppController@email');
-Route::get('/emailCompany', 'ParkingAppController@emailCompany');
-Route::get('/sendTestEmail', 'ParkingAppController@sendTestEmail');
+// Route::get('/email', 'ParkingAppController@email');
+// Route::get('/emailCompany', 'ParkingAppController@emailCompany');
+// Route::get('/sendTestEmail', 'ParkingAppController@sendTestEmail');
 /* email template test only - remove when done */
 
 Route::match(['get', 'post'], '/contact','ParkingAppController@contact');
@@ -47,7 +47,8 @@ Route::post('/get/coupon', 'ParkingAppController@get_coupon');
 Route::post('/stripe/payment', 'ParkingAppController@stripe');
 
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
-Route::match(['get', 'post'], '/search', 'ParkingAppController@search');
+Route::get('/search', 'ParkingAppController@search');
+Route::post('/search/{country_code}/airport-parking/search-results/{airport_name}', 'ParkingAppController@search');
 
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');
@@ -127,6 +128,8 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('/affiliates/{id}/delete', 'AffiliatesController@delete');
 
 	Route::resource('coupons', 'CouponController')->except(['update', 'destroy', 'show']);
+	Route::post('/coupons/delete/{id}', 'CouponController@delete');
+	Route::post('/coupons/update', 'CouponController@update');
 	Route::get('/coupons/generate', 'CouponController@generate');
 });
 

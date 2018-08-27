@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123341298-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-123341298-1');
+        </script>
         <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, width=device-width">
         <title>@yield('title') {{ config('app.name') }}</title>
         <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -22,6 +30,8 @@
         <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/icons.ico/favicon-96x96.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/icons.ico/favicon-16x16.png') }}">
         <link rel="manifest" href="{{ asset('img/icons.ico/manifest.json') }}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        {{-- <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css') }}"> --}}
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
@@ -35,8 +45,31 @@
         <script type="text/javascript">
             cdn_url = 'http://mytravelcompared.com';
         </script>
+        <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
+
+        <!-- Matomo -->
+        <script type="text/javascript">
+        var paq = paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+        var u="//analytics.mysocialcampaign.com/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '33']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+        </script>
+        <!-- End Matomo Code -->
         @yield('tags')
         @yield('css')
+        <style media="screen">
+            .cookie-consent {
+                text-align: center;
+                padding: 10px;
+                background-color: #ffe5cc;
+            }
+        </style>
     </head>
 
     <body>
@@ -48,9 +81,67 @@
             {{-- footer --}}
             @include('parking.templates.footer')
         </main>
+
+        @include('cookieConsent::index')
     </body>
 
     {{-- scripts --}}
     @include('parking.templates.scripts')
     @yield('js')
+    @php
+        $mydate = date('Y-m-d H:i', strtotime('+2 days'));
+        $start_date = date('d/m/Y H:i', strtotime($mydate));
+        $end_date = date('d/m/Y H:i', strtotime($mydate . ' +7 days'));
+
+        if (isset($drop_date)) {
+            $start_date = $drop_date;
+        }
+
+        if (isset($return_date)) {
+            $end_date = $return_date;
+        }
+    @endphp
+    <script type="text/javascript">
+        $(function () {
+            var county_slug = ['london', 'heathrow', 'gatwick', 'luton', 'stansted', 'southend'];
+
+			$('.datepicker').daterangepicker({
+		        "minYear": {{ date('Y') }},
+		        "maxYear": {{ date('Y', strtotime('+30 years')) }},
+		        "showWeekNumbers": true,
+		        "timePicker": true,
+		        "timePicker24Hour": true,
+		        "timePickerIncrement": 5,
+		        "alwaysShowCalendars": true,
+		        "startDate": "{{ $start_date }}",
+		        "endDate": "{{ $end_date }}",
+                "applyButtonClasses": "btn-info",
+				"locale": {
+					format: "DD/MM/YYYY H:mm"
+				}
+		    }, function(start, end, label) {
+		        // console.log('New date range selected: ' + start.format('HH:mm') + ' to ' + end.format('HH:mm') + ' (predefined range: ' + label + ')');
+				$('#return-at-date').val(end.format('DD/MM/YYYY'));
+				$('#drop-off-time option[value="'+ start.format('HH:mm') +'"]').attr('selected', 'selected');
+				$('#return-at-time option[value="'+ end.format('HH:mm') +'"]').attr('selected', 'selected');
+		    });
+
+            if ($('.datepicker').data('daterangepicker') !== undefined) {
+                $('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
+                $('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
+                $('#airport').select2().select2('val', $('#airport option:eq(5)').val());
+                $('#return-at-date').val('{{ date('d/m/Y', strtotime($mydate . ' +7 days')) }}');
+            }
+
+            $(document).on('click', '#search', function (e) {
+                var aid = $('#airport').val() - 1;
+                var slug = county_slug[aid];
+                var country = 'uk';
+                var url = "/search/"+ country +'/airport-parking/search-results/'+ slug;
+
+                $('#search-form').attr('action', url);
+                $('#search-form').trigger('submit');
+            });
+        });
+	</script>
 </html>

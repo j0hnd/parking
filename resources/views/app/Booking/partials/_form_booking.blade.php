@@ -8,7 +8,10 @@
                 @if(!is_null($products_list))
                     @foreach($products_list as $product)
                         @if(isset($booking))
-                            @php($order_id = $booking->product_id.";".$booking->price_id)
+                            @php
+                                $order_id = $booking->product_id.";".$booking->price_id.";".$booking->products[0]->airport[0]->id;
+                            @endphp
+
                             @if($order_id == $product['order_id'])
                             <option value="{{ $product['order_id'] }}" selected>{{ $product['product_name'] }}</option>
                             @else
@@ -35,6 +38,16 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2 control-label">Dparture Terminal</label>
+
+        <div class="col-sm-9">
+            <select name="departure_terminal" id="departure-terminal" class="form-control">
+                <option value="" readonly>-- Terminals --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">Flight No. <small>(Arrival)</small> </label>
 
         <div class="col-sm-9">
@@ -46,10 +59,24 @@
     </div>
 
     <div class="form-group">
+        <label class="col-sm-2 control-label">Arrival Terminal</label>
+
+        <div class="col-sm-9">
+            <select name="arrival_terminal" id="arrival-terminal" class="form-control">
+                <option value="" readonly>-- Terminals --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">Car Registration No.</label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="car_registration_no" placeholder="Car Registration No." autocomplete="off">
+            <input type="text" class="form-control"
+                   name="car_registration_no"
+                   placeholder="Car Registration No."
+                   autocomplete="off"
+                   value="{{ isset($booking) ? $booking->car_registration_no : '' }}">
         </div>
     </div>
 
@@ -62,13 +89,13 @@
                 @if(count($vehicle_make))
                     @foreach($vehicle_make as $i => $vm)
                         @if(isset($booking))
-                            @if($booking->vehicle_make == $vm['value'])
-                            <option value="{{ $vm['value'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+                            @if($booking->vehicle_make == $vm['title'])
+                            <option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
                             @else
-                            <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                            <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                             @endif
                         @else
-                        <option value="{{ $vm['value'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                         @endif
 
                     @endforeach
@@ -88,9 +115,9 @@
                     @if(isset($booking))
                         @foreach($vehicle_models as $model)
                             @if($model['value'] == $booking->vehicle_model)
-                            <option value="{{ $model['value'] }}" selected>{{ $model['title'] }}</option>
+                            <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
                             @else
-                            <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                            <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                             @endif
                         @endforeach
                     @endif
@@ -102,9 +129,9 @@
                         @if(isset($booking))
                             @foreach($vehicle_models as $model)
                                 @if($model['value'] == $booking->vehicle_model)
-                                <option value="{{ $model['value'] }}" selected>{{ $model['title'] }}</option>
+                                <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
                                 @else
-                                <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                                <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                                 @endif
                             @endforeach
                         @endif
@@ -115,7 +142,7 @@
                         <option value="" readonly> -- Vehicle Model -- </option>
                         @if(isset($booking))
                             @foreach($vehicle_models as $model)
-                            <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                            <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -203,6 +230,53 @@
                <input id="return-at-time" type="text" class="form-control input-small" name="return_at_time" value="{{ isset($booking) ? $booking->return_at->format('h:i A') : "" }}">
                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">No of Passengers:</label>
+
+        <div class="col-sm-5">
+            <input type="number" id="no-of-passengers" class="form-control" name="no_of_passengers"
+                   placeholder="No of Passengers"
+                   value="{{ isset($booking->booking_details->no_of_passengers_in_vehicle) ? $booking->booking_details->no_of_passengers_in_vehicle : '' }}"
+                   autocomplete="off">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+
+        @php($checked = '')
+
+        @if(isset($booking->booking_details->with_oversize_baggage))
+            @if($booking->booking_details->with_oversize_baggage > 0)
+                @php($checked = 'checked')
+            @endif
+        @endif
+
+        <div class="col-sm-5 checkbox">
+            <label>
+                <input type="checkbox" {{ $checked }} name="with_oversize_baggage"> Travelling with sports or oversize baggage
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">&nbsp;</label>
+
+        @php($checked = '')
+
+        @if(isset($booking->booking_details->with_children_pwd))
+            @if($booking->booking_details->with_children_pwd > 0)
+                @php($checked = 'checked')
+            @endif
+        @endif
+
+        <div class="col-sm-5 checkbox">
+            <label>
+                <input type="checkbox" {{ $checked }} name="with_children_pwd"> Travelling with children or disabled passengers
+            </label>
         </div>
     </div>
 </div>

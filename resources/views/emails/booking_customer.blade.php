@@ -9,7 +9,11 @@
 					<!-- Column : BEGIN -->
 
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+						@if(!empty($booking->client_first_name))
+						<h1 style="margin: 0 0 10px; font-size: 20px; line-height: 30px; color: #333333; font-weight: normal;">Dear {{ ucwords($booking->client_first_name) }}</h1>
+						@else
 						<h1 style="margin: 0 0 10px; font-size: 20px; line-height: 30px; color: #333333; font-weight: normal;">Dear {{ ucwords($customer->first_name) }}</h1>
+						@endif
 						<p style="margin: 0 0 10px;">Thank you for booking with My Travel Compared.</p>
 					</td>
 					<!-- Column : END -->
@@ -46,6 +50,12 @@
 								<td style="font-family: sans-serif; font-size: 12px; color: #555555;line-height: 20px; text-align: left;" class="center-on-narrow">
 									<table class="" width="100" border="0">
 										<tbody>
+										<tr>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Booking ID:</td>
+											<td width="8">&nbsp;</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;" width="100">{{ $booking->booking_id }}</td>
+										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Car Park:</td>
@@ -93,7 +103,7 @@
 					</td>
 					<!-- Column : END -->
 					<!-- Column : BEGIN -->
-					<td class="stack-column-center">
+					<td class="stack-column-center" style="vertical-align:top">
 						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
 							<tr>
 								<td style="padding: 10px; text-align: center">
@@ -108,7 +118,11 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Name:</td>
 											<td width="8">&nbsp;</td>
+											@if(!empty($booking->client_first_name) and !empty($booking->client_last_name))
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($booking->client_first_name) }} {{ ucwords($booking->client_last_name) }}</td>
+											@else
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="100">{{ ucwords($customer->first_name) }} {{ ucwords($customer->last_name) }}</td>
+											@endif
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
@@ -126,7 +140,7 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Vehicle Registration:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($booking->car_registion_no) ? "N/A" : $booking->car_registion_no }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($booking->car_registration_no) ? "N/A" : $booking->car_registration_no }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
@@ -237,7 +251,7 @@
 				</tr>
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
-						<b>Car Park Contact Number:</b> The chauffeur number is <b>05532 584120</b>
+						<b>Car Park Contact Number:</b> {{ $carpark_name }} number is <b>{{ $carpark_contact_no }}</b>
 						<br><br>
 						mytravelcompared.com are agents for the featured car parks and customers will be contracting with the individual car park and will be subject to their terms and conditions which contain certain exemption clauses and limit each company`s liability.
 						<br><br>
@@ -266,9 +280,9 @@
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
 						<b>Sat Nav</b>
-						<p>Gatwick (LGW) South Terminal Departure – Postcode RH6 0NP</p>
+						<p>{{ $airport_details }}</p>
 						<hr>
-						<p>Gatwick is 28 miles (45km) south of London, linked directly to the M23 at Junction 9 and to the A23 London-Brighton road.</p>
+						<p>{{ $booking->products[0]->directions }}</p>
 						<br>
 						<b>Additional Information:</b>
 						<p>Please take a copy of your confirmation details by print make sure you can access the details via electronic device.</p>
@@ -296,14 +310,10 @@
 				<tr>
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; background: #f2f2f2;">
 						<b>On Arrival</b>
-						<p>Please call 07716 063 663 when you are 10 minutes from the airport for example the M25/M23 junction.</p>
-						<p>Please follow the signs to your terminal and then follow the signs to PASSENGER DROP OFF where you should park on the forecourt.</p>
-						<p>North Terminal – PLEASE NOTE – you must park in the right lane of the PASSENGER DROP OFF zone, between the Sofitel Hotel and the central reservation. We will find you.</p>
+						<p>{!! $on_arrival !!}</p>
 						<hr>
 						<b>On Return</b>
-						<p>Please call 07716 063 663 only when you have collected ALL of your luggage. Your car will be returned to the area where you dropped it off.</p>
-						<p>You will be given a returns card at departure that will act as a receipt for your vehicle and also has maps to get you from the terminal back to the passenger drop off area.</p>
-						<p>Please note if you have hand luggage only please call as soon as you can.</p>
+						<p>{!! $on_return !!}</p>
 					</td>
 				</tr>
 			</table>

@@ -8,20 +8,21 @@ jQuery(document).ready(function($) {
     }
 
     $('[data-scroll]').on('click', scrollToSection);
-    $('.datepicker').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        todayHighlight: true
-    }).on('changeDate', function (e) {
-        if (e.target.id == 'drop-off-date') {
-            var selected_date = $(this).val().split('/');
-            var date = new Date(selected_date[2], selected_date[1], selected_date[0]);
-            date.setDate(date.getDate() + 7);
 
-            var return_at = date.getDate() + "/"  + date.getMonth() + "/" + date.getFullYear();
-            $('#return-at-date').datepicker('update', return_at);
-        }
-    });
+    // $('.datepicker').datepicker({
+    //     autoclose: true,
+    //     format: 'dd/mm/yyyy',
+    //     todayHighlight: true
+    // }).on('changeDate', function (e) {
+    //     if (e.target.id == 'drop-off-date') {
+    //         var selected_date = $(this).val().split('/');
+    //         var date = new Date(selected_date[2], selected_date[1], selected_date[0]);
+    //         date.setDate(date.getDate() + 7);
+    //
+    //         var return_at = date.getDate() + "/"  + date.getMonth() + "/" + date.getFullYear();
+    //         $('#return-at-date').datepicker('update', return_at);
+    //     }
+    // });
 }(jQuery));
 
 // Get titles from the DOM
@@ -140,7 +141,7 @@ if (titleMain.length || titleMain2.length || titleMain3.length ) {
                 slidesToShow: 3,
                 infinite: true
             }
-        }, 
+        },
             {
             breakpoint: 770,
             settings: {

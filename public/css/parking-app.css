@@ -26,9 +26,8 @@
   .fullscreen-bg__video {
     width: 100%;
     height: auto;
-
   }
- 
+
 }
 
 @media (max-aspect-ratio: 16/9) {
@@ -36,8 +35,30 @@
     width: auto;
     height: 100%;
   }
-  
 }
+
+@media only screen and (max-width: 700px) {
+  .search-notes {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+  }
+
+  #toggle-book-now {
+    margin-top: -30px !important;
+    margin-bottom: 40px !important;
+  }
+
+  .btn .btn-primary .btn-sm {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  #toggle-book-now {
+    margin-top: 82px;
+  }
+}
+
 .main-header{
   text-align: center;
   position: relative;
@@ -73,7 +94,7 @@
 }
 .book{
   position: relative;
-  top: 28%;
+  top: 25%;
 
 }
 .book-box{
@@ -169,7 +190,7 @@ margin-top: 24px;
     left: 50%;
     transform: translateX(-50%);
     background-color: none;
-    margin: 60px 0 0 0;
+    margin: 40px 0 0 0;
     right: 0;
     z-index: 1;
 }
@@ -203,7 +224,7 @@ margin-top: 24px;
   transition: color 1s ease 0s;
   margin: 0 25px 0 25px;
 
-  
+
 }
 .navbar.solid .navbar-nav > .nav-item > .nav-link:hover {
   border: 2px solid #27b2e0;
@@ -465,7 +486,7 @@ margin-top: 24px;
 
 .testi{
   margin-top: 40px;
-  
+
 }
 .t-name{
 margin-top: 50px;
@@ -642,8 +663,8 @@ footer{
   margin-left: 40px;
 }
 .foot-logo{
-  width:90%; 
-  margin-right:auto; 
+  width:90%;
+  margin-right:auto;
   margin-left:auto;
 }
 /* END FOOTER */
@@ -730,7 +751,7 @@ margin-top: 10px;
   text-align: center;
   position: relative;
   bottom: -100px;
- 
+
 }
 .time-width{
  width: 80%;
@@ -906,7 +927,7 @@ margin-top: 10px;
   text-align: center;
   position: relative;
   bottom: 30px;
- 
+
 }
 .time-width{
  width: 80%;
@@ -1103,7 +1124,7 @@ margin-top: 10px;
   text-align: center;
   position: relative;
   bottom: 30px;
- 
+
 }
 
 .v-scroll{
@@ -1252,7 +1273,7 @@ button.btn.btn-primary.btn-sm{
   margin-bottom: 80px;
 }
   .foot-logo{
-  width:70%; 
+  width:70%;
   margin: 20px 0 40px -8%;
 }
 }
@@ -1392,4 +1413,3 @@ font-size: 12px;
 }
 
   /* END MOBILE */
-

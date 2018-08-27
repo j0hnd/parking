@@ -34,8 +34,6 @@ class CarparkFormRequest extends FormRequest
             'company_name' => 'required|string',
             'email' => 'required|email',
             'image' => 'mimetypes:image/*',
-            'poc_name' => 'string',
-            'poc_contact_email' => 'email',
             'park_mark' => 'mimetypes:image/*,application/pdf',
             'insurance_policy' => 'mimetypes:image/*,application/pdf'
         ];

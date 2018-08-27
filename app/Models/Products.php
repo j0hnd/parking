@@ -14,17 +14,19 @@ class Products extends BaseModel
 {
     protected $fillable = [
         'carpark_id',
-		'short_descrption',
+		'short_description',
         'description',
         'on_arrival',
         'on_return',
+        'directions',
         'revenue_share',
-        'deleted_at'
+        'deleted_at',
+        'image'
     ];
 
     protected $guarded = ['carpark_id', 'revenue_share'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors', 'contact_details'];
 
 
     public function carpark()
@@ -57,14 +59,24 @@ class Products extends BaseModel
 		return $this->hasMany(Companies::class, 'id', 'vendor_id');
 	}
 
+    public function contact_details()
+    {
+        return $this->hasOne(ProductContactDetails::class, 'product_id', 'id');
+    }
+
     public static function search($data)
     {
         $products = null;
 
         try {
-			// get number of days between the dates in the search parameters
-			$begin = Carbon::createFromFormat('d/m/Y', $data['search']['drop-off-date']);
-			$end   = Carbon::createFromFormat('d/m/Y', $data['search']['return-at-date']);
+            $date1 = explode(" ", $data['search']['drop-off-date']);
+            $date2 = explode(" ", $data['search']['return-at-date']);
+
+			$today = Carbon::now();
+			$begin = Carbon::createFromFormat('d/m/Y', $date1[0]);
+			$end   = Carbon::createFromFormat('d/m/Y', $date2[0]);
+
+            // get number of days between the dates in the search parameters
 			$no_days = $begin->diffInDays($end);
 
 			if ($no_days === 0) {
@@ -72,7 +84,7 @@ class Products extends BaseModel
 			}
 
 			// get airports
-			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id	")
+			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 				->join('products', 'products.id', '=', 'product_airports.product_id')
 				->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -96,7 +108,7 @@ class Products extends BaseModel
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
 					$service_name = urldecode($data['sub']['value']);
-					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id")
+					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
 						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -117,7 +129,7 @@ class Products extends BaseModel
 					list($price_from, $price_to) = explode('-', $data['sub']['value']);
 					$price_to = $price_to == 'Up' ? 5000 : $price_to;
 
-					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id")
+					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
 						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -154,7 +166,7 @@ class Products extends BaseModel
 					}
 
 					// get airports
-					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id")
+					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
 						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -181,6 +193,16 @@ class Products extends BaseModel
                 $i = 0;
 
                 foreach ($product_airports->get() as $pa) {
+                    if ($pa->no_bookings_not_less_than_24hrs == 1) {
+                        $drop_off = $begin->format('Y-m-d').' '.$data['search']['drop-off-time'].':00';
+                        $drop_off = Carbon::createFromFormat('Y-m-d H:i:s', $drop_off);
+                        $time_diff  = $drop_off->diffInHours(Carbon::now());
+
+                        if ($time_diff <= 24) {
+                            break;
+                        }
+                    }
+
 					$override_price = null;
 					$product = Products::findOrFail($pa->product_id);
 					$airport = Airports::findOrFail($pa->airport_id);
@@ -195,36 +217,36 @@ class Products extends BaseModel
 						// check for overrides
 						if (count($product->overrides)) {
 							foreach ($product->overrides as $overrides) {
-								list($begin, $end) = explode(' - ', $overrides->override_dates);
-								$begin = new Carbon($begin);
-								$end = new Carbon($end);
+								list($_begin, $_end) = explode(' - ', $overrides->override_dates);
+								$_begin = new Carbon($_begin);
+								$_end = new Carbon($_end);
 
-								if (strtotime($data['search']['drop-off-date']) >= strtotime($begin) and strtotime($data['search']['return-at-date']) <= strtotime($end)) {
+								if (strtotime($data['search']['drop-off-date']) >= strtotime($_begin->format('d/m/Y')) and strtotime($_end->format('d/m/Y')) <= strtotime($data['search']['return-at-date'])) {
 									$override_price = $overrides->override_price * $no_days;
 								}
 							}
 						}
 
                         foreach ($prices as $price) {
-                                $products[$i] = [
-                                    'product_id' => $product->id,
-									'airport_id' => $pa->airport_id,
-									'airport_name' => $airport->airport_name,
-									'carpark' => $product->carpark->name,
-									'image' => $product->carpark->image,
-									'price_id' => $price->id,
-                                    'prices' => $price,
-									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-                                    'overrides' => $override_price,
-									'services' => $product->carpark_services,
-									'short_description' => $product->short_description,
-									'description' => $product->description,
-									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return,
-									'latitude' => $airport->latitude,
-									'longitude' => $airport->longitude
-                                ];
+                            $products[$i] = [
+                                'product_id' => $product->id,
+								'airport_id' => $pa->airport_id,
+								'airport_name' => $airport->airport_name,
+								'carpark' => $product->carpark->name,
+								'image' => $product->image,
+								'price_id' => $price->id,
+                                'prices' => $price,
+								'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+								'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+                                'overrides' => $override_price,
+								'services' => $product->carpark_services,
+								'short_description' => $product->short_description,
+								'description' => $product->description,
+								'on_arrival' => $product->on_arrival,
+								'on_return' => $product->on_return,
+								'latitude' => $airport->latitude,
+								'longitude' => $airport->longitude
+                            ];
 
 							$i++;
                         }
