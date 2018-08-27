@@ -304,6 +304,7 @@ class ParkingAppController extends Controller
 					$bookings['vehicle_color']        = $booking_data['vehicle_color'];
 					$bookings['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_date." ".$drop_time));
 					$bookings['return_at']            = date('Y-m-d H:i:s', strtotime($return_date." ".$return_time));
+                    $bookings['payment_method']       = 'paypal';
 
 					$booking = Bookings::create($bookings);
 					if (!empty($booking)) {
@@ -930,6 +931,7 @@ class ParkingAppController extends Controller
 					$form['booking_fees']         = $form['booking_fee'];
 					$form['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_off));
 					$form['return_at']            = date('Y-m-d H:i:s', strtotime($return_at));
+					$form['payment_method']       = 'stripe';
 
 					$_booking = Bookings::where('booking_id', $session_response['booking_id']);
 					if ($_booking->count()) {
