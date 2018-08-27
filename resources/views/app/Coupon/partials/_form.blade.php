@@ -7,14 +7,13 @@
 @endphp
 
 @if($mode == 'edit')
-<div class="form-group">
+<div class="form-group margin-top20">
     <label class="col-sm-2 control-label">Coupon Code </label>
 
     <div class="col-sm-9">
         <input type="text" class="form-control" name="no_coupons"
                placeholder="Number of Coupon"
                value="{{ $coupon->code }}"
-               readonly
                autocomplete="off">
     </div>
 </div>
