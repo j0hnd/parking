@@ -102,7 +102,7 @@
                         </tr>
                         @php
                             // $grand_total = $total_booking_fee + $total_sms_confirmation_fee + $total_cancellation_waiver + $total_affiliate_cost;
-                            $grand_total = $total_price_value - ($total_revenue_share + $total_booking_fee + $total_sms_confirmation_fee + $total_cancellation_waiver + $total_affiliate_cost);
+                            $grand_total = $total_revenue_share + $total_booking_fee + $total_sms_confirmation_fee + $total_cancellation_waiver + $total_affiliate_cost;
                         @endphp
                         <tr id="grand-total" class="bg-yellow">
                             <td colspan="8"></td>
