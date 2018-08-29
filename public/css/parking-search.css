@@ -1241,3 +1241,91 @@ font-size: 14px;
 }
 }
 /* END MOBILE */
+
+/*VMAN*/
+#search-form input{
+  border: 0px !important;
+  padding: 20px;
+  border-radius: 0px;
+  font-weight: bold;
+}
+#search-form select{
+  border: 0px !important;
+  height: 61px;
+  border-radius: 0px;
+  font-weight: bold;
+}
+
+#search-form span{
+  border: 0px !important;
+  height: 60px;
+  border-radius: 0px;
+  font-weight: bold;
+  margin-top: -1px;
+}
+
+.select2-selection span{
+  padding-top: 15px !important;
+  color: black !important;
+}
+button#search{
+  height: 62px;
+}
+.select2-container{
+  width: 100% !important;
+}
+
+@media only screen and (max-width: 48em) {
+
+    .select2-container{
+      width: 100% !important;
+      margin-top: -30px !important;
+    }
+    #search-form{
+      margin-top: 50px;
+    }
+    #book-stansted{
+      margin-top: -20px;
+    }
+    #layer6 .container{
+      padding: 20px;
+    }
+    .navbar-2-mobile #filter-wrapper .mobile li a{
+      font-size: 9px;
+      font-weight: bold;
+    }
+
+    .popup a.close3{
+      margin-left: -20px;
+    }
+    .pop1-content{
+      font-size: 20px;
+    }
+    .popup {
+      text-align: center;
+    }
+    .popup h4{
+      color: white;
+      font-weight: bold;
+    }
+    .price-book{
+      background-color: white;
+      padding-bottom: 20px;
+      border-radius: 10px;
+    }
+    .tabcontrol > .steps > ul > li > a{
+      font-size: 11px;
+      width: 60px !important;
+      padding: 0px !important;
+    }
+    .detail-tab .content{
+      margin-top: -5px !important;
+    }
+    .detail-tab .content fieldset{
+      border: 0px !important;
+    }
+    .tabcontrol > .steps > ul > li > a{
+      padding-bottom: 10px !important;
+    }
+    
+}

@@ -1076,6 +1076,11 @@ class ParkingAppController extends Controller
 		return response()->json(['options' => $model_str]);
 	}
 
+	public function airport_page()
+	{
+		return view ('parking.airport');
+	}
+
 	/* email template test only - remove when done */
 	// public function email()
     // {
