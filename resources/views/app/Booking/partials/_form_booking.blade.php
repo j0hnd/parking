@@ -226,7 +226,7 @@
             @if($readonly)
             <input type="text" class="form-control"
                    placeholder="Drop Off"
-                   value="{{ $booking->drop_off_at->format('m/d/Y') }}"
+                   value="{{ $booking->drop_off_at->format('d/m/Y') }}"
                    readonly
                    autocomplete="off">
 
@@ -240,7 +240,7 @@
         <div id="drop-off-container-edit" class="col-sm-5 hidden">
             <input type="text" id="drop-off-date" class="form-control" name="drop_off_date"
                    placeholder="Drop Off"
-                   value="{{ isset($booking) ? $booking->drop_off_at->format('m/d/Y') : "" }}"
+                   value="{{ isset($booking) ? $booking->drop_off_at->format('d/m/Y') : "" }}"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
@@ -257,7 +257,7 @@
             @if($readonly)
             <input type="text" class="form-control"
                    placeholder="Return Date"
-                   value="{{ $booking->return_at->format('m/d/Y') }}"
+                   value="{{ $booking->return_at->format('d/m/Y') }}"
                    readonly
                    autocomplete="off">
 
@@ -271,7 +271,7 @@
         <div id="return-at-container-edit" class="col-sm-5 hidden">
             <input type="text" id="return-at-date" class="form-control" name="return_at_date"
                    placeholder="Return Date"
-                   value="{{ isset($booking) ? $booking->return_at->format('m/d/Y') : "" }}"
+                   value="{{ isset($booking) ? $booking->return_at->format('d/m/Y') : "" }}"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
@@ -327,4 +327,14 @@
             </label>
         </div>
     </div>
+
+    @if(isset($booking))
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Date Posted:</label>
+
+        <div class="col-sm-5">
+            <input type="text" class="form-control" readonly value="{{ $booking->created_at->format('d/m/Y') }}">
+        </div>
+    </div>
+    @endif
 </div>
