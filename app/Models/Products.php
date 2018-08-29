@@ -95,14 +95,8 @@ class Products extends BaseModel
 				->whereNull('products.deleted_at')
 				->whereNull('carparks.deleted_at')
 				->whereNull('airports.deleted_at')
-//				->whereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year IS NULL)", [$no_days])
-//				->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year IS NULL)", [$no_days, date('n')])
-//				->orWhereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year = ?)", [$no_days, date('Y')])
-//				->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year = ?)", [$no_days, date('n'), date('Y')])
-//				->groupBy('prices.id');
 
 				->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
-//				->whereRaw("(prices.no_of_days = ? OR prices.price_month = ? OR prices.price_year = ?)", [$no_days, date('m'), date('Y')]);
 				->where('prices.no_of_days', $no_days);
 
         	if (isset($data['sub'])) {
@@ -178,10 +172,6 @@ class Products extends BaseModel
 						->whereNull('airports.deleted_at')
 						->where('prices.no_of_days', $no_days)
 						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
-//						->whereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year IS NULL)", [$no_days])
-//						->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year IS NULL)", [$no_days, date('n')])
-//						->orWhereRaw("(prices.no_of_days = ? AND prices.price_month IS NULL AND prices.price_year = ?)", [$no_days, date('Y')])
-//						->orWhereRaw("(prices.no_of_days = ? AND prices.price_month = ? AND prices.price_year = ?)", [$no_days, date('n'), date('Y')])
 						->where([
 							'product_airports.airport_id' => $data['search']['airport'],
 							'prices.category_id' => $category_id
@@ -222,7 +212,13 @@ class Products extends BaseModel
 								$_end = new Carbon($_end);
 
 								if (strtotime($data['search']['drop-off-date']) >= strtotime($_begin->format('d/m/Y')) and strtotime($_end->format('d/m/Y')) <= strtotime($data['search']['return-at-date'])) {
-									$override_price = $overrides->override_price * $no_days;
+									// $override_price = $overrides->override_price * $no_days;
+
+                                    if ($overrides->override_price > 0) {
+                                        $override_price = $prices[0]->price_value + $overrides->override_price;
+                                    } else {
+                                        $override_price = $prices[0]->price_value - ($overrides->override_price * -1);
+                                    }
 								}
 							}
 						}
@@ -282,7 +278,7 @@ class Products extends BaseModel
 					'carpark_name' => $product['carpark'],
 					'image' => $product['image'],
 					'category' => $category->category_name,
-					'price' => (is_null($product['overrides']) or $product['overrides'] == 0) ? $product['prices']->price_value : $product['prices']->price_value * $product['overrides'],
+					'price' => (is_null($product['overrides']) or $product['overrides'] == 0) ? $product['prices']->price_value : $product['overrides'],
 					'drop_off' => $product['drop_off'],
 					'return_at' => $product['return_at'],
 					'short_description' => $product['short_description'],
