@@ -30,7 +30,8 @@ class Bookings extends BaseModel
 		'cancellation_waiver',
 		'booking_fees',
 		'departure_terminal',
-		'arrival_terminal'
+		'arrival_terminal',
+		'payment_method'
 	];
 
 	protected $dates = ['drop_off_at', 'return_at', 'deleted_at'];

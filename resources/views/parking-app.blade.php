@@ -129,7 +129,7 @@
             if ($('.datepicker').data('daterangepicker') !== undefined) {
                 $('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
                 $('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
-                $('#airport').select2().select2('val', $('#airport option:eq(5)').val());
+                $('#airport').select2().select2('val', $('#airport option:eq(1)').val());
                 $('#return-at-date').val('{{ date('d/m/Y', strtotime($mydate . ' +7 days')) }}');
             }
 

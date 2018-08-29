@@ -2,8 +2,18 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Order Title</label>
 
-        <div class="col-sm-9">
-            <select class="form-control" id="order-title" name="order_title">
+        <div id="order-title-container-default" class="col-sm-9">
+        @if(isset($booking))
+            @php
+                $order_id = $booking->product_id.";".$booking->price_id.";".$booking->products[0]->airport[0]->id;
+                $order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No of days '.$booking->products[0]->prices[0]->no_of_days.' - £'.$booking->products[0]->prices[0]->price_value.']';
+            @endphp
+            <input type="text" class="form-control" value="{{ $order_title }}" readonly>
+        @endif
+        </div>
+
+        <div id="order-title-container-edit" class="col-sm-9 hidden">
+            <select class="form-control" id="order-title" name="order_title" style="width:100%">
                 <option value="" readonly>-- Order Title --</option>
                 @if(!is_null($products_list))
                     @foreach($products_list as $product)
@@ -201,17 +211,40 @@
     @endif
     @endif
 
+    @php
+        if (isset($booking)) {
+            $readonly = true;
+        } else {
+            $readonly = false;
+        }
+    @endphp
+
     <div class="form-group">
         <label class="col-sm-2 control-label">Drop Off:</label>
 
-        <div class="col-sm-5">
+        <div id="drop-off-container-default" class="col-sm-5">
+            @if($readonly)
+            <input type="text" class="form-control"
+                   placeholder="Drop Off"
+                   value="{{ $booking->drop_off_at->format('m/d/Y') }}"
+                   readonly
+                   autocomplete="off">
+
+            <div class="input-group bootstrap-timepicker timepicker">
+                <input type="text" class="form-control input-small" value="{{ $booking->drop_off_at->format('h:i A') }}" readonly>
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
+            @endif
+        </div>
+
+        <div id="drop-off-container-edit" class="col-sm-5 hidden">
             <input type="text" id="drop-off-date" class="form-control" name="drop_off_date"
                    placeholder="Drop Off"
                    value="{{ isset($booking) ? $booking->drop_off_at->format('m/d/Y') : "" }}"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-                <input id="drop-off-time" type="text" class="form-control input-small" name="drop_off_time" value="{{ isset($booking) ? $booking->drop_off_at->format('h:i A') : "" }}">
+                <input id="drop-off-time" type="text" class="form-control input-small" value="{{ isset($booking) ? $booking->drop_off_at->format('h:i A') : "" }}">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
         </div>
@@ -220,7 +253,22 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Return Date</label>
 
-        <div class="col-sm-5">
+        <div id="return-at-container-default" class="col-sm-5">
+            @if($readonly)
+            <input type="text" class="form-control"
+                   placeholder="Return Date"
+                   value="{{ $booking->return_at->format('m/d/Y') }}"
+                   readonly
+                   autocomplete="off">
+
+            <div class="input-group bootstrap-timepicker timepicker">
+               <input type="text" class="form-control input-small" value="{{ $booking->return_at->format('h:i A') }}" readonly>
+               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
+            @endif
+        </div>
+
+        <div id="return-at-container-edit" class="col-sm-5 hidden">
             <input type="text" id="return-at-date" class="form-control" name="return_at_date"
                    placeholder="Return Date"
                    value="{{ isset($booking) ? $booking->return_at->format('m/d/Y') : "" }}"
