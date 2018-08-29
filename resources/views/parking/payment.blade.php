@@ -697,8 +697,8 @@
             type: 'post',
             data: $('#order-form').serialize(),
             dataType: 'json',
-            async: false,
-            cache: false,
+              cache: false,
+              async: false,
             beforeSend: function () {
               $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
               $('#payment_choice').find('#stripe-container').addClass('d-none');
