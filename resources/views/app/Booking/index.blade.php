@@ -29,6 +29,8 @@
                                 <th>Order Title</th>
                                 <th>Customer</th>
                                 <th>Reservation Name</th>
+                                <th>Drop Off</th>
+                                <th>Return At</th>
                                 <th>Date Posted</th>
                                 <th></th>
                             </tr>
@@ -43,7 +45,9 @@
                                     @else
                                     <td>{{ $booking->client_first_name }} {{ $booking->client_first_name }}</td>
                                     @endif
-                                    <td>{{ $booking->created_at->format('m/d/Y') }}</td>
+                                    <td>{{ $booking->drop_off_at->format('d/m/Y') }}</td>
+                                    <td>{{ $booking->return_at->format('d/m/Y') }}</td>
+                                    <td>{{ $booking->created_at->format('d/m/Y') }}</td>
                                     <td></td>
                                 </tr>
                                 @endforeach
