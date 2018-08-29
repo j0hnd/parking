@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-6" style="padding-right: 45px">
                 <p class="l-con1">BOOK WITH THE UK’S FASTEST GROWING PARKING COMPANY</p>
-                <p class="l-con2">Why book with "</p><h1 class="l-con2">MyTravel Compared.com</h1><p class="l-con2">"?</p>
+                <p class="l-con2">Why book with "</p><h1 class="l-con2">MyTravelCompared.com</h1><p class="l-con2">"?</p>
             </div>
             <div class="col-md-6" style="padding-left: 45px">
                 <p class="l-con3">My Travel Compared is the UK’s fastest growing car park comparison site. We work closely with our partners so we can offer a professional, low cost, stress free, reliable way to book your parking. Whether your a frequent business flyer, taking the trip of a life time or simply getting away for the weekend we have a parking solution to meet your needs.</p>
@@ -16,10 +16,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p class="layer3-header">FOR HASSLE FREE EASY PARKING WITH MASSIVE DISSCOUNTS DOWN LOAD OUR APP!</p>
-                <p class="layer3-sub">We aim to make your parking booking as simple as can be with our new booking app. With our members area you can view past, present and future bookings, make amendments and receive up to date discounts and offers. 
+                <p class="layer3-header">FOR HASSLE FREE EASY PARKING WITH MASSIVE DISCOUNTS DOWN LOAD OUR APP!</p>
+                <p class="layer3-sub">We aim to make your parking booking as simple as can be with our new booking app. With our members area you can view past, present and future bookings, make amendments and receive up to date discounts and offers.
                 </p>
-                
+
             </div>
         </div>
     </div>
