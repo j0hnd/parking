@@ -68,6 +68,10 @@ class ParkingAppController extends Controller
     		session()->forget('sess_id');
 		}
 
+        if (session()->has('form')) {
+    		session()->forget('form');
+		}
+
         $airports = Airports::active()->get();
 
         $selected = Carbon::now(new DateTimeZone(config('app.timezone')));
@@ -84,10 +88,16 @@ class ParkingAppController extends Controller
 
     public function search(Request $request)
     {
-    	$form = null;
+        if ($request->isMethod('post') or $request->isMethod('get')) {
+            if ($request->isMethod('post')) {
+                $form = $request->except(['_token']);
+                session(['form' => $form]);
+            }
 
-        if ($request->isMethod('post')) {
-			$form = $request->except(['_token']);
+            if ($request->isMethod('get')) {
+                $form = session('form');
+            }
+
             $drop_off_date = explode('-', $form['search']['drop-off-date']);
             $form['search']['drop-off-date'] = trim($drop_off_date[0]);
 			$drop_date = trim($drop_off_date[0]);
@@ -119,36 +129,9 @@ class ParkingAppController extends Controller
 	            'drop_date' => trim($drop_off_date[0]),
 				'return_date' => $form['search']['return-at-date']
 			]);
-        // } else {
-        // 	$drop_off_time = "";
-        // 	$return_at_time = "";
-        // 	$results = null;
-        // 	$services = null;
-        // 	$terminals = null;
-		}
+        }
 
-		abort(404);
-
-		// $selected = Carbon::now(new DateTimeZone(config('app.timezone')));
-        // $seconds = strtotime($selected->format('H:i'));
-        // $rounded = round($seconds / (5 * 60)) * (5 * 60);
-        // $selected_time = date('H:i', $rounded);
-		//
-        // $airports = Airports::active()->get();
-        // $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
-        // $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
-		//
-        // return view('parking.search', [
-		// 	'airports' => $airports,
-		// 	'drop_off_time_interval' => $drop_off_time_interval,
-		// 	'return_at_time_interval' => $return_at_time_interval,
-		// 	'results' => $results,
-		// 	'form' => $form,
-		// 	'services' => $services,
-		// 	'terminals' => $terminals,
-        //     'drop_date' => trim($drop_off_date[0]),
-		// 	'return_date' => $form['search']['return-at-date']
-		// ]);
+        abort(500);
     }
 
     public function payment(Request $request)
