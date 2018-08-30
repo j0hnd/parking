@@ -49,7 +49,7 @@ Route::post('/stripe/payment', 'ParkingAppController@stripe');
 
 Route::match(['get', 'post'], '/login', 'Auth\LoginController@login')->name('login');
 Route::get('/search', 'ParkingAppController@search');
-Route::post('/search/{country_code}/airport-parking/search-results/{airport_name}', 'ParkingAppController@search');
+Route::match(['get', 'post'], '/search/{country_code}/airport-parking/search-results/{airport_name}', 'ParkingAppController@search');
 
 Route::group(['prefix' => 'members'], function () {
 	Route::get('/dashboard', 'MembersController@dashboard');
