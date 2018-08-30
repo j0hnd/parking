@@ -52,10 +52,12 @@ Parking Search |
             <div class="dropdown">
                 <a href="#" class="filter dropdown-toggle" id="lowest-price" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lowest Price</a>
                 <div class="dropdown-menu" aria-labelledby="lowest-price">
-                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="0-50">Below £50</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="asc">Lowest</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="desc">Highest</a>
+                    {{-- <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="0-50">Below £50</a>
                     <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="51-100">£51 - £100</a>
                     <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="101-200">£101 - £200</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="101-Up">Above £200</a>
+                    <a class="dropdown-item" href="javascript:void(0)" data-type="price" data-value="101-Up">Above £200</a> --}}
                 </div>
             </div>
 
