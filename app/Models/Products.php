@@ -121,8 +121,8 @@ class Products extends BaseModel
 				}
 
 				if ($data['sub']['type'] == 'price') {
-					list($price_from, $price_to) = explode('-', $data['sub']['value']);
-					$price_to = $price_to == 'Up' ? 5000 : $price_to;
+					// list($price_from, $price_to) = explode('-', $data['sub']['value']);
+					// $price_to = $price_to == 'Up' ? 5000 : $price_to;
 
 					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
 						->join('products', 'products.id', '=', 'product_airports.product_id')
@@ -139,8 +139,8 @@ class Products extends BaseModel
 						->where([
 							'product_airports.airport_id' => $data['search']['airport']
 						])
-					    ->whereRaw("prices.price_value >= ? AND prices.price_value <= ?", [$price_from, $price_to])
-                        ->orderBy('prices.price_value', 'asc');
+					    // ->whereRaw("prices.price_value >= ? AND prices.price_value <= ?", [$price_from, $price_to])
+                        ->orderBy('prices.price_value', $data['sub']['value']);
 				}
 			}
 
