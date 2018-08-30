@@ -95,9 +95,9 @@ class Products extends BaseModel
 				->whereNull('products.deleted_at')
 				->whereNull('carparks.deleted_at')
 				->whereNull('airports.deleted_at')
-
 				->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
-				->where('prices.no_of_days', $no_days);
+				->where('prices.no_of_days', $no_days)
+                ->orderBy('prices.price_value', 'asc');
 
         	if (isset($data['sub'])) {
 				if ($data['sub']['type'] == 'service') {
@@ -116,7 +116,8 @@ class Products extends BaseModel
 						->where('airport_id', $data['search']['airport'])
 						->where('carpark_services.service_name', $service_name)
 						->where('prices.no_of_days', $no_days)
-						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))");
+						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
+                        ->orderBy('prices.price_value', 'asc');
 				}
 
 				if ($data['sub']['type'] == 'price') {
@@ -138,7 +139,8 @@ class Products extends BaseModel
 						->where([
 							'product_airports.airport_id' => $data['search']['airport']
 						])
-					    ->whereRaw("prices.price_value >= ? AND prices.price_value <= ?", [$price_from, $price_to]);
+					    ->whereRaw("prices.price_value >= ? AND prices.price_value <= ?", [$price_from, $price_to])
+                        ->orderBy('prices.price_value', 'asc');
 				}
 			}
 
@@ -175,7 +177,8 @@ class Products extends BaseModel
 						->where([
 							'product_airports.airport_id' => $data['search']['airport'],
 							'prices.category_id' => $category_id
-						]);
+						])
+                        ->orderBy('prices.price_value', 'asc');
 				}
 			}
 
