@@ -1425,31 +1425,26 @@ font-size: 12px;
 }
 #search-form input{
   border: 0px !important;
-  padding: 20px;
   border-radius: 0px;
-  font-weight: bold;
 }
 #search-form select{
   border: 0px !important;
-  height: 61px;
+  height: 30px;
   border-radius: 0px;
-  font-weight: bold;
 }
 
 #search-form span{
   border: 0px !important;
-  height: 60px;
+  height: 29px;
   border-radius: 0px;
-  font-weight: bold;
-  margin-top: -1px;
+  margin-top: -1.5px;
 }
 
 .select2-selection span{
-  padding-top: 15px !important;
   color: black !important;
 }
 button#search{
-  height: 62px;
+  height: 30px;
 }
 
 #layer6{
@@ -1461,8 +1456,8 @@ button#search{
 @media only screen and (max-width: 48em) {
 
 .select2-container{
-  width: 100% !important;
-  margin-top: -30px !important;
+  width: 80% !important;
+  margin-top: 5px !important;
 }
 .main-header img{
   margin-top: -100px;
@@ -1470,10 +1465,10 @@ button#search{
 .search-notes h4{
   font-size: 15px;
   text-align: center;
-  margin-top: -200px;
+  margin-top: -180px;
 }
 #search-form{
-  margin-top: -140px;
+  margin-top: -100px;
 }
 #book-stansted{
   margin-top: -20px;
