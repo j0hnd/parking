@@ -81,7 +81,9 @@ class Products extends BaseModel
 
 			if ($no_days === 0) {
 				$no_days = 1;
-			}
+			} else {
+                $no_days += 1;
+            }
 
 			// get airports
 			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
