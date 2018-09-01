@@ -69,12 +69,15 @@ class Products extends BaseModel
         $products = null;
 
         try {
-            $date1 = explode(" ", $data['search']['drop-off-date']);
-            $date2 = explode(" ", $data['search']['return-at-date']);
+            // $date1 = explode(" ", $data['search']['drop-off-date']);
+            // $date2 = explode(" ", $data['search']['return-at-date']);
+
+            $date1 = date('d/m/Y', strtotime($data['search']['drop-off-date']));
+            $date2 = date('d/m/Y', strtotime($data['search']['return-at-date']));
 
 			$today = Carbon::now();
-			$begin = Carbon::createFromFormat('d/m/Y', $date1[0]);
-			$end   = Carbon::createFromFormat('d/m/Y', $date2[0]);
+			$begin = Carbon::createFromFormat('d/m/Y', $date1);
+			$end   = Carbon::createFromFormat('d/m/Y', $date2);
 
             // get number of days between the dates in the search parameters
 			$no_days = $begin->diffInDays($end);

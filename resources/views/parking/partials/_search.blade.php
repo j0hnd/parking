@@ -32,30 +32,35 @@
                 @endif
             </select>
         </div>
+
         <div class="col-xl-2 input2">
             <div class="home-label"> <i><img src="{{ asset('/img/calendar.png') }}"></i> Drop off <br/></div>
-            <input type='text' name="search[drop-off-date]" id="drop-off-date" class="form-control-sm datepicker date-width" placeholder="dd/mm/yyyy" value="" />
+            <input type='date' name="search[drop-off-date]" id="drop-off-date" class="form-control-sm date-width" value="" />
         </div>
         <div class="col-xl-1 input3">
             <div class="home-label"><br></div>
-            <select class="form-control-sm time-width" id="drop-off-time" name="search[drop-off-time]">
+            <input type="time" id="drop-off-time" name="search[drop-off-time]" class="form-control-sm" value="">
+            {{-- <select class="form-control-sm time-width" id="drop-off-time" name="search[drop-off-time]">
                 @if(isset($drop_off_time_interval))
                 {!! $drop_off_time_interval !!}
                 @endif
-            </select>
+            </select> --}}
         </div>
+
         <div class="col-xl-2 input4">
             <div class="home-label"><i><img src="{{ asset('img/calendar.png') }}"></i> Return at<br/></div>
-            <input type='text' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" placeholder="dd/mm/yyyy" value="" readonly />
+            <input type='date' name="search[return-at-date]" id="return-at-date" class="form-control-sm date-width" value="" />
         </div>
         <div class="col-xl-1 input5">
            <div class="home-label"><br></div>
-            <select class="form-control-sm time-width" id="return-at-time" name="search[return-at-time]">
+           <input type="time" id="return-at-time" name="search[return-at-time]" class="form-control-sm" value="">
+            {{-- <select class="form-control-sm time-width" id="return-at-time" name="search[return-at-time]">
                 @if(isset($return_at_time_interval))
                 {!! $return_at_time_interval !!}
                 @endif
-            </select>
+            </select> --}}
         </div>
+
         <div class="col-xl-3 input6">
             <button type="button" id="search" class="btn btn-primary btn-sm"><i><img src="{{ asset('/img/search.png') }}"/></i> Search Car Park</button>
         </div>
