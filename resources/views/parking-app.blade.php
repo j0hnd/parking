@@ -133,7 +133,7 @@
             //     $('#return-at-date').val('{{ date('d/m/Y', strtotime($mydate . ' +7 days')) }}');
             // }
 
-            $('#airport').select2().select2('val', $('#airport option:eq(1)').val());
+            $('#airport-list').select2().select2('val', $('#airport-list option:eq(1)').val());
 
             $('#drop-off-date').val('{{ $start_date }}');
             $('#drop-off-time').val('{{ date('h:i', strtotime($mydate)) }}');

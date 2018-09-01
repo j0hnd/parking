@@ -19,7 +19,7 @@
         @endif
         <div class="col-xl-3 input1">
             <div class="home-label"><i><img src="{{ asset('/img/plane-mini.png') }}"></i> Airport <br/></div>
-            <select class="form-control-sm air-width" id="airport" name="search[airport]">
+            <select class="form-control-sm air-width" id="airport-list" name="search[airport]">
                 <option value="" readonly>-- Airports --</option>
                 @if(isset($airports))
                     @foreach($airports as $airport)

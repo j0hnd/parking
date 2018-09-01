@@ -885,7 +885,7 @@ class ParkingAppController extends Controller
 
 					list($product_id, $price_id) = explode(':', $form['ids']);
 
-                    list($drop_off, $x1, $x2) = explode(' ', $session_request['drop_off']);
+                    list($drop_off, $x1) = explode(' ', $session_request['drop_off']);
                     list($return_at, $x1) = explode(' ', $session_request['return_at']);
 
 					$drop_off  = str_replace('/', '-', $drop_off);
