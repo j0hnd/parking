@@ -39,7 +39,7 @@
         </div>
         <div class="col-xl-1 input3">
             <div class="home-label"><br></div>
-            <input type="time" id="drop-off-time" name="search[drop-off-time]" class="form-control-sm" value="">
+            <input type="time" id="drop-off-time" name="search[drop-off-time]" class="form-control-sm time-width" value="">
             {{-- <select class="form-control-sm time-width" id="drop-off-time" name="search[drop-off-time]">
                 @if(isset($drop_off_time_interval))
                 {!! $drop_off_time_interval !!}
@@ -53,7 +53,7 @@
         </div>
         <div class="col-xl-1 input5">
            <div class="home-label"><br></div>
-           <input type="time" id="return-at-time" name="search[return-at-time]" class="form-control-sm" value="">
+           <input type="time" id="return-at-time" name="search[return-at-time]" class="form-control-sm time-width" value="">
             {{-- <select class="form-control-sm time-width" id="return-at-time" name="search[return-at-time]">
                 @if(isset($return_at_time_interval))
                 {!! $return_at_time_interval !!}
