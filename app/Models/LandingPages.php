@@ -5,7 +5,7 @@ namespace App\Models;
 class LandingPages extends BaseModel
 {
     protected $fillable = [
-        'airport_id', 'name', 'slug', 'description_1', 'description_2'
+        'airport_id', 'name', 'slug', 'description_1', 'deleted_at'
     ];
 
     protected $guarded = ['airport'];

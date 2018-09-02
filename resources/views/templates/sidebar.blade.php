@@ -63,8 +63,9 @@
                     <li><a href="{{ url('/admin/coupons') }}">Coupons</a></li>
                 </ul>
             </li>
+            <li><a href="{{ url('/admin/landing/pages') }}"><i class="fa fa-sticky-note"></i> <span>Landing Pages</span></a></li>
             <li><a href="{{ url('/admin/posts') }}"><i class="fa fa-rss"></i> <span>Posts</span></a></li>
-            <li><a href="{{ url('/admin/price/requests') }}"><i class="fa fa-rss"></i> <span>Price Change Requests</span></a></li>
+            <li><a href="{{ url('/admin/price/requests') }}"><i class="fa fa-usd"></i> <span>Price Change Requests</span></a></li>
             @endif
         </ul>
         <!-- /.sidebar-menu -->

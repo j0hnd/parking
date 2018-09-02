@@ -132,6 +132,10 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('/coupons/delete/{id}', 'CouponController@delete');
 	Route::post('/coupons/update', 'CouponController@update');
 	Route::get('/coupons/generate', 'CouponController@generate');
+
+	Route::resource('/landing/pages', 'LandingPageController')->except(['update', 'destroy', 'show']);
+	Route::post('/landing/pages/update', 'LandingPageController@update');
+	Route::post('/landing/pages/status/{page}', 'LandingPageController@status_update');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {
