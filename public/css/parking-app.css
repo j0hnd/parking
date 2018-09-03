@@ -1450,7 +1450,12 @@ button#search{
 #layer6{
   margin-bottom: -150px;
 }
-
+.header-logo{
+  margin-top: -80px;
+}
+.search-notes h4{
+  margin-top: -80px;
+}
 
 
 @media only screen and (max-width: 48em) {

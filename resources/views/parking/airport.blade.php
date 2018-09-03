@@ -18,6 +18,7 @@
     <div class="container">
         <form id="search-form" action="{{ url('/search') }}" method="post">
         <div class="row">
+<<<<<<< HEAD
             <div class="col-md-6 form-section">
                 <ul>
                 <li>
@@ -44,6 +45,37 @@
                         <div class="col-md-6">
                             <label>Drop Off Time</label>
                             <input type="time" id="drop-off-time" class="form-control parking-from-time" name="search[drop-off-time]" />
+=======
+ 
+                <div class="col-md-6 form-section">
+                    <ul>
+                    <li>
+                        <label>Select Airport</label>
+                        <select name="Location" class="form-control" data-track-name="location"><option value="ABZ">Aberdeen</option><option value="BHD">Belfast City (George Best)</option><option value="BFS">Belfast International</option><option value="BHX">Birmingham</option><option value="BOH">Bournemouth</option><option value="BRS">Bristol</option><option value="CWL">Cardiff</option><option value="DSA">Doncaster-Sheffield (Robin Hood)</option><option value="DUB">Dublin</option><option value="MME">Durham Tees Valley</option><option value="EMA">East Midlands</option><option value="EDI">Edinburgh</option><option value="EXT">Exeter</option><option value="LGW">Gatwick</option><option value="GLA">Glasgow International</option><option value="PIK">Glasgow Prestwick</option><option value="LHR">Heathrow</option><option value="HUY">Humberside </option><option value="INV">Inverness</option><option value="LBA">Leeds Bradford</option><option value="LPL">Liverpool</option><option value="LCY">London City</option><option value="LTN">Luton</option><option value="MAN">Manchester</option><option value="NCL">Newcastle</option><option value="NWI">Norwich</option><option value="SNN">Shannon</option><option value="SOU">Southampton</option><option value="SEN">Southend</option><option value="STN" selected="selected">Stansted</option></select>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Parking Date From</label>
+                                <input type="date" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" class="form-control parking-from" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Drop Off Time</label>
+                                <input type="time" class="form-control parking-from-time" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Returning Date to Collect Car</label>
+                                <input type="date" class="form-control parking-from" />
+                            </div>
+                            <div class="col-md-6">
+                                <label>Flight Landing Time</label>
+                                <input type="time" class="form-control parking-from-time" />
+                            </div>
+>>>>>>> airport page and css added
                         </div>
                     </div>
                 </li>
