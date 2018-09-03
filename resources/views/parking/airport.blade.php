@@ -21,6 +21,7 @@
             <div class="col-md-6 form-section">
                 <ul>
                 <li>
+                    <label for="">Select Airport</label>
                     <select id="airport-list" name="search[airport]" class="form-control">
                         <option value="">-- Select Airport --</option>
                         @if(count($airports))
@@ -37,11 +38,11 @@
                 <li>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Parking From</label>
+                            <label>Parking Date From</label>
                             <input type="date" id="drop-off-date" class="form-control parking-from" name="search[drop-off-date]" />
                         </div>
                         <div class="col-md-6">
-                            <label>&nbsp;</label>
+                            <label>Drop Off Time</label>
                             <input type="time" id="drop-off-time" class="form-control parking-from-time" name="search[drop-off-time]" />
                         </div>
                     </div>
@@ -49,11 +50,11 @@
                 <li>
                     <div class="row">
                         <div class="col-md-6">
-                            <label>Returning to collect car</label>
+                            <label>Returning Date to Collect Car</label>
                             <input type="date" id="return-at-date" class="form-control parking-from" name="search[return-at-date]" />
                         </div>
                         <div class="col-md-6">
-                            <label>&nbsp;</label>
+                            <label>Flight Landing Time</label>
                             <input type="time" id="return-at-time" class="form-control parking-from-time" name="search[return-at-time]" />
                         </div>
                     </div>
