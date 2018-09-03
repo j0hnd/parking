@@ -1,6 +1,7 @@
 @extends('parking-app')
 @section('css')
     <link href="{{ asset('/css/airport.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
 @stop
 
 @section('main-content')
@@ -15,53 +16,63 @@
 
 <div class="airport-page">
     <div class="container">
+        <form id="search-form" action="{{ url('/search') }}" method="post">
         <div class="row">
- 
-                <div class="col-md-6 form-section">
-                    <ul>
-                    <li>
-                        <select name="Location" class="form-control" data-track-name="location"><option value="ABZ">Aberdeen</option><option value="BHD">Belfast City (George Best)</option><option value="BFS">Belfast International</option><option value="BHX">Birmingham</option><option value="BOH">Bournemouth</option><option value="BRS">Bristol</option><option value="CWL">Cardiff</option><option value="DSA">Doncaster-Sheffield (Robin Hood)</option><option value="DUB">Dublin</option><option value="MME">Durham Tees Valley</option><option value="EMA">East Midlands</option><option value="EDI">Edinburgh</option><option value="EXT">Exeter</option><option value="LGW">Gatwick</option><option value="GLA">Glasgow International</option><option value="PIK">Glasgow Prestwick</option><option value="LHR">Heathrow</option><option value="HUY">Humberside </option><option value="INV">Inverness</option><option value="LBA">Leeds Bradford</option><option value="LPL">Liverpool</option><option value="LCY">London City</option><option value="LTN">Luton</option><option value="MAN">Manchester</option><option value="NCL">Newcastle</option><option value="NWI">Norwich</option><option value="SNN">Shannon</option><option value="SOU">Southampton</option><option value="SEN">Southend</option><option value="STN" selected="selected">Stansted</option></select>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Parking From</label>
-                                <input type="date" class="form-control parking-from" />
-                            </div>
-                            <div class="col-md-6">
-                                <label>&nbsp;</label>
-                                <input type="time" class="form-control parking-from-time" />
-                            </div>
+            <div class="col-md-6 form-section">
+                <ul>
+                <li>
+                    <select id="airport-list" name="search[airport]" class="form-control">
+                        <option value="">-- Select Airport --</option>
+                        @if(count($airports))
+                            @foreach($airports as $airport)
+                                @if($airport->id == $page->airport_id)
+                                <option value="{{ $airport->id }}" selected>{{ $airport->airport_name }}</option>
+                                @else
+                                <option value="{{ $airport->id }}">{{ $airport->airport_name }}</option>
+                                @endif
+                            @endforeach
+                        @endif
+                    </select>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Parking From</label>
+                            <input type="date" id="drop-off-date" class="form-control parking-from" name="search[drop-off-date]" />
                         </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Returning to collect car</label>
-                                <input type="date" class="form-control parking-from" />
-                            </div>
-                            <div class="col-md-6">
-                                <label>&nbsp;</label>
-                                <input type="time" class="form-control parking-from-time" />
-                            </div>
+                        <div class="col-md-6">
+                            <label>&nbsp;</label>
+                            <input type="time" id="drop-off-time" class="form-control parking-from-time" name="search[drop-off-time]" />
                         </div>
-                    </li>
-                    <li>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <br>
-                                <button class="form-control btn btn-primary">Find Parking <i class="fas fa-chevron-right"></i></button>
-                            </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Returning to collect car</label>
+                            <input type="date" id="return-at-date" class="form-control parking-from" name="search[return-at-date]" />
                         </div>
-                    </li>
-                    </ul>
-                </div>
-               
+                        <div class="col-md-6">
+                            <label>&nbsp;</label>
+                            <input type="time" id="return-at-time" class="form-control parking-from-time" name="search[return-at-time]" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <br>
+                            <button id="search" class="form-control btn btn-primary">Find Parking <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </li>
+                </ul>
+            </div>
 
-                <div class="col-md-6">
-                <img src="{{ asset('/img/carpark.jpg') }}" alt="Airport Car Park" class="carpark">
-                </div>
-         
+
+            <div class="col-md-6">
+            <img src="{{ asset('/img/carpark.jpg') }}" alt="Airport Car Park" class="carpark">
+            </div>
          </div>
 
          <div class="row">
@@ -73,15 +84,24 @@
                     <p>From affordable, off-site parking with direct transfers to the airport terminal, to our Meet and Greet option where you hand over your keys at the terminal doors and your car is parked for you while you board your flight; we have an Stansted airport parking solution for everyone.</p>
                 </div>
             </div>
-         </div>       
+         </div>
+         {{ csrf_field() }}
+         </form>
     </div>
     <br/><br/>
     </div>
 @stop
 
+@php
+    $mydate = date('Y-m-d', strtotime('+2 days'));
+    $start_date = date('Y-m-d', strtotime($mydate));
+    $end_date = date('Y-m-d', strtotime($mydate . ' +7 days'));
+@endphp
+
 @section('js')
     <script src="{{ asset('/js/navigation.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/affix.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/bower_components/select2/dist/js/select2.min.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             var hh = $('#top').outerHeight();
@@ -93,6 +113,13 @@
                     bottom: fh + 90
                 }
             });
+
+            $('#airport_id').select2();
+            $('#drop-off-date').val('{{ $start_date }}');
+            $('#drop-off-time').val('{{ date('h:i', strtotime($start_date)) }}');
+
+            $('#return-at-date').val('{{ $end_date }}');
+            $('#return-at-time').val('{{ date('h:i', strtotime($end_date)) }}');
         });
     </script>
 @stop

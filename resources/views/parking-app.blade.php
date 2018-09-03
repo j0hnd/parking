@@ -142,7 +142,7 @@
             $('#return-at-time').val('{{ date('h:i', strtotime($mydate)) }}');
 
             $(document).on('click', '#search', function (e) {
-                var aid = $('#airport').val() - 1;
+                var aid = $('#airport-list').val() - 1;
                 var slug = county_slug[aid];
                 var country = 'uk';
                 var url = "/search/"+ country +'/airport-parking/search-results/'+ slug;

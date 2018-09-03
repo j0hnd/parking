@@ -30,6 +30,7 @@ use App\Models\Tools\Sessions;
 use App\Models\Tools\Subcategories;
 use App\Models\User;
 use App\Models\Companies;
+use App\Models\LandingPages;
 use Carbon\Carbon;
 use Cartalyst\Stripe\Exception\StripeException;
 use Cartalyst\Stripe\Stripe;
@@ -1062,6 +1063,19 @@ class ParkingAppController extends Controller
 	public function airport_page()
 	{
 		return view ('parking.airport');
+	}
+
+	public function landing_page(Request $request)
+	{
+        try {
+            $slug = $request->airport_name;
+            $page = LandingPages::active()->where('slug', $slug)->first();
+            $airports = Airports::active()->orderBy('airport_name', 'asc')->get();
+        } catch (Exception $e) {
+            abort(500, $e->getMessage());
+        }
+
+        return view ('parking.airport', ['page' => $page, 'airports' => $airports]);
 	}
 
 	/* email template test only - remove when done */
