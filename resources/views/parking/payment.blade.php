@@ -524,7 +524,7 @@
                       <p>Drop Off Date</p>
                     </div>
                     <div class="col-6 col-md-6">
-                      <p class="receipt-align">{{ $drop_off_date }}</p>
+                      <p class="receipt-align">{{ date('d/m/Y', strtotime($drop_off_date)) }}</p>
                     </div>
                   </div>
                   <div class="row">
@@ -541,7 +541,7 @@
                       <p>Return Date</p>
                     </div>
                     <div class="col-6 col-md-6">
-                      <p class="receipt-align">{{ $return_at_date }}</p>
+                      <p class="receipt-align">{{ date('d/m/Y', strtotime($return_at_date)) }}</p>
                     </div>
                   </div>
                   <div class="row">
