@@ -78,10 +78,8 @@
          <div class="row">
             <div class="col-md-12">
                 <div class="airport-desc">
-                    <h2>Stansted Airport Parking</h2>
-                    <p>Booking parking at Stansted airport in advance can get you significant money off the on-the-gate parking price. You could save up to 60% if you pre-book online with Airparks far enough ahead.</p>
-                    <p>Not only does pre-booking save you money, but you will also benefit from having a parking space reserved and waiting for you when you arrive at the airport. This can be a life-saver if you are running late and don’t have time to hunt for that elusive space in packed car parks.</p>
-                    <p>From affordable, off-site parking with direct transfers to the airport terminal, to our Meet and Greet option where you hand over your keys at the terminal doors and your car is parked for you while you board your flight; we have an Stansted airport parking solution for everyone.</p>
+                    <h2>{{ $page->airport->airport_name }} Parking</h2>
+                    {!! $page->description_1 !!}
                 </div>
             </div>
          </div>

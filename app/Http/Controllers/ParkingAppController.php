@@ -1069,8 +1069,13 @@ class ParkingAppController extends Controller
 	{
         try {
             $slug = $request->airport_name;
-            $page = LandingPages::active()->where('slug', $slug)->first();
             $airports = Airports::active()->orderBy('airport_name', 'asc')->get();
+            $page_obj = LandingPages::active()->where('slug', $slug);
+            if ($page_obj->count() == 0) {
+                abort(404, "Landing page not found");
+            } else {
+                $page = $page_obj->first();
+            }
         } catch (Exception $e) {
             abort(500, $e->getMessage());
         }
