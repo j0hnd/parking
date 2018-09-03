@@ -92,6 +92,8 @@
         $mydate = date('Y-m-d', strtotime('+2 days'));
         $start_date = date('Y-m-d', strtotime($mydate));
         $end_date = date('Y-m-d', strtotime($mydate . ' +7 days'));
+        $start_time = date('h:i', strtotime($mydate));
+        $end_time = date('h:i', strtotime($mydate));
 
         if (isset($drop_date)) {
             $start_date = $drop_date;
@@ -99,6 +101,14 @@
 
         if (isset($return_date)) {
             $end_date = $return_date;
+        }
+
+        if (isset($drop_time)) {
+            $start_time = $drop_time;
+        }
+
+        if (isset($return_time)) {
+            $end_time = $return_time;
         }
     @endphp
     <script type="text/javascript">
@@ -136,10 +146,10 @@
             $('#airport-list').select2().select2('val', $('#airport-list option:eq(1)').val());
 
             $('#drop-off-date').val('{{ $start_date }}');
-            $('#drop-off-time').val('{{ date('h:i', strtotime($mydate)) }}');
+            $('#drop-off-time').val('{{ $start_time }}');
 
             $('#return-at-date').val('{{ $end_date }}');
-            $('#return-at-time').val('{{ date('h:i', strtotime($mydate)) }}');
+            $('#return-at-time').val('{{ $end_time }}');
 
             $(document).on('click', '#search', function (e) {
                 var aid = $('#airport-list').val() - 1;

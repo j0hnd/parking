@@ -128,7 +128,9 @@ class ParkingAppController extends Controller
 				'services' => $services,
 				'terminals' => $terminals,
 	            'drop_date' => $form['search']['drop-off-date'],
-				'return_date' => $form['search']['return-at-date']
+				'return_date' => $form['search']['return-at-date'],
+                'drop_time' => $form['search']['drop-off-time'],
+				'return_time' => $form['search']['return-at-time']
 			]);
         }
 
@@ -886,8 +888,8 @@ class ParkingAppController extends Controller
 
 					list($product_id, $price_id) = explode(':', $form['ids']);
 
-                    list($drop_off, $x1) = explode(' ', $session_request['drop_off']);
-                    list($return_at, $x1) = explode(' ', $session_request['return_at']);
+                    list($drop_off, $drop_time) = explode(' ', $session_request['drop_off']);
+                    list($return_at, $return_time) = explode(' ', $session_request['return_at']);
 
 					$drop_off  = str_replace('/', '-', $drop_off);
 					$return_at = str_replace('/', '-', $return_at);
@@ -917,8 +919,8 @@ class ParkingAppController extends Controller
 					$form['cancellation_waiver']  = $form['cancellation'];
 					$form['sms_confirmation_fee'] = $form['sms'];
 					$form['booking_fees']         = $form['booking_fee'];
-					$form['drop_off_at']          = date('Y-m-d H:i:s', strtotime($drop_off));
-					$form['return_at']            = date('Y-m-d H:i:s', strtotime($return_at));
+					$form['drop_off_at']          = date('Y-m-d H:i:00', strtotime($drop_off.' '.$drop_time));
+					$form['return_at']            = date('Y-m-d H:i:00', strtotime($return_at.' '.$return_time));
 					$form['payment_method']       = 'stripe';
 
 					$_booking = Bookings::where('booking_id', $session_response['booking_id']);
@@ -969,6 +971,7 @@ class ParkingAppController extends Controller
 			}
 
 		} catch (Exception $e) {
+            dd($e);
 			$response['message'] = $e->getMessage();
 		}
 
