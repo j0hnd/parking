@@ -10,7 +10,7 @@
 				</div>
 				<!-- /.box-header -->
 				<!-- form start -->
-				<form id="airport-form" class="form-horizontal" method="post" action="{{ url('/admin/landing/pages') }}">
+				<form id="airport-form" class="form-horizontal" method="post" action="{{ url('/admin/landing/pages') }}" enctype="multipart/form-data">
 					@include('app.Landing.partials._form')
 
 					<div class="box-footer">
@@ -31,7 +31,7 @@
         $('#airports').select2({
 			placeholder: '-- Airports --'
 		});
-		
+
         $('#content').wysihtml5();
 	</script>
 @stop

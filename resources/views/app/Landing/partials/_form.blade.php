@@ -39,4 +39,21 @@
 			<textarea id="content" name="description_1" class="form-control" cols="30" rows="30">{{ isset($page) ? $page->description_1 : "" }}</textarea>
 		</div>
 	</div>
+
+    <div class="form-group">
+		<label class="col-sm-2 control-label">Upload Image</label>
+
+		<div class="col-sm-4">
+			<input type="file" class="form-control margin-bottom10" name="image">
+			@if(!empty($page->image))
+				<a href="{{ URL::asset($page->image) }}" target="_blank">
+					<img src="{{ asset($page->image) }}" style="max-width: 30%" alt="Post Image">
+				</a>
+			@endif
+		</div>
+
+		@if(isset($page))
+		<input type="hidden" name="id" value="{{ $page->id }}">
+		@endif
+	</div>
 </div>

@@ -72,7 +72,11 @@
 
 
             <div class="col-md-6">
+            @if(is_null($page->image))
             <img src="{{ asset('/img/carpark.jpg') }}" alt="Airport Car Park" class="carpark">
+            @else
+            <img src="{{ asset($page->image) }}" alt="Airport Car Park" class="carpark">
+            @endif
             </div>
          </div>
 
