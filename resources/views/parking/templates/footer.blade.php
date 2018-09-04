@@ -8,7 +8,7 @@
                     labore et dolore magna aliqua.
                 </p>--}}
             </div>
-            <div class="col-md-4 text-center">
+            <div class="col-md-4 text-center" style="text-align: center !important;">
                 <img src="{{ asset('/img/logo-white.png') }}" class="foot-logo">
             </div>
             <div class="col-md-4">
