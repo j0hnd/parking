@@ -205,10 +205,10 @@ footer{
   color: rgb(255, 255, 255);
   text-transform: uppercase;
   line-height: 1.2;
-  text-align: left;
+  /*text-align: center;*/
   position: relative;
   letter-spacing: 3px;
-  margin-left: 37px;
+  /*margin-left: 37px;*/
 }
 .info{
   font-size: 14px;
@@ -219,7 +219,8 @@ footer{
 }
 .col3-align{
   position: relative;
-  left: 5%;
+  text-align: right;
+  /*left: 5%;*/
 }
 .foot-logo{
   width:90%; 
@@ -572,6 +573,7 @@ text-align: left;
   .col3-align {
     position: relative;
     left: 0%;
+    text-align: center;
 }
 .side-banner{
   margin-top: 25px;
@@ -581,7 +583,7 @@ text-align: left;
 
     .foot-logo{
   width:70%; 
-  margin: 20px 0 40px -40%;
+  margin: 20px 0 40px 0;
 }
 }
 @media only screen and (max-width:500px){

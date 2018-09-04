@@ -1276,7 +1276,7 @@ button.btn.btn-primary.btn-sm{
 }
   .foot-logo{
   width:70%;
-  margin: 20px 0 40px -8%;
+  margin: 20px 0 40px 0%;
 }
 }
 @media only screen and (max-width:376px){
