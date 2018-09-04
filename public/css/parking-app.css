@@ -611,10 +611,10 @@ footer{
   color: rgb(255, 255, 255);
   text-transform: uppercase;
   line-height: 1.2;
-  text-align: left;
+  /*text-align: left;*/
   position: relative;
   letter-spacing: 3px;
-  margin-left: 37px;
+  /*margin-left: 37px;*/
 }
 .info{
   font-size: 14px;
@@ -626,7 +626,7 @@ footer{
 .col3-align{
   position: relative;
   text-align: right;
-  left: 5%;
+  /*left: 5%;*/
 }
 .footer-con{
   color: #fff;
@@ -695,10 +695,10 @@ footer{
 }
 .info{
   position: relative;
-  right: -4%;
+  /*right: -4%;*/
 }
 .foot-col3 {
-    right: 9%;
+    /*right: 9%;*/
     text-align: center;
 }
 
