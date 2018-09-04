@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookingFormRequest;
+use App\Mail\SendBookingConfirmation;
+use App\Mail\SendBookingConfirmationVendor;
 use App\Models\Bookings;
 use App\Models\BookingDetails;
+use App\Models\Carpark;
+use App\Models\Companies;
 use App\Models\Products;
 use App\Models\Customers;
 use App\Models\Airports;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class BookingsController extends Controller
 {
@@ -126,6 +131,40 @@ class BookingsController extends Controller
                     Bookings::findOrFail($booking->id)->update(['booking_id' => $booking_id]);
 
                     DB::commit();
+
+					$booking  = Bookings::findOrFail($booking->id);
+					$customer = Customers::findOrFail($booking->customer_id);
+					$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+					$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+
+					$airport_address = $booking->products[0]->airport[0]->airport_name;
+
+					if (!empty($booking->departure_terminal)) {
+						$airport_address = $airport_address. " " . $booking->departure_terminal;
+					}
+
+					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+
+					if ($form_booking['notify_customer']) {
+						Mail::to($customer->email)->send(new SendBookingConfirmation([
+							'booking' => $booking,
+							'customer' => $customer,
+							'carpark_name' => $carpark->name,
+							'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+							'airport_details' => $airport_address,
+							'on_arrival' => $booking->products[0]->on_arrival,
+							'on_return' => $booking->products[0]->on_return
+						]));
+					}
+
+					if ($form_booking['notify_vendor']) {
+						Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+							'booking' => $booking,
+							'customer' => $customer,
+							'vendor' => $vendor,
+							'carpark' => $carpark
+						]));
+					}
 
                     return redirect('/admin/booking')->with('success', 'Booking is saved');
                 } else {
@@ -255,6 +294,8 @@ class BookingsController extends Controller
                     'arrival_terminal',
                     'client_first_name',
                     'client_last_name',
+					'notify_customer',
+					'notify_vendor'
                 ]);
 
                 $form_booking_details = $request->only([
@@ -305,6 +346,40 @@ class BookingsController extends Controller
                     $booking_details->save();
 
                     DB::commit();
+
+					$booking  = Bookings::findOrFail($id);
+					$customer = Customers::findOrFail($booking->customer_id);
+					$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+					$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+
+					$airport_address = $booking->products[0]->airport[0]->airport_name;
+
+					if (!empty($booking->departure_terminal)) {
+						$airport_address = $airport_address. " " . $booking->departure_terminal;
+					}
+
+					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+
+                    if ($form_booking['notify_customer']) {
+						Mail::to($customer->email)->send(new SendBookingConfirmation([
+							'booking' => $booking,
+							'customer' => $customer,
+							'carpark_name' => $carpark->name,
+							'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+							'airport_details' => $airport_address,
+							'on_arrival' => $booking->products[0]->on_arrival,
+							'on_return' => $booking->products[0]->on_return
+						]));
+					}
+
+					if ($form_booking['notify_vendor']) {
+						Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+							'booking' => $booking,
+							'customer' => $customer,
+							'vendor' => $vendor,
+							'carpark' => $carpark
+						]));
+					}
 
                     return redirect('/admin/booking')->with('success', 'Booking has been updated');
                 } else {
