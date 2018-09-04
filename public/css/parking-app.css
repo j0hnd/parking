@@ -625,6 +625,7 @@ footer{
 }
 .col3-align{
   position: relative;
+  text-align: right;
   left: 5%;
 }
 .footer-con{
