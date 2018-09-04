@@ -244,7 +244,7 @@
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-                <input id="drop-off-time" type="text" class="form-control input-small" value="{{ isset($booking) ? $booking->drop_off_at->format('h:i A') : "" }}">
+                <input id="drop-off-time" type="text" name="drop_off_time" class="form-control input-small" value="{{ isset($booking) ? $booking->drop_off_at->format('h:i A') : "" }}">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
         </div>

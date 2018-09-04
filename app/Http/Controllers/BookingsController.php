@@ -281,20 +281,15 @@ class BookingsController extends Controller
 
                 unset($form_booking['other_vehicle_model']);
 
-                $drop_off_at = new Carbon($form_booking['drop_off_date']);
-                $return_at   = new Carbon($form_booking['return_at_date']);
+                $drop_off_at = new Carbon(date('Y-m-d', strtotime(str_replace('/', '-', $form_booking['drop_off_date']))));
+                $return_at   = new Carbon(date('Y-m-d', strtotime(str_replace('/', '-', $form_booking['return_at_date']))));
 
-                $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['drop_off_time']));
-                $form_booking['return_at']   = $return_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['return_at_time']));
+                $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d')." ".date('H:i:00', strtotime($form_booking['drop_off_time']));
+                $form_booking['return_at']   = $return_at->format('Y-m-d')." ".date('H:i:00', strtotime($form_booking['return_at_time']));
 
                 if (isset($form_booking['price_value'])) {
                     $form_booking['revenue_value'] = number_format($form_booking['price_value'] * ($product->revenue_share / 100), 2);
                 }
-
-                unset($form_booking['drop_off_date']);
-                unset($form_booking['drop_off_time']);
-                unset($form_booking['return_at_date']);
-                unset($form_booking['return_at_time']);
 
                 DB::beginTransaction();
 
