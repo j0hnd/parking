@@ -207,7 +207,8 @@ $(function () {
     });
 
     $("#vehicle-make").select2({
-        placeholder: '-- Vehicle Make --'
+        placeholder: '-- Vehicle Make --',
+        tags:true
     });
 
     $("#departure-terminal").select2({

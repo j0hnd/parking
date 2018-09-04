@@ -360,7 +360,7 @@ class BookingsController extends Controller
 
 					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-                    if ($form_booking['notify_customer']) {
+					if (isset($form_booking['notify_customer'])) {
 						Mail::to($customer->email)->send(new SendBookingConfirmation([
 							'booking' => $booking,
 							'customer' => $customer,
@@ -372,7 +372,7 @@ class BookingsController extends Controller
 						]));
 					}
 
-					if ($form_booking['notify_vendor']) {
+					if (isset($form_booking['notify_vendor'])) {
 						Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
 							'booking' => $booking,
 							'customer' => $customer,
