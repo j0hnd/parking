@@ -698,6 +698,7 @@ footer{
 }
 .foot-col3 {
     right: 9%;
+    text-align: center;
 }
 
 .input1{
@@ -1071,6 +1072,7 @@ margin-top: 10px;
 .col3-align {
     position: relative;
     left: 0%;
+    text-align: center;
 }
 
 .input1{
