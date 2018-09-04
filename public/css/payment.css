@@ -866,7 +866,8 @@ margin-left: 0px;
 }
 @media only screen and (max-width:992px){
     .affix{
-        width: 210px;
+        width: 100%;
+        /*width: 210px;*/
     }
 
     }
