@@ -77,6 +77,7 @@ class BookingsController extends Controller
                     'return_at_date',
                     'drop_off_time',
                     'return_at_time',
+                    'other_vehicle_make',
                     'other_vehicle_model'
                 ]);
 
@@ -93,10 +94,15 @@ class BookingsController extends Controller
                 $form_booking['product_id']  = $order[0];
                 $form_booking['price_id']    = $order[1];
 
+				if (!empty($form_booking['other_vehicle_make'])) {
+					$form_booking['vehicle_make'] = $form_booking['other_vehicle_make'];
+				}
+
                 if (!empty($form_booking['other_vehicle_model'])) {
                     $form_booking['vehicle_model'] = $form_booking['other_vehicle_model'];
                 }
 
+                unset($form_booking['other_vehicle_make']);
                 unset($form_booking['other_vehicle_model']);
 
                 $drop_off_at = new Carbon($form_booking['drop_off_date']);
@@ -256,13 +262,15 @@ class BookingsController extends Controller
     {
         $vehicle_make = json_decode( file_get_contents(public_path('vehicle_data.json')), true );
         $model_str = "";
-        if ($vehicle_make[$request->index]) {
-            $models = $vehicle_make[$request->index]['models'];
+        if (isset($vehicle_make[$request->index])) {
+			if ($vehicle_make[$request->index]) {
+				$models = $vehicle_make[$request->index]['models'];
 
-            foreach ($models as $model) {
-                $model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
-            }
-        }
+				foreach ($models as $model) {
+					$model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
+				}
+			}
+		}
 
         return response()->json(['options' => $model_str]);
     }
@@ -289,6 +297,7 @@ class BookingsController extends Controller
                     'return_at_date',
                     'drop_off_time',
                     'return_at_time',
+                    'other_vehicle_make',
                     'other_vehicle_model',
                     'departure_terminal',
                     'arrival_terminal',
@@ -316,10 +325,15 @@ class BookingsController extends Controller
                 $form_booking['product_id']  = $order[0];
                 $form_booking['price_id']    = $order[1];
 
+				if (!empty($form_booking['other_vehicle_make'])) {
+					$form_booking['vehicle_make'] = $form_booking['other_vehicle_make'];
+				}
+
                 if (!empty($form_booking['other_vehicle_model'])) {
                     $form_booking['vehicle_model'] = $form_booking['other_vehicle_model'];
                 }
 
+                unset($form_booking['other_vehicle_make']);
                 unset($form_booking['other_vehicle_model']);
 
                 $drop_off_at = new Carbon(date('Y-m-d', strtotime(str_replace('/', '-', $form_booking['drop_off_date']))));

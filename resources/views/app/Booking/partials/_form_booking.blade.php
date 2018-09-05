@@ -94,6 +94,49 @@
         <label class="col-sm-2 control-label">Vehicle Make</label>
 
         <div class="col-sm-9">
+            @if(isset($booking))
+                @if(in_array($booking->vehicle_make, $vehicle_make_name) == true)
+                <select class="form-control" id="vehicle-make" name="vehicle_make">
+                    <option value="" readonly>-- Vehicle Make --</option>
+                    @if(count($vehicle_make))
+                        @foreach($vehicle_make as $i => $vm)
+                            @if(isset($booking))
+                                @if($booking->vehicle_make == $vm['title'])
+                                    <option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+                                @else
+                                    <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                                @endif
+                            @else
+                                <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                            @endif
+
+                        @endforeach
+                        <option value="-1" data-index="-1">Other Vehicle Make</option>
+                    @endif
+                </select>
+                <input type="text" class="form-control hidden" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="" autocomplete="off">
+                @else
+                    <select class="form-control" id="vehicle-make" name="vehicle_make">
+                        <option value="" readonly>-- Vehicle Make --</option>
+                        @if(count($vehicle_make))
+                            @foreach($vehicle_make as $i => $vm)
+                                @if(isset($booking))
+                                    @if($booking->vehicle_make == $vm['title'])
+                                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
+                                    @else
+                                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                                    @endif
+                                @else
+                                    <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                                @endif
+
+                            @endforeach
+                            <option value="-1" data-index="-1">Other Vehicle Make</option>
+                        @endif
+                    </select>
+                    <input type="text" class="form-control hidden" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="" autocomplete="off">
+                @endif
+            @else
             <select class="form-control" id="vehicle-make" name="vehicle_make">
                 <option value="" readonly>-- Vehicle Make --</option>
                 @if(count($vehicle_make))
@@ -105,12 +148,15 @@
                             <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                             @endif
                         @else
-                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
+                            <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                         @endif
 
                     @endforeach
+                    <option value="-1" data-index="-1">Other Vehicle Make</option>
                 @endif
             </select>
+            <input type="text" class="form-control hidden" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="" autocomplete="off">
+            @endif
         </div>
     </div>
 

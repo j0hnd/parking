@@ -119,6 +119,15 @@ $(function () {
             data: { make: make, index: index },
             dataType: 'json',
             success: function (response) {
+                if ($('#vehicle-make').val() == -1) {
+                    $('#other-vehicle-make').removeClass('hidden');
+                    $('#other-vehicle-make').val('');
+                    $('#other-vehicle-make').focus();
+                } else {
+                    $('#other-vehicle-make').addClass('hidden');
+                    $('#other-vehicle-make').val('');
+                }
+
                 $('#vehicle-model')
                     .empty()
                     .append(response.options);
@@ -153,8 +162,7 @@ $(function () {
     });
 
     $("#vehicle-make").select2({
-        placeholder: '-- Vehicle Make --',
-        tags: true
+        placeholder: '-- Vehicle Make --'
     });
 
     $('#drop-off-date').datepicker({
