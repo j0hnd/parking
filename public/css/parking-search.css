@@ -120,7 +120,7 @@ padding: 50px 0 40px 0;
 }
 .not-active{
     padding: 30px 30px 29px 30px;
-   
+
 }
 .not-active:hover{
     background-color: #005e7d;
@@ -194,7 +194,7 @@ margin-top: 24px;
     margin-left: 100px;
     color: #fff;
     top: 78%;
-   
+
 }
 .filter:hover{
     color: #ffe000;
@@ -206,7 +206,7 @@ margin-top: 24px;
      left: 20%;
         }
 .datepicker{
-  z-index: 2001 !important; 
+  z-index: 2001 !important;
 }
 
 /* END HEADER */
@@ -387,7 +387,7 @@ hr{
   font-family: "Roboto";
   font-size: 50;
   font-weight: 300;
-  
+
 }
 .pop1-content{
   font-family: "Montserrat";
@@ -464,8 +464,8 @@ hr{
     float: right !important;
     content:"\f067";
 }
-.card-border > .plus:hover, 
-.card-border > .plus:active, 
+.card-border > .plus:hover,
+.card-border > .plus:active,
 .card-border > .plus:focus  {
     text-decoration:none;
 }
@@ -533,10 +533,10 @@ footer{
   color: rgb(255, 255, 255);
   text-transform: uppercase;
   line-height: 1.2;
-  text-align: left;
+  text-align: center;
   position: relative;
   letter-spacing: 3px;
-  margin-left: 37px;
+  /* margin-left: 37px; */
 }
 .info{
   font-size: 14px;
@@ -584,8 +584,8 @@ footer{
   margin-left: 40px;
 }
 .foot-logo{
-  width:90%; 
-  margin-right:auto; 
+  width:90%;
+  margin-right:auto;
   margin-left:auto;
 }
 /* END FOOTER */
@@ -623,10 +623,11 @@ footer{
 }
 .info{
   position: relative;
-  right: -4%;
+  text-align: center;
+  /* right: -4%; */
 }
 .foot-col3 {
-    right: 9%;
+    /* right: 9%; */
 }
 #header{
   position: relative;
@@ -764,8 +765,8 @@ margin-top: 10px;
 }
 .not-active-2-mobile:hover{
  background-color: #005e7d;
- 
-} 
+
+}
 
 .navbar-2-mobile ul li a{
   color: #fff;
@@ -838,7 +839,7 @@ margin-top: 10px;
   text-align: center;
   position: relative;
   bottom:0;
- 
+
 }
 .dropdown{
   left: 3%;
@@ -907,7 +908,7 @@ margin-top: 10px;
 @media only screen and (max-width:793px){
  .skip{
   display: inline;
-  margin-bottom: 2px;  
+  margin-bottom: 2px;
 }
 .skip2{
   display: inline;
@@ -1037,8 +1038,8 @@ margin-top: 10px;
 }
 .not-active-2-mobile:hover{
  background-color: #005e7d;
- 
-} 
+
+}
 .navbar-2-mobile ul li a{
   color: #fff;
   font-size: 14px;
@@ -1106,7 +1107,7 @@ margin-top: 10px;
   text-align: center;
   position: relative;
   bottom: 30px;
- 
+
 }
 .home-label{
   display: none;
@@ -1160,9 +1161,9 @@ button.btn.btn-primary.btn-sm{
   .mobile li .vl-mobile{
     display: inline;
   }
-    .foot-logo{
-  width:70%; 
-  margin: 20px 0 40px -40%;
+.foot-logo{
+  width:70%;
+  margin: 20px 0 40px 0;
 }
 .skip2{
   display: none;
@@ -1330,5 +1331,5 @@ button#search{
     .tabcontrol > .steps > ul > li > a{
       padding-bottom: 10px !important;
     }
-    
+
 }
