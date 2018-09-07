@@ -3,7 +3,7 @@
 		<tr>
 			<td>{{ $i + 1 }}</td>
 			<td>{{ $page->airport->airport_name }}</td>
-			<td> <a href="{{ url('/landing/' . $page->slug) }}">{{ url('/landing/' . $page->slug) }}</a> </td>
+			<td> <a href="{{ url('/landing/' . $page->slug) }}" target="_blank">{{ url('/landing/' . $page->slug) }}</a> </td>
 			<td>{{ $page->created_at->format('d/m/Y') }}</td>
 			<td>
 				<a href="{{ url('/admin/landing/pages/'.$page->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
