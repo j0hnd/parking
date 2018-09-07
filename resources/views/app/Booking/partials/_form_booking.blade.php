@@ -95,7 +95,7 @@
 
         <div class="col-sm-9">
             @if(isset($booking))
-                @if(in_array($booking->vehicle_make, $vehicle_make_name) == true)
+                @if(in_array(strtoupper($booking->vehicle_make), $vehicle_make_name) == true)
                 <select class="form-control" id="vehicle-make" name="vehicle_make">
                     <option value="" readonly>-- Vehicle Make --</option>
                     @if(count($vehicle_make))
