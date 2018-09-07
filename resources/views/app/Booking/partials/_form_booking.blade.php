@@ -134,7 +134,7 @@
                             <option value="-1" data-index="-1">Other Vehicle Make</option>
                         @endif
                     </select>
-                    <input type="text" class="form-control hidden" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="" autocomplete="off">
+                    <input type="text" class="form-control" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="{{ $booking->vehicle_make }}" autocomplete="off">
                 @endif
             @else
             <select class="form-control" id="vehicle-make" name="vehicle_make">
