@@ -43,7 +43,7 @@
                                     @if(empty($booking->client_first_name) and empty($booking->client_last_name))
                                     <td>N/A</td>
                                     @else
-                                    <td>{{ $booking->client_first_name }} {{ $booking->client_first_name }}</td>
+                                    <td>{{ $booking->client_first_name }} {{ $booking->client_last_name }}</td>
                                     @endif
                                     <td>{{ $booking->drop_off_at->format('d/m/Y') }}</td>
                                     <td>{{ $booking->return_at->format('d/m/Y') }}</td>
