@@ -46,12 +46,14 @@ use DB;
 use Hash;
 use Sentinel;
 use DateTimeZone;
+use Jenssegers\Agent\Agent;
 
 
 class ParkingAppController extends Controller
 {
 	private $provider;
 	private $twilio;
+	private $agent;
 
 
     public function __construct()
@@ -61,6 +63,8 @@ class ParkingAppController extends Controller
 		$this->provider->setApiCredentials(config('paypal'));
 
 		$this->twilio = new Client(env('TWILIO_SID', ''), env('TWILIO_AUTHTOKEN', ''));
+
+		$this->agent = new Agent();
     }
 
     public function index()
@@ -84,7 +88,13 @@ class ParkingAppController extends Controller
 		$return_at_time_interval = Common::get_times($selected_time, '+5 minutes');
 
 		$posts = Posts::active()->published()->orderBy('created_at', 'desc')->take(3)->get();
-        return view('parking.index', compact('airports', 'drop_off_time_interval', 'return_at_time_interval', 'posts'));
+        return view('parking.index', [
+			'airports' => $airports,
+			'drop_off_time_interval' => $drop_off_time_interval,
+			'return_at_time_interval' => $return_at_time_interval,
+			'posts' => $posts,
+			'is_desktop' => $this->agent->isDesktop()
+		]);
     }
 
     public function search(Request $request)
@@ -116,13 +126,13 @@ class ParkingAppController extends Controller
 	        $selected_time = date('H:i', $rounded);
 
 	        $airports = Airports::active()->get();
-	        // $drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
-	        // $return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
+			$drop_off_time_interval  = Common::get_times($selected_time, '+5 minutes', $drop_off_time);
+			$return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $return_at_time);
 
 	        return view('parking.search', [
 				'airports' => $airports,
-				// 'drop_off_time_interval' => $drop_off_time_interval,
-				// 'return_at_time_interval' => $return_at_time_interval,
+				'drop_off_time_interval' => $drop_off_time_interval,
+				'return_at_time_interval' => $return_at_time_interval,
 				'results' => $results,
 				'form' => $form,
 				'services' => $services,
@@ -130,7 +140,8 @@ class ParkingAppController extends Controller
 	            'drop_date' => $form['search']['drop-off-date'],
 				'return_date' => $form['search']['return-at-date'],
                 'drop_time' => $form['search']['drop-off-time'],
-				'return_time' => $form['search']['return-at-time']
+				'return_time' => $form['search']['return-at-time'],
+				'is_desktop' => $this->agent->isDesktop()
 			]);
         }
 

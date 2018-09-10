@@ -155,6 +155,7 @@ return [
 		Intervention\Image\ImageServiceProvider::class,
 		Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
+		Jenssegers\Agent\AgentServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -223,6 +224,7 @@ return [
 		'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
 		'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Promocodes' => Trexology\Promocodes\Facades\Promocodes::class,
+		'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
     'item_per_page' => env('PER_PAGE'),
