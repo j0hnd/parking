@@ -92,8 +92,8 @@
         $mydate = date('Y-m-d', strtotime('+2 days'));
         $start_date = date('Y-m-d', strtotime($mydate));
         $end_date = date('Y-m-d', strtotime($mydate . ' +7 days'));
-        $start_time = date('h:i', strtotime($mydate));
-        $end_time = date('h:i', strtotime($mydate));
+        $time = ceil(time() / 300) * 300;
+        $start_time = $end_time = date('h:i', $time);
 
         if (isset($drop_date)) {
             $start_date = $drop_date;

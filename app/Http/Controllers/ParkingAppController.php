@@ -84,8 +84,8 @@ class ParkingAppController extends Controller
         $rounded = round($seconds / (5 * 60)) * (5 * 60);
         $selected_time = date('H:i', $rounded);
 
-		$drop_off_time_interval = Common::get_times($selected_time, '+5 minutes');
-		$return_at_time_interval = Common::get_times($selected_time, '+5 minutes');
+		$drop_off_time_interval = Common::get_times($selected_time, '+5 minutes', $selected_time);
+		$return_at_time_interval = Common::get_times($selected_time, '+5 minutes', $selected_time);
 
 		$posts = Posts::active()->published()->orderBy('created_at', 'desc')->take(3)->get();
         return view('parking.index', [
