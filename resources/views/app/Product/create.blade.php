@@ -49,8 +49,11 @@
             $('.overrides').daterangepicker();
 
             var row_limit = 31;
-            // var row_count = '{{ $row_count }}';
-            var row_count = 1;
+            var row_count = '{{ $row_count }}';
+
+            if (row_count == 1) {
+                row_count = 1;
+            }
 
             $(document).on('blur', '.price-value', function (e) {
                 if (/^[0-9]+(\.[0-9]{1,3})?$/.test($(this).val())) {
