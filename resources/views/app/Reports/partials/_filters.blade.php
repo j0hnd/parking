@@ -44,7 +44,11 @@
 
 			{{ csrf_field() }}
 
+			@if(empty($start) and empty($end))
 			<input type="hidden" id="date" name="date">
+			@else
+			<input type="hidden" id="date" name="date" value="{{ $start.':'.$end }}">
+			@endif
 		</form>
 	</div>
 </div>

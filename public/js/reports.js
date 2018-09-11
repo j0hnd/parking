@@ -31,7 +31,7 @@ $(function () {
     var startDate = moment(_date[0]).format('YYYY-MM-DD');
     var endDate = moment(_date[1]).format('YYYY-MM-DD');
 
-    $('#date').val(startDate+':'+endDate);
+    // $('#date').val(startDate+':'+endDate);
 
     $(document).on('click', '#toggle-generate-report', function (e) {
         e.preventDefault();
@@ -49,8 +49,6 @@ $(function () {
         e.preventDefault();
         var id = $(this).data('id');
         var date = $(this).data('date');
-
-        console.log(id);
 
         if ($('.booking-details').is(':visible')) {
             $('.booking-details').addClass('hidden');

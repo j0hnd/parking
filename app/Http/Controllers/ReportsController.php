@@ -97,6 +97,8 @@ class ReportsController extends Controller
 		$bookings = null;
 		$selected_vendor = null;
 		$selected_date = "";
+		$start = "";
+		$end = "";
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date', 'export']);
@@ -126,7 +128,9 @@ class ReportsController extends Controller
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
 			'selected_vendor' => $selected_vendor,
-			'selected_date'   => $selected_date
+			'selected_date'   => $selected_date,
+			'start'           => $start,
+			'end'             => $end
 		]);
 	}
 
@@ -137,6 +141,8 @@ class ReportsController extends Controller
 		$bookings = null;
 		$selected_vendor = null;
 		$selected_date = "";
+		$start = "";
+		$end = "";
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date', 'export']);
@@ -175,7 +181,9 @@ class ReportsController extends Controller
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
 			'selected_vendor' => $selected_vendor,
-			'selected_date'   => $selected_date
+			'selected_date'   => $selected_date,
+			'start'           => $start,
+			'end'             => $end
 		]);
 	}
 
@@ -186,6 +194,8 @@ class ReportsController extends Controller
 		$bookings = null;
 		$selected_vendor = null;
 		$selected_date = "";
+		$start = "";
+		$end = "";
 
 		if ($request->isMethod('post')) {
 			$form = $request->only(['vendor', 'date', 'export']);
@@ -217,7 +227,9 @@ class ReportsController extends Controller
 			'vendors'         => $vendors,
 			'bookings'        => $bookings,
 			'selected_vendor' => $selected_vendor,
-			'selected_date'   => $selected_date
+			'selected_date'   => $selected_date,
+			'start'           => $start,
+			'end'             => $end
 		]);
 	}
 
