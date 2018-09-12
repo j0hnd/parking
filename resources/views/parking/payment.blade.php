@@ -172,8 +172,10 @@
                             <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                           @endif
                         @endforeach
+                        <option value="-1" data-index="-1">Other Vehicle Make</option>
                       @endif
                     </select>
+                    <input type="text" class="form-control d-none" id="other-vehicle-make-src" placeholder="Other Vehicle Make" name="other_vehicle_make" autocomplete="off">
                   </div>
                   <div class="col-md-6">
                     <label>Vehicle Model:</label>
@@ -186,7 +188,7 @@
                       <select class="form-control" name="vehicle_model" id="vehicle-model-src">
                         <option value="" readonly> -- Vehicle Model -- </option>
                       </select>
-                      <input type="text" class="form-control d-none" id="other-vehicle-model-src" placeholder="Vehicle Model" name="other_vehicle_model" autocomplete="off">
+                      <input type="text" class="form-control d-none" id="other-vehicle-model-src" placeholder="Other Vehicle Model" name="other_vehicle_model" autocomplete="off">
                     @endif
 
                     {{--<input type="text" id="vehicle-model-src" name="vehicle_model" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_model'] }}">--}}
@@ -470,6 +472,7 @@
                 <input type="hidden" id="car-registration-no" name="car_registration_no">
                 <input type="hidden" id="vehicle-make" name="vehicle_make">
                 <input type="hidden" id="vehicle-model" name="vehicle_model">
+                <input type="hidden" id="other-vehicle-make-src" name="other_vehicle_make">
                 <input type="hidden" id="other-vehicle-model-src" name="other_vehicle_model">
                 <input type="hidden" id="vehicle-color" name="vehicle_color">
                 <input type="hidden" id="card-name" name="card_name">
@@ -670,9 +673,19 @@
           $('#phoneno').val($('#phone-src').val());
           $('#car-registration-no').val($('#car-registration-no-src').val());
           $('#vehicle-color').val($('#vehicle-color-src').val());
-          $('#vehicle-model').val($('#vehicle-model-src').val());
-          $('#other-vehicle-model-model').val($('#other-vehicle-model-src').val());
           $('#vehicle-make').val($('#vehicle-make-src').val());
+          $('#vehicle-model').val($('#vehicle-model-src').val());
+            $('#other-vehicle-make-model').val($('#other-vehicle-make-src').val());
+            $('#other-vehicle-model-model').val($('#other-vehicle-model-src').val());
+
+          if ($('#vehicle-make').val() == -1) {
+              $('#vehicle-make').val($('#other-vehicle-make-src').val());
+          }
+
+            if ($('#vehicle-model').val() == -1) {
+                $('#vehicle-model').val($('#other-vehicle-model-src').val());
+            }
+
           $('#coupon').val($('#coupon-src').val());
           $('#card-name').val($('#card-name-src').val());
           $('#card-number').val($('#card-number-src').val());

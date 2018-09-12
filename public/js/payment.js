@@ -374,6 +374,18 @@ $(document).ready(function(){
     $('#other-vehicle-model-src').addClass('d-none');
   });
 
+    $(document).on('change', '#vehicle-make-src', function () {
+        var txt = $("#vehicle-make-src option:selected").text();
+        if (txt.indexOf('Other') != -1) {
+            $(this).addClass('d-none');
+            $('#other-vehicle-make-src').removeClass('d-none');
+            $('#other-vehicle-make-src').focus();
+        } else {
+            $(this).removeClass('d-none');
+            $('#other-vehicle-make-src').addClass('d-none');
+        }
+    });
+
   $(document).on('change', '#vehicle-model-src', function () {
     var txt = $("#vehicle-model-src option:selected").text();
     if (txt.indexOf('Other') != -1) {
