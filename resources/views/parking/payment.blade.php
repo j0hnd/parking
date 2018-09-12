@@ -175,7 +175,7 @@
                         <option value="-1" data-index="-1">Other Vehicle Make</option>
                       @endif
                     </select>
-                    <input type="text" class="form-control d-none" id="other-vehicle-make-src" placeholder="Other Vehicle Make" name="other_vehicle_make" autocomplete="off">
+                    <input type="text" class="form-control d-none" id="other-vehicle-make-src" placeholder="Other Vehicle Make" name="other_vehicle_make" autocomplete="off" style="margin-top:5px;">
                   </div>
                   <div class="col-md-6">
                     <label>Vehicle Model:</label>
@@ -188,7 +188,7 @@
                       <select class="form-control" name="vehicle_model" id="vehicle-model-src">
                         <option value="" readonly> -- Vehicle Model -- </option>
                       </select>
-                      <input type="text" class="form-control d-none" id="other-vehicle-model-src" placeholder="Other Vehicle Model" name="other_vehicle_model" autocomplete="off">
+                      <input type="text" class="form-control d-none" id="other-vehicle-model-src" placeholder="Other Vehicle Model" name="other_vehicle_model" autocomplete="off" style="margin-top:5px;">
                     @endif
 
                     {{--<input type="text" id="vehicle-model-src" name="vehicle_model" class="form-control" value="{{ is_null($details) ? "" : $details['vehicle_model'] }}">--}}
