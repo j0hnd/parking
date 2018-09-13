@@ -5,7 +5,7 @@
                 <label class="col-sm-2 control-label">Search Customer</label>
 
                 <div class="col-sm-10">
-                    <select class="form-control" id="search-customer">
+                    <select class="form-control" id="search-customer" style="width: 100%">
                         <option value="" readonly></option>
                         @if($customers->count())
                             @foreach ($customers->get() as $customer) {
