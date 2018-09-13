@@ -95,7 +95,7 @@
 
         <div class="col-sm-9">
             @if(isset($booking))
-                @if(in_array(strtoupper($booking->vehicle_make), $vehicle_make_name) == true)
+                @if(in_array($booking->vehicle_make, $vehicle_make_name) == true)
                 <select class="form-control" id="vehicle-make" name="vehicle_make">
                     <option value="" readonly>-- Vehicle Make --</option>
                     @if(count($vehicle_make))
@@ -120,21 +120,12 @@
                         <option value="" readonly>-- Vehicle Make --</option>
                         @if(count($vehicle_make))
                             @foreach($vehicle_make as $i => $vm)
-                                @if(isset($booking))
-                                    @if($booking->vehicle_make == $vm['title'])
-                                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}" selected>{{ $vm['title'] }}</option>
-                                    @else
-                                        <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
-                                    @endif
-                                @else
-                                    <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
-                                @endif
-
+                            <option value="{{ $vm['title'] }}" data-index="{{ $i }}">{{ $vm['title'] }}</option>
                             @endforeach
                             <option value="-1" data-index="-1">Other Vehicle Make</option>
                         @endif
                     </select>
-                    <input type="text" class="form-control" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="{{ $booking->vehicle_make }}" autocomplete="off">
+                    <input type="text" class="form-control hidden" id="other-vehicle-make" placeholder="Vehicle Make" name="other_vehicle_make" value="{{ $booking->vehicle_make }}" autocomplete="off">
                 @endif
             @else
             <select class="form-control" id="vehicle-make" name="vehicle_make">
@@ -165,12 +156,12 @@
 
         <div class="col-sm-9">
             @if(isset($booking))
-                @if(in_array($booking->vehicle_model, $vehicle_make_name) == true)
+                @if(in_array($booking->vehicle_model, $vehicle_model_names) == true)
                 <select class="form-control" name="vehicle_model" id="vehicle-model">
                     <option value="" readonly> -- Vehicle Model -- </option>
                     @if(isset($booking))
                         @foreach($vehicle_models as $model)
-                            @if($model['value'] == $booking->vehicle_model)
+                            @if(trim($model['title']) == $booking->vehicle_model)
                             <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
                             @else
                             <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
@@ -178,13 +169,14 @@
                         @endforeach
                     @endif
                 </select>
+                <input type="text" class="form-control hidden" id="other-vehicle-model" placeholder="Vehicle Model" name="other_vehicle_model" autocomplete="off">
                 @else
                     @if(empty($booking->vehicle_model))
                     <select class="form-control" name="vehicle_model" id="vehicle-model">
                         <option value="" readonly> -- Vehicle Model -- </option>
                         @if(isset($booking))
                             @foreach($vehicle_models as $model)
-                                @if($model['value'] == $booking->vehicle_model)
+                                @if(trim($model['title']) == $booking->vehicle_model)
                                 <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
                                 @else
                                 <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
@@ -196,11 +188,13 @@
                     @else
                     <select class="form-control hidden" name="vehicle_model" id="vehicle-model">
                         <option value="" readonly> -- Vehicle Model -- </option>
-                        @if(isset($booking))
-                            @foreach($vehicle_models as $model)
+                        @foreach($vehicle_models as $model)
+                            @if(trim($model['title']) == $booking->vehicle_model)
+                            <option value="{{ $model['title'] }}" selected>{{ $model['title'] }}</option>
+                            @else
                             <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
-                            @endforeach
-                        @endif
+                            @endif
+                        @endforeach
                     </select>
                     <input type="text" class="form-control" id="other-vehicle-model" placeholder="Vehicle Model" name="other_vehicle_model" value="{{ $booking->vehicle_model }}" autocomplete="off">
                     @endif
@@ -210,7 +204,7 @@
                 <option value="" readonly> -- Vehicle Model -- </option>
                 @if(isset($booking))
                     @foreach($vehicle_models as $model)
-                    <option value="{{ $model['value'] }}">{{ $model['title'] }}</option>
+                    <option value="{{ $model['title'] }}">{{ $model['title'] }}</option>
                     @endforeach
                 @endif
             </select>

@@ -196,11 +196,22 @@ class BookingsController extends Controller
         $airport           = Airports::findOrFail($booking->products[0]->airport[0]->id);
         $departure_options = null;
         $arrival_options   = null;
+		$vehicle_model_names = [];
 
         if (count($vehicle_make)) {
             foreach ($vehicle_make as $make) {
-                $vehicle_make_name[] = $make['value'];
+                $vehicle_make_name[] = $make['title'];
             }
+
+            if (!empty($booking->vehicle_make) and !empty($booking->vehicle_model)) {
+            	foreach ($vehicle_make as $make) {
+            		if ($make['title'] == $booking->vehicle_make) {
+            			foreach ($make['models'] as $model) {
+							$vehicle_model_names[] = trim($model['title']);
+						}
+					}
+				}
+			}
         } else {
             $vehicle_make_name = null;
         }
@@ -231,7 +242,7 @@ class BookingsController extends Controller
 			}
 		}
 
-        $vehicle_make_key = array_search($booking->vehicle_make, array_column($vehicle_make, 'value'));
+        $vehicle_make_key = array_search($booking->vehicle_make, array_column($vehicle_make, 'title'));
         $vehicle_models = $vehicle_make[$vehicle_make_key]['models'];
 
         if ($products->count()) {
@@ -255,7 +266,7 @@ class BookingsController extends Controller
             }
         }
 
-        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name', 'departure_options', 'arrival_options'));
+        return view('app.Booking.edit', compact('booking', 'page_title', 'products', 'customers', 'products_list', 'vehicle_make', 'vehicle_models', 'vehicle_make_name', 'departure_options', 'arrival_options', 'vehicle_make_name', 'vehicle_model_names'));
     }
 
     public function get_vehicle_models(Request $request)
@@ -267,7 +278,7 @@ class BookingsController extends Controller
 				$models = $vehicle_make[$request->index]['models'];
 
 				foreach ($models as $model) {
-					$model_str .= "<option value='".$model['value']."'>".$model['title']."</option>";
+					$model_str .= "<option value='".$model['title']."'>".$model['title']."</option>";
 				}
 			}
 		}
