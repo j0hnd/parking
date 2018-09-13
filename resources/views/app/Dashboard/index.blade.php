@@ -84,7 +84,7 @@
                         @if($summary)
                             @foreach($summary as $_summary)
                                 <tr>
-                                    <td>{{ $_summary->month }}</td>
+                                    <td>{{ $_summary->MONTH }}</td>
                                     <td class="text-right">£{{ number_format($_summary->sales, 2) }}</td>
                                     <td class="text-right">£{{ number_format($_summary->revenue, 2) }}</td>
                                     <td class="text-center">{{ number_format(($_summary->sales/$_summary->revenue), 2) }}%</td>
