@@ -115,30 +115,4 @@
             <button type="button" id="toggle-show-search" class="btn btn-link pull-right">Hide Form</button>
         </div>
     </div>
-
-    <div class="notification-container">
-        <div class="box-header with-border">
-            <h3 class="box-title">Email Notifications</h3>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-1 control-label">&nbsp;</label>
-
-            <div class="col-sm-5 checkbox">
-                <label>
-                    <input type="checkbox" name="notify_customer"> Notify customer
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-sm-1 control-label">&nbsp;</label>
-
-            <div class="col-sm-5 checkbox">
-                <label>
-                    <input type="checkbox" name="notify_vendor"> Notify vendor
-                </label>
-            </div>
-        </div>
-    </div>
 </div>
