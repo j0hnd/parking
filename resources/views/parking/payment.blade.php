@@ -472,8 +472,8 @@
                 <input type="hidden" id="car-registration-no" name="car_registration_no">
                 <input type="hidden" id="vehicle-make" name="vehicle_make">
                 <input type="hidden" id="vehicle-model" name="vehicle_model">
-                <input type="hidden" id="other-vehicle-make-src" name="other_vehicle_make">
-                <input type="hidden" id="other-vehicle-model-src" name="other_vehicle_model">
+                <input type="hidden" id="other-vehicle-make" name="other_vehicle_make">
+                <input type="hidden" id="other-vehicle-model" name="other_vehicle_model">
                 <input type="hidden" id="vehicle-color" name="vehicle_color">
                 <input type="hidden" id="card-name" name="card_name">
                 <input type="hidden" id="card-number" name="card_number">
@@ -675,16 +675,16 @@
           $('#vehicle-color').val($('#vehicle-color-src').val());
           $('#vehicle-make').val($('#vehicle-make-src').val());
           $('#vehicle-model').val($('#vehicle-model-src').val());
-            $('#other-vehicle-make-model').val($('#other-vehicle-make-src').val());
-            $('#other-vehicle-model-model').val($('#other-vehicle-model-src').val());
+          $('#other-vehicle-make').val($('#other-vehicle-make-src').val());
+          $('#other-vehicle-model').val($('#other-vehicle-model-src').val());
 
           if ($('#vehicle-make').val() == -1) {
               $('#vehicle-make').val($('#other-vehicle-make-src').val());
           }
 
-            if ($('#vehicle-model').val() == -1) {
-                $('#vehicle-model').val($('#other-vehicle-model-src').val());
-            }
+          if ($('#vehicle-model').val().indexOf('Other') != -1) {
+              $('#vehicle-model').val($('#other-vehicle-model-src').val());
+          }
 
           $('#coupon').val($('#coupon-src').val());
           $('#card-name').val($('#card-name-src').val());

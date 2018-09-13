@@ -934,6 +934,10 @@ class ParkingAppController extends Controller
 					$form['return_at']            = date('Y-m-d H:i:00', strtotime($return_at.' '.$return_time));
 					$form['payment_method']       = 'stripe';
 
+					if (!empty($form['other_vehicle_model'])) {
+						$form['vehicle_model'] = $form['other_vehicle_model'];
+					}
+
 					$_booking = Bookings::where('booking_id', $session_response['booking_id']);
 					if ($_booking->count()) {
 						$booking = Bookings::findOrFail($_booking->first()->id)->update($form);

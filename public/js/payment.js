@@ -87,8 +87,10 @@ $(document).ready(function(){
                 $('#vendor-phone-no').html(response.data.vendor_phone_no);
                 $('#vendor-email').html(response.data.vendor_email);
                 $('#vd-registration-no').html(response.data.registration_no);
+
                 $('#vd-vehicle-make').html(response.data.vehicle_make);
                 $('#vd-vehicle-model').html(response.data.vehicle_model);
+
                 $('#vd-vehicle-color').html(response.data.vehicle_color);
                 $('#flight-no-departure').html(response.data.flight_no_going);
                 $('#flight-no-arrival').html(response.data.flight_no_return);
