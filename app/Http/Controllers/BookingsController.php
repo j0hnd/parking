@@ -13,6 +13,7 @@ use App\Models\Products;
 use App\Models\Customers;
 use App\Models\Airports;
 use DB;
+use Validator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -441,4 +442,53 @@ class BookingsController extends Controller
             abort(404, $e->getMessage());
         }
     }
+
+    public function forward(Request $request)
+	{
+		$response = ['success' => false, 'message' => 'Invalid request'];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$validator = Validator::make($request->all(), [
+					'cc' => 'required|email'
+				]);
+
+				if ($validator->fails()) {
+					$response['message'] = 'Invalid email address';
+				} else {
+					$booking_id = $request->booking;
+					$cc = $request->get('cc');
+
+					$booking  = Bookings::findOrFail($booking_id);
+					$customer = Customers::findOrFail($booking->customer_id);
+					$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+
+					$airport_address = $booking->products[0]->airport[0]->airport_name;
+					if (!empty($booking->departure_terminal)) {
+					 	$airport_address = $airport_address. " " . $booking->departure_terminal;
+					}
+
+					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+
+					Mail::to($cc)->send(new SendBookingConfirmation([
+						'booking' => $booking,
+						'customer' => $customer,
+						'carpark_name' => $carpark->name,
+						'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+						'airport_details' => $airport_address,
+						'on_arrival' => $booking->products[0]->on_arrival,
+						'on_return' => $booking->products[0]->on_return
+					]));
+
+					$response = ['success' => true, 'message' => 'Booking confirmation has been forwarded'];
+				}
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }

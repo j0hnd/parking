@@ -100,6 +100,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('booking', 'BookingsController')->except(['update', 'destroy', 'show']);
     Route::post('/booking/search', 'BookingsController@search');
     Route::post('/booking/update', 'BookingsController@update');
+    Route::post('/booking/forward/confirmation/{booking}', 'BookingsController@forward');
     Route::get('/customer/search', 'CustomersController@get_customer');
 
     Route::get('/get/price', 'PricesController@get_price');

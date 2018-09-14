@@ -53,6 +53,21 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="notification-container" style="margin-top:50px;">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Forward Booking Confirmation</h3>
+                                </div>
+
+                                <div class="form-group" style="margin-top:10px;">
+                                    <label class="col-sm-3 control-label">Email Address</label>
+
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="cc" name="cc" value="{{ env('ADMIN_EMAIL') }}">
+                                        <button type="button" id="toggle-forward-confirmation" class="btn btn-default" data-id="{{ $booking->id }}" style="margin-top: 10px;">Forward</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {{ csrf_field() }}
@@ -272,6 +287,23 @@ $(function () {
     $('#arrival-terminal')
         .empty()
         .append("{!! html_entity_decode($arrival_options) !!}");
+
+    $(document).on('click', '#toggle-forward-confirmation', function (e) {
+        var _email = $('#cc').val();
+        var _id = $(this).data('id');
+        if (_email == '') {
+            alert('Missing email address');
+        } else {
+            $.ajax({
+                url: "{{ url('/admin/booking/forward/confirmation') }}/" + _id,
+                type: "post",
+                data: { _token: "{{ csrf_token() }}", cc: _email },
+                success: function (response) {
+                    alert(response.message);
+                }
+            });
+        }
+    });
 });
 </script>
 @stop
