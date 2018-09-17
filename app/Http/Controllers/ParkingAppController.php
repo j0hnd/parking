@@ -288,9 +288,9 @@ class ParkingAppController extends Controller
 					$bookings['price_id']             = $price_id;
 					$bookings['price_value']          = $price;
 					$bookings['revenue_value']        = $revenue_value;
-					$bookings['client_first_name']    = $form['firstname'];
-                    $bookings['client_last_name']     = $form['lastname'];
-                    $bookings['client_email']         = $form['email'];
+					$bookings['client_first_name']    = $booking_data['firstname'];
+                    $bookings['client_last_name']     = $booking_data['lastname'];
+                    $bookings['client_email']         = $booking_data['email'];
 					$bookings['coupon']               = isset($booking_data['coupon']) ? $booking_data['coupon'] : "";
 					$bookings['sms_confirmation_fee'] = is_null($booking_data['sms']) ? 0 : $booking_data['sms'];
 					$bookings['cancellation_waiver']  = is_null($booking_data['cancellation']) ? 0 : $booking_data['cancellation'];
