@@ -370,6 +370,14 @@
 
     @if(isset($booking))
     <div class="form-group">
+        <label class="col-sm-2 control-label">Payment Method:</label>
+
+        <div class="col-sm-5">
+            <input type="text" class="form-control" readonly value="{{ $booking->payment_method }}">
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-sm-2 control-label">Date Posted:</label>
 
         <div class="col-sm-5">
