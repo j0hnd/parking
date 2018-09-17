@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        @if(config('app.env') == 'production')
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123341298-1"></script>
         <script>
@@ -9,6 +10,8 @@
             gtag('js', new Date());
             gtag('config', 'UA-123341298-1');
         </script>
+        @endif
+
         <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, width=device-width">
         <title>@yield('title') {{ config('app.name') }}</title>
         <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -45,6 +48,8 @@
         <script type="text/javascript">
             cdn_url = 'http://mytravelcompared.com';
         </script>
+
+        @if(config('app.env') == 'production')
         <script src="http://mytravelcompared.com/userTrack/tracker.min.js"></script>
 
         <!-- Matomo -->
@@ -61,6 +66,8 @@
         })();
         </script>
         <!-- End Matomo Code -->
+        @endif
+
         @yield('tags')
         @yield('css')
         <style media="screen">
