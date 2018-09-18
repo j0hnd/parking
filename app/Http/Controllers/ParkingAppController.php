@@ -227,6 +227,8 @@ class ParkingAppController extends Controller
                 'terminals'
 			));
 		}
+
+		return redirect('/');
 	}
 
 	public function paypal_success(Request $request)
