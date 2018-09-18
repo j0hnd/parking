@@ -387,10 +387,10 @@ footer{
     color: rgb(255, 255, 255);
     text-transform: uppercase;
     line-height: 1.2;
-    text-align: left;
+    /*text-align: left;*/
     position: relative;
     letter-spacing: 3px;
-    margin-left: 37px;
+    /*margin-left: 37px;*/
 }
 .info{
     font-size: 14px;
@@ -496,10 +496,10 @@ footer{
 }
 .info{
   position: relative;
-  right: -4%;
+  /*right: -4%;*/
 }
 .foot-col3 {
-    right: 9%;
+    /*right: 9%;*/
 }
 .full-wizard {
 
@@ -811,6 +811,7 @@ margin-left: 0px;
     .col3-align {
         position: relative;
         left: 0%;
+        text-align: center;
     }
     #payment_choice-t-0{
         font-size: 14px;
@@ -861,7 +862,8 @@ margin-left: 0px;
 }
   .foot-logo{
   width:70%; 
-  margin: 20px 0 40px -40%;
+  margin: 20px 0 40px 0%;
+  /*margin: 20px 0 40px -40%;*/
 }
 }
 @media only screen and (max-width:992px){
