@@ -667,82 +667,90 @@
         }
 
         $(document).on('click', '#toggle-stripe', function (e) {
-          $('#firstname').val($('#firstname-src').val());
-          $('#lastname').val($('#lastname-src').val());
-          $('#email').val($('#email-src').val());
-          $('#phoneno').val($('#phone-src').val());
-          $('#car-registration-no').val($('#car-registration-no-src').val());
-          $('#vehicle-color').val($('#vehicle-color-src').val());
-          $('#vehicle-make').val($('#vehicle-make-src').val());
-          $('#vehicle-model').val($('#vehicle-model-src').val());
-          $('#other-vehicle-make').val($('#other-vehicle-make-src').val());
-          $('#other-vehicle-model').val($('#other-vehicle-model-src').val());
+          if ($('#firstname-src').val() == '' && $('#lastname-src').val() == '' && $('#email-src').val() == '' &&
+              $('#card-name-src').val() == '' && $('#card-number-src').val() == '' && $('#expiration-month-src').val() == '' &&
+              $('#expiration-year-src').val() == '' && $('#cv-code-src').val() == '') {
 
-          if ($('#vehicle-make').val() == -1) {
-              $('#vehicle-make').val($('#other-vehicle-make-src').val());
-          }
+              alert('Firstname, lastname, email and credit card details should not be empty');
 
-          if ($('#vehicle-model').val().indexOf('Other') != -1) {
-              $('#vehicle-model').val($('#other-vehicle-model-src').val());
-          }
-
-          $('#coupon').val($('#coupon-src').val());
-          $('#card-name').val($('#card-name-src').val());
-          $('#card-number').val($('#card-number-src').val());
-          $('#expiration-month').val($('#expiration-month-src').val());
-          $('#expiration-year').val($('#expiration-year-src').val());
-          $('#cv-code').val($('#cv-code-src').val())
-
-          if ($('#sms-fee').is(':checked')) {
-            $('#sms').val($('#sms-fee').val());
           } else {
-            $('#sms').val(0);
-          }
+              $('#firstname').val($('#firstname-src').val());
+              $('#lastname').val($('#lastname-src').val());
+              $('#email').val($('#email-src').val());
+              $('#phoneno').val($('#phone-src').val());
+              $('#car-registration-no').val($('#car-registration-no-src').val());
+              $('#vehicle-color').val($('#vehicle-color-src').val());
+              $('#vehicle-make').val($('#vehicle-make-src').val());
+              $('#vehicle-model').val($('#vehicle-model-src').val());
+              $('#other-vehicle-make').val($('#other-vehicle-make-src').val());
+              $('#other-vehicle-model').val($('#other-vehicle-model-src').val());
 
-          if ($('#cancellation-fee').is(':checked')) {
-            $('#cancellation').val($('#cancellation-fee').val());
-          } else {
-            $('#cancellation').val(0);
-          }
-
-          $.ajax({
-            url: '/stripe/payment',
-            type: 'post',
-            data: $('#order-form').serialize(),
-            dataType: 'json',
-              cache: false,
-              async: false,
-            beforeSend: function () {
-              $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
-              $('#payment_choice').find('#stripe-container').addClass('d-none');
-            },
-            success: function (response) {
-              $('#payment_choice').find('#stripe-payment-loader').addClass('d-none');
-              $('#payment_choice').find('#stripe-container').removeClass('d-none');
-
-              if (response.success) {
-                $('#payment_choice').find('#stripe-container').addClass('d-none');
-                $('#payment_choice').find('#stripe-message-wrapper').removeClass('d-none');
-                $('#payment_choice').find('#stripe-message-wrapper p').html("<h4>Your payment has been confirmed!</h4><br>Please proceed with the next step in completing this booking.<br>Thank you.");
-
-                $('#bid').val(response.data);
-
-                $("#toggle-stripe").addClass("disabled").attr("aria-disabled", "true");
-                $("a[href='#next']").parent().removeClass("disabled").attr("aria-disabled", "false");
-                $('div.actions ul li:nth-child(1)').attr('href', '#previous');
-                $('div.actions ul li:nth-child(2)').attr('href', '#next');
-              } else {
-                $('#payment_choice').find('#stripe-container').addClass('d-none');
-                $('#payment_choice').find('#stripe-message-wrapper').removeClass('d-none');
-                $('#payment_choice').find('#stripe-message-wrapper p').html("<h4>Oops! Something went wrong in processing your payment.</h4><br>" + response.message);
-
-                setTimeout(function () {
-                  $('#payment_choice').find('#stripe-container').removeClass('d-none');
-                  $('#payment_choice').find('#stripe-message-wrapper').addClass('d-none');
-                }, 3000);
+              if ($('#vehicle-make').val() == -1) {
+                  $('#vehicle-make').val($('#other-vehicle-make-src').val());
               }
-            }
-          });
+
+              if ($('#vehicle-model').val().indexOf('Other') != -1) {
+                  $('#vehicle-model').val($('#other-vehicle-model-src').val());
+              }
+
+              $('#coupon').val($('#coupon-src').val());
+              $('#card-name').val($('#card-name-src').val());
+              $('#card-number').val($('#card-number-src').val());
+              $('#expiration-month').val($('#expiration-month-src').val());
+              $('#expiration-year').val($('#expiration-year-src').val());
+              $('#cv-code').val($('#cv-code-src').val())
+
+              if ($('#sms-fee').is(':checked')) {
+                  $('#sms').val($('#sms-fee').val());
+              } else {
+                  $('#sms').val(0);
+              }
+
+              if ($('#cancellation-fee').is(':checked')) {
+                  $('#cancellation').val($('#cancellation-fee').val());
+              } else {
+                  $('#cancellation').val(0);
+              }
+
+              $.ajax({
+                  url: '/stripe/payment',
+                  type: 'post',
+                  data: $('#order-form').serialize(),
+                  dataType: 'json',
+                  cache: false,
+                  async: false,
+                  beforeSend: function () {
+                      $('#payment_choice').find('#stripe-payment-loader').removeClass('d-none');
+                      $('#payment_choice').find('#stripe-container').addClass('d-none');
+                  },
+                  success: function (response) {
+                      $('#payment_choice').find('#stripe-payment-loader').addClass('d-none');
+                      $('#payment_choice').find('#stripe-container').removeClass('d-none');
+
+                      if (response.success) {
+                          $('#payment_choice').find('#stripe-container').addClass('d-none');
+                          $('#payment_choice').find('#stripe-message-wrapper').removeClass('d-none');
+                          $('#payment_choice').find('#stripe-message-wrapper p').html("<h4>Your payment has been confirmed!</h4><br>Please proceed with the next step in completing this booking.<br>Thank you.");
+
+                          $('#bid').val(response.data);
+
+                          $("#toggle-stripe").addClass("disabled").attr("aria-disabled", "true");
+                          $("a[href='#next']").parent().removeClass("disabled").attr("aria-disabled", "false");
+                          $('div.actions ul li:nth-child(1)').attr('href', '#previous');
+                          $('div.actions ul li:nth-child(2)').attr('href', '#next');
+                      } else {
+                          $('#payment_choice').find('#stripe-container').addClass('d-none');
+                          $('#payment_choice').find('#stripe-message-wrapper').removeClass('d-none');
+                          $('#payment_choice').find('#stripe-message-wrapper p').html("<h4>Oops! Something went wrong in processing your payment.</h4><br>" + response.message);
+
+                          setTimeout(function () {
+                              $('#payment_choice').find('#stripe-container').removeClass('d-none');
+                              $('#payment_choice').find('#stripe-message-wrapper').addClass('d-none');
+                          }, 3000);
+                      }
+                  }
+              });
+          }
         });
       });
     </script>
