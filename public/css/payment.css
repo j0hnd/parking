@@ -552,6 +552,13 @@ footer{
 }
 
 @media only screen and (max-width:992px){
+.app-store {
+    margin-left: 25px !important;
+    margin-bottom: 7px !important;
+}
+.google-play {
+    margin-left: 25px !important;
+}
 .navbar.solid {
     left: -10%;
     width: 133% !important;

@@ -615,10 +615,10 @@
                 <br/>
                 <div class="container">
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 text-center app-store">
                       <img src="{{ asset('/img/booking/app-store.png') }}" class="app-full">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 text-center google-play">
                       <img src="{{ asset('/img/booking/google-play.png') }}" class="app-full">
                     </div>
                   </div>
