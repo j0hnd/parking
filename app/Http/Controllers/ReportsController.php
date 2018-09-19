@@ -57,7 +57,7 @@ class ReportsController extends Controller
 			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -66,7 +66,7 @@ class ReportsController extends Controller
 					->paginate(config('app.item_per_page'));
 			} else {
 				$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS sales, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
@@ -107,12 +107,12 @@ class ReportsController extends Controller
 
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 			} else {
 				$bookings = Bookings::active()
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
@@ -151,7 +151,7 @@ class ReportsController extends Controller
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::whereNull('bookings.deleted_at')
 //					->selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value - revenue_value) AS revenue")
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 //					->whereNull('bookings.deleted_at')
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
@@ -161,7 +161,7 @@ class ReportsController extends Controller
 			} else {
 				$bookings = Bookings::whereNull('bookings.deleted_at')
 //					->selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(price_value) AS revenue")
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 //					->whereNull('bookings.deleted_at')
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
@@ -205,13 +205,13 @@ class ReportsController extends Controller
 			if (is_null($form['vendor'])) {
 				$bookings = Bookings::active()
 					->has('affiliate_bookings')
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->orderBy('bookings.created_at', 'desc')
 					->paginate(config('app.item_per_page'));
 			} else {
 				$bookings = Bookings::active()
 					->has('affiliate_bookings')
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->whereHas('products', function ($query) use ($form) {
 						$query->where('carpark_id', $form['vendor']);
 					})
@@ -244,7 +244,7 @@ class ReportsController extends Controller
 				case "commissions";
 					$filename = "Commissions-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::active()
-						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 						->orderBy('bookings.created_at', 'desc')
 						->get();
 
@@ -252,7 +252,7 @@ class ReportsController extends Controller
 						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "Commissions-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::active()
-							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
@@ -278,7 +278,7 @@ class ReportsController extends Controller
 						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "CompletedJobs-".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::selectRaw("carparks.id AS company_id, carparks.name AS company_name, SUM(revenue_value) AS revenue, SUM(booking_fees) AS booking_fee, SUM(CASE WHEN sms_confirmation_fee THEN sms_confirmation_fee ELSE 0 END) AS sms_fee, SUM(CASE WHEN cancellation_waiver != null THEN cancellation_waiver ELSE 0 END) AS cancellation")
-							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
@@ -296,7 +296,7 @@ class ReportsController extends Controller
 				case "company_revenues":
 					$filename = "CompanyRevenues-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::whereNull('bookings.deleted_at')
-						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 						->join('products', 'products.id', '=', 'bookings.product_id')
 						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
 						->orderBy('bookings.created_at', 'desc')
@@ -306,7 +306,7 @@ class ReportsController extends Controller
 						$company = Carpark::findOrFail($form['vendor']);
 						$filename = "Revenue Report for ".ucwords($company->company_name)."-".Carbon::now()->format('Ymd').".{$ext}";
 						$bookings = Bookings::whereNull('bookings.deleted_at')
-							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
@@ -323,14 +323,14 @@ class ReportsController extends Controller
 					$filename = "TravelAgents-".Carbon::now()->format('Ymd').".{$ext}";
 					$bookings = Bookings::active()
 						->has('affiliate_bookings')
-						->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+						->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 						->orderBy('bookings.created_at', 'desc')
 						->get();
 
 					if (isset($form['vendor'])) {
 						$bookings = Bookings::active()
 							->has('affiliate_bookings')
-							->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+							->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 							->whereHas('products', function ($query) use ($form) {
 								$query->where('carpark_id', $form['vendor']);
 							})
@@ -361,7 +361,7 @@ class ReportsController extends Controller
 				$end = Carbon::createFromFormat('Y-m-d', date('Y-m-d', strtotime($end)));
 
 				$bookings = Bookings::active()
-					->whereRaw("DATE_FORMAT(return_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->whereHas('products', function ($query) use ($id) {
 						$query->where('carpark_id', $id);
 					})
