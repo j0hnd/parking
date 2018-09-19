@@ -223,6 +223,7 @@ class ProductsController extends Controller
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
 
         $row_count = count($product->prices) ? count($product->prices) : 1;
+        $override_count = count($product->overrides) ? count($product->overrides) : 1;
 
         // get selected services
         $selectedServices = [];
@@ -257,6 +258,7 @@ class ProductsController extends Controller
             'carparkServices',
             'selectedServices',
             'row_count',
+            'override_count',
             'days',
             'months',
             'years'

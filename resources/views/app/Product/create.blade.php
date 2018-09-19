@@ -49,6 +49,7 @@
             $('.overrides').daterangepicker();
 
             var row_limit = 31;
+            var override_count = '{{ $override_count }}';
             var row_count = '{{ $row_count }}';
 
             if (row_count == 1) {
@@ -84,11 +85,11 @@
 
             $(document).on('click', '.toggle-create-override-row', function () {
                 var src = $('#override-wrapper').clone();
-                if (row_count < row_limit) {
+                if (override_count < row_limit) {
                     src.find('input').val(0);
                     $('#override-container').append(src);
                     $('.overrides').daterangepicker();
-                    row_count++;
+                    override_count++;
                 } else {
                     alert("You can only add "+ row_limit +" override variance.");
                 }
