@@ -37,6 +37,7 @@ class ProductsController extends Controller
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
         $row_count = 1;
+        $override_count = 1;
 
         $timestamp = strtotime('next Sunday');
         $days = array();
@@ -61,6 +62,7 @@ class ProductsController extends Controller
             'priceCategories',
             'carparkServices',
             'row_count',
+            'override_count',
             'days',
             'months',
             'years'
