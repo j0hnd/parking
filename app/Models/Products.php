@@ -235,7 +235,9 @@ class Products extends BaseModel
                         	if (!is_null($price->price_month) or !is_null($price->price_year)) {
 								if ($price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
 
-									if ($key = array_search($product->id, array_column($products, 'product_id'))) {
+									$key = array_search($product->id, array_column($products, 'product_id'));
+
+									if ($key !== false) {
 										unset($products[$key]);
 									}
 
