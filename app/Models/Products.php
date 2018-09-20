@@ -232,25 +232,54 @@ class Products extends BaseModel
 						}
 
                         foreach ($prices as $price) {
-                            $products[$i] = [
-                                'product_id' => $product->id,
-								'airport_id' => $pa->airport_id,
-								'airport_name' => $airport->airport_name,
-								'carpark' => $product->carpark->name,
-								'image' => $product->image,
-								'price_id' => $price->id,
-                                'prices' => $price,
-								'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-								'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-                                'overrides' => $override_price,
-								'services' => $product->carpark_services,
-								'short_description' => $product->short_description,
-								'description' => $product->description,
-								'on_arrival' => $product->on_arrival,
-								'on_return' => $product->on_return,
-								'latitude' => $airport->latitude,
-								'longitude' => $airport->longitude
-                            ];
+                        	if (!is_null($price->price_month) or !is_null($price->price_year)) {
+								if ($price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+
+									if ($key = array_search($product->id, array_column($products, 'product_id'))) {
+										unset($products[$key]);
+									}
+
+									$products[$i] = [
+										'product_id' => $product->id,
+										'airport_id' => $pa->airport_id,
+										'airport_name' => $airport->airport_name,
+										'carpark' => $product->carpark->name,
+										'image' => $product->image,
+										'price_id' => $price->id,
+										'prices' => $price,
+										'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+										'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+										'overrides' => $override_price,
+										'services' => $product->carpark_services,
+										'short_description' => $product->short_description,
+										'description' => $product->description,
+										'on_arrival' => $product->on_arrival,
+										'on_return' => $product->on_return,
+										'latitude' => $airport->latitude,
+										'longitude' => $airport->longitude
+									];
+								}
+							} else {
+								$products[$i] = [
+									'product_id' => $product->id,
+									'airport_id' => $pa->airport_id,
+									'airport_name' => $airport->airport_name,
+									'carpark' => $product->carpark->name,
+									'image' => $product->image,
+									'price_id' => $price->id,
+									'prices' => $price,
+									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+									'overrides' => $override_price,
+									'services' => $product->carpark_services,
+									'short_description' => $product->short_description,
+									'description' => $product->description,
+									'on_arrival' => $product->on_arrival,
+									'on_return' => $product->on_return,
+									'latitude' => $airport->latitude,
+									'longitude' => $airport->longitude
+								];
+							}
 
 							$i++;
                         }
@@ -261,7 +290,8 @@ class Products extends BaseModel
             abort(404, $e->getMessage());
         }
 
-        return $products;
+
+        return array_values($products);
     }
 
     public static function prepare_data($products)
