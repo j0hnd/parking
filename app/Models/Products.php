@@ -219,7 +219,7 @@ class Products extends BaseModel
 								$_begin = new Carbon($_begin);
 								$_end = new Carbon($_end);
 
-								if (strtotime($data['search']['drop-off-date']) >= strtotime($_begin->format('d/m/Y')) and strtotime($_end->format('d/m/Y')) <= strtotime($data['search']['return-at-date'])) {
+								if (strtotime($data['search']['drop-off-date']) >= strtotime($_begin->format('Y-m-d')) and strtotime($_end->format('Y-m-d')) <= strtotime($data['search']['return-at-date'])) {
 									// $override_price = $overrides->override_price * $no_days;
 
                                     if ($overrides->override_price > 0) {
