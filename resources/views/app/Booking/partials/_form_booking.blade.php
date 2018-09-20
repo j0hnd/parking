@@ -274,6 +274,16 @@
                 <input type="text" class="form-control input-small" value="{{ $booking->drop_off_at->format('h:i A') }}" readonly>
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
+            @else
+            <input type="text" class="form-control"
+                   id="drop-off-date"
+                   placeholder="Drop Off"
+                   autocomplete="off">
+
+            <div class="input-group bootstrap-timepicker timepicker">
+                <input type="text" id="drop-off-time" class="form-control input-small">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
             @endif
         </div>
 
@@ -304,6 +314,16 @@
             <div class="input-group bootstrap-timepicker timepicker">
                <input type="text" class="form-control input-small" value="{{ $booking->return_at->format('h:i A') }}" readonly>
                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+            </div>
+            @else
+            <input type="text" class="form-control"
+                   id="return-at-date"
+                   placeholder="Return Date"
+                   autocomplete="off">
+
+            <div class="input-group bootstrap-timepicker timepicker">
+                <input type="text" id="return-at-time" class="form-control input-small">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
             @endif
         </div>
