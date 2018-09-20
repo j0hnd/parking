@@ -366,10 +366,12 @@ class BookingsController extends Controller
 
                 if (Bookings::findOrFail($id)->update($form_booking)) {
                     $booking_details = BookingDetails::where('booking_id', $id)->first();
-                    $booking_details->no_of_passengers_in_vehicle = $form_booking_details['no_of_passengers'];
-                    $booking_details->with_oversize_baggage       = isset($form_booking_details['with_oversize_baggage']) ? 1 : 0;
-                    $booking_details->with_children_pwd           = isset($form_booking_details['with_children_pwd']) ? 1 : 0;
-                    $booking_details->save();
+                    if ($booking_details) {
+						$booking_details->no_of_passengers_in_vehicle = $form_booking_details['no_of_passengers'];
+						$booking_details->with_oversize_baggage       = isset($form_booking_details['with_oversize_baggage']) ? 1 : 0;
+						$booking_details->with_children_pwd           = isset($form_booking_details['with_children_pwd']) ? 1 : 0;
+						$booking_details->save();
+					}
 
                     DB::commit();
 
