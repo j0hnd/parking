@@ -293,7 +293,7 @@ class Products extends BaseModel
         }
 
 
-        return array_values($products);
+        return count($products) ? array_values($products) : [];
     }
 
     public static function prepare_data($products)
