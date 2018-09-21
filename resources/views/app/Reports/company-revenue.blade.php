@@ -63,7 +63,7 @@
 					@if(count($bookings))
 						<tfoot>
 						<tr>
-							<td colspan="5" class="text-right">{{ $bookings->links() }}</td>
+							<td colspan="5" class="text-right">{!! $bookings->appends(Request::except(['page', '_token'])) ->links()!!}</td>
 						</tr>
 						</tfoot>
 					@endif
