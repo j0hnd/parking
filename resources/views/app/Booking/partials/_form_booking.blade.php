@@ -285,27 +285,30 @@
             @else
             <input type="text" class="form-control"
                    id="drop-off-date"
+                   name="drop_off_date"
                    placeholder="Drop Off"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-                <input type="text" id="drop-off-time" class="form-control input-small">
+                <input type="text" id="drop-off-time" name="drop_off_time" class="form-control input-small">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
             @endif
         </div>
 
+        @if(isset($booking))
         <div id="drop-off-container-edit" class="col-sm-5 hidden">
             <input type="text" id="drop-off-date" class="form-control" name="drop_off_date"
                    placeholder="Drop Off"
-                   value="{{ isset($booking) ? $booking->drop_off_at->format('d/m/Y') : "" }}"
+                   value="{{ $booking->drop_off_at->format('d/m/Y') }}"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-                <input id="drop-off-time" type="text" name="drop_off_time" class="form-control input-small" value="{{ isset($booking) ? $booking->drop_off_at->format('h:i A') : "" }}">
+                <input id="drop-off-time" type="text" name="drop_off_time" class="form-control input-small" value="{{ $booking->drop_off_at->format('h:i A') }}">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
         </div>
+        @endif
     </div>
 
     <div class="form-group">
@@ -326,27 +329,30 @@
             @else
             <input type="text" class="form-control"
                    id="return-at-date"
+                   name="return_at_date"
                    placeholder="Return Date"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-                <input type="text" id="return-at-time" class="form-control input-small">
+                <input type="text" id="return-at-time" name="return_at_time" class="form-control input-small">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
             @endif
         </div>
 
+        @if(isset($booking))
         <div id="return-at-container-edit" class="col-sm-5 hidden">
             <input type="text" id="return-at-date" class="form-control" name="return_at_date"
                    placeholder="Return Date"
-                   value="{{ isset($booking) ? $booking->return_at->format('d/m/Y') : "" }}"
+                   value="{{ $booking->return_at->format('d/m/Y') }}"
                    autocomplete="off">
 
             <div class="input-group bootstrap-timepicker timepicker">
-               <input id="return-at-time" type="text" class="form-control input-small" name="return_at_time" value="{{ isset($booking) ? $booking->return_at->format('h:i A') : "" }}">
-               <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                <input id="return-at-time" type="text" class="form-control input-small" name="return_at_time" value="{{ $booking->return_at->format('h:i A') }}">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
             </div>
         </div>
+        @endif
     </div>
 
     <div class="form-group">

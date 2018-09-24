@@ -988,7 +988,6 @@ class ParkingAppController extends Controller
 			}
 
 		} catch (Exception $e) {
-            dd($e);
 			$response['message'] = $e->getMessage();
 		}
 

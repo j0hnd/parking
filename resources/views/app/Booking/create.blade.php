@@ -55,6 +55,19 @@
                             </div>
                         </div>
 
+                        <div class="col-xs-6">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Payment</h3>
+                            </div>
+
+                            <div class="box-body">
+                                <!-- form start -->
+                                @include('app.Booking.partials._form_stripe')
+
+                                <input type="hidden" name="customer_id" id="customer-id">
+                            </div>
+                        </div>
+
                         {{ csrf_field() }}
 
                         <input type="hidden" name="order_title_str" id="order-title-str">
@@ -192,7 +205,8 @@ $(function () {
     });
 
     $('#drop-off-date').datepicker({
-        autoclose: true
+        autoclose: true,
+        format: "dd/mm/yyyy"
     })
 
     $("#departure-terminal").select2({
@@ -209,7 +223,8 @@ $(function () {
     $('#return-at-time').timepicker();
 
     $('#return-at-date').datepicker({
-        autoclose: true
+        autoclose: true,
+        format: "dd/mm/yyyy"
     })
 });
 </script>

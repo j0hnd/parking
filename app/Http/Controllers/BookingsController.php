@@ -12,7 +12,10 @@ use App\Models\Companies;
 use App\Models\Products;
 use App\Models\Customers;
 use App\Models\Airports;
+use Cartalyst\Stripe\Exception\StripeException;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use DB;
+use Illuminate\Support\Facades\Log;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -82,6 +85,8 @@ class BookingsController extends Controller
                     'other_vehicle_model'
                 ]);
 
+                $cc = $request->get('cc');
+
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
 
                 // extract product id and price id
@@ -106,8 +111,8 @@ class BookingsController extends Controller
                 unset($form_booking['other_vehicle_make']);
                 unset($form_booking['other_vehicle_model']);
 
-                $drop_off_at = new Carbon($form_booking['drop_off_date']);
-                $return_at   = new Carbon($form_booking['return_at_date']);
+                $drop_off_at = Carbon::createFromFormat('d/m/Y', $form_booking['drop_off_date']);
+                $return_at   = Carbon::createFromFormat('d/m/Y', $form_booking['return_at_date']);
 
                 $form_booking['drop_off_at'] = $drop_off_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['drop_off_time']));
                 $form_booking['return_at']   = $return_at->format('Y-m-d')." ".date('H:i:s', strtotime($form_booking['return_at_time']));
@@ -139,6 +144,21 @@ class BookingsController extends Controller
 
                     DB::commit();
 
+                    // payment
+					if (isset($cc)) {
+						$total = $booking->price_value + $booking->sms_confirmation_fee + $booking->cancellation_waiver + $booking->booking_fees;
+						$data = [
+							'amount'      => $total,
+							'description' => 'Payment for ' . $booking_id,
+							'currency'    => 'GBP'
+
+						];
+
+						if ($this->payment($booking->id, $data, $cc) === false) {
+							return back()->withErrors(['error' => 'Unable to settle payment']);
+						}
+					}
+
 					$booking  = Bookings::findOrFail($booking->id);
 					$customer = Customers::findOrFail($booking->customer_id);
 					$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
@@ -152,7 +172,7 @@ class BookingsController extends Controller
 
 					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-					if ($form_booking['notify_customer']) {
+					if (isset($form_booking['notify_customer'])) {
 						Mail::to($customer->email)->send(new SendBookingConfirmation([
 							'booking' => $booking,
 							'customer' => $customer,
@@ -164,7 +184,7 @@ class BookingsController extends Controller
 						]));
 					}
 
-					if ($form_booking['notify_vendor']) {
+					if (isset($form_booking['notify_vendor'])) {
 						Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
 							'booking' => $booking,
 							'customer' => $customer,
@@ -182,6 +202,7 @@ class BookingsController extends Controller
             }
 
         } catch (Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -492,5 +513,58 @@ class BookingsController extends Controller
 		}
 
 		return response()->json($response);
+	}
+
+	private function payment($booking_id, $data, $card, $is_stripe = true)
+	{
+		try {
+
+			if ($is_stripe) {
+				$stripe = Stripe::make(config('services.stripe.key'));
+
+				$token = $stripe->tokens()->create([
+					'card' => [
+						'number'    => $card['card_number'],
+						'exp_month' => $card['expiry_date_month'],
+						'exp_year'  => $card['expiry_date_year'],
+						'cvc'       => $card['cvv'],
+					]
+				]);
+
+				if (isset($token['id'])) {
+					$data['card'] = $token['id'];
+
+					$charge = $stripe->charges()->create($data);
+
+					if ($charge_id = $charge['id']) {
+						Log::info(Carbon::now().' - Stripe payment '.$charge['status'].'. Charge ID: '.$charge_id.', Booking ID: '.$booking_id);
+
+						$booking = Bookings::where('id', $booking_id);
+
+						if ($booking->count()) {
+							$booking->update(['payment_method' => 'stripe', 'is_paid' => 1, 'paid_at' => Carbon::now()]);
+
+							return true;
+						} else {
+							return false;
+						}
+					} else {
+						abort(500, 'Unable to connect with stripe');
+					}
+
+				} else {
+					abort(500, 'Missing token ID');
+				}
+			}
+
+			abort(500, 'Invalid payment gateway');
+
+		} catch (\StripeException $se) {
+			abort(500, $se->getMessage());
+
+		} catch (\Exception $e) {
+			abort(500, $e->getMessage());
+
+		}
 	}
 }
