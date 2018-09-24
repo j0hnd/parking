@@ -52,7 +52,7 @@ class BookingsController extends Controller
 
                         $products_list[] = [
                             'order_id'     => $product->id.";".$prices->id.";".$product->airport[0]->id,
-                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [£".$prices->price_value."]"
+                            'product_name' => $airport->airport_name." - ".$product->carpark->name." - ".$prices->categories->category_name." [".$duration." - £".$prices->price_value."]"
                         ];
                     }
                 }
@@ -348,6 +348,8 @@ class BookingsController extends Controller
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
 
+				$cc = $request->get('cc');
+
                 // extract product id and price id
                 $order = explode(';', $form_booking['order_title']);
 
@@ -395,6 +397,24 @@ class BookingsController extends Controller
 					}
 
                     DB::commit();
+
+					// payment
+					if (isset($cc)) {
+						$booking = Bookings::where('id', $id)->first();
+						$booking_id = $booking->booking_id;
+
+						$total = $booking->price_value + $booking->sms_confirmation_fee + $booking->cancellation_waiver + $booking->booking_fees;
+						$data = [
+							'amount'      => $total,
+							'description' => 'Payment for ' . $booking_id,
+							'currency'    => 'GBP'
+
+						];
+
+						if ($this->payment($booking->id, $data, $cc) === false) {
+							return back()->withErrors(['error' => 'Unable to settle payment']);
+						}
+					}
 
 					$booking  = Bookings::findOrFail($id);
 					$customer = Customers::findOrFail($booking->customer_id);
