@@ -32,21 +32,16 @@
                         </tr>
                         @if(count($products))
                             @foreach($products as $product)
+                                @if(is_null($product->airport[0]->deleted_at))
                                 <tr>
                                     <td>
                                         @php($carpark = json_decode($product->carpark, true))
                                         {{ $carpark['name'] }}
                                     </td>
                                     <td>
-                                        @if($product->airport)
-                                            <ul>
-                                            @foreach($product->airport as $airport)
-                                            <li>{{ $airport->airport_name }}</li>
-                                            @endforeach
-                                            </ul>
-                                        @else
-                                        <span>Not Available</span>
-                                        @endif
+                                        <ul>
+                                            <li>{{ $product->airport[0]->airport_name }}</li>
+                                        </ul>
                                     </td>
                                     <td>{{ $product->prices[0]->categories->category_name }}</td>
                                     <td>
@@ -54,6 +49,7 @@
                                         <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $product->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                         @else
                             <tr>
