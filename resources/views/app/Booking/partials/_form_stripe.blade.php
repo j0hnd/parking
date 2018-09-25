@@ -5,7 +5,7 @@
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control" id="card-name"
-					   name="cc[card_name]"
+					   name="ccard[card_name]"
 					   placeholder="Card Name"
 					   autocomplete="off">
 			</div>
@@ -16,7 +16,7 @@
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control" id="card-number"
-					   name="cc[card_number]"
+					   name="ccard[card_number]"
 					   placeholder="Card Number"
 					   autocomplete="off">
 			</div>
@@ -26,7 +26,7 @@
 			<label class="col-sm-2 control-label">Expiry Date</label>
 
 			<div class="col-sm-3">
-				<select name="cc[expiry_date_month]" id="expiry-date-month" class="form-control">
+				<select name="ccard[expiry_date_month]" id="expiry-date-month" class="form-control">
 					<option value="">Select Month</option>
 					<option value="1">January</option>
 					<option value="2">February</option>
@@ -43,7 +43,7 @@
 				</select>
 			</div>
 			<div class="col-sm-3">
-				<select name="cc[expiry_date_year]" id="expiry-date-year" class="form-control">
+				<select name="ccard[expiry_date_year]" id="expiry-date-year" class="form-control">
 					<option value="">Select Year</option>
 					@for($i = 1; $i <= 10; $i++)
 					<option value="{{ date('Y') + $i }}">{{ date('Y') + $i }}</option>
@@ -57,7 +57,7 @@
 
 			<div class="col-sm-3">
 				<input type="text" class="form-control" id="cvv"
-					   name="cc[cvv]"
+					   name="ccard[cvv]"
 					   placeholder="CVV"
 					   autocomplete="off">
 			</div>

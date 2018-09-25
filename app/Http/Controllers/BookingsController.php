@@ -85,7 +85,7 @@ class BookingsController extends Controller
                     'other_vehicle_model'
                 ]);
 
-                $cc = $request->get('cc');
+                $cc = $request->get('ccard');
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
 
@@ -348,7 +348,7 @@ class BookingsController extends Controller
 
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
 
-				$cc = $request->get('cc');
+				$cc_details = $request->get('ccard');
 
                 // extract product id and price id
                 $order = explode(';', $form_booking['order_title']);
@@ -399,7 +399,7 @@ class BookingsController extends Controller
                     DB::commit();
 
 					// payment
-					if (isset($cc)) {
+					if (isset($cc_details)) {
 						$booking = Bookings::where('id', $id)->first();
 						$booking_id = $booking->booking_id;
 
@@ -411,7 +411,7 @@ class BookingsController extends Controller
 
 						];
 
-						if ($this->payment($booking->id, $data, $cc) === false) {
+						if ($this->payment($booking->id, $data, $cc_details) === false) {
 							return back()->withErrors(['error' => 'Unable to settle payment']);
 						}
 					}
@@ -459,6 +459,7 @@ class BookingsController extends Controller
             }
 
         } catch (Exception $e) {
+        	dd($e);
             abort(404, $e->getMessage());
         }
     }

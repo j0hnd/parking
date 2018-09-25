@@ -11,7 +11,6 @@
 					<td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
 						<h1 style="margin: 0 0 10px; font-size: 20px; line-height: 30px; color: #333333; font-weight: normal;">Dear {{ ucwords($carpark->name) }}</h1>
 						<p style="margin: 0 0 10px;">Heads up! A client booked your company.</p>
-						{{--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut lectus erat, maximus et faucibus ut, pharetra in velit.</p>--}}
 					</td>
 					<!-- Column : END -->
 					<!-- Column : BEGIN -->
@@ -64,27 +63,28 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">No. of Passengers:</td>
 											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->booking_details->no_of_passengers_in_vehicle }}</td>
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ isset($booking->booking_details->no_of_passengers_in_vehicle) ? $booking->booking_details->no_of_passengers_in_vehicle : 'N/A' }}</td>
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Travelling with large baggage:</td>
 											<td width="8">&nbsp;</td>
+											@if(isset($booking->booking_details->with_oversize_baggage))
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->booking_details->with_oversize_baggage == 1 ? 'Yes' : 'No' }}</td>
+											@else
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">N/A</td>
+											@endif
 										</tr>
 										<tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Travelling with children or disabled person:</td>
 											<td width="8">&nbsp;</td>
+											@if(isset($booking->booking_details->with_children_pwd))
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ $booking->booking_details->with_children_pwd == 1 ? 'Yes' : 'No' }}</td>
+											@else
+											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">N/A</td>
+											@endif
 										</tr>
-										{{-- <tr>
-											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Overall
-												Cost:</td>
-											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">£{{ $booking->price_value + $booking->booking_fees + $booking->sms_confirmation_fee + $booking->cancellation_waiver }}</td>
-										</tr> --}}
 										</tbody>
 									</table>
 								</td>
@@ -120,12 +120,6 @@
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($customer->mobile_no) ? "N/A" : $customer->mobile_no }}</td>
 										</tr>
-										<!--<tr>
-											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Email:</td>
-											<td width="8">&nbsp;</td>
-											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333" width="156">{{ empty($customer->email) ? "N/A" : $customer->email }}</td>
-										</tr>-->
 										<tr>
 											<td width="8">&nbsp;</td>
 											<td style="font-family:Arial,Helvetica,sans-serif;text-align:left;font-size:12px;color:#333333;padding-top:2px;vertical-align:top;font-weight: bold" width="100">Vehicle Registration:</td>
@@ -230,18 +224,6 @@
 					<!-- Column : BEGIN -->
 					<td class="stack-column-center" valign="top">
 						<table role="presentation" cellspacing="0" cellpadding="0" border="0">
-							<!--<tr>
-							<td style="padding: 10px; text-align: center">
-									<img src="https://mytravelcompared.com/img/email-change-booking.jpg" width="270" height="60" alt="alt_text" border="0" class="fluid" style="height: auto; line-height: 15px;">
-
-							 </td>
-							</tr>
-							<tr>
-								<td style="font-family: sans-serif; font-size: 12px; color: #555555;line-height: 20px; text-align: left;" class="center-on-narrow">
-								<a style="font-weight: bold; color: #28B2E0; text-decoration: underline; padding-left: 20px; margin-top: -40px;" href="#">Click here to change your booking.</a>
-								<p style="padding-left: 20px; width: 90%;">	You can change your booking up to 48 hours prior to the date of departure through our https://mytravelcompared.com Members Area</p>
-								</td>
-							</tr>-->
 						</table>
 					</td>
 					<!-- Column : END -->
