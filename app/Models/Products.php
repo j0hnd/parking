@@ -303,11 +303,13 @@ class Products extends BaseModel
                     }
                 }
 
-				foreach ($products as $key => $row) {
-					$matches[$key] = $row['overrides'];
-				}
+                if (!is_null($products)) {
+					foreach ($products as $key => $row) {
+						$matches[$key] = $row['overrides'];
+					}
 
-				array_multisort($matches, SORT_ASC, $products);
+					array_multisort($matches, SORT_ASC, $products);
+				}
             }
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
