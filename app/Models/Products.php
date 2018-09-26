@@ -214,20 +214,34 @@ class Products extends BaseModel
 
 						// check for overrides
 						if (count($product->overrides)) {
+							$operator = null;
 							foreach ($product->overrides as $overrides) {
 								list($_begin, $_end) = explode(' - ', $overrides->override_dates);
 								$_begin = new Carbon($_begin);
 								$_end = new Carbon($_end);
 
-								if (strtotime($data['search']['drop-off-date']) >= strtotime($_begin->format('Y-m-d')) and strtotime($_end->format('Y-m-d')) <= strtotime($data['search']['return-at-date'])) {
-									// $override_price = $overrides->override_price * $no_days;
+								for ($day = 0; $day <= $no_days; $day++) {
+									$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
+									if (strtotime($sel) >= strtotime($_begin) and strtotime($sel) <= strtotime($_end)) {
+										$override_price += $overrides->override_price;
 
-                                    if ($overrides->override_price > 0) {
-                                        $override_price = $prices[0]->price_value + $overrides->override_price;
-                                    } else {
-                                        $override_price = $prices[0]->price_value - ($overrides->override_price * -1);
-                                    }
+										if ($overrides->override_price > 0) {
+											$operator = 1;
+										} else {
+											$operator = 0;
+										}
+									}
 								}
+							}
+
+							if (!is_null($operator)) {
+								if ($operator) {
+									$override_price = $prices[0]->price_value + $override_price;
+								} else {
+									$override_price = $prices[0]->price_value - $override_price;
+								}
+							} else {
+								$override_price = $prices[0]->price_value;
 							}
 						}
 
@@ -287,16 +301,22 @@ class Products extends BaseModel
                         }
                     }
                 }
+
+				foreach ($products as $key => $row)
+				{
+					$matches[$key] = $row['overrides'];
+				}
+
+				array_multisort($matches, SORT_ASC, $products);
             }
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
         }
 
-
         return count($products) ? array_values($products) : [];
     }
 
-    public static function prepare_data($products)
+	public static function prepare_data($products)
     {
         try {
             if (count($products) == 0) {
