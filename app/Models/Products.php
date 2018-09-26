@@ -215,15 +215,16 @@ class Products extends BaseModel
 						// check for overrides
 						if (count($product->overrides)) {
 							$operator = null;
+							$override_price = 0;
 							foreach ($product->overrides as $overrides) {
 								list($_begin, $_end) = explode(' - ', $overrides->override_dates);
-								$_begin = new Carbon($_begin);
-								$_end = new Carbon($_end);
+								$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
+								$_end = Carbon::createFromFormat('d/m/Y', $_end);
 
 								for ($day = 0; $day <= $no_days; $day++) {
 									$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
 									if (strtotime($sel) >= strtotime($_begin) and strtotime($sel) <= strtotime($_end)) {
-										$override_price += $overrides->override_price;
+										$override_price += substr($overrides->override_price, 1);
 
 										if ($overrides->override_price > 0) {
 											$operator = 1;
@@ -302,8 +303,7 @@ class Products extends BaseModel
                     }
                 }
 
-				foreach ($products as $key => $row)
-				{
+				foreach ($products as $key => $row) {
 					$matches[$key] = $row['overrides'];
 				}
 

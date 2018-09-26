@@ -46,7 +46,11 @@
             $('#on_arrival').wysihtml5();
             $('#on_return').wysihtml5();
 
-            $('.overrides').daterangepicker();
+            $('.overrides').daterangepicker({
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            });
 
             var row_limit = 31;
             var override_count = '{{ $override_count }}';
