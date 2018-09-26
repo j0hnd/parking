@@ -22,7 +22,7 @@
                 <ul>
                 <li>
                     <label for="">Select Airport</label>
-                    <select id="airport-list" name="search[airport]" class="form-control">
+                    <select id="airport_id" name="search[airport]" class="form-control">
                         <option value="">-- Select Airport --</option>
                         @if(count($airports))
                             @foreach($airports as $airport)
@@ -118,6 +118,7 @@
             });
 
             $('#airport_id').select2();
+
             $('#drop-off-date').val('{{ $start_date }}');
             $('#drop-off-time').val('{{ date('h:i', strtotime($start_date)) }}');
 
