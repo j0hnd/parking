@@ -79,6 +79,10 @@ class Products extends BaseModel
 			$begin = Carbon::createFromFormat('d/m/Y', $date1);
 			$end   = Carbon::createFromFormat('d/m/Y', $date2);
 
+			if ($begin->getTimestamp() < $today->getTimestamp()) {
+				return [];
+			}
+
             // get number of days between the dates in the search parameters
 			$no_days = $begin->diffInDays($end);
 
