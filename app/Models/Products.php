@@ -221,7 +221,7 @@ class Products extends BaseModel
 								$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
 								$_end = Carbon::createFromFormat('d/m/Y', $_end);
 
-								for ($day = 0; $day <= $no_days; $day++) {
+								for ($day = 0; $day <= ($no_days - 1); $day++) {
 									$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
 									if (strtotime($sel) >= strtotime($_begin) and strtotime($sel) <= strtotime($_end)) {
 										$override_price += substr($overrides->override_price, 1);
