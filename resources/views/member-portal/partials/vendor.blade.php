@@ -73,7 +73,7 @@
 							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->vehicle_make) ? '-' : ucfirst($booking->vehicle_make) }}</td>
 							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->vehicle_model) ? '-' : ucfirst($booking->vehicle_model) }}</td>
 							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->vehicle_color) ? '-' : ucfirst($booking->vehicle_color) }}</td>
-							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->car_registration) ? '-' : ucfirst($booking->car_registration) }}</td>
+							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->car_registration_no) ? '-' : strtoupper($booking->car_registration_no) }}</td>
 							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->customers->mobile_no) ? '-' : ucfirst($booking->customers->mobile_no) }}</td>
 						</tr>
 					</table>
