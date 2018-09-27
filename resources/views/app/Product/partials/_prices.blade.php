@@ -10,7 +10,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" class="form-control pull-right overrides" name="overrides[override_dates][0][]" value="{{ $override->override_dates }}">
+                            <input type="text" class="form-control pull-right overrides override-date" name="overrides[override_dates][0][]" value="{{ $override->override_dates }}" readonly>
                         </div>
                         <small>Date</small>
                     </div>
@@ -44,7 +44,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="text" class="form-control pull-right overrides" name="overrides[override_dates][0][]" value="{{ $old_overrides['override_dates'][0][$idx] }}">
+                            <input type="text" class="form-control pull-right overrides override-date" name="overrides[override_dates][0][]" value="{{ $old_overrides['override_dates'][0][$idx] }}" readonly>
                         </div>
                         <small>Date</small>
                     </div>
@@ -75,7 +75,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control pull-right overrides" name="overrides[override_dates][0][]">
+                        <input type="text" class="form-control pull-right overrides override-date" name="overrides[override_dates][0][]" readonly>
                     </div>
                     <small>Date</small>
                 </div>

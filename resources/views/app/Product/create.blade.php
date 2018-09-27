@@ -36,6 +36,14 @@
     </div>
 @stop
 
+@section('styles')
+    <style>
+        .override-date {
+            background-color: #FFFFFF !important;
+        }
+    </style>
+@stop
+
 @section('scripts')
     <script type="text/javascript">
         $(function(){
@@ -92,7 +100,12 @@
                 if (override_count < row_limit) {
                     src.find('input').val(0);
                     $('#override-container').append(src);
-                    $('.overrides').daterangepicker();
+                    $('.overrides').daterangepicker({
+                        locale: {
+                            format: 'DD/MM/YYYY'
+                        }
+                    });
+
                     override_count++;
                 } else {
                     alert("You can only add "+ row_limit +" override variance.");
