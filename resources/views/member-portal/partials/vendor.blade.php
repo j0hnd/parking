@@ -20,11 +20,12 @@
 		@foreach($bookings as $booking)
 			@php
 				$cost = 0;
+				$order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No. of days: '.$booking->products[0]->prices[0]->no_of_days.']';
 			@endphp
 
 			<tr id="booking-{{ $booking->id }}" class="tr-shadow">
 				<td>{{ $booking->booking_id }}</td>
-				<td>{{ $booking->order_title }}</td>
+				<td>{{ $order_title }}</td>
 				<td class="text-center">{{ $booking->created_at->format('d/m/Y') }}</td>
 				<td class="text-center">{{ $booking->drop_off_at->format('d/m/Y') }}</td>
 				<td class="text-center">{{ $booking->return_at->format('d/m/Y') }}</td>
