@@ -96,25 +96,6 @@
                     @endif
                 </select>
             </div>
-
-            <div id="company-wrapper" class="col-sm-9 {{ $company_wrapper_class }}">
-                <select name="company[company_name]" id="company-name" class="form-control" style="width: 100%">
-                    <option value="" readonly>-- Company --</option>
-                    @if(isset($companies))
-                        @foreach($companies as $company)
-                            @if(isset($user_info->members->company_id))
-                                @if($user_info->members->company_id == $company->id)
-                                    <option value="{{ $company->id }}" selected>{{ $company->name }}</option>
-                                @else
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endif
-                            @else
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endif
-                        @endforeach
-                    @endif
-                </select>
-            </div>
         </div>
 
         <div class="form-group">

@@ -50,12 +50,16 @@ class UsersController extends Controller
 
                 if ($user = Sentinel::registerAndActivate($form_user)) {
                 	if (!is_null($form_member['company']['company_name'])) {
-						$company = Companies::create($form_member['company']);
+//						$company = Companies::create($form_member['company']['company_name']);
+//						var_dump($form_member['company']['company_name']);
+//						dd($company);
+
+						$carpark = Carpark::findOrFail($form_member['company']['company_name']);
 
 						// create member info
 						$member = Members::create([
 							'user_id'    => $user->id,
-							'company_id' => $company->id,
+							'company_id' => $carpark->id,
 							'first_name' => $form_member['first_name'],
 							'last_name'  => $form_member['last_name'],
 							'is_active'  => 1
