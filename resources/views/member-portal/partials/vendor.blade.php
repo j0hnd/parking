@@ -20,7 +20,20 @@
 		@foreach($bookings as $booking)
 			@php
 				$cost = 0;
-				$order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No. of days: '.$booking->products[0]->prices[0]->no_of_days.']';
+
+				$drop_off = new \Carbon\Carbon($booking->drop_off_at);
+				$return_at = new \Carbon\Carbon($booking->return_at);
+
+				$no_of_days = $return_at->diffInDays($drop_off);
+
+				if ($no_of_days == 1) {
+					$no_of_days = 1;
+				} else {
+					$no_of_days = $no_of_days + 1;
+					// $no_of_days = $booking->products[0]->prices[0]->no_of_days;
+				}
+
+				$order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No. of days: '.$no_of_days.']';
 			@endphp
 
 			<tr id="booking-{{ $booking->id }}" class="tr-shadow">
@@ -46,15 +59,22 @@
 					£{{ number_format($cost, 2) }}
 				</td>
 			</tr>
-			<tr id="customer-details-{{ $booking->customer_id }}-wrapper" class="customer-details-wrapper d-none" style="background-color: #b9ca4a">
-				<td colspan="8" style="background-color: #b9ca4a">
-					<table class="table table-data2" style="background-color: #b9ca4a">
-						<tr style="background-color: #b9ca4a">
-							<td>Customer Name: {{ ucwords($booking->customers->first_name) }} {{ ucwords($booking->customers->last_name) }}</td>
+			<tr id="customer-details-{{ $booking->customer_id }}-wrapper" class="customer-details-wrapper d-none" style="background-color: #e0e0e0">
+				<td colspan="8" style="background-color: #e0e0e0">
+					<table class="table table-data2" style="background-color: #e0e0e0">
+						<tr style="background-color: #efefef">
+							<th class="text-center">Vehicle Make</th>
+							<th class="text-center">Vehicle Model</th>
+							<th class="text-center">Color</th>
+							<th class="text-center">Car Reg.</th>
+							<th class="text-center">Contact No.</th>
 						</tr>
-						<tr style="background-color: #b9ca4a">
-							<td>Mobile No: {{ empty($booking->customers->mobile_no) ? "N/A" : $booking->customers->mobile_no }}</td>
-							<td>Email: {{ empty($booking->customers->email) ? "N/A" : $booking->customers->email }}</td>
+						<tr>
+							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->vehicle_make) ? '-' : ucfirst($booking->vehicle_make) }}</td>
+							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->vehicle_model) ? '-' : ucfirst($booking->vehicle_model) }}</td>
+							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->vehicle_color) ? '-' : ucfirst($booking->vehicle_color) }}</td>
+							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->car_registration) ? '-' : ucfirst($booking->car_registration) }}</td>
+							<td class="text-center" style="padding-left: 12px; padding-right: 12px;">{{ empty($booking->customers->mobile_no) ? '-' : ucfirst($booking->customers->mobile_no) }}</td>
 						</tr>
 					</table>
 				</td>

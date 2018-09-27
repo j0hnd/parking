@@ -117,6 +117,7 @@ class MembersController extends Controller
 							})
 							->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
 							->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
+							->orderBy('created_at', 'desc')
 							->paginate(config('app.item_per_page'));
 
 					} else {
@@ -134,6 +135,7 @@ class MembersController extends Controller
 							->whereHas('products', function ($query) use ($carpark_id) {
 								$query->where('carpark_id', $carpark_id);
 							})
+							->orderBy('created_at', 'desc')
 							->paginate(config('app.item_per_page'));
 					}
 
