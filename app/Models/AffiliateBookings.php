@@ -3,12 +3,8 @@
 namespace App\Models;
 
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 class AffiliateBookings extends BaseModel
 {
-	use SoftDeletes;
-
 	protected $fillable = ['affiliate_id', 'booking_id'];
 
 	protected $guarded = ['affiliate_id', 'booking_id'];

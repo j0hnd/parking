@@ -32,23 +32,25 @@
                         </tr>
                         @if(count($products))
                             @foreach($products as $product)
-                                @if(is_null($product->airport[0]->deleted_at))
-                                <tr>
-                                    <td>
-                                        @php($carpark = json_decode($product->carpark, true))
-                                        {{ $carpark['name'] }}
-                                    </td>
-                                    <td>
-                                        <ul>
-                                            <li>{{ $product->airport[0]->airport_name }}</li>
-                                        </ul>
-                                    </td>
-                                    <td>{{ $product->prices[0]->categories->category_name }}</td>
-                                    <td>
-                                        <a href="{{ url('/admin/product/'.$product->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                        <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $product->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
+                                @if(isset($product->airport[0]))
+                                    @if(is_null($product->airport[0]->deleted_at))
+                                        <tr>
+                                            <td>
+                                                @php($carpark = json_decode($product->carpark, true))
+                                                {{ $carpark['name'] }}
+                                            </td>
+                                            <td>
+                                                <ul>
+                                                    <li>{{ $product->airport[0]->airport_name }}</li>
+                                                </ul>
+                                            </td>
+                                            <td>{{ $product->prices[0]->categories->category_name }}</td>
+                                            <td>
+                                                <a href="{{ url('/admin/product/'.$product->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                                <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $product->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endif
                             @endforeach
                         @else

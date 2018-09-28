@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AirportRequestForm;
 use App\Models\Airports;
+use App\Models\ProductAirports;
 use App\Models\Tools\Countries;
 use App\Models\Tools\Subcategories;
 use Carbon\Carbon;
@@ -155,9 +156,14 @@ class AirportsController extends Controller
     public function delete($id)
     {
         $response = ['success' => false];
-        if (Airports::findOrFail($id)->update(['deleted_at' => date('Y-m-d H:i:s')])) {
-            $response = ['success' => true];
-        }
+//        if (Airports::findOrFail($id)->update(['deleted_at' => date('Y-m-d H:i:s')])) {
+//            $response = ['success' => true];
+//        }
+
+		if (Airports::findOrFail($id)->delete()) {
+			ProductAirports::where('airport_id', $id)->delete();
+			$response = ['success' => true];
+		}
 
         return response()->json($response);
     }
