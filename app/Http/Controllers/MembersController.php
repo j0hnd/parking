@@ -99,38 +99,39 @@ class MembersController extends Controller
 						->get();
 
 					if (isset($form)) {
-//						$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
-//			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid")
-//							->whereNull('bookings.deleted_at')
-//							->whereHas('products', function ($query) use ($carpark_id) {
-//								$query->where('carpark_id', $carpark_id);
-//							})
-//							->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
-//							->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
-//							->join('products', 'products.id', '=', 'bookings.product_id')
-//							->join('customers', 'customers.id', '=', 'bookings.customer_id')
-//							->paginate(config('app.item_per_page'));
+						if (!empty($form['search_date']) and empty($form['search_str'])) {
+							$date_field = $form['search_date'];
 
-						$bookings = Bookings::active()
-							->whereHas('products', function ($query) use ($carpark_id) {
-								$query->where('carpark_id', $carpark_id);
-							})
-							->where('booking_id', 'LIKE', '%'.$form['searchstr'].'%')
-							->orWhere('order_title', 'LIKE', '%'.$form['searchstr'].'%')
-							->orderBy('created_at', 'desc')
-							->paginate(config('app.item_per_page'));
+							$bookings = Bookings::active()
+								->whereHas('products', function ($query) use ($carpark_id) {
+									$query->where('carpark_id', $carpark_id);
+								})
+								->whereBetween($date_field, [$form['start_date'], $form['end_date']])
+								->orderBy('created_at', 'desc')
+								->paginate(config('app.item_per_page'));
+						} elseif (!empty($form['search_str']) and empty($form['search_date'])) {
+							$bookings = Bookings::active()
+								->whereHas('products', function ($query) use ($carpark_id) {
+									$query->where('carpark_id', $carpark_id);
+								})
+								->Where('booking_id', 'LIKE', '%'.$form['search_str'].'%')
+								->orWhere('order_title', 'LIKE', '%'.$form['search_str'].'%')
+								->orderBy('created_at', 'desc')
+								->paginate(config('app.item_per_page'));
+						} else {
+							$date_field = $form['search_date'];
 
+							$bookings = Bookings::active()
+								->whereHas('products', function ($query) use ($carpark_id) {
+									$query->where('carpark_id', $carpark_id);
+								})
+								->where('booking_id', 'LIKE', '%'.$form['search_str'].'%')
+								->orWhere('order_title', 'LIKE', '%'.$form['search_str'].'%')
+								->orWhereBetween($date_field, [$form['start_date'], $form['end_date']])
+								->orderBy('created_at', 'desc')
+								->paginate(config('app.item_per_page'));
+						}
 					} else {
-//						$bookings = Bookings::selectRaw("bookings.booking_id, bookings.order_title, bookings.created_at, bookings.drop_off_at, bookings.return_at, bookings.price_value,
-//			                                 bookings.revenue_value, bookings.sms_confirmation_fee, bookings.cancellation_waiver, bookings.booking_fees, bookings.is_paid, bookings.customer_id")
-//							->whereNull('bookings.deleted_at')
-//							->whereHas('products', function ($query) use ($carpark_id) {
-//								$query->where('carpark_id', $carpark_id);
-//							})
-//							->join('products', 'products.id', '=', 'bookings.product_id')
-//							->join('customers', 'customers.id', '=', 'bookings.customer_id')
-//							->paginate(config('app.item_per_page'));
-
 						$bookings = Bookings::active()
 							->whereHas('products', function ($query) use ($carpark_id) {
 								$query->where('carpark_id', $carpark_id);

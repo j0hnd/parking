@@ -125,6 +125,47 @@
                         @endif
                         @if($user->roles[0]->slug == 'vendor')
                             <h3 class="title-5 m-b-35">Your Bookings</h3>
+
+                            <div class="row" style="margin-bottom: 30px">
+                                <form class="form-header" action="{{ url('/members/dashboard') }}" method="post" style="width: 100%">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Search:</label>
+                                            <input type="text" class="form-control" name="search_str" placeholder="Search Booking ID, Customer name or Order">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Date:</label>
+                                            <select name="search_date" class="form-control">
+                                                <option value="">Select Date To Filter</option>
+                                                <option value="created_at">Booking Date</option>
+                                                <option value="drop_off_at">Drop Off</option>
+                                                <option value="return_at">Return At</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="search">&nbsp;</label>
+                                            <input type="text" class="form-control" id="search_date" placeholder="Click here to select dates" style="background-color: #ffffff" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="au-btn--submit2" type="submit" style="margin-top:25px; margin-right: 70%">
+                                            <i class="zmdi zmdi-search"></i>
+                                        </button>
+                                    </div>
+
+                                    <input type="hidden" id="start-date" name="start_date">
+                                    <input type="hidden" id="end-date" name="end_date">
+
+                                    {{ csrf_field() }}
+                                </form>
+                            </div>
+
+                            <hr>
+
                             <div class="table-responsive table-responsive-data2">
                                 <table id="bookings-list" class="table table-data2">
                                     @include('member-portal.partials.vendor')
@@ -154,6 +195,20 @@
             } else {
                 $('#customer-details-' + custId + '-wrapper').removeClass('d-none');
             }
+        });
+
+        $('#search_date').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        }, function (start, end, label) {
+            $('#start-date').val(start.format('YYYY-MM-DD'));
+            $('#end-date').val(end.format('YYYY-MM-DD'));
+        });
+
+        $('#search_date').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
         });
     });
 </script>
