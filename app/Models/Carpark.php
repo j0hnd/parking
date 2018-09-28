@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Models\Tools\Countries;
 use DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Carpark extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
     	'company_id',
         'name',

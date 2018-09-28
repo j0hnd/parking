@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Customers extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
         'first_name',
         'last_name',

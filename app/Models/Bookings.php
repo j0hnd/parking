@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bookings extends BaseModel
 {
+	use SoftDeletes;
+
 	protected $fillable = [
 		'booking_id',
 		'user_id',

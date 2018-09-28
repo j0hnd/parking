@@ -3,8 +3,12 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Posts extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = ['title', 'slug', 'content', 'image', 'status', 'created_by', 'date_published', 'deleted_at'];
 
     protected $guarded = ['created_by'];

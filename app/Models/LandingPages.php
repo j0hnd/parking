@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class LandingPages extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
         'airport_id', 'name', 'slug', 'description_1', 'deleted_at'
     ];

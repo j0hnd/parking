@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use DB;
 
 
 class Affiliates extends BaseModel
 {
+	use SoftDeletes;
+
 	protected $fillable = ['code', 'travel_agent_id', 'percent_admin', 'percent_vendor', 'percent_travel_agent', 'deleted_at'];
 
 	protected $guarded = ['code'];

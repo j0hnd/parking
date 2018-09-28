@@ -7,11 +7,14 @@ use App\Models\Tools\PriceCategories;
 use App\Models\Tools\Prices;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 
 class Products extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
         'carpark_id',
 		'short_description',
@@ -26,7 +29,7 @@ class Products extends BaseModel
 
     protected $guarded = ['carpark_id', 'revenue_share'];
 
-    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors', 'contact_details'];
+    protected $with = ['carpark', 'airport', 'carpark_services', 'prices', 'overrides', 'vendors', 'contact_details', 'closures'];
 
 
     public function carpark()
@@ -63,6 +66,11 @@ class Products extends BaseModel
     {
         return $this->hasOne(ProductContactDetails::class, 'product_id', 'id');
     }
+
+    public function closures()
+	{
+		return $this->hasMany(Closure::class, 'product_id', 'id');
+	}
 
     public static function search($data)
     {
@@ -104,6 +112,7 @@ class Products extends BaseModel
 				->whereNull('products.deleted_at')
 				->whereNull('carparks.deleted_at')
 				->whereNull('airports.deleted_at')
+				->whereNull('prices.deleted_at')
 				->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 				->where('prices.no_of_days', $no_days)
                 ->orderBy('prices.price_value', 'asc');
@@ -122,6 +131,7 @@ class Products extends BaseModel
 						->whereNull('products.deleted_at')
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
+						->whereNull('prices.deleted_at')
 						->where('airport_id', $data['search']['airport'])
 						->where('carpark_services.service_name', $service_name)
 						->where('prices.no_of_days', $no_days)
@@ -143,6 +153,7 @@ class Products extends BaseModel
 						->whereNull('products.deleted_at')
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
+						->whereNull('prices.deleted_at')
 						->where('prices.no_of_days', $no_days)
 						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 						->where([
@@ -181,6 +192,7 @@ class Products extends BaseModel
 						->whereNull('products.deleted_at')
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
+						->whereNull('prices.deleted_at')
 						->where('prices.no_of_days', $no_days)
 						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 						->where([

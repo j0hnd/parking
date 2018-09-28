@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Cartalyst\Sentinel\Users\UserInterface;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Tools\Roles;
 use DB;
@@ -12,6 +13,8 @@ use DB;
 class User extends EloquentUser implements UserInterface
 {
     use Notifiable;
+
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Overrides extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = ['product_id', 'override_dates', 'override_price'];
 
     protected $guarded = ['product_id'];

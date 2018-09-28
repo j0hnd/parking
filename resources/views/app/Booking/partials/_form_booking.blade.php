@@ -6,9 +6,23 @@
         @if(isset($booking))
             @php
                 $order_id = $booking->product_id.";".$booking->price_id.";".$booking->products[0]->airport[0]->id;
-                $order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No of days '.$booking->products[0]->prices[0]->no_of_days.' - £'.$booking->products[0]->prices[0]->price_value.']';
+                // $order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No of days '.$booking->products[0]->prices[0]->no_of_days.' - £'.$booking->products[0]->prices[0]->price_value.']';
+
+                $drop_off = new \Carbon\Carbon($booking->drop_off_at);
+				$return_at = new \Carbon\Carbon($booking->return_at);
+
+				$no_of_days = $return_at->diffInDays($drop_off);
+
+				if ($no_of_days == 1) {
+					$no_of_days = 1;
+				} else {
+					$no_of_days = $no_of_days + 1;
+				}
+
+				$order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No. of days: '.$no_of_days.' - £'.$booking->price_value.']';
             @endphp
-            <input type="text" class="form-control" value="{{ $booking->order_title }}" readonly>
+
+            <input type="text" class="form-control" value="{{ $order_title }}" readonly>
         @endif
         </div>
 

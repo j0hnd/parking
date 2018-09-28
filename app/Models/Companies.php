@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Companies extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
         'company_name',
         'mobile_no',

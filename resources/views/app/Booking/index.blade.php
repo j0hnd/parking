@@ -36,9 +36,25 @@
                             </tr>
                             @if(count($bookings))
                                 @foreach($bookings as $booking)
+
+                                    @php
+                                        $drop_off = new \Carbon\Carbon($booking->drop_off_at);
+										$return_at = new \Carbon\Carbon($booking->return_at);
+
+										$no_of_days = $return_at->diffInDays($drop_off);
+
+										if ($no_of_days == 1) {
+											$no_of_days = 1;
+										} else {
+											$no_of_days = $no_of_days + 1;
+										}
+
+										$order_title = $booking->products[0]->airport[0]->airport_name.' - '.$booking->products[0]->carpark->name.' - '.$booking->products[0]->prices[0]->categories->category_name.' [No. of days: '.$no_of_days.' - £'.$booking->price_value.']';
+                                    @endphp
+
                                 <tr>
                                     <td><a href="{{ url('/admin/booking/'.$booking->id.'/edit') }}">{{ $booking->booking_id }}</a></td>
-                                    <td>{{ $booking->order_title }}</td>
+                                    <td>{{ $order_title }}</td>
                                     <td>{{ $booking->customers->first_name }} {{ $booking->customers->last_name }}</td>
                                     @if(empty($booking->client_first_name) and empty($booking->client_last_name))
                                     <td>N/A</td>

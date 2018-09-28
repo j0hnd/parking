@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\Tools\Prices;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductAirports extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = ['product_id', 'airport_id', 'deleted_at'];
 
     protected $guarded = ['product_id', 'airport_id'];

@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class PriceHistory extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = ['price_id', 'no_of_days', 'price_month', 'price_year', 'price_value', 'changed_by', 'approved_at', 'approved_by', 'deleted_at'];
 
     protected $guarded = ['price_id', 'no_of_days', 'price_month', 'price_year', 'price_value'];

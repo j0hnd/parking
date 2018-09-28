@@ -3,9 +3,12 @@
 namespace App\Models\Tools;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Prices extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
         'product_id',
         'category_id',

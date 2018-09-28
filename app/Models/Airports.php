@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Models\Tools\Countries;
 use App\Models\Tools\Subcategories;
 use DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Airports extends BaseModel
 {
+	use SoftDeletes;
+	
     protected $fillable = [
         'airport_name',
         'airport_code',
