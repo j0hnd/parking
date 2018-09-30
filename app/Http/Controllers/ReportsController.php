@@ -201,12 +201,13 @@ class ReportsController extends Controller
 					->orderBy('bookings.created_at', 'desc')
 					->get();
 			} else {
+
 				$bookings = Bookings::whereNull('bookings.deleted_at')
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
 					->orderBy('bookings.created_at', 'desc')
-					->paginate(config('app.item_per_page'));
+					->paginate($per_page);
 			}
 		} else {
 			if ($per_page == 'all') {
@@ -228,7 +229,7 @@ class ReportsController extends Controller
 					->join('products', 'products.id', '=', 'bookings.product_id')
 					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
 					->orderBy('bookings.created_at', 'desc')
-					->paginate(config('app.item_per_page'));
+					->paginate($per_page);
 			}
 
 
@@ -287,7 +288,7 @@ class ReportsController extends Controller
 					->has('affiliate_bookings')
 					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
 					->orderBy('bookings.created_at', 'desc')
-					->paginate(config('app.item_per_page'));
+					->paginate($per_page);
 			}
 		} else {
 			if ($per_page == 'all') {
@@ -307,7 +308,7 @@ class ReportsController extends Controller
 						$query->where('carpark_id', $form['vendor']);
 					})
 					->orderBy('bookings.created_at', 'desc')
-					->paginate(config('app.item_per_page'));
+					->paginate($per_page);
 			}
 
 			$selected_vendor = $form['vendor'];
