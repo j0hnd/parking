@@ -228,6 +228,30 @@ class Products extends BaseModel
 							$prices = $product->prices;
 						}
 
+						// check closure dates
+						if ($product->closures) {
+							$drop_off  = new Carbon($data['search']['drop-off-date']);
+							$return_at = new Carbon($data['search']['return-at-date']);
+							$is_closed = false;
+
+							foreach ($product->closures as $closures) {
+								list($_begin, $_end) = explode(' - ', $closures->closed_date);
+								$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
+								$_end = Carbon::createFromFormat('d/m/Y', $_end);
+
+								if (($drop_off->getTimestamp() >= $_begin->getTimestamp() and $drop_off->getTimestamp() <= $_end->getTimestamp()) or
+									($return_at->getTimestamp() >= $_begin->getTimestamp() and $return_at->getTimestamp() <= $_end->getTimestamp())) {
+
+									$is_closed = true;
+									break;
+								}
+							}
+
+							if ($is_closed) {
+								break;
+							}
+						}
+
 						// check for overrides
 						if (count($product->overrides)) {
 							$operator = null;
