@@ -4,7 +4,7 @@
 		<div class="col-md-1"> </div>
 	</div>
 
-	@if(isset($product->closures))
+	@if(is_null($product->closures))
 		@foreach($product->closures as $i => $closure)
 			@if($i == 0)
 			<div id="first-row-cd" class="row margin-bottom10 margin-left10">
@@ -60,7 +60,7 @@
 				<div class="input-group-addon">
 					<i class="fa fa-calendar"></i>
 				</div>
-				<input type="text" class="form-control closed_date" name="closure[date][]" readonly>
+				<input type="text" class="form-control closed_date" name="closure[date][]" style="background-color: #ffffff;" readonly>
 			</div>
 			<small>Date</small>
 		</div>
