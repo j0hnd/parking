@@ -17,7 +17,7 @@
 
                     <div class="col-md-1">
                         <div class="input-group">
-                            <input type="text" class="form-control pull-right text-right" name="overrides[override_price][1][]" value="{{ $override->override_price }}">
+                            <input type="text" class="form-control pull-right text-right overrid-price" name="overrides[override_price][1][]" value="{{ $override->override_price }}">
                         </div>
                         <small>Price Per Day</small>
                     </div>
@@ -51,7 +51,7 @@
 
                     <div class="col-md-1">
                         <div class="input-group">
-                            <input type="text" class="form-control pull-right text-right" name="overrides[override_price][1][]" value="{{ $old_overrides['override_price'][1][$idx] }}">
+                            <input type="text" class="form-control pull-right text-right overrid-price" name="overrides[override_price][1][]" value="{{ $old_overrides['override_price'][1][$idx] }}">
                         </div>
                         <small>Price Per Day</small>
                     </div>
@@ -82,7 +82,7 @@
 
                 <div class="col-md-1">
                     <div class="input-group">
-                        <input type="text" class="form-control pull-right text-right" name="overrides[override_price][1][]" value="0">
+                        <input type="text" class="form-control pull-right text-right override-price" name="overrides[override_price][1][]" value="0">
                     </div>
                     <small>Price Per Day</small>
                 </div>

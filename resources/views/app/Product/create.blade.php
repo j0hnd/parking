@@ -115,13 +115,18 @@
             $(document).on('click', '.toggle-create-override-row', function () {
                 var src = $('#override-wrapper').clone();
                 if (override_count < row_limit) {
-                    src.find('input').val(0);
+                    src.find('.override-date').val('');
+                    src.find('.override-price').val(0);
                     $('#override-container').append(src);
                     $('.overrides').daterangepicker({
                         autoUpdateInput: false,
                         locale: {
                             format: 'DD/MM/YYYY'
                         }
+                    });
+
+                    $('.override-date').on('apply.daterangepicker', function(ev, picker) {
+                        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
                     });
 
                     override_count++;
@@ -152,6 +157,11 @@
                         format: 'DD/MM/YYYY'
                     }
                 });
+
+                $('.closed_date').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+                });
+
                 row_count_cd++;
             });
 

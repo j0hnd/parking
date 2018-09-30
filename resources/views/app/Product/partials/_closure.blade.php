@@ -9,13 +9,15 @@
 			@if($i == 0)
 			<div id="first-row-cd" class="row margin-bottom10 margin-left10">
 				<div class="col-md-4">
-					<input type="text" name="closure[date][]"
-						   class="form-control closed_date"
-						   placeholder="Closure Date"
-						   style="background-color: #FFFFFF"
-						   value="{{ $closure->closed_date }}"
-						   readonly>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control closed_date" name="closure[date][]" value="{{ $closure->closed_date }}" style="background-color: #ffffff;" readonly>
+					</div>
+					<small>Date</small>
 				</div>
+
 				<div class="col-md-1">
 					<div class="btn-group">
 						<button type="button" class="btn btn-success btn-flat toggle-create-row-cd">
@@ -30,12 +32,13 @@
 			@else
 			<div class="row margin-bottom10 margin-left10">
 				<div class="col-md-4">
-					<input type="text" name="closure[date][]"
-						   class="form-control closed_date"
-						   placeholder="Closure Date"
-						   style="background-color: #FFFFFF"
-						   value="{{ $closure->closed_date }}"
-						   readonly>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<i class="fa fa-calendar"></i>
+						</div>
+						<input type="text" class="form-control closed_date" name="closure[date][]" value="{{ $closure->closed_date }}" style="background-color: #ffffff;" readonly>
+					</div>
+					<small>Date</small>
 				</div>
 				<div class="col-md-1">
 					<div class="btn-group">
@@ -53,11 +56,13 @@
 	@else
 	<div id="first-row-cd" class="row margin-bottom10 margin-left10">
 		<div class="col-md-4">
-			<input type="text" name="closure[date][]"
-				   class="form-control closed_date"
-				   placeholder="Closure Date"
-				   style="background-color: #FFFFFF"
-				   readonly>
+			<div class="input-group">
+				<div class="input-group-addon">
+					<i class="fa fa-calendar"></i>
+				</div>
+				<input type="text" class="form-control closed_date" name="closure[date][]" readonly>
+			</div>
+			<small>Date</small>
 		</div>
 		<div class="col-md-1">
 			<div class="btn-group">
