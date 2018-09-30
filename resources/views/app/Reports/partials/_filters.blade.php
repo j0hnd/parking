@@ -49,6 +49,8 @@
 			@else
 			<input type="hidden" id="date" name="date" value="{{ $start.':'.$end }}">
 			@endif
+
+			<input type="hidden" id="per-page" name="per_page">
 		</form>
 	</div>
 </div>

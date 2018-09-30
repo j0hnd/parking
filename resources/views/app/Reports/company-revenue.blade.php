@@ -11,6 +11,8 @@
 @section('main-content')
 	@include('app.Reports.partials._filters', ['export' => 'company_revenues', 'generate_url' => url('/admin/reports/vendor/revenues')])
 
+	@include('app.Reports.partials._more', ['per_page' => $per_page])
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="table-responsive">
@@ -60,7 +62,7 @@
 					@endif
 					</tbody>
 
-					@if(count($bookings))
+					@if($bookings instanceof \Illuminate\Pagination\LengthAwarePaginator)
 						<tfoot>
 						<tr>
 							<td colspan="5" class="text-right">{!! $bookings->appends(Request::except(['page', '_token'])) ->links()!!}</td>
@@ -83,6 +85,11 @@
                     $("#reportrange span").html(selected_date);
                 }
             }, 300);
+
+            $(document).on('change', '#per-page-src', function (e) {
+                $('#per-page').val($(this).val());
+                $('#report-form').submit();
+            });
 		});
 	</script>
 @stop

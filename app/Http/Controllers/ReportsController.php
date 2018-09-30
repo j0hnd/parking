@@ -100,30 +100,54 @@ class ReportsController extends Controller
 		$start = "";
 		$end = "";
 
-		$form = $request->only(['vendor', 'date', 'export']);
+		$form = $request->only(['vendor', 'date', 'export', 'per_page']);
+
 		if (!empty($form)) {
-			list($start, $end) = explode(':', $form['date']);
-			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+			if (!is_null($form['date'])) {
+				list($start, $end) = explode(':', $form['date']);
+				$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+			}
+
 			if (!isset($form['vendor'])) {
 				$form['vendor'] = null;
 			}
+
+			$per_page = is_null($form['per_page']) ? config('app.item_per_page') : $form['per_page'];
 		} else {
 			$form['vendor'] = null;
+			$per_page = config('app.item_per_page');
 		}
 
 		if (is_null($form['vendor'])) {
-			$bookings = Bookings::active()
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
-				->orderBy('bookings.created_at', 'desc')
-				->paginate(config('app.item_per_page'));
+			if ($per_page == 'all') {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
+					->get();
+			} else {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
+					->paginate($per_page);
+			}
 		} else {
-			$bookings = Bookings::active()
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
-				->whereHas('products', function ($query) use ($form) {
-					$query->where('carpark_id', $form['vendor']);
-				})
-				->orderBy('bookings.created_at', 'desc')
-				->paginate(config('app.item_per_page'));
+			if ($per_page == 'all') {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->orderBy('bookings.created_at', 'desc')
+					->get();
+			} else {
+				$bookings = Bookings::active()
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->orderBy('bookings.created_at', 'desc')
+					->paginate($per_page);
+			}
 
 			$selected_vendor = $form['vendor'];
 		}
@@ -135,7 +159,8 @@ class ReportsController extends Controller
 			'selected_vendor' => $selected_vendor,
 			'selected_date'   => $selected_date,
 			'start'           => $start,
-			'end'             => $end
+			'end'             => $end,
+			'per_page'        => $per_page
 		]);
 	}
 
@@ -149,34 +174,63 @@ class ReportsController extends Controller
 		$start = "";
 		$end = "";
 
-		$form = $request->only(['vendor', 'date', 'export']);
+		$form = $request->only(['vendor', 'date', 'export', 'per_page']);
+
 		if (!empty($form)) {
-			list($start, $end) = explode(':', $form['date']);
-			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+			if (!is_null($form['date'])) {
+				list($start, $end) = explode(':', $form['date']);
+				$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+			}
+
 			if (!isset($form['vendor'])) {
 				$form['vendor'] = null;
 			}
+
+			$per_page = is_null($form['per_page']) ? config('app.item_per_page') : $form['per_page'];
 		} else {
 			$form['vendor'] = null;
+			$per_page = config('app.item_per_page');
 		}
 
 		if (is_null($form['vendor'])) {
-			$bookings = Bookings::whereNull('bookings.deleted_at')
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
-				->join('products', 'products.id', '=', 'bookings.product_id')
-				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-				->orderBy('bookings.created_at', 'desc')
-				->paginate(config('app.item_per_page'));
+			if ($per_page == 'all') {
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
+					->get();
+			} else {
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			}
 		} else {
-			$bookings = Bookings::whereNull('bookings.deleted_at')
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
-				->whereHas('products', function ($query) use ($form) {
-					$query->where('carpark_id', $form['vendor']);
-				})
-				->join('products', 'products.id', '=', 'bookings.product_id')
-				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-				->orderBy('bookings.created_at', 'desc')
-				->paginate(config('app.item_per_page'));
+			if ($per_page == 'all') {
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
+					->get();
+			} else {
+				$bookings = Bookings::whereNull('bookings.deleted_at')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->join('products', 'products.id', '=', 'bookings.product_id')
+					->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+					->orderBy('bookings.created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			}
+
 
 			$selected_vendor = $form['vendor'];
 		}
@@ -188,7 +242,8 @@ class ReportsController extends Controller
 			'selected_vendor' => $selected_vendor,
 			'selected_date'   => $selected_date,
 			'start'           => $start,
-			'end'             => $end
+			'end'             => $end,
+			'per_page'        => $per_page
 		]);
 	}
 
@@ -202,32 +257,58 @@ class ReportsController extends Controller
 		$start = "";
 		$end = "";
 
-		$form = $request->only(['vendor', 'date', 'export']);
+		$form = $request->only(['vendor', 'date', 'export', 'per_page']);
+
 		if (!empty($form)) {
-			list($start, $end) = explode(':', $form['date']);
-			$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+			if (!is_null($form['date'])) {
+				list($start, $end) = explode(':', $form['date']);
+				$selected_date = date('F j, Y', strtotime($start))."-".date('F j, Y', strtotime($end));
+			}
+
 			if (!isset($form['vendor'])) {
 				$form['vendor'] = null;
 			}
+
+			$per_page = is_null($form['per_page']) ? config('app.item_per_page') : $form['per_page'];
 		} else {
 			$form['vendor'] = null;
+			$per_page = config('app.item_per_page');
 		}
 
 		if (is_null($form['vendor'])) {
-			$bookings = Bookings::active()
-				->has('affiliate_bookings')
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
-				->orderBy('bookings.created_at', 'desc')
-				->paginate(config('app.item_per_page'));
+			if ($per_page == 'all') {
+				$bookings = Bookings::active()
+					->has('affiliate_bookings')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
+					->get();
+			} else {
+				$bookings = Bookings::active()
+					->has('affiliate_bookings')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->orderBy('bookings.created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			}
 		} else {
-			$bookings = Bookings::active()
-				->has('affiliate_bookings')
-				->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
-				->whereHas('products', function ($query) use ($form) {
-					$query->where('carpark_id', $form['vendor']);
-				})
-				->orderBy('bookings.created_at', 'desc')
-				->paginate(config('app.item_per_page'));
+			if ($per_page == 'all') {
+				$bookings = Bookings::active()
+					->has('affiliate_bookings')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->orderBy('bookings.created_at', 'desc')
+					->get();
+			} else {
+				$bookings = Bookings::active()
+					->has('affiliate_bookings')
+					->whereRaw("DATE_FORMAT(drop_off_at, '%Y-%m-%d') BETWEEN ? AND ?", [$start, $end])
+					->whereHas('products', function ($query) use ($form) {
+						$query->where('carpark_id', $form['vendor']);
+					})
+					->orderBy('bookings.created_at', 'desc')
+					->paginate(config('app.item_per_page'));
+			}
 
 			$selected_vendor = $form['vendor'];
 		}
@@ -239,7 +320,8 @@ class ReportsController extends Controller
 			'selected_vendor' => $selected_vendor,
 			'selected_date'   => $selected_date,
 			'start'           => $start,
-			'end'             => $end
+			'end'             => $end,
+			'per_page'        => $per_page
 		]);
 	}
 
