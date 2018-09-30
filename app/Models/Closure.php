@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Closure extends BaseModel
 {
+	use SoftDeletes;
+
     protected $fillable = [
-    	'product_id', 'closed_dates', 'deleted_at'
+    	'product_id', 'closed_date', 'deleted_at'
 	];
 
     protected $guarded = [

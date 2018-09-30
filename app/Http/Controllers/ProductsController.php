@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductFormRequest;
 use App\Models\Airports;
 use App\Models\Carpark;
+use App\Models\Closure;
 use App\Models\Overrides;
 use App\Models\ProductAirports;
 use App\Models\Products;
@@ -37,6 +38,7 @@ class ProductsController extends Controller
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
         $row_count = 1;
+		$row_count_cd = 1;
         $override_count = 1;
 
         $timestamp = strtotime('next Sunday');
@@ -65,7 +67,8 @@ class ProductsController extends Controller
             'override_count',
             'days',
             'months',
-            'years'
+            'years',
+			'row_count_cd'
         ));
     }
 
@@ -85,6 +88,7 @@ class ProductsController extends Controller
                     'prices',
                     'services',
                     'overrides',
+                    'closure',
                     'contact_details'
                 ]);
 
@@ -182,6 +186,23 @@ class ProductsController extends Controller
                         }
                     }
 
+					if (isset($form['closure'])) {
+						Closure::where('product_id', $product->id)->delete();
+
+						foreach ($form['closure'] as $closures) {
+							foreach ($closures as $key => $value) {
+								$closure_form[$key] = [
+									'product_id'  => $product->id,
+									'closed_date' => $value,
+								];
+							}
+						}
+
+						foreach ($closure_form as $cform) {
+							Closure::create($cform);
+						}
+					}
+
                     if (isset($form['services'])) {
                         foreach ($form['services'] as $service) {
                             Services::create([
@@ -225,6 +246,7 @@ class ProductsController extends Controller
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
 
         $row_count = count($product->prices) ? count($product->prices) : 1;
+        $row_count_cd = count($product->closures) ? count($product->closures) : 1;
         $override_count = count($product->overrides) ? count($product->overrides) : 1;
 
         // get selected services
@@ -263,7 +285,8 @@ class ProductsController extends Controller
             'override_count',
             'days',
             'months',
-            'years'
+            'years',
+			'row_count_cd'
         ));
     }
 
@@ -284,6 +307,7 @@ class ProductsController extends Controller
                     'prices',
                     'services',
                     'overrides',
+                    'closure',
                     'contact_details'
                 ]);
 
@@ -399,6 +423,23 @@ class ProductsController extends Controller
 
 						foreach ($override_form as $oform) {
 							Overrides::create($oform);
+						}
+					}
+
+					if (isset($form['closure'])) {
+						Closure::where('product_id', $product->id)->delete();
+
+						foreach ($form['closure'] as $closures) {
+							foreach ($closures as $key => $value) {
+								$closure_form[$key] = [
+									'product_id'  => $product->id,
+									'closed_date' => $value,
+								];
+							}
+						}
+
+						foreach ($closure_form as $cform) {
+							Closure::create($cform);
 						}
 					}
 

@@ -55,17 +55,34 @@
             $('#on_return').wysihtml5();
 
             $('.overrides').daterangepicker({
+                autoUpdateInput: false,
                 locale: {
                     format: 'DD/MM/YYYY'
                 }
             });
 
+            $('.closed_date').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            });
+
+            $('.closed_date').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+            });
+
             var row_limit = 31;
             var override_count = '{{ $override_count }}';
             var row_count = '{{ $row_count }}';
+            var row_count_cd = '{{ $row_count_cd }}';
 
             if (row_count == 1) {
                 row_count = 1;
+            }
+
+            if (row_count_cd == 1) {
+                row_count_cd = 1;
             }
 
             $(document).on('blur', '.price-value', function (e) {
@@ -101,6 +118,7 @@
                     src.find('input').val(0);
                     $('#override-container').append(src);
                     $('.overrides').daterangepicker({
+                        autoUpdateInput: false,
                         locale: {
                             format: 'DD/MM/YYYY'
                         }
@@ -118,6 +136,31 @@
                     alert('Unable to delete this last row.');
                 } else {
                     row_count--;
+                    row.remove();
+                }
+            });
+
+
+
+            $(document).on('click', '.toggle-create-row-cd', function () {
+                var src = $('#first-row-cd').clone();
+                src.find('input').val('');
+                $('#closed-date-container').append(src);
+                $('.closed_date').daterangepicker({
+                    autoUpdateInput: false,
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    }
+                });
+                row_count_cd++;
+            });
+
+            $(document).on('click', '.toggle-remove-row-cd', function () {
+                var row = $(this).parent().parent().parent();
+                if (row_count_cd == 1) {
+                    alert('Unable to delete this last row.');
+                } else {
+                    row_count_cd--;
                     row.remove();
                 }
             });
