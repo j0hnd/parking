@@ -4,6 +4,8 @@ namespace App\Models;
 
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class Bookings extends BaseModel
 {
@@ -111,5 +113,70 @@ class Bookings extends BaseModel
 			->where('carparks.company_id', $company_id);
 
 		return $bookings->pluck('booking_id')->toArray();
+	}
+
+	public static function convert_to_csv($booking_id)
+	{
+		try {
+			$booking = Bookings::findOrFail($booking_id);
+			$data = null;
+			
+			$data[0] = [
+				'booking_id',
+				'order_title',
+				'drop_off',
+				'return_at',
+				'member',
+				'customer',
+				'car_registration_no',
+				'vehicle_make',
+				'vehicle_model',
+				'vehicle_color',
+				'departure_flight',
+				'arrival_flight',
+				'departure_terminal',
+				'arrival_terminal',
+				'no_of_passengers',
+				'travelling_with_large_baggage',
+				'travelling_with_children_or_disabled_person',
+				'paid',
+				'booking_price'
+			];
+			
+			$data[1] = [
+				$booking->booking_id,
+				$booking->order_title,
+				$booking->drop_off_at->format('d/m/Y H:i'),
+				$booking->return_at->format('d/m/Y H:i'),
+				$booking->customers->first_name.' '.$booking->customers->last_name,
+				$booking->client_first_name.' '.$booking->client_last_name,
+				$booking->car_registration_no,
+				$booking->vehicle_make,
+				$booking->vehicle_model,
+				$booking->vehicle_color,
+				$booking->flight_no_going,
+				$booking->flight_no_return,
+				$booking->departure_terminal,
+				$booking->arrival_terminal,
+				!is_null($booking->booking_details) ? $booking->booking_details->no_of_passengers_in_vehicle : 'n/a',
+				!is_null($booking->booking_details) ? $booking->booking_details->with_oversize_baggage : 'n/a',
+				!is_null($booking->booking_details) ? $booking->booking_details->with_children_pwd : 'n/a',
+				$booking->is_paid ? date('d/m/Y', strtotime($booking->paid_at)) : 'no',
+				'£'.number_format($booking->price_value, 2),
+			];
+
+			if (!is_null($data)) {
+				$fp = fopen(storage_path('csv') . '/' . strtoupper($booking->booking_id).'.csv', 'w');
+				foreach ($data as $dt) {
+					fputcsv($fp, $dt);
+				}
+
+				return true;
+			}
+		} catch (\Exception $e) {
+			Log::error("[".date('Y-m-d H:i:s')."] CSV: " . $e->getMessage());
+		}
+
+		return null;
 	}
 }

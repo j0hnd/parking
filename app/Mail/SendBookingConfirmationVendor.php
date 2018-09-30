@@ -28,13 +28,20 @@ class SendBookingConfirmationVendor extends Mailable
 	 */
 	public function build()
 	{
+		$booking = $this->data['booking'];
+		$csv_filename = strtoupper($booking->booking_id).'.csv';
+
 		return $this->view('emails.booking_company')
 			->subject("My Travel Compared Booking Confirmation")
 			->with([
-				'booking' => $this->data['booking'],
+				'booking'  => $booking,
 				'customer' => $this->data['customer'],
-				'vendor' => $this->data['vendor'],
-				'carpark' => $this->data['carpark']
+				'vendor'   => $this->data['vendor'],
+				'carpark'  => $this->data['carpark']
+			])
+			->attach(storage_path('csv') . '/' . $csv_filename, [
+				'as'   => 'booking-'.$csv_filename,
+				'mime' => 'text/csv'
 			]);
 	}
 }

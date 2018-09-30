@@ -23,6 +23,7 @@
             @endphp
 
             <input type="text" class="form-control" value="{{ $order_title }}" readonly>
+            <input type="hidden" class="form-control" name="order_title_sel" value="{{ $order_id }}">
         @endif
         </div>
 

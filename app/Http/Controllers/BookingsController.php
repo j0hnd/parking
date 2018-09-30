@@ -317,6 +317,7 @@ class BookingsController extends Controller
 
                 $form_booking = $request->only([
                     'order_title_str',
+                    'order_title_sel',
                     'order_title',
                     'flight_no_going',
                     'flight_no_return',
@@ -349,6 +350,10 @@ class BookingsController extends Controller
                 $form_customer = $request->only(['customer_id', 'first_name', 'last_name', 'email', 'mobile_no']);
 
 				$cc_details = $request->get('ccard');
+
+				if (is_null($form_booking['order_title'])) {
+					$form_booking['order_title'] = $form_booking['order_title_sel'];
+				}
 
                 // extract product id and price id
                 $order = explode(';', $form_booking['order_title']);
@@ -442,6 +447,12 @@ class BookingsController extends Controller
 					}
 
 					if (isset($form_booking['notify_vendor'])) {
+						$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
+
+						if (file_exists($csv_file) == false) {
+							Bookings::convert_to_csv($booking->id);
+						}
+
 						Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
 							'booking' => $booking,
 							'customer' => $customer,

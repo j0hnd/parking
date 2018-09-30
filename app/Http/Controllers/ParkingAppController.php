@@ -517,12 +517,15 @@ class ParkingAppController extends Controller
 				]));
 
 				if (!empty($vendor_recipients)) {
-					Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
-						'booking'  => $booking,
-						'customer' => $customer,
-						'vendor'   => $vendor,
-						'carpark'  => $carpark
-					]));
+					// generate csv file
+					if (Bookings::convert_to_csv($booking->id)) {
+						Mail::to($vendor_recipients)->send(new SendBookingConfirmationVendor([
+							'booking'  => $booking,
+							'customer' => $customer,
+							'vendor'   => $vendor,
+							'carpark'  => $carpark
+						]));
+					}
 				}
 
 				$message = Messages::where('subject', 'My Travel Compared Booking Confirmation')
