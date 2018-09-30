@@ -112,7 +112,7 @@ class ReportsController extends Controller
 				$form['vendor'] = null;
 			}
 
-			$per_page = is_null($form['per_page']) ? config('app.item_per_page') : $form['per_page'];
+			$per_page = isset($form['per_page']) ? $form['per_page'] : config('app.item_per_page');
 		} else {
 			$form['vendor'] = null;
 			$per_page = config('app.item_per_page');
@@ -186,7 +186,7 @@ class ReportsController extends Controller
 				$form['vendor'] = null;
 			}
 
-			$per_page = is_null($form['per_page']) ? config('app.item_per_page') : $form['per_page'];
+			$per_page = isset($form['per_page']) ? $form['per_page'] : config('app.item_per_page');
 		} else {
 			$form['vendor'] = null;
 			$per_page = config('app.item_per_page');
@@ -269,7 +269,7 @@ class ReportsController extends Controller
 				$form['vendor'] = null;
 			}
 
-			$per_page = is_null($form['per_page']) ? config('app.item_per_page') : $form['per_page'];
+			$per_page = isset($form['per_page']) ? $form['per_page'] : config('app.item_per_page');
 		} else {
 			$form['vendor'] = null;
 			$per_page = config('app.item_per_page');
