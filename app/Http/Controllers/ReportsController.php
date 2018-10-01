@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Export\CommissionExport;
 use App\Export\Commissions;
+use App\Export\CompanyRevenueExport;
 use App\Export\CompanyRevenues;
 use App\Export\CompletedJobs;
 use App\Export\TravelAgents;
@@ -411,7 +412,7 @@ class ReportsController extends Controller
 							->get();
 					}
 
-					return $excel->download(new CompanyRevenues($bookings), $filename);
+					return $excel->download(new CompanyRevenueExport($bookings), $filename);
 					break;
 
 				case "travel_agents":
