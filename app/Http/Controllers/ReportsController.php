@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Export\CommissionExport;
 use App\Export\Commissions;
 use App\Export\CompanyRevenues;
 use App\Export\CompletedJobs;
@@ -353,7 +354,8 @@ class ReportsController extends Controller
 							->get();
 					}
 
-					return $excel->download(new Commissions($bookings), $filename);
+//					return $excel->download(new Commissions($bookings), $filename);
+					return $excel->download(new CommissionExport($bookings), $filename);
 					break;
 
 				case "completed_jobs":
