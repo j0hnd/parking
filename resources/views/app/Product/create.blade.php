@@ -29,6 +29,7 @@
                     {{ csrf_field() }}
                     @if(isset($product))
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" id="price-id" name="price_ids">
                     @endif
                 </form>
             </div>
@@ -76,6 +77,7 @@
             var override_count = '{{ $override_count }}';
             var row_count = '{{ $row_count }}';
             var row_count_cd = '{{ $row_count_cd }}';
+            var price_id = new Array();
 
             if (row_count == 1) {
                 row_count = 1;
@@ -107,6 +109,11 @@
                 if (row_count == 1) {
                     alert('Unable to delete this last row.');
                 } else {
+                    if ($(this).data('price-id') !== undefined) {
+                        price_id.push($(this).data('price-id'));
+                        $('#price-id').val(price_id.join(':'));
+                    }
+                    
                     row_count--;
                     row.remove();
                 }
@@ -144,8 +151,6 @@
                     row.remove();
                 }
             });
-
-
 
             $(document).on('click', '.toggle-create-row-cd', function () {
                 var src = $('#first-row-cd').clone();

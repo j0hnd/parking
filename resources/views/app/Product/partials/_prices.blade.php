@@ -181,7 +181,7 @@
                     <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
                         <i class="fa fa-plus"></i>
                     </button>
-                    <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row">
+                    <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row" data-price-id="{{ $prices->id }}">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </div>
@@ -255,7 +255,7 @@
                     <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
                         <i class="fa fa-plus"></i>
                     </button>
-                    <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row">
+                    <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row" data-price-id="{{ $prices->id }}">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </div>
