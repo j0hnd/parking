@@ -173,7 +173,13 @@
             $(document).on('click', '.toggle-remove-row-cd', function () {
                 var row = $(this).parent().parent().parent();
                 if (row_count_cd == 1) {
-                    alert('Unable to delete this last row.');
+                    if ($(this).parent().parent().parent().find('.closed_date').val().length > 0) {
+                        $('.toggle-create-row-cd').trigger('click');
+                        row_count_cd--;
+                    row.remove();
+                    } else {
+                        alert('Unable to delete this last row.');
+                    }
                 } else {
                     row_count_cd--;
                     row.remove();

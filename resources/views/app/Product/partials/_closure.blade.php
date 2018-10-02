@@ -4,7 +4,7 @@
 		<div class="col-md-1"> </div>
 	</div>
 
-	@if(isset($product->closures))
+	@if(count($product->closures))
 		@foreach($product->closures as $i => $closure)
 			@if($i == 0)
 			<div id="first-row-cd" class="row margin-bottom10 margin-left10">

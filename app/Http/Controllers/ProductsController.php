@@ -438,16 +438,20 @@ class ProductsController extends Controller
 
 						foreach ($form['closure'] as $closures) {
 							foreach ($closures as $key => $value) {
-								$closure_form[$key] = [
-									'product_id'  => $product->id,
-									'closed_date' => $value,
-								];
+                                if (!empty($value)) {
+                                    $closure_form[$key] = [
+                                        'product_id'  => $product->id,
+                                        'closed_date' => $value,
+                                    ];
+                                }
 							}
 						}
 
-						foreach ($closure_form as $cform) {
-							Closure::create($cform);
-						}
+                        if (isset($closure_form)) {
+                            foreach ($closure_form as $cform) {
+                                Closure::create($cform);
+                            }
+                        }
 					}
 
                     // update services
@@ -471,6 +475,7 @@ class ProductsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
