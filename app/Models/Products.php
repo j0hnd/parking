@@ -218,6 +218,8 @@ class Products extends BaseModel
                     }
 
 					$override_price = null;
+					$is_closed = false;
+
 					$product = Products::findOrFail($pa->product_id);
 					$airport = Airports::findOrFail($pa->airport_id);
 
@@ -232,7 +234,6 @@ class Products extends BaseModel
 						if ($product->closures) {
 							$drop_off  = new Carbon($data['search']['drop-off-date']);
 							$return_at = new Carbon($data['search']['return-at-date']);
-							$is_closed = false;
 
 							foreach ($product->closures as $closures) {
 								if (!is_null($closures->closed_date)) {
@@ -248,63 +249,81 @@ class Products extends BaseModel
 									}
 								}
 							}
-
-							if ($is_closed) {
-								break;
-							}
 						}
 
-						// check for overrides
-						if (count($product->overrides)) {
-							$operator = null;
-							$override_price = 0;
-							foreach ($product->overrides as $overrides) {
-								list($_begin, $_end) = explode(' - ', $overrides->override_dates);
-								$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
-								$_end = Carbon::createFromFormat('d/m/Y', $_end);									
+						if ($is_closed === false) {
+							// check for overrides
+							if (count($product->overrides)) {
+								$operator = null;
+								$override_price = 0;
+								foreach ($product->overrides as $overrides) {
+									list($_begin, $_end) = explode(' - ', $overrides->override_dates);
+									$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
+									$_end = Carbon::createFromFormat('d/m/Y', $_end);									
 
-								for ($day = 0; $day <= ($no_days - 1); $day++) {
-									$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
-									
-									if (strtotime($sel) >= $_begin->getTimestamp() and strtotime($sel) <= $_end->getTimestamp()) {
-										$first = substr($overrides->override_price, 0, 1);
-										if (!is_numeric($first)) {
-											$override_price += substr($overrides->override_price, 1);
-										} else {
-											$override_price += $overrides->override_price;
-										}
+									for ($day = 0; $day <= ($no_days - 1); $day++) {
+										$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
 										
+										if (strtotime($sel) >= $_begin->getTimestamp() and strtotime($sel) <= $_end->getTimestamp()) {
+											$first = substr($overrides->override_price, 0, 1);
+											if (!is_numeric($first)) {
+												$override_price += substr($overrides->override_price, 1);
+											} else {
+												$override_price += $overrides->override_price;
+											}
+											
 
-										if ($overrides->override_price > 0) {
-											$operator = 1;
-										} else {
-											$operator = 0;
+											if ($overrides->override_price > 0) {
+												$operator = 1;
+											} else {
+												$operator = 0;
+											}
 										}
 									}
 								}
-							}
 
-							if (!is_null($operator)) {
-								if ($operator) {
-									$override_price = $prices[0]->price_value + $override_price;
-								} else {
-									$override_price = $prices[0]->price_value - $override_price;
-								}
-							} else {
-								$override_price = $prices[0]->price_value;
-							}
-						}
-
-                        foreach ($prices as $price) {
-                        	if (!is_null($price->price_month) or !is_null($price->price_year)) {
-								if ($price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
-
-									$key = array_search($product->id, array_column($products, 'product_id'));
-
-									if ($key !== false) {
-										unset($products[$key]);
+								if (!is_null($operator)) {
+									if ($operator) {
+										$override_price = $prices[0]->price_value + $override_price;
+									} else {
+										$override_price = $prices[0]->price_value - $override_price;
 									}
+								} else {
+									$override_price = $prices[0]->price_value;
+								}
+							}
 
+							foreach ($prices as $price) {
+								if (!is_null($price->price_month) or !is_null($price->price_year)) {
+									if ($price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+
+										$key = array_search($product->id, array_column($products, 'product_id'));
+
+										if ($key !== false) {
+											unset($products[$key]);
+										}
+
+										$products[$i] = [
+											'product_id' => $product->id,
+											'airport_id' => $pa->airport_id,
+											'airport_name' => $airport->airport_name,
+											'carpark' => $product->carpark->name,
+											'image' => $product->image,
+											'price_id' => $price->id,
+											'prices' => $price,
+											'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+											'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+											'overrides' => $override_price,
+											'services' => $product->carpark_services,
+											'short_description' => $product->short_description,
+											'description' => $product->description,
+											'on_arrival' => $product->on_arrival,
+											'on_return' => $product->on_return,
+											'latitude' => $airport->latitude,
+											'longitude' => $airport->longitude
+										];
+									}
+								} else {
 									$products[$i] = [
 										'product_id' => $product->id,
 										'airport_id' => $pa->airport_id,
@@ -325,30 +344,10 @@ class Products extends BaseModel
 										'longitude' => $airport->longitude
 									];
 								}
-							} else {
-								$products[$i] = [
-									'product_id' => $product->id,
-									'airport_id' => $pa->airport_id,
-									'airport_name' => $airport->airport_name,
-									'carpark' => $product->carpark->name,
-									'image' => $product->image,
-									'price_id' => $price->id,
-									'prices' => $price,
-									'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-									'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-									'overrides' => $override_price,
-									'services' => $product->carpark_services,
-									'short_description' => $product->short_description,
-									'description' => $product->description,
-									'on_arrival' => $product->on_arrival,
-									'on_return' => $product->on_return,
-									'latitude' => $airport->latitude,
-									'longitude' => $airport->longitude
-								];
-							}
 
-							$i++;
-                        }
+								$i++;
+							}
+						}
                     }
                 }
 
@@ -361,7 +360,6 @@ class Products extends BaseModel
 				}
             }
         } catch (\Exception $e) {
-			dd($e);
             abort(404, $e->getMessage());
         }
 
