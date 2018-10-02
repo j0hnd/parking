@@ -235,15 +235,17 @@ class Products extends BaseModel
 							$is_closed = false;
 
 							foreach ($product->closures as $closures) {
-								list($_begin, $_end) = explode(' - ', $closures->closed_date);
-								$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
-								$_end = Carbon::createFromFormat('d/m/Y', $_end);
+								if (!is_null($closures->closed_date)) {
+									list($_begin, $_end) = explode(' - ', $closures->closed_date);
+									$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
+									$_end = Carbon::createFromFormat('d/m/Y', $_end);
 
-								if (($drop_off->getTimestamp() >= $_begin->getTimestamp() and $drop_off->getTimestamp() <= $_end->getTimestamp()) or
-									($return_at->getTimestamp() >= $_begin->getTimestamp() and $return_at->getTimestamp() <= $_end->getTimestamp())) {
+									if (($drop_off->getTimestamp() >= $_begin->getTimestamp() and $drop_off->getTimestamp() <= $_end->getTimestamp()) or
+										($return_at->getTimestamp() >= $_begin->getTimestamp() and $return_at->getTimestamp() <= $_end->getTimestamp())) {
 
-									$is_closed = true;
-									break;
+										$is_closed = true;
+										break;
+									}
 								}
 							}
 
@@ -352,6 +354,7 @@ class Products extends BaseModel
 				}
             }
         } catch (\Exception $e) {
+			dd($e);
             abort(404, $e->getMessage());
         }
 
