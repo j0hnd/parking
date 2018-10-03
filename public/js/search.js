@@ -71,7 +71,15 @@ $(function () {
                 $('#cards-container').html("<div class='col-md-12 text-center'><img src='/img/loader.gif'></div>");
             },
             success: function (response) {
+                var sort_label = '';
                 $('#cards-container').html(response.html);
+                if (_value == 'desc') {
+                    sort_label = 'Highest Price';
+                } else {
+                    sort_label = 'Lowest Price';
+                }
+
+                $('#lowest-price').text(sort_label);
             },
             complete: function (jqXHR, textStatus) {
                 $('.card-border').matchHeight();
