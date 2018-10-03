@@ -74,7 +74,7 @@ class Products extends BaseModel
 
     public static function search($data)
     {
-        $products = null;
+		$products = null;
 
         try {
             // $date1 = explode(" ", $data['search']['drop-off-date']);
@@ -351,7 +351,7 @@ class Products extends BaseModel
                     }
                 }
 
-                if (!is_null($products)) {
+                if (!is_null($products) and !isset($data['sub'])) {
 					foreach ($products as $key => $row) {
 						$matches[$key] = $row['overrides'];
 					}
@@ -360,6 +360,7 @@ class Products extends BaseModel
 				}
             }
         } catch (\Exception $e) {
+			dd($e);
             abort(404, $e->getMessage());
         }
 
