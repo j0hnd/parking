@@ -72,6 +72,9 @@ $(function () {
             },
             success: function (response) {
                 $('#cards-container').html(response.html);
+            },
+            complete: function (jqXHR, textStatus) {
+                $('.card-border').matchHeight();
             }
         });
     });
