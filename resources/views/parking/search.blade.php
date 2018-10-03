@@ -99,9 +99,9 @@ Parking Search |
     <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
     <script src="{{ asset('/js/jquery.matchHeight.js') }}" type="text/javascript"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ config('app.google_api') }}&callback=initMap" async defer></script>
+    <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
             $('#airport').select2();
