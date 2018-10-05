@@ -199,7 +199,7 @@ class BookingsController extends Controller
             } else {
                 return back()->withErrors(['error' => 'Unable to save, invalid request']);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Log::error($e);
             abort(404, $e->getMessage());
         }
