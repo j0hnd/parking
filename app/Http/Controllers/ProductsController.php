@@ -38,7 +38,7 @@ class ProductsController extends Controller
         $priceCategories = PriceCategories::active();
         $carparkServices = CarparkServices::active()->orderBy('service_name', 'asc');
         $row_count = 1;
-		$row_count_cd = 1;
+        $row_count_cd = 1;
         $override_count = 1;
 
         $timestamp = strtotime('next Sunday');
@@ -49,7 +49,7 @@ class ProductsController extends Controller
         }
 
         for ($m = 1; $m <= 12; $m++) {
-            $months[] = date('F', mktime(0,0,0,$m, 1, date('Y')));
+            $months[] = date('F', mktime(0, 0, 0, $m, 1, date('Y')));
         }
 
         $years [] = (int) date('Y');
@@ -68,14 +68,13 @@ class ProductsController extends Controller
             'days',
             'months',
             'years',
-			'row_count_cd'
+            'row_count_cd'
         ));
     }
 
     public function store(ProductFormRequest $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $form = $request->only([
                     'carpark_id',
@@ -102,7 +101,7 @@ class ProductsController extends Controller
 
                 $user = Sentinel::getUser();
                 $role = $user->roles()->get();
-				$form['vendor_id'] = ($role[0]->slug == 'vendor') ? $user->id : 0;
+                $form['vendor_id'] = ($role[0]->slug == 'vendor') ? $user->id : 0;
 
                 if ($products = Products::create($form)) {
                     $path = 'uploads/products/' . $current->format('Y-m-d');
@@ -111,20 +110,20 @@ class ProductsController extends Controller
                         $filename   = $image->getClientOriginalName();
                         $image_path = "{$path}/".$products->id;
 
-						// check if upload folder is existing, if not create it
-						if (!File::exists(public_path($path))) {
-							File::makeDirectory(public_path($path));
-						}
+                        // check if upload folder is existing, if not create it
+                        if (!File::exists(public_path($path))) {
+                            File::makeDirectory(public_path($path));
+                        }
 
-						if (!File::exists(public_path($image_path))) {
-							File::makeDirectory(public_path($image_path));
-						}
+                        if (!File::exists(public_path($image_path))) {
+                            File::makeDirectory(public_path($image_path));
+                        }
 
-						$image_resize = Image::make($image->getRealPath());
-						$image_resize->resize(219, 129);
+                        $image_resize = Image::make($image->getRealPath());
+                        $image_resize->resize(219, 129);
 
-						$image_resize->save(public_path("{$image_path}/{$filename}"));
-						Products::where('id', $products->id)->update(['image' => $image_path."/".$filename]);
+                        $image_resize->save(public_path("{$image_path}/{$filename}"));
+                        Products::where('id', $products->id)->update(['image' => $image_path."/".$filename]);
                     }
 
                     foreach ($airports as $airport) {
@@ -172,36 +171,42 @@ class ProductsController extends Controller
                         foreach ($form['overrides'] as $overrides) {
                             foreach ($overrides as $key => $values) {
                                 foreach ($values as $i => $val) {
-                                    $override_form[$i] = [
-                                        'product_id'     => $products->id,
-                                        'override_dates' => $form['overrides']['override_dates'][0][$i],
-                                        'override_price' => $form['overrides']['override_price'][1][$i]
-                                    ];
+                                    if (!is_null($form['overrides']['override_dates'][0][$i])) {
+                                        $override_form[$i] = [
+                                            'product_id'     => $products->id,
+                                            'override_dates' => $form['overrides']['override_dates'][0][$i],
+                                            'override_price' => $form['overrides']['override_price'][1][$i]
+                                        ];
+                                    }
                                 }
                             }
                         }
 
-                        foreach ($override_form as $oform) {
-                            Overrides::create($oform);
+                        if (isset($override_form)) {
+                            foreach ($override_form as $oform) {
+                                Overrides::create($oform);
+                            }
                         }
                     }
 
-					if (isset($form['closure'])) {
-						Closure::where('product_id', $product->id)->delete();
+                    if (isset($form['closure'])) {
+                        Closure::where('product_id', $products->id)->delete();
 
-						foreach ($form['closure'] as $closures) {
-							foreach ($closures as $key => $value) {
-								$closure_form[$key] = [
-									'product_id'  => $product->id,
-									'closed_date' => $value,
-								];
-							}
-						}
+                        foreach ($form['closure'] as $closures) {
+                            foreach ($closures as $key => $value) {
+                                $closure_form[$key] = [
+                                    'product_id'  => $products->id,
+                                    'closed_date' => $value,
+                                ];
+                            }
+                        }
 
-						foreach ($closure_form as $cform) {
-							Closure::create($cform);
-						}
-					}
+                        if (isset($closure_form)) {
+                            foreach ($closure_form as $cform) {
+                                Closure::create($cform);
+                            }
+                        }
+                    }
 
                     if (isset($form['services'])) {
                         foreach ($form['services'] as $service) {
@@ -219,7 +224,6 @@ class ProductsController extends Controller
                     DB::rollback();
                 }
             }
-
         } catch (\Exception $e) {
             DB::rollback();
             abort(404, $e->getMessage());
@@ -265,7 +269,7 @@ class ProductsController extends Controller
         }
 
         for ($m = 1; $m <= 12; $m++) {
-            $months[] = date('F', mktime(0,0,0,$m, 1, date('Y')));
+            $months[] = date('F', mktime(0, 0, 0, $m, 1, date('Y')));
         }
 
         $years [] = (int) date('Y');
@@ -286,14 +290,13 @@ class ProductsController extends Controller
             'days',
             'months',
             'years',
-			'row_count_cd'
+            'row_count_cd'
         ));
     }
 
     public function update(ProductFormRequest $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $product = Products::findOrFail($request->product_id);
                 $form = $request->only([
@@ -330,7 +333,7 @@ class ProductsController extends Controller
 
                     // update contact details
                     if (!is_null($form_contact_details)) {
-                        if(is_null($product->contact_details)) {
+                        if (is_null($product->contact_details)) {
                             $form_contact_details['product_id'] = $product->id;
                             $form_contact_details['carpark_id'] = $form['carpark_id'];
                             ProductContactDetails::create($form_contact_details);
@@ -352,18 +355,18 @@ class ProductsController extends Controller
 
                         // check if upload folder is existing, if not create it
                         if (!File::exists(public_path($path))) {
-							File::makeDirectory(public_path($path));
-						}
+                            File::makeDirectory(public_path($path));
+                        }
 
-						if (!File::exists(public_path($image_path))) {
-							File::makeDirectory(public_path($image_path));
-						}
+                        if (!File::exists(public_path($image_path))) {
+                            File::makeDirectory(public_path($image_path));
+                        }
 
-						$image_resize = Image::make($image->getRealPath());
+                        $image_resize = Image::make($image->getRealPath());
                         $image_resize->resize(219, 129);
 
-						$image_resize->save(public_path("{$image_path}/{$filename}"));
-						Products::where('id', $product->id)->update(['image' => $image_path."/".$filename]);
+                        $image_resize->save(public_path("{$image_path}/{$filename}"));
+                        Products::where('id', $product->id)->update(['image' => $image_path."/".$filename]);
                     }
 
                     // update airports
@@ -398,11 +401,11 @@ class ProductsController extends Controller
                         //         foreach ($values as $i => $val) {
                         //             $prices_form[$i] = [
                         //                 'product_id'      => $product->id,
-						// 				'category_id'     => $form['prices']['category_id'][0][0],
-						// 				'no_of_days'      => isset($form['prices']['no_of_days'][1][$i]) ? $form['prices']['no_of_days'][1][$i] : null,
-						// 				'price_month'     => $form['prices']['price_month'][2][$i],
-						// 				'price_year'      => $form['prices']['price_year'][3][$i],
-						// 				'price_value'     => $form['prices']['price_value'][4][$i]
+                        // 				'category_id'     => $form['prices']['category_id'][0][0],
+                        // 				'no_of_days'      => isset($form['prices']['no_of_days'][1][$i]) ? $form['prices']['no_of_days'][1][$i] : null,
+                        // 				'price_month'     => $form['prices']['price_month'][2][$i],
+                        // 				'price_year'      => $form['prices']['price_year'][3][$i],
+                        // 				'price_value'     => $form['prices']['price_value'][4][$i]
                         //             ];
                         //         }
                         //     }
@@ -413,46 +416,50 @@ class ProductsController extends Controller
                         // }
                     }
 
-					if (isset($form['overrides'])) {
-                    	Overrides::where('product_id', $product->id)->delete();
+                    if (isset($form['overrides'])) {
+                        Overrides::where('product_id', $product->id)->delete();
 
-						foreach ($form['overrides'] as $overrides) {
-							foreach ($overrides as $key => $values) {
-								foreach ($values as $i => $val) {
-									$override_form[$i] = [
-										'product_id'     => $product->id,
-										'override_dates' => $form['overrides']['override_dates'][0][$i],
-										'override_price' => $form['overrides']['override_price'][1][$i]
-									];
-								}
-							}
-						}
+                        foreach ($form['overrides'] as $overrides) {
+                            foreach ($overrides as $key => $values) {
+                                foreach ($values as $i => $val) {
+                                    if (!is_null($form['overrides']['override_dates'][0][$i])) {
+                                        $override_form[$i] = [
+                                            'product_id'     => $product->id,
+                                            'override_dates' => $form['overrides']['override_dates'][0][$i],
+                                            'override_price' => $form['overrides']['override_price'][1][$i]
+                                        ];
+                                    }
+                                }
+                            }
+                        }
 
-						foreach ($override_form as $oform) {
-							Overrides::create($oform);
-						}
-					}
+                        if (isset($override_form)) {
+                            foreach ($override_form as $oform) {
+                                Overrides::create($oform);
+                            }
+                        }
+                    }
 
-					if (isset($form['closure'])) {
-						Closure::where('product_id', $product->id)->delete();
+                    if (isset($form['closure'])) {
+                        Closure::where('product_id', $product->id)->delete();
 
-						foreach ($form['closure'] as $closures) {
-							foreach ($closures as $key => $value) {
+                        foreach ($form['closure'] as $closures) {
+                            foreach ($closures as $key => $value) {
                                 if (!empty($value)) {
                                     $closure_form[$key] = [
                                         'product_id'  => $product->id,
                                         'closed_date' => $value,
                                     ];
                                 }
-							}
-						}
+                            }
+                        }
 
                         if (isset($closure_form)) {
                             foreach ($closure_form as $cform) {
                                 Closure::create($cform);
                             }
                         }
-					}
+                    }
 
                     // update services
                     if (isset($form['services'])) {
@@ -472,10 +479,8 @@ class ProductsController extends Controller
 
                 return redirect('/admin/product')->with('success', 'Product has been updated');
             }
-
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             abort(404, $e->getMessage());
         }
     }
