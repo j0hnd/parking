@@ -116,7 +116,7 @@
         <div id="first-row" class="row margin-bottom10 margin-left10">
             <div class="col-md-4">
 				@if($i > 0)
-					@php($disabled = "disabled=disabled")
+					@php($disabled = "readonly=readonly")
 				@else
 					@php($disabled = "")
 				@endif
