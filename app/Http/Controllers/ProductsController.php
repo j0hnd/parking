@@ -307,7 +307,7 @@ class ProductsController extends Controller
                     'on_return',
                     'directions',
                     'revenue_share',
-//                    'price_ids',
+                    'price_ids',
                     'prices',
                     'services',
                     'overrides',
@@ -387,35 +387,41 @@ class ProductsController extends Controller
 
                     DB::commit();
 
+                    // delete selected price
+                    if (isset($form['price_ids'])) {
+                        $price_ids = explode(':', $form['price_ids']);
+                        if (count($price_ids)) {
+                            foreach ($price_ids as $id) {
+                                Prices::where('id', $id)->delete();
+                            }
+                        }
+					}
+
                     if (isset($form['prices'])) {
-//                        $price_ids = explode(':', $form['price_ids']);
-//                        if (count($price_ids)) {
-//                            foreach ($price_ids as $id) {
-//                                // Prices::findOrFail($id)->delete();
-//                                Prices::where('product_id', $id)->delete();
-//                            }
-//                        }
-
-                         Prices::where('product_id', $product->id)->delete();
-
                          foreach ($form['prices'] as $field => $prices) {
                              foreach ($prices as $key => $values) {
                                  foreach ($values as $i => $val) {
-                                     $prices_form[$i] = [
-                                     	'product_id'      => $product->id,
-                         				'category_id'     => $form['prices']['category_id'][0][0],
-                         				'no_of_days'      => isset($form['prices']['no_of_days'][1][$i]) ? $form['prices']['no_of_days'][1][$i] : null,
-                         				'price_month'     => $form['prices']['price_month'][2][$i],
-                         				'price_year'      => $form['prices']['price_year'][3][$i],
-                         				'price_value'     => $form['prices']['price_value'][4][$i]
-                                     ];
+                                 	$price_ids[$i] = [
+										'id' => $form['prices']['id'][5][$i]
+									];
+
+                                 	$prices_form[$i] = [
+										'product_id'  => $product->id,
+										'category_id' => $form['prices']['category_id'][0][0],
+										'no_of_days'  => isset($form['prices']['no_of_days'][1][$i]) ? $form['prices']['no_of_days'][1][$i] : null,
+										'price_month' => $form['prices']['price_month'][2][$i],
+										'price_year'  => $form['prices']['price_year'][3][$i],
+										'price_value' => $form['prices']['price_value'][4][$i]
+									];
                                  }
                              }
                          }
 
-                         foreach ($prices_form as $pform) {
-                             Prices::create($pform);
-                         }
+                         if (isset($price_ids) and isset($prices_form)) {
+                         	foreach ($prices_form as $i => $form) {
+                         		Prices::updateOrCreate($price_ids[$i], $form);
+							}
+						 }
                     }
 
                     if (isset($form['overrides'])) {

@@ -112,11 +112,11 @@
     </div>
 
     @if(isset($product->prices))
-        @foreach($product->prices as $i => $prices)
+        @foreach($product->prices as $idx => $prices)
         <div id="first-row" class="row margin-bottom10 margin-left10">
             <div class="col-md-4">
-				@if($i > 0)
-					@php($disabled = "readonly=readonly")
+				@if($idx > 0)
+					@php($disabled = "disabled=disabled")
 				@else
 					@php($disabled = "")
 				@endif
@@ -175,13 +175,16 @@
                        placeholder="Price Value"
                        maxlength="6"
                        value="{{ $prices->price_value }}">
+
+                <input type="hidden" name="prices[id][5][]"
+                       value="{{ $prices->id }}">
             </div>
             <div class="col-md-1">
                 <div class="btn-group">
                     <button type="button" class="btn btn-success btn-flat" id="toggle-create-row">
                         <i class="fa fa-plus"></i>
                     </button>
-                    <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row" data-price-id="{{ $prices->id }}">
+                    <button type="button" class="btn btn-warning btn-flat" id="toggle-remove-row" data-price-id="{{ $prices->id }}" data-no="{{ $idx }}">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </div>

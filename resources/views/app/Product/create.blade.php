@@ -112,12 +112,14 @@
                 var row = $(this).parent().parent().parent();
                 if (row_count == 1) {
                     alert('Unable to delete this last row.');
+                } else if ( $(this).data('no') == 0) {
+                    alert('Unable to delete this first row.');
                 } else {
-                    // if ($(this).data('price-id') !== undefined) {
-                    //     price_id.push($(this).data('price-id'));
-                    //     $('#price-id').val(price_id.join(':'));
-                    // }
-                    
+                    if ($(this).data('price-id') !== undefined) {
+                        price_id.push($(this).data('price-id'));
+                        $('#price-id').val(price_id.join(':'));
+                    }
+
                     row_count--;
                     row.remove();
                 }
