@@ -418,8 +418,8 @@ class ProductsController extends Controller
                          }
 
                          if (isset($price_ids) and isset($prices_form)) {
-                         	foreach ($prices_form as $i => $form) {
-                         		Prices::updateOrCreate($price_ids[$i], $form);
+                         	foreach ($prices_form as $i => $price_form) {
+                         		Prices::updateOrCreate($price_ids[$i], $price_form);
 							}
 						 }
                     }
