@@ -25,7 +25,7 @@
     <label class="col-sm-2 control-label">Airport <span class="required">*</span></label>
 
     <div class="col-sm-9">
-        <select name="airport_id[]" id="airport-id" class="form-control" multiple="multiple">
+        <select name="airport_id[]" id="airport-id" class="form-control" multiple="multiple" style="width: 100%">
             @if($airports->count())
                 @foreach($airports->get() as $airport)
                     @if(isset($product->airport))
@@ -57,7 +57,13 @@
     <label class="col-sm-2 control-label">Short Description <span class="required">*</span></label>
 
     <div class="col-sm-9">
-        <input type="text" id="short-description" name="short_description" class="form-control" autocomplete="off" value="{{ isset($product) ? $product->short_description : old('short_description') }}">
+        <textarea name="short_description" id="short-description" class="form-control" cols="30" rows="7">
+            @if(isset($product))
+                {{ $product->short_description }}
+            @else
+                {{ old('description') }}
+            @endif
+        </textarea>
     </div>
 </div>
 
