@@ -259,26 +259,27 @@ class Products extends BaseModel
 								foreach ($product->overrides as $overrides) {
 									list($_begin, $_end) = explode(' - ', $overrides->override_dates);
 									$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
-									$_end = Carbon::createFromFormat('d/m/Y', $_end);									
+									$_end = Carbon::createFromFormat('d/m/Y', $_end);
+									$sel = $data['search']['drop-off-date'];
 
-									for ($day = 0; $day <= ($no_days - 1); $day++) {
-										$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
-										
-										if (strtotime($sel) >= $_begin->getTimestamp() and strtotime($sel) <= $_end->getTimestamp()) {
+									for ($day = 1; $day <= $no_days; $day++) {
+										if (strtotime($sel) >= strtotime($_begin->format('Y-m-d')) and strtotime($sel) <= strtotime($_end->format('Y-m-d'))) {
 											$first = substr($overrides->override_price, 0, 1);
+
 											if (!is_numeric($first)) {
 												$override_price += substr($overrides->override_price, 1);
 											} else {
 												$override_price += $overrides->override_price;
 											}
 											
-
 											if ($overrides->override_price > 0) {
 												$operator = 1;
 											} else {
 												$operator = 0;
 											}
 										}
+
+										$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
 									}
 								}
 
