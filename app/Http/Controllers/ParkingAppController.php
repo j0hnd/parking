@@ -512,7 +512,8 @@ class ParkingAppController extends Controller
                     'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
                     'airport_details'    => $airport_address,
                     'on_arrival'         => $booking->products[0]->on_arrival,
-                    'on_return'          => $booking->products[0]->on_return
+                    'on_return'          => $booking->products[0]->on_return,
+					'subject'            => "My Travel Compared Booking Confirmation (Customr's Copy)",
                 ]));
 
                 if (!empty($vendor_recipients)) {
@@ -522,7 +523,8 @@ class ParkingAppController extends Controller
                             'booking'  => $booking,
                             'customer' => $customer,
                             'vendor'   => $vendor,
-                            'carpark'  => $carpark
+                            'carpark'  => $carpark,
+							'subject'  => "My Travel Compared Booking Confirmation (Vendor's Copy)",
                         ]));
                     }
                 }
