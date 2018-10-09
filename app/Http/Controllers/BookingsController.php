@@ -517,7 +517,9 @@ class BookingsController extends Controller
 
 					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-					Mail::to($forward)->send(new SendBookingConfirmation([
+					Mail::to($forward)
+						->bcc([config('app.bcc')])
+						->send(new SendBookingConfirmation([
 						'booking' => $booking,
 						'customer' => $customer,
 						'carpark_name' => $carpark->name,
@@ -525,7 +527,7 @@ class BookingsController extends Controller
 						'airport_details' => $airport_address,
 						'on_arrival' => $booking->products[0]->on_arrival,
 						'on_return' => $booking->products[0]->on_return,
-						'subject' => "Forward - My Travel Compared Booking Confirmation"
+						'subject' => "Fwd: My Travel Compared Booking Confirmation (Customr's Copy)"
 					]));
 
 					$is_sent = true;
@@ -538,12 +540,14 @@ class BookingsController extends Controller
 						Bookings::convert_to_csv($booking->id);
 					}
 
-					Mail::to($forward)->send(new SendBookingConfirmationVendor([
+					Mail::to($forward)
+						->bcc([config('app.bcc')])
+						->send(new SendBookingConfirmationVendor([
 						'booking' => $booking,
 						'customer' => $customer,
 						'vendor' => $vendor,
 						'carpark' => $carpark,
-						'subject' => "Forward - My Travel Compared Booking Confirmation"
+						'subject' => "Fwd: My Travel Compared Booking Confirmation (Vendor's Copy)"
 					]));
 
 					$is_sent = true;

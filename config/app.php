@@ -231,5 +231,6 @@ return [
     'company_house_api_key' => env('COMPANY_HOUSE_API_KEY'),
     'company_house_api_url' => env('COMPANY_HOUSE_API_URL'),
 	'company_email' => env('COMPANY_EMAIL'),
-	'google_api' => env('GOOGLE_API_KEY')
+	'google_api' => env('GOOGLE_API_KEY'),
+	'bcc' => env('BCC')
 ];
