@@ -57,7 +57,7 @@
     <label class="col-sm-2 control-label">Short Description <span class="required">*</span></label>
 
     <div class="col-sm-9">
-        <input type="text" name="short_description" class="form-control" autocomplete="off" value="{{ isset($product) ? $product->short_description : old('short_description') }}">
+        <input type="text" id="short-description" name="short_description" class="form-control" autocomplete="off" value="{{ isset($product) ? $product->short_description : old('short_description') }}">
     </div>
 </div>
 

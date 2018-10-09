@@ -51,6 +51,7 @@
             $('#carpark-id').select2({ placeholder: '-- Carpark --' });
             $('#airport-id').select2({ placeholder: '-- Airport --' });
 
+            $('#short-description').wysihtml5();
             $('#description').wysihtml5();
             $('#on_arrival').wysihtml5();
             $('#on_return').wysihtml5();
