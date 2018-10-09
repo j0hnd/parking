@@ -538,7 +538,7 @@ class BookingsController extends Controller
 						Bookings::convert_to_csv($booking->id);
 					}
 
-					Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+					Mail::to($forward)->send(new SendBookingConfirmationVendor([
 						'booking' => $booking,
 						'customer' => $customer,
 						'vendor' => $vendor,
