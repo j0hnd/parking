@@ -32,7 +32,7 @@ class SendBookingConfirmationVendor extends Mailable
 		$csv_filename = strtoupper($booking->booking_id).'.csv';
 
 		return $this->view('emails.booking_company')
-			->subject("My Travel Compared Booking Confirmation")
+			->subject($this->data['subject'])
 			->with([
 				'booking'  => $booking,
 				'customer' => $this->data['customer'],

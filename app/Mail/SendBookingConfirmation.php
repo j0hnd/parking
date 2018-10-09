@@ -31,7 +31,7 @@ class SendBookingConfirmation extends Mailable
     public function build()
     {
 		return $this->view('emails.booking_customer')
-			->subject("My Travel Compared Booking Confirmation")
+			->subject($this->data['subject'])
 			->with($this->data);
     }
 }

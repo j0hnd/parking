@@ -28,7 +28,7 @@
                                 <input type="hidden" name="customer_id" id="customer-id">
                             </div>
 
-                            <div class="notification-container">
+                            {{-- <div class="notification-container">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Email Notifications</h3>
                                 </div>
@@ -52,18 +52,32 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="notification-container" style="margin-top:50px;">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Forward Booking Confirmation</h3>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Booking Confirmation</label>
+
+                                    <div class="col-sm-6 checkbox">
+                                        <label>
+                                            <input type="checkbox" name="notify_customer"> Customer
+                                        </label>
+                                        <br>
+                                        <label>
+                                            <input type="checkbox" name="notify_vendor"> Vendor
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <div class="form-group" style="margin-top:10px;">
                                     <label class="col-sm-3 control-label">Email Address</label>
 
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control" id="cc" name="cc" value="{{ env('ADMIN_EMAIL') }}">
+                                        <input type="text" class="form-control" id="forward" name="forward" value="{{ env('ADMIN_EMAIL') }}">
                                         <button type="button" id="toggle-forward-confirmation" class="btn btn-default" data-id="{{ $booking->id }}" style="margin-top: 10px;">Forward</button>
                                     </div>
                                 </div>
@@ -306,16 +320,31 @@ $(function () {
         .append("{!! html_entity_decode($arrival_options) !!}");
 
     $(document).on('click', '#toggle-forward-confirmation', function (e) {
-        var _email = $('#cc').val();
+        var _email = $('#forward').val();
         var _id = $(this).data('id');
+        var _customer = $('input[name="notify_customer"]').is(':checked') ? 1 : 0;
+        var _vendor = $('input[name="notify_vendor"]').is(':checked') ? 1 : 0;
+        var _data = {
+            _token: "{{ csrf_token() }}",
+            forward: _email,
+            customer: _customer,
+            vendor: _vendor
+        };
+
         if (_email == '') {
             alert('Missing email address');
+        } else if (_customer == 0 && _vendor == 0) {
+            alert('Please select which booking confirmation to forward.');
         } else {
             $.ajax({
                 url: "{{ url('/admin/booking/forward/confirmation') }}/" + _id,
                 type: "post",
-                data: { _token: "{{ csrf_token() }}", cc: _email },
+                data: _data,
+                beforeSend: function () {
+                    $('#toggle-forward-confirmation').attr('disabled', 'disabled');
+                },
                 success: function (response) {
+                    $('#toggle-forward-confirmation').removeAttr('disabled');
                     alert(response.message);
                 }
             });

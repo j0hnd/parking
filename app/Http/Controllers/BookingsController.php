@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookingFormRequest;
+use App\Http\Requests\ForwardBookingRequest;
 use App\Mail\SendBookingConfirmation;
 use App\Mail\SendBookingConfirmationVendor;
 use App\Models\Bookings;
@@ -171,26 +172,26 @@ class BookingsController extends Controller
 
                     $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-                    if (isset($form_booking['notify_customer'])) {
-                        Mail::to($customer->email)->send(new SendBookingConfirmation([
-                            'booking' => $booking,
-                            'customer' => $customer,
-                            'carpark_name' => $carpark->name,
-                            'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-                            'airport_details' => $airport_address,
-                            'on_arrival' => $booking->products[0]->on_arrival,
-                            'on_return' => $booking->products[0]->on_return
-                        ]));
-                    }
+                    Mail::to($customer->email)->send(new SendBookingConfirmation([
+                        'booking' => $booking,
+                        'customer' => $customer,
+                        'carpark_name' => $carpark->name,
+                        'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+                        'airport_details' => $airport_address,
+                        'on_arrival' => $booking->products[0]->on_arrival,
+                        'on_return' => $booking->products[0]->on_return,
+						'subject' => "My Travel Compared Booking Confirmation"
+                    ]));
 
-                    if (isset($form_booking['notify_vendor'])) {
-                        Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
-                            'booking' => $booking,
-                            'customer' => $customer,
-                            'vendor' => $vendor,
-                            'carpark' => $carpark
-                        ]));
-                    }
+
+                    Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+                        'booking' => $booking,
+                        'customer' => $customer,
+                        'vendor' => $vendor,
+                        'carpark' => $carpark,
+						'subject' => "My Travel Compared Booking Confirmation"
+                    ]));
+
 
                     return redirect('/admin/booking')->with('success', 'Booking is saved');
                 } else {
@@ -431,32 +432,30 @@ class BookingsController extends Controller
 
                     $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-                    if (isset($form_booking['notify_customer'])) {
-                        Mail::to($customer->email)->send(new SendBookingConfirmation([
-                            'booking' => $booking,
-                            'customer' => $customer,
-                            'carpark_name' => $carpark->name,
-                            'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-                            'airport_details' => $airport_address,
-                            'on_arrival' => $booking->products[0]->on_arrival,
-                            'on_return' => $booking->products[0]->on_return
-                        ]));
-                    }
+					Mail::to($customer->email)->send(new SendBookingConfirmation([
+						'booking' => $booking,
+						'customer' => $customer,
+						'carpark_name' => $carpark->name,
+						'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+						'airport_details' => $airport_address,
+						'on_arrival' => $booking->products[0]->on_arrival,
+						'on_return' => $booking->products[0]->on_return,
+						'subject' => "Erratum - My Travel Compared Booking Confirmation"
+					]));
 
-                    if (isset($form_booking['notify_vendor'])) {
-                        $csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
+					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
 
-                        if (file_exists($csv_file) == false) {
-                            Bookings::convert_to_csv($booking->id);
-                        }
+					if (file_exists($csv_file) == false) {
+						Bookings::convert_to_csv($booking->id);
+					}
 
-                        Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
-                            'booking' => $booking,
-                            'customer' => $customer,
-                            'vendor' => $vendor,
-                            'carpark' => $carpark
-                        ]));
-                    }
+					Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+						'booking' => $booking,
+						'customer' => $customer,
+						'vendor' => $vendor,
+						'carpark' => $carpark,
+						'subject' => "Erratum - My Travel Compared Booking Confirmation"
+					]));
 
                     return redirect('/admin/booking')->with('success', 'Booking has been updated');
                 } else {
@@ -493,45 +492,66 @@ class BookingsController extends Controller
         }
     }
 
-    public function forward(Request $request)
+    public function forward(ForwardBookingRequest $request)
     {
         $response = ['success' => false, 'message' => 'Invalid request'];
 
         try {
             if ($request->ajax() and $request->isMethod('post')) {
-                $validator = Validator::make($request->all(), [
-                    'cc' => 'required|email'
-                ]);
+				$booking_id = $request->booking;
+				$forward = $request->get('forward');
+				$forward_customer = $request->get('customer');
+				$forward_vendor = $request->get('vendor');
+				$is_sent = false;
 
-                if ($validator->fails()) {
-                    $response['message'] = 'Invalid email address';
-                } else {
-                    $booking_id = $request->booking;
-                    $cc = $request->get('cc');
+				$booking  = Bookings::findOrFail($booking_id);
+				$customer = Customers::findOrFail($booking->customer_id);
+				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+				$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
 
-                    $booking  = Bookings::findOrFail($booking_id);
-                    $customer = Customers::findOrFail($booking->customer_id);
-                    $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+				if ($forward_customer) {
+					$airport_address = $booking->products[0]->airport[0]->airport_name;
+					if (!empty($booking->departure_terminal)) {
+						$airport_address = $airport_address. " " . $booking->departure_terminal;
+					}
 
-                    $airport_address = $booking->products[0]->airport[0]->airport_name;
-                    if (!empty($booking->departure_terminal)) {
-                        $airport_address = $airport_address. " " . $booking->departure_terminal;
-                    }
+					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-                    $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+					Mail::to($forward)->send(new SendBookingConfirmation([
+						'booking' => $booking,
+						'customer' => $customer,
+						'carpark_name' => $carpark->name,
+						'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+						'airport_details' => $airport_address,
+						'on_arrival' => $booking->products[0]->on_arrival,
+						'on_return' => $booking->products[0]->on_return,
+						'subject' => "Forward - My Travel Compared Booking Confirmation"
+					]));
 
-                    Mail::to($cc)->send(new SendBookingConfirmation([
-                        'booking' => $booking,
-                        'customer' => $customer,
-                        'carpark_name' => $carpark->name,
-                        'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-                        'airport_details' => $airport_address,
-                        'on_arrival' => $booking->products[0]->on_arrival,
-                        'on_return' => $booking->products[0]->on_return
-                    ]));
+					$is_sent = true;
+				}
 
-                    $response = ['success' => true, 'message' => 'Booking confirmation has been forwarded'];
-                }
+				if ($forward_vendor) {
+					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
+
+					if (file_exists($csv_file) == false) {
+						Bookings::convert_to_csv($booking->id);
+					}
+
+					Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+						'booking' => $booking,
+						'customer' => $customer,
+						'vendor' => $vendor,
+						'carpark' => $carpark,
+						'subject' => "Forward - My Travel Compared Booking Confirmation"
+					]));
+
+					$is_sent = true;
+				}
+
+				if ($is_sent) {
+					$response = ['success' => true, 'message' => 'Booking confirmation has been forwarded'];
+				}
             }
         } catch (\Exception $e) {
             $response['message'] = $e->getMessage();

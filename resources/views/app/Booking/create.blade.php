@@ -28,7 +28,7 @@
                                 <input type="hidden" name="customer_id" id="customer-id">
                             </div>
 
-                            <div class="notification-container">
+                            {{-- <div class="notification-container">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">Email Notifications</h3>
                                 </div>
@@ -52,7 +52,7 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="col-xs-6">
@@ -86,10 +86,6 @@
 @section('scripts')
 <script type="text/javascript">
 $(function () {
-    // console.log(dvlaInfo('HZ13 WDD', function (response) {
-    //     return response;
-    // }));
-
     $(document).on('click', '#toggle-new-customer', function (e) {
         $('.new-customer-container').removeClass('hidden');
         $('.search-container').addClass('hidden');
