@@ -23,42 +23,20 @@
 
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
-                        <tbody>
-                        <tr>
-                            <th>Carpark</th>
-                            <th>Airport</th>
-                            <th>Product</th>
-                            <th></th>
-                        </tr>
-                        @if(count($products))
-                            @foreach($products as $product)
-                                @if(isset($product->airport[0]))
-                                    @if(is_null($product->airport[0]->deleted_at))
-                                        <tr>
-                                            <td>
-                                                @php($carpark = json_decode($product->carpark, true))
-                                                {{ $carpark['name'] }}
-                                            </td>
-                                            <td>
-                                                <ul>
-                                                    <li>{{ $product->airport[0]->airport_name }}</li>
-                                                </ul>
-                                            </td>
-                                            <td>{{ $product->prices[0]->categories->category_name }}</td>
-                                            <td>
-                                                <a href="{{ url('/admin/product/'.$product->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $product->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endif
-                            @endforeach
-                        @else
+                        <thead>
                             <tr>
-                                <td colspan="4" class="text-center">No products listed</td>
+                                <th>Carpark</th>
+                                <th>Airport</th>
+                                <th>Product</th>
+                                <th></th>
                             </tr>
-                        @endif
+                        </thead>
+
+
+                        <tbody id="products-container">
+                            @include('app.Product.partials._list')
                         </tbody>
+
                         @if(count($products))
                             <tfoot>
                             <tr>
@@ -92,6 +70,42 @@
                     });
                 }
             });
+
+            $(document).on('click', '.toggle-product', function () {
+                var _status = $(this).data('status');
+                var _id = $(this).data('id');
+
+                if (_status == 'deactivate') {
+                    if (confirm('Deactivate this product?')) {
+                        toggleProduct(_id, _status);
+                    }
+                }
+
+                if (_status == 'activate') {
+                    toggleProduct(_id, _status);
+                }
+            });
+
+            function toggleProduct(id, status) {
+                var _data= {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    status: status
+                };
+
+                $.ajax({
+                    url: "{{ url('/admin/product/toggle') }}",
+                    type: "post",
+                    data: _data,
+                    dataType: 'json',
+                    success: function (response) {
+                        alert(response.message);
+                        if (response.status) {
+                            $('#products-container').html(response.data.html)
+                        }
+                    }
+                });
+            }
         });
     </script>
 @stop

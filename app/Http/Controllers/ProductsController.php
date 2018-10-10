@@ -489,8 +489,39 @@ class ProductsController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             abort(404, $e->getMessage());
         }
     }
+
+    public function toggle(Request $request)
+	{
+		$response = ['status' => false, 'message' => 'Invalid request'];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->only(['id', 'status']);
+				$product = Products::where('id', $form['id']);
+
+				if ($product->count()) {
+					if ($product->update(['deactivated_at' => ($form['status'] == 'deactivate') ? Carbon::now() : null])) {
+						$products = Products::active()->get();
+						$view = view('app.Product.partials._list', ['products' => $products])->render();
+						$response = [
+							'status' => true,
+							'message' => "Product has been " . $form['status'],
+							'data' => [
+								'html' => $view
+							]
+						];
+					}
+				}
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }

@@ -23,6 +23,7 @@ class Products extends BaseModel
         'on_return',
         'directions',
         'revenue_share',
+		'deactivated_at',
         'deleted_at',
         'image'
     ];
@@ -113,6 +114,7 @@ class Products extends BaseModel
 				->whereNull('carparks.deleted_at')
 				->whereNull('airports.deleted_at')
 				->whereNull('prices.deleted_at')
+				->whereNull('products.deactivated_at')
 				->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 				->where('prices.no_of_days', $no_days)
                 ->orderBy('prices.price_value', 'asc');
@@ -132,6 +134,7 @@ class Products extends BaseModel
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
 						->whereNull('prices.deleted_at')
+						->whereNull('products.deactivated_at')
 						->where('airport_id', $data['search']['airport'])
 						->where('carpark_services.service_name', $service_name)
 						->where('prices.no_of_days', $no_days)
@@ -154,6 +157,7 @@ class Products extends BaseModel
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
 						->whereNull('prices.deleted_at')
+						->whereNull('products.deactivated_at')
 						->where('prices.no_of_days', $no_days)
 						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 						->where([
@@ -193,6 +197,7 @@ class Products extends BaseModel
 						->whereNull('carparks.deleted_at')
 						->whereNull('airports.deleted_at')
 						->whereNull('prices.deleted_at')
+						->whereNull('products.deactivated_at')
 						->where('prices.no_of_days', $no_days)
 						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
 						->where([

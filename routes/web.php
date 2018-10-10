@@ -88,6 +88,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('product', 'ProductsController')->except(['update', 'destroy', 'show']);
     Route::post('/product/{id}/delete', 'ProductsController@delete');
     Route::post('/product/update', 'ProductsController@update');
+    Route::post('/product/toggle', 'ProductsController@toggle');
 
     Route::resource('users', 'UsersController')->except(['update', 'destroy', 'show']);
     Route::get('/users/profile', 'UsersController@profile');
