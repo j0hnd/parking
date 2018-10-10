@@ -517,7 +517,7 @@
                       <a class="collapsed side-more" data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="true" aria-controls="collapseOne">more info...</a>
                       <div id="collapse" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
                         {{--<p class="collapsable-title">Lorem ipsum dolor sit amet</p>--}}
-                        <p class="collapsable-text">{{ $product->short_description }}</p>
+                        <p class="collapsable-text">{!! html_entity_decode($product->short_description) !!}</p>
                       </div>
                     </div>
                   </div>
