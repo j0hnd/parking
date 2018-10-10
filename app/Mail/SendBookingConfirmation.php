@@ -30,8 +30,15 @@ class SendBookingConfirmation extends Mailable
      */
     public function build()
     {
-		return $this->view('emails.booking_customer')
-			->subject($this->data['subject'])
-			->with($this->data);
+    	if (isset($this->data['bcc'])) {
+			return $this->view('emails.booking_customer')
+				->bcc(config('app.bcc'), 'MyTravelCompared Booking Check')
+				->subject($this->data['subject'])
+				->with($this->data);
+		} else {
+			return $this->view('emails.booking_customer')
+				->subject($this->data['subject'])
+				->with($this->data);
+		}
     }
 }

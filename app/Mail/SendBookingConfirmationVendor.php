@@ -31,17 +31,33 @@ class SendBookingConfirmationVendor extends Mailable
 		$booking = $this->data['booking'];
 		$csv_filename = strtoupper($booking->booking_id).'.csv';
 
-		return $this->view('emails.booking_company')
-			->subject($this->data['subject'])
-			->with([
-				'booking'  => $booking,
-				'customer' => $this->data['customer'],
-				'vendor'   => $this->data['vendor'],
-				'carpark'  => $this->data['carpark']
-			])
-			->attach(storage_path('csv') . '/' . $csv_filename, [
-				'as'   => 'booking-'.$csv_filename,
-				'mime' => 'text/csv'
-			]);
+		if (isset($this->data['bcc'])) {
+			return $this->view('emails.booking_company')
+				->bcc(config('app.bcc'), 'MyTravelCompared Booking Check')
+				->subject($this->data['subject'])
+				->with([
+					'booking'  => $booking,
+					'customer' => $this->data['customer'],
+					'vendor'   => $this->data['vendor'],
+					'carpark'  => $this->data['carpark']
+				])
+				->attach(storage_path('csv') . '/' . $csv_filename, [
+					'as'   => 'booking-'.$csv_filename,
+					'mime' => 'text/csv'
+				]);
+		} else {
+			return $this->view('emails.booking_company')
+				->subject($this->data['subject'])
+				->with([
+					'booking'  => $booking,
+					'customer' => $this->data['customer'],
+					'vendor'   => $this->data['vendor'],
+					'carpark'  => $this->data['carpark']
+				])
+				->attach(storage_path('csv') . '/' . $csv_filename, [
+					'as'   => 'booking-'.$csv_filename,
+					'mime' => 'text/csv'
+				]);
+		}
 	}
 }

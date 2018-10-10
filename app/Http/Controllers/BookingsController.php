@@ -518,17 +518,18 @@ class BookingsController extends Controller
 					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
 					Mail::to($forward)
-						->bcc([config('app.bcc')])
 						->send(new SendBookingConfirmation([
-						'booking' => $booking,
-						'customer' => $customer,
-						'carpark_name' => $carpark->name,
-						'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-						'airport_details' => $airport_address,
-						'on_arrival' => $booking->products[0]->on_arrival,
-						'on_return' => $booking->products[0]->on_return,
-						'subject' => "Fwd: My Travel Compared Booking Confirmation (Customr's Copy)"
-					]));
+								'booking' => $booking,
+								'customer' => $customer,
+								'carpark_name' => $carpark->name,
+								'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+								'airport_details' => $airport_address,
+								'on_arrival' => $booking->products[0]->on_arrival,
+								'on_return' => $booking->products[0]->on_return,
+								'subject' => "Fwd: My Travel Compared Booking Confirmation (Customr's Copy)",
+								'bcc' => config('app.bcc')
+							])
+						);
 
 					$is_sent = true;
 				}
@@ -541,14 +542,15 @@ class BookingsController extends Controller
 					}
 
 					Mail::to($forward)
-						->bcc([config('app.bcc')])
 						->send(new SendBookingConfirmationVendor([
-						'booking' => $booking,
-						'customer' => $customer,
-						'vendor' => $vendor,
-						'carpark' => $carpark,
-						'subject' => "Fwd: My Travel Compared Booking Confirmation (Vendor's Copy)"
-					]));
+								'booking' => $booking,
+								'customer' => $customer,
+								'vendor' => $vendor,
+								'carpark' => $carpark,
+								'subject' => "Fwd: My Travel Compared Booking Confirmation (Vendor's Copy)",
+								'bcc' => config('app.bcc')
+							])
+						);
 
 					$is_sent = true;
 				}
