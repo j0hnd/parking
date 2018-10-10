@@ -79,6 +79,8 @@ desired effect
   <script src="{{ asset('bower_components/bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
   <!-- Bootstrap WYSIHTML -->
   <script src="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>
+  {{-- sweetalert2 --}}
+  <script src="{{ asset('bower_components/sweetalert2/dist/sweetalert2.all.js') }}"></script>
   {{-- easy autocomplete --}}
   {{-- <script src="{{ asset('bower_components/EasyAutoComplete/dist/jquery.easy-autocomplete.min.js') }}"></script> --}}
   {{-- common scripts --}}

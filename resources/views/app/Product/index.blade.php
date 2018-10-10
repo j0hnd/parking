@@ -76,9 +76,16 @@
                 var _id = $(this).data('id');
 
                 if (_status == 'deactivate') {
-                    if (confirm('Deactivate this product?')) {
-                        toggleProduct(_id, _status);
-                    }
+                    swal({
+                        title: "Products",
+                        text: "Deactivate this product?",
+                        type: 'warning',
+                        showCancelButton: true
+                    }).then(function (response) {
+                        if (response.value == true) {
+                            toggleProduct(_id, _status);
+                        }
+                    });
                 }
 
                 if (_status == 'activate') {
@@ -99,9 +106,20 @@
                     data: _data,
                     dataType: 'json',
                     success: function (response) {
-                        alert(response.message);
                         if (response.status) {
+                            swal({
+                                title: "Products",
+                                text: response.message,
+                                type: 'success'
+                            });
+
                             $('#products-container').html(response.data.html)
+                        } else {
+                            swal({
+                                title: "Products",
+                                text: response.message,
+                                type: 'error'
+                            });
                         }
                     }
                 });

@@ -28,6 +28,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
+    {{-- sweetalert2 --}}
+    <link rel="stylesheet" href="{{ asset('bower_components/sweetalert2/dist/sweetalert2.min.css') }}">
     {{-- easy autocomplete --}}
     {{-- <link rel="stylesheet" href="{{ asset('bower_components/EasyAutoComplete/dist/easy-autocomplete.min.css') }}"> --}}
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
