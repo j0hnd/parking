@@ -241,8 +241,8 @@ class Products extends BaseModel
 									$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
 									$_end = Carbon::createFromFormat('d/m/Y', $_end);
 
-									if (($drop_off->getTimestamp() >= $_begin->getTimestamp() and $drop_off->getTimestamp() <= $_end->getTimestamp()) or
-										($return_at->getTimestamp() >= $_begin->getTimestamp() and $return_at->getTimestamp() <= $_end->getTimestamp())) {
+									if ((strtotime($drop_off->format('Y-m-d')) >= strtotime($_begin->format('Y-m-d')) and strtotime($drop_off->format('Y-m-d')) <= strtotime($_end->format('Y-m-d'))) or
+										(strtotime($return_at->format('Y-m-d')) >= strtotime($_begin->format('Y-m-d')) and strtotime($return_at->format('Y-m-d')) <= strtotime($_end->format('Y-m-d')))) {
 
 										$is_closed = true;
 										break;
