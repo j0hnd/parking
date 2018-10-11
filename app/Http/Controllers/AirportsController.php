@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 
-
 class AirportsController extends Controller
 {
     public function index()
@@ -32,7 +31,6 @@ class AirportsController extends Controller
     {
         try {
             if ($request->isMethod('post')) {
-
                 $form = $request->except(['_token', 'subcategory']);
                 $current = Carbon::now();
 
@@ -55,7 +53,8 @@ class AirportsController extends Controller
                     $subcategories = $request->get('subcategory');
                     if (count($subcategories)) {
                         foreach ($subcategories as $sub) {
-                            Subcategories::updateOrCreate([
+                            Subcategories::updateOrCreate(
+                                [
                                 'airport_id' => $airport->id,
                                 'subcategory_name' => $sub
                             ],
@@ -64,7 +63,8 @@ class AirportsController extends Controller
                                 'subcategory_name' => $sub,
                                 'created_at' => Carbon::now(),
                                 'updated_at' => Carbon::now()
-                            ]);
+                            ]
+                            );
                         }
                     }
 
@@ -76,13 +76,11 @@ class AirportsController extends Controller
 
                     return back()->with('error', 'Error in adding new airport');
                 }
-
             } else {
                 DB::rollback();
 
                 return back()->with('error', 'Invalid request');
             }
-
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
         }
@@ -109,7 +107,6 @@ class AirportsController extends Controller
     public function update(AirportRequestForm $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $form = $request->except(['_token', 'id', 'subcategory']);
                 $sub_category = $request->get('subcategory');
@@ -147,7 +144,6 @@ class AirportsController extends Controller
             } else {
                 return back()->with('error', 'Invalid request');
             }
-
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
         }
@@ -160,10 +156,10 @@ class AirportsController extends Controller
 //            $response = ['success' => true];
 //        }
 
-		if (Airports::findOrFail($id)->delete()) {
-			ProductAirports::where('airport_id', $id)->delete();
-			$response = ['success' => true];
-		}
+        if (Airports::findOrFail($id)->delete()) {
+            ProductAirports::where('airport_id', $id)->delete();
+            $response = ['success' => true];
+        }
 
         return response()->json($response);
     }
@@ -171,7 +167,6 @@ class AirportsController extends Controller
     public function search(Request $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $form = $request->except('_token');
                 $result = Airports::search($form['search']);
@@ -183,13 +178,41 @@ class AirportsController extends Controller
                 } else {
                     return redirect('/admin/airport')->with('error', 'No data found');
                 }
-
             } else {
                 return redirect('/admin/airport')->with('error', 'Invalid request');
             }
-
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
         }
+    }
+
+    public function toggle(Request $request)
+    {
+        $response = ['status' => false, 'message' => 'Invalid request'];
+
+        try {
+            if ($request->ajax() and $request->isMethod('post')) {
+                $form = $request->only(['id', 'status']);
+                $airport = Airports::where('id', $form['id']);
+
+                if ($airport->count()) {
+                    if ($airport->update(['deactivated_at' => ($form['status'] == 'deactivate') ? Carbon::now() : null])) {
+                        $airports = Airports::active()->orderBy('airport_name', 'asc')->get();
+                        $view = view('app.Airport.partials._list', ['airports' => $airports])->render();
+                        $response = [
+                            'status' => true,
+                            'message' => "Airport has been " . $form['status'],
+                            'data' => [
+                                'html' => $view
+                            ]
+                        ];
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+
+        return response()->json($response);
     }
 }

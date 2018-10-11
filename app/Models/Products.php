@@ -10,20 +10,19 @@ use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
-
 class Products extends BaseModel
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
         'carpark_id',
-		'short_description',
+        'short_description',
         'description',
         'on_arrival',
         'on_return',
         'directions',
         'revenue_share',
-		'deactivated_at',
+        'deactivated_at',
         'deleted_at',
         'image'
     ];
@@ -59,9 +58,9 @@ class Products extends BaseModel
     }
 
     public function vendors()
-	{
-		return $this->hasMany(Companies::class, 'id', 'vendor_id');
-	}
+    {
+        return $this->hasMany(Companies::class, 'id', 'vendor_id');
+    }
 
     public function contact_details()
     {
@@ -69,13 +68,13 @@ class Products extends BaseModel
     }
 
     public function closures()
-	{
-		return $this->hasMany(Closure::class, 'product_id', 'id');
-	}
+    {
+        return $this->hasMany(Closure::class, 'product_id', 'id');
+    }
 
     public static function search($data)
     {
-		$products = null;
+        $products = null;
 
         try {
             // $date1 = explode(" ", $data['search']['drop-off-date']);
@@ -84,129 +83,137 @@ class Products extends BaseModel
             $date1 = date('d/m/Y', strtotime($data['search']['drop-off-date']));
             $date2 = date('d/m/Y', strtotime($data['search']['return-at-date']));
 
-			$today = Carbon::now();
-			$begin = Carbon::createFromFormat('d/m/Y', $date1);
-			$end   = Carbon::createFromFormat('d/m/Y', $date2);
+            $today = Carbon::now();
+            $begin = Carbon::createFromFormat('d/m/Y', $date1);
+            $end   = Carbon::createFromFormat('d/m/Y', $date2);
 
-			if ($begin->getTimestamp() < $today->getTimestamp()) {
-				return [];
-			}
+            if ($begin->getTimestamp() < $today->getTimestamp()) {
+                return [];
+            }
 
             // get number of days between the dates in the search parameters
-			$no_days = $begin->diffInDays($end);
+            $no_days = $begin->diffInDays($end);
 
-			if ($no_days === 0) {
-				$no_days = 1;
-			} else {
+            if ($no_days === 0) {
+                $no_days = 1;
+            } else {
                 $no_days += 1;
             }
 
-			// get airports
-			$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
-				->join('products', 'products.id', '=', 'product_airports.product_id')
-				->join('airports', 'airports.id', '=', 'product_airports.airport_id')
-				->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-				->join('prices', 'prices.product_id', '=', 'products.id')
-				->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
-				->whereNull('product_airports.deleted_at')
-				->where(['airport_id' => $data['search']['airport']])
-				->whereNull('products.deleted_at')
-				->whereNull('carparks.deleted_at')
-				->whereNull('airports.deleted_at')
-				->whereNull('prices.deleted_at')
-				->whereNull('products.deactivated_at')
-				->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
-				->where('prices.no_of_days', $no_days)
+            // get airports
+            $product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
+                ->join('products', 'products.id', '=', 'product_airports.product_id')
+                ->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+                ->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+                ->join('prices', 'prices.product_id', '=', 'products.id')
+                ->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+                ->whereNull('product_airports.deleted_at')
+                ->where(['airport_id' => $data['search']['airport']])
+                ->whereNull('products.deleted_at')
+                ->whereNull('carparks.deleted_at')
+                ->whereNull('airports.deleted_at')
+                ->whereNull('prices.deleted_at')
+                ->whereNull('products.deactivated_at')
+                ->whereNull('carparks.deactivated_at')
+                ->whereNull('airports.deactivated_at')
+                ->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
+                ->where('prices.no_of_days', $no_days)
                 ->orderBy('prices.price_value', 'asc');
 
-        	if (isset($data['sub'])) {
-				if ($data['sub']['type'] == 'service') {
-					$service_name = urldecode($data['sub']['value']);
-					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
-						->join('products', 'products.id', '=', 'product_airports.product_id')
-						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
-						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-						->join('services', 'services.product_id', '=', 'products.id')
-						->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
-						->join('prices', 'prices.product_id', '=', 'products.id')
-						->whereNull('product_airports.deleted_at')
-						->whereNull('products.deleted_at')
-						->whereNull('carparks.deleted_at')
-						->whereNull('airports.deleted_at')
-						->whereNull('prices.deleted_at')
-						->whereNull('products.deactivated_at')
-						->where('airport_id', $data['search']['airport'])
-						->where('carpark_services.service_name', $service_name)
-						->where('prices.no_of_days', $no_days)
-						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
+            if (isset($data['sub'])) {
+                if ($data['sub']['type'] == 'service') {
+                    $service_name = urldecode($data['sub']['value']);
+                    $product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
+                        ->join('products', 'products.id', '=', 'product_airports.product_id')
+                        ->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+                        ->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+                        ->join('services', 'services.product_id', '=', 'products.id')
+                        ->join('carpark_services', 'carpark_services.id', '=', 'services.service_id')
+                        ->join('prices', 'prices.product_id', '=', 'products.id')
+                        ->whereNull('product_airports.deleted_at')
+                        ->whereNull('products.deleted_at')
+                        ->whereNull('carparks.deleted_at')
+                        ->whereNull('airports.deleted_at')
+                        ->whereNull('prices.deleted_at')
+                        ->whereNull('products.deactivated_at')
+                        ->whereNull('carparks.deactivated_at')
+                        ->whereNull('airports.deactivated_at')
+                        ->where('airport_id', $data['search']['airport'])
+                        ->where('carpark_services.service_name', $service_name)
+                        ->where('prices.no_of_days', $no_days)
+                        ->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
                         ->orderBy('prices.price_value', 'asc');
-				}
+                }
 
-				if ($data['sub']['type'] == 'price') {
-					// list($price_from, $price_to) = explode('-', $data['sub']['value']);
-					// $price_to = $price_to == 'Up' ? 5000 : $price_to;
+                if ($data['sub']['type'] == 'price') {
+                    // list($price_from, $price_to) = explode('-', $data['sub']['value']);
+                    // $price_to = $price_to == 'Up' ? 5000 : $price_to;
 
-					$product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
-						->join('products', 'products.id', '=', 'product_airports.product_id')
-						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
-						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-						->join('prices', 'prices.product_id', '=', 'products.id')
-						->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
-						->whereNull('product_airports.deleted_at')
-						->whereNull('products.deleted_at')
-						->whereNull('carparks.deleted_at')
-						->whereNull('airports.deleted_at')
-						->whereNull('prices.deleted_at')
-						->whereNull('products.deactivated_at')
-						->where('prices.no_of_days', $no_days)
-						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
-						->where([
-							'product_airports.airport_id' => $data['search']['airport']
-						])
-					    // ->whereRaw("prices.price_value >= ? AND prices.price_value <= ?", [$price_from, $price_to])
+                    $product_airports = ProductAirports::selectRaw("product_airports.product_id, product_airports.airport_id, prices.id AS price_id, carparks.no_bookings_not_less_than_24hrs")
+                        ->join('products', 'products.id', '=', 'product_airports.product_id')
+                        ->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+                        ->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+                        ->join('prices', 'prices.product_id', '=', 'products.id')
+                        ->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+                        ->whereNull('product_airports.deleted_at')
+                        ->whereNull('products.deleted_at')
+                        ->whereNull('carparks.deleted_at')
+                        ->whereNull('airports.deleted_at')
+                        ->whereNull('prices.deleted_at')
+                        ->whereNull('products.deactivated_at')
+                        ->whereNull('carparks.deactivated_at')
+                        ->whereNull('airports.deactivated_at')
+                        ->where('prices.no_of_days', $no_days)
+                        ->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
+                        ->where([
+                            'product_airports.airport_id' => $data['search']['airport']
+                        ])
+                        // ->whereRaw("prices.price_value >= ? AND prices.price_value <= ?", [$price_from, $price_to])
                         ->orderBy('prices.price_value', $data['sub']['value']);
-				}
-			}
+                }
+            }
 
-			if (isset($data['filter'])) {
-				if ($data['filter'] != 'all') {
-					switch ($data['filter']) {
-						case "onsite":
-							$category_id = 1;
-							break;
-						case "offsite":
-							$category_id = 2;
-							break;
-						case "parkride":
-							$category_id = 3;
-							break;
-						case "meetgreet":
-							$category_id = 4;
-							break;
-					}
+            if (isset($data['filter'])) {
+                if ($data['filter'] != 'all') {
+                    switch ($data['filter']) {
+                        case "onsite":
+                            $category_id = 1;
+                            break;
+                        case "offsite":
+                            $category_id = 2;
+                            break;
+                        case "parkride":
+                            $category_id = 3;
+                            break;
+                        case "meetgreet":
+                            $category_id = 4;
+                            break;
+                    }
 
-					// get airports
-					$product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id, carparks.no_bookings_not_less_than_24hrs")
-						->join('products', 'products.id', '=', 'product_airports.product_id')
-						->join('airports', 'airports.id', '=', 'product_airports.airport_id')
-						->join('carparks', 'carparks.id', '=', 'products.carpark_id')
-						->join('prices', 'prices.product_id', '=', 'products.id')
-						->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
-						->whereNull('product_airports.deleted_at')
-						->whereNull('products.deleted_at')
-						->whereNull('carparks.deleted_at')
-						->whereNull('airports.deleted_at')
-						->whereNull('prices.deleted_at')
-						->whereNull('products.deactivated_at')
-						->where('prices.no_of_days', $no_days)
-						->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
-						->where([
-							'product_airports.airport_id' => $data['search']['airport'],
-							'prices.category_id' => $category_id
-						])
+                    // get airports
+                    $product_airports = ProductAirports::selectRaw("product_airports.airport_id, product_airports.product_id, prices.category_id, prices.id as price_id, carparks.no_bookings_not_less_than_24hrs")
+                        ->join('products', 'products.id', '=', 'product_airports.product_id')
+                        ->join('airports', 'airports.id', '=', 'product_airports.airport_id')
+                        ->join('carparks', 'carparks.id', '=', 'products.carpark_id')
+                        ->join('prices', 'prices.product_id', '=', 'products.id')
+                        ->join('price_categories', 'price_categories.id', '=', 'prices.category_id')
+                        ->whereNull('product_airports.deleted_at')
+                        ->whereNull('products.deleted_at')
+                        ->whereNull('carparks.deleted_at')
+                        ->whereNull('airports.deleted_at')
+                        ->whereNull('prices.deleted_at')
+                        ->whereNull('products.deactivated_at')
+                        ->whereNull('carparks.deactivated_at')
+                        ->whereNull('airports.deactivated_at')
+                        ->where('prices.no_of_days', $no_days)
+                        ->whereRaw("(carparks.is_24hrs_svc = 1 OR (TIME('".$data['search']['drop-off-time']."') BETWEEN opening AND closing AND TIME('".$data['search']['return-at-time']."') BETWEEN opening AND closing))")
+                        ->where([
+                            'product_airports.airport_id' => $data['search']['airport'],
+                            'prices.category_id' => $category_id
+                        ])
                         ->orderBy('prices.price_value', 'asc');
-				}
-			}
+                }
+            }
 
             if ($product_airports->count()) {
                 $i = 0;
@@ -222,148 +229,146 @@ class Products extends BaseModel
                         }
                     }
 
-					$override_price = null;
-					$is_closed = false;
+                    $override_price = null;
+                    $is_closed = false;
 
-					$product = Products::findOrFail($pa->product_id);
-					$airport = Airports::findOrFail($pa->airport_id);
+                    $product = Products::findOrFail($pa->product_id);
+                    $airport = Airports::findOrFail($pa->airport_id);
 
                     if (count($product) > 0) {
-						if (isset($pa->price_id)) {
-							$prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
-						} else {
-							$prices = $product->prices;
-						}
+                        if (isset($pa->price_id)) {
+                            $prices = Prices::whereNull('deleted_at')->where('id', $pa->price_id)->get();
+                        } else {
+                            $prices = $product->prices;
+                        }
 
-						// check closure dates
-						if ($product->closures) {
-							$drop_off  = new Carbon($data['search']['drop-off-date']);
-							$return_at = new Carbon($data['search']['return-at-date']);
+                        // check closure dates
+                        if ($product->closures) {
+                            $drop_off  = new Carbon($data['search']['drop-off-date']);
+                            $return_at = new Carbon($data['search']['return-at-date']);
 
-							foreach ($product->closures as $closures) {
-								if (!is_null($closures->closed_date)) {
-									list($_begin, $_end) = explode(' - ', $closures->closed_date);
-									$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
-									$_end = Carbon::createFromFormat('d/m/Y', $_end);
+                            foreach ($product->closures as $closures) {
+                                if (!is_null($closures->closed_date)) {
+                                    list($_begin, $_end) = explode(' - ', $closures->closed_date);
+                                    $_begin = Carbon::createFromFormat('d/m/Y', $_begin);
+                                    $_end = Carbon::createFromFormat('d/m/Y', $_end);
 
-									if ((strtotime($drop_off->format('Y-m-d')) >= strtotime($_begin->format('Y-m-d')) and strtotime($drop_off->format('Y-m-d')) <= strtotime($_end->format('Y-m-d'))) or
-										(strtotime($return_at->format('Y-m-d')) >= strtotime($_begin->format('Y-m-d')) and strtotime($return_at->format('Y-m-d')) <= strtotime($_end->format('Y-m-d')))) {
+                                    if ((strtotime($drop_off->format('Y-m-d')) >= strtotime($_begin->format('Y-m-d')) and strtotime($drop_off->format('Y-m-d')) <= strtotime($_end->format('Y-m-d'))) or
+                                        (strtotime($return_at->format('Y-m-d')) >= strtotime($_begin->format('Y-m-d')) and strtotime($return_at->format('Y-m-d')) <= strtotime($_end->format('Y-m-d')))) {
+                                        $is_closed = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
 
-										$is_closed = true;
-										break;
-									}
-								}
-							}
-						}
+                        if ($is_closed === false) {
+                            // check for overrides
+                            if (count($product->overrides)) {
+                                $operator = null;
+                                $override_price = 0;
+                                foreach ($product->overrides as $overrides) {
+                                    list($_begin, $_end) = explode(' - ', $overrides->override_dates);
+                                    $_begin = Carbon::createFromFormat('d/m/Y', $_begin);
+                                    $_end = Carbon::createFromFormat('d/m/Y', $_end);
+                                    $sel = $data['search']['drop-off-date'];
 
-						if ($is_closed === false) {
-							// check for overrides
-							if (count($product->overrides)) {
-								$operator = null;
-								$override_price = 0;
-								foreach ($product->overrides as $overrides) {
-									list($_begin, $_end) = explode(' - ', $overrides->override_dates);
-									$_begin = Carbon::createFromFormat('d/m/Y', $_begin);
-									$_end = Carbon::createFromFormat('d/m/Y', $_end);
-									$sel = $data['search']['drop-off-date'];
+                                    for ($day = 1; $day <= $no_days; $day++) {
+                                        if (strtotime($sel) >= strtotime($_begin->format('Y-m-d')) and strtotime($sel) <= strtotime($_end->format('Y-m-d'))) {
+                                            $first = substr($overrides->override_price, 0, 1);
 
-									for ($day = 1; $day <= $no_days; $day++) {
-										if (strtotime($sel) >= strtotime($_begin->format('Y-m-d')) and strtotime($sel) <= strtotime($_end->format('Y-m-d'))) {
-											$first = substr($overrides->override_price, 0, 1);
+                                            if (!is_numeric($first)) {
+                                                $override_price += substr($overrides->override_price, 1);
+                                            } else {
+                                                $override_price += $overrides->override_price;
+                                            }
+                                            
+                                            if ($overrides->override_price > 0) {
+                                                $operator = 1;
+                                            } else {
+                                                $operator = 0;
+                                            }
+                                        }
 
-											if (!is_numeric($first)) {
-												$override_price += substr($overrides->override_price, 1);
-											} else {
-												$override_price += $overrides->override_price;
-											}
-											
-											if ($overrides->override_price > 0) {
-												$operator = 1;
-											} else {
-												$operator = 0;
-											}
-										}
+                                        $sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
+                                    }
+                                }
 
-										$sel = date('Y-m-d', strtotime($data['search']['drop-off-date'] . ' +'.$day.' day'));
-									}
-								}
+                                if (!is_null($operator)) {
+                                    if ($operator) {
+                                        $override_price = $prices[0]->price_value + $override_price;
+                                    } else {
+                                        $override_price = $prices[0]->price_value - $override_price;
+                                    }
+                                } else {
+                                    $override_price = $prices[0]->price_value;
+                                }
+                            }
 
-								if (!is_null($operator)) {
-									if ($operator) {
-										$override_price = $prices[0]->price_value + $override_price;
-									} else {
-										$override_price = $prices[0]->price_value - $override_price;
-									}
-								} else {
-									$override_price = $prices[0]->price_value;
-								}
-							}
+                            foreach ($prices as $price) {
+                                if (!is_null($price->price_month) or !is_null($price->price_year)) {
+                                    if ($price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+                                        $key = array_search($product->id, array_column($products, 'product_id'));
 
-							foreach ($prices as $price) {
-								if (!is_null($price->price_month) or !is_null($price->price_year)) {
-									if ($price->price_month == date('F', strtotime($data['search']['drop-off-date'])) and $price->price_year == date('Y', strtotime($data['search']['drop-off-date']))) {
+                                        if ($key !== false) {
+                                            unset($products[$key]);
+                                        }
 
-										$key = array_search($product->id, array_column($products, 'product_id'));
+                                        $products[$i] = [
+                                            'product_id' => $product->id,
+                                            'airport_id' => $pa->airport_id,
+                                            'airport_name' => $airport->airport_name,
+                                            'carpark' => $product->carpark->name,
+                                            'image' => $product->image,
+                                            'price_id' => $price->id,
+                                            'prices' => $price,
+                                            'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+                                            'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+                                            'overrides' => $override_price,
+                                            'services' => $product->carpark_services,
+                                            'short_description' => $product->short_description,
+                                            'description' => $product->description,
+                                            'on_arrival' => $product->on_arrival,
+                                            'on_return' => $product->on_return,
+                                            'latitude' => $airport->latitude,
+                                            'longitude' => $airport->longitude
+                                        ];
+                                    }
+                                } else {
+                                    $products[$i] = [
+                                        'product_id' => $product->id,
+                                        'airport_id' => $pa->airport_id,
+                                        'airport_name' => $airport->airport_name,
+                                        'carpark' => $product->carpark->name,
+                                        'image' => $product->image,
+                                        'price_id' => $price->id,
+                                        'prices' => $price,
+                                        'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
+                                        'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
+                                        'overrides' => $override_price,
+                                        'services' => $product->carpark_services,
+                                        'short_description' => $product->short_description,
+                                        'description' => $product->description,
+                                        'on_arrival' => $product->on_arrival,
+                                        'on_return' => $product->on_return,
+                                        'latitude' => $airport->latitude,
+                                        'longitude' => $airport->longitude
+                                    ];
+                                }
 
-										if ($key !== false) {
-											unset($products[$key]);
-										}
-
-										$products[$i] = [
-											'product_id' => $product->id,
-											'airport_id' => $pa->airport_id,
-											'airport_name' => $airport->airport_name,
-											'carpark' => $product->carpark->name,
-											'image' => $product->image,
-											'price_id' => $price->id,
-											'prices' => $price,
-											'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-											'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-											'overrides' => $override_price,
-											'services' => $product->carpark_services,
-											'short_description' => $product->short_description,
-											'description' => $product->description,
-											'on_arrival' => $product->on_arrival,
-											'on_return' => $product->on_return,
-											'latitude' => $airport->latitude,
-											'longitude' => $airport->longitude
-										];
-									}
-								} else {
-									$products[$i] = [
-										'product_id' => $product->id,
-										'airport_id' => $pa->airport_id,
-										'airport_name' => $airport->airport_name,
-										'carpark' => $product->carpark->name,
-										'image' => $product->image,
-										'price_id' => $price->id,
-										'prices' => $price,
-										'drop_off' => $data['search']['drop-off-date']." ".$data['search']['drop-off-time'],
-										'return_at' => $data['search']['return-at-date']." ".$data['search']['return-at-time'],
-										'overrides' => $override_price,
-										'services' => $product->carpark_services,
-										'short_description' => $product->short_description,
-										'description' => $product->description,
-										'on_arrival' => $product->on_arrival,
-										'on_return' => $product->on_return,
-										'latitude' => $airport->latitude,
-										'longitude' => $airport->longitude
-									];
-								}
-
-								$i++;
-							}
-						}
+                                $i++;
+                            }
+                        }
                     }
                 }
 
                 if (!is_null($products) and !isset($data['sub'])) {
-					foreach ($products as $key => $row) {
-						$matches[$key] = $row['overrides'];
-					}
+                    foreach ($products as $key => $row) {
+                        $matches[$key] = $row['overrides'];
+                    }
 
-					array_multisort($matches, SORT_ASC, $products);
-				}
+                    array_multisort($matches, SORT_ASC, $products);
+                }
             }
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
@@ -372,46 +377,46 @@ class Products extends BaseModel
         return count($products) ? array_values($products) : [];
     }
 
-	public static function prepare_data($products)
+    public static function prepare_data($products)
     {
         try {
             if (count($products) == 0) {
                 return null;
             }
 
-			$i = 0;
+            $i = 0;
 
             foreach ($products as $product) {
-            	// prepare prices
-				$price = $product['prices'];
-				$category = PriceCategories::findOrFail($price->category_id);
+                // prepare prices
+                $price = $product['prices'];
+                $category = PriceCategories::findOrFail($price->category_id);
 
-				$results[$i] = [
-					'product_id' => $product['product_id'],
-					'airport_id' => $product['airport_id'],
-					'airport_name' => $product['airport_name'],
-					'price_id' => $product['price_id'],
-					'carpark_name' => $product['carpark'],
-					'image' => $product['image'],
-					'category' => $category->category_name,
-					'price' => (is_null($product['overrides']) or $product['overrides'] == 0) ? $product['prices']->price_value : $product['overrides'],
-					'drop_off' => $product['drop_off'],
-					'return_at' => $product['return_at'],
-					'short_description' => $product['short_description'],
-					'description' => $product['description'],
-					'on_arrival' => $product['on_arrival'],
-					'on_return' => $product['on_return'],
-					'latitude' => $product['latitude'],
-					'longitude' => $product['longitude']
-				];
+                $results[$i] = [
+                    'product_id' => $product['product_id'],
+                    'airport_id' => $product['airport_id'],
+                    'airport_name' => $product['airport_name'],
+                    'price_id' => $product['price_id'],
+                    'carpark_name' => $product['carpark'],
+                    'image' => $product['image'],
+                    'category' => $category->category_name,
+                    'price' => (is_null($product['overrides']) or $product['overrides'] == 0) ? $product['prices']->price_value : $product['overrides'],
+                    'drop_off' => $product['drop_off'],
+                    'return_at' => $product['return_at'],
+                    'short_description' => $product['short_description'],
+                    'description' => $product['description'],
+                    'on_arrival' => $product['on_arrival'],
+                    'on_return' => $product['on_return'],
+                    'latitude' => $product['latitude'],
+                    'longitude' => $product['longitude']
+                ];
 
                 // prepare linked carpark services
                 foreach ($product['services'] as $services) {
-                	$carpark_services[] = ['name' => $services->service_name, 'icon' => $services->icon];
-				}
+                    $carpark_services[] = ['name' => $services->service_name, 'icon' => $services->icon];
+                }
 
-				$results[$i]['services'] = $carpark_services;
-				$carpark_services = null;
+                $results[$i]['services'] = $carpark_services;
+                $carpark_services = null;
 
                 $i++;
             }

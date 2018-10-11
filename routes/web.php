@@ -16,8 +16,8 @@ Route::get('/admin', 'DashboardController@index');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/member/login', 'Auth\LoginController@login_member');
 Route::get('/payment/{token?}/{cancel?}', 'ParkingAppController@payment');
-Route::get('/terms','ParkingAppController@terms');
-Route::get('/privacy','ParkingAppController@privacy');
+Route::get('/terms', 'ParkingAppController@terms');
+Route::get('/privacy', 'ParkingAppController@privacy');
 Route::get('/paypal/success', 'ParkingAppController@paypal_success');
 Route::get('/paypal/cancel', 'ParkingAppController@paypal_cancel');
 Route::get('/booking/destroy', 'ParkingAppController@booking_destroy');
@@ -35,7 +35,7 @@ Route::get('/landing/{airport_name}', 'ParkingAppController@landing_page');
 // Route::get('/sendTestEmail', 'ParkingAppController@sendTestEmail');
 /* email template test only - remove when done */
 
-Route::match(['get', 'post'], '/contact','ParkingAppController@contact');
+Route::match(['get', 'post'], '/contact', 'ParkingAppController@contact');
 
 Route::post('/search/filter/{type}/{value}', 'ParkingAppController@filter');
 Route::post('/member/authenticate', 'Auth\LoginController@login_member');
@@ -53,22 +53,22 @@ Route::get('/search', 'ParkingAppController@search');
 Route::match(['get', 'post'], '/search/{country_code}/airport-parking/search-results/{airport_name}', 'ParkingAppController@search');
 
 Route::group(['prefix' => 'members'], function () {
-	Route::get('/dashboard', 'MembersController@dashboard');
-	Route::post('/dashboard', 'MembersController@dashboard');
+    Route::get('/dashboard', 'MembersController@dashboard');
+    Route::post('/dashboard', 'MembersController@dashboard');
 
-	Route::get('/profile', 'MembersController@display_profile');
-    Route::get('/inbox','MembersController@display_inbox');
-    Route::get('/email/{id}','MembersController@display_email');
+    Route::get('/profile', 'MembersController@display_profile');
+    Route::get('/inbox', 'MembersController@display_inbox');
+    Route::get('/email/{id}', 'MembersController@display_email');
     Route::get('/products', 'MembersController@products');
     Route::post('/products/{id}', 'MembersController@get_product_details');
 
-	Route::post('/update/profile', 'MembersController@update_profile');
+    Route::post('/update/profile', 'MembersController@update_profile');
 
-	Route::get('/product/{id}/update', 'MembersController@get_product');
-	Route::post('/product/{id}/update', 'MembersController@update_product');
+    Route::get('/product/{id}/update', 'MembersController@get_product');
+    Route::post('/product/{id}/update', 'MembersController@update_product');
 
-	Route::get('/price/{price}', 'MembersController@get_price');
-	Route::post('/price/{price}', 'MembersController@price');
+    Route::get('/price/{price}', 'MembersController@get_price');
+    Route::post('/price/{price}', 'MembersController@price');
 });
 
 Route::group(['prefix' => 'admin'], function () {
@@ -78,6 +78,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/airport/update', 'AirportsController@update');
     Route::post('/airport/{id}/delete', 'AirportsController@delete');
     Route::post('/airport/search', 'AirportsController@search');
+    Route::post('/airport/toggle', 'AirportsController@toggle');
+
 
     Route::resource('carpark', 'CarparkController')->except(['update', 'destroy', 'show']);
     Route::post('/carpark/update', 'CarparkController@update');
@@ -119,27 +121,27 @@ Route::group(['prefix' => 'admin'], function () {
     Route::match(['get', 'post'], '/reports/travel/agents', 'ReportsController@travel_agents');
 
     Route::resource('posts', 'PostsController')->except(['update', 'destroy', 'show']);
-	Route::post('/posts/update', 'PostsController@update');
-	Route::post('/posts/update/status/{post}', 'PostsController@update_status');
-	Route::post('/posts/delete/{post}', 'PostsController@delete');
+    Route::post('/posts/update', 'PostsController@update');
+    Route::post('/posts/update/status/{post}', 'PostsController@update_status');
+    Route::post('/posts/delete/{post}', 'PostsController@delete');
 
-	Route::resource('fees', 'FeesController')->except(['update', 'destroy', 'show']);
-	Route::post('/fees/update', 'FeesController@update');
-	Route::post('/fees/{id}/delete', 'FeesController@delete');
+    Route::resource('fees', 'FeesController')->except(['update', 'destroy', 'show']);
+    Route::post('/fees/update', 'FeesController@update');
+    Route::post('/fees/{id}/delete', 'FeesController@delete');
 
-	Route::resource('affiliates', 'AffiliatesController')->except(['update', 'destroy', 'show']);
-	Route::post('/affiliates/search', 'AffiliatesController@search');
-	Route::post('/affiliates/update', 'AffiliatesController@update');
-	Route::post('/affiliates/{id}/delete', 'AffiliatesController@delete');
+    Route::resource('affiliates', 'AffiliatesController')->except(['update', 'destroy', 'show']);
+    Route::post('/affiliates/search', 'AffiliatesController@search');
+    Route::post('/affiliates/update', 'AffiliatesController@update');
+    Route::post('/affiliates/{id}/delete', 'AffiliatesController@delete');
 
-	Route::resource('coupons', 'CouponController')->except(['update', 'destroy', 'show']);
-	Route::post('/coupons/delete/{id}', 'CouponController@delete');
-	Route::post('/coupons/update', 'CouponController@update');
-	Route::get('/coupons/generate', 'CouponController@generate');
+    Route::resource('coupons', 'CouponController')->except(['update', 'destroy', 'show']);
+    Route::post('/coupons/delete/{id}', 'CouponController@delete');
+    Route::post('/coupons/update', 'CouponController@update');
+    Route::get('/coupons/generate', 'CouponController@generate');
 
-	Route::resource('/landing/pages', 'LandingPageController')->except(['update', 'destroy', 'show']);
-	Route::post('/landing/pages/update', 'LandingPageController@update');
-	Route::post('/landing/pages/status/{page}', 'LandingPageController@status_update');
+    Route::resource('/landing/pages', 'LandingPageController')->except(['update', 'destroy', 'show']);
+    Route::post('/landing/pages/update', 'LandingPageController@update');
+    Route::post('/landing/pages/status/{page}', 'LandingPageController@status_update');
 });
 
 Route::group(['prefix' => 'autocomplete'], function () {

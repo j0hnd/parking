@@ -23,31 +23,19 @@
 
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
-                        <tbody>
+                        <thead>
                             <tr>
                                 <th>Airport Name</th>
                                 <th>City</th>
                                 <th>County/State</th>
                                 <th></th>
                             </tr>
-                            @if(count($airports))
-                                @foreach($airports as $airport)
-                                <tr>
-                                    <td>{{ $airport->airport_name }}</td>
-                                    <td>{{ $airport->city }}</td>
-                                    <td>{{ $airport->county_state }}</td>
-                                    <td>
-                                        <a href="{{ url('/admin/airport/'.$airport->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                        <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $airport->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            @else
-                            <tr>
-                                <td colspan="4" class="text-center">No airport listed</td>
-                            </tr>
-                            @endif
+                        </thead>
+
+                        <tbody id="airports-container">
+                            @include('app.Airport.partials._list')
                         </tbody>
+
                         @if(count($airports))
                         <tfoot>
                             <tr>
@@ -81,6 +69,60 @@ $(function () {
             });
         }
     });
+
+    $(document).on('click', '.toggle-airport', function () {
+        var _status = $(this).data('status');
+        var _id = $(this).data('id');
+
+        if (_status == 'deactivate') {
+            swal({
+                title: "Airports",
+                text: "Deactivate this airport?",
+                type: 'warning',
+                showCancelButton: true
+            }).then(function (response) {
+                if (response.value == true) {
+                    toggleAirport(_id, _status);
+                }
+            });
+        }
+
+        if (_status == 'activate') {
+            toggleAirport(_id, _status);
+        }
+    });
+
+    function toggleAirport(id, status) {
+        var _data= {
+            _token: "{{ csrf_token() }}",
+            id: id,
+            status: status
+        };
+
+        $.ajax({
+            url: "{{ url('/admin/airport/toggle') }}",
+            type: "post",
+            data: _data,
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    swal({
+                        title: "Airports",
+                        text: response.message,
+                        type: 'success'
+                    });
+
+                    $('#airports-container').html(response.data.html)
+                } else {
+                    swal({
+                        title: "Airports",
+                        text: response.message,
+                        type: 'error'
+                    });
+                }
+            }
+        });
+    }
 });
 </script>
 @stop
