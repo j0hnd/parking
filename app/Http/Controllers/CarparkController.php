@@ -317,4 +317,36 @@ class CarparkController extends Controller
 
 		return response()->json($response);
 	}
+
+    public function toggle(Request $request)
+	{
+		$response = ['status' => false, 'message' => 'Invalid request'];
+
+		try {
+
+			if ($request->ajax() and $request->isMethod('post')) {
+				$form = $request->only(['id', 'status']);
+				$carpark = Carpark::where('id', $form['id']);
+
+				if ($carpark->count()) {
+					if ($carpark->update(['deactivated_at' => ($form['status'] == 'deactivate') ? Carbon::now() : null])) {
+						$carparks = Carpark::active()->orderBy('name', 'asc')->get();
+						$view = view('app.Carpark.partials._list', ['carparks' => $carparks])->render();
+						$response = [
+							'status' => true,
+							'message' => "Carpark has been " . $form['status'],
+							'data' => [
+								'html' => $view
+							]
+						];
+					}
+				}
+			}
+
+		} catch (\Exception $e) {
+			$response['message'] = $e->getMessage();
+		}
+
+		return response()->json($response);
+	}
 }

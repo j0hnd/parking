@@ -23,33 +23,20 @@
 
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover">
-                        <tbody>
-                        <tr>
-                            <th>Carpark Name</th>
-                            <th>Company</th>
-                            <th>City</th>
-                            <th>County/State</th>
-                            <th></th>
-                        </tr>
-                        @if(count($carparks))
-                            @foreach($carparks as $carpark)
-                                <tr>
-                                    <td>{{ $carpark->name }}</td>
-                                    <td>{{ $carpark->company->company_name }}</td>
-                                    <td>{{ $carpark->city }}</td>
-                                    <td>{{ $carpark->county_state }}</td>
-                                    <td>
-                                        <a href="{{ url('/admin/carpark/'.$carpark->id.'/edit') }}" class="btn bg-maroon btn-flat"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                        <button type="button" id="toggle-delete" class="btn bg-yellow btn-flat" data-id="{{ $carpark->id }}"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @else
+                        <thead>
                             <tr>
-                                <td colspan="5" class="text-center">No carpark listed</td>
+                                <th>Carpark Name</th>
+                                <th>Company</th>
+                                <th>City</th>
+                                <th>County/State</th>
+                                <th></th>
                             </tr>
-                        @endif
+                        </thead>
+
+                        <tbody id="carparks-container">
+                            @include('app.Carpark.partials._list')
                         </tbody>
+
                         @if(count($carparks))
                             <tfoot>
                             <tr>
@@ -83,6 +70,60 @@
                     });
                 }
             });
+
+            $(document).on('click', '.toggle-carpark', function () {
+                var _status = $(this).data('status');
+                var _id = $(this).data('id');
+
+                if (_status == 'deactivate') {
+                    swal({
+                        title: "Carparks",
+                        text: "Deactivate this carpark?",
+                        type: 'warning',
+                        showCancelButton: true
+                    }).then(function (response) {
+                        if (response.value == true) {
+                            toggleCarpark(_id, _status);
+                        }
+                    });
+                }
+
+                if (_status == 'activate') {
+                    toggleCarpark(_id, _status);
+                }
+            });
+
+            function toggleCarpark(id, status) {
+                var _data= {
+                    _token: "{{ csrf_token() }}",
+                    id: id,
+                    status: status
+                };
+
+                $.ajax({
+                    url: "{{ url('/admin/carpark/toggle') }}",
+                    type: "post",
+                    data: _data,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status) {
+                            swal({
+                                title: "Carparks",
+                                text: response.message,
+                                type: 'success'
+                            });
+
+                            $('#carparks-container').html(response.data.html)
+                        } else {
+                            swal({
+                                title: "Carparks",
+                                text: response.message,
+                                type: 'error'
+                            });
+                        }
+                    }
+                });
+            }
         });
     </script>
 @stop
