@@ -3,7 +3,7 @@
         <label class="col-sm-2 control-label">First Name <span class="required">*</span></label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="first_name" placeholder="First Name" autocomplete="off" value="{{ isset($user_info->members->first_name) ? $user_info->members->first_name : old('first_name') }}">
+            <input type="text" class="form-control" name="first_name" placeholder="First Name" autocomplete="off" value="{{ isset($user->members->first_name) ? $user->members->first_name : old('first_name') }}">
         </div>
     </div>
 
@@ -11,7 +11,7 @@
         <label class="col-sm-2 control-label">Last Name <span class="required">*</span></label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="last_name" placeholder="Last Name" autocomplete="off" value="{{ isset($user_info->members->last_name) ? $user_info->members->last_name : old('first_name') }}">
+            <input type="text" class="form-control" name="last_name" placeholder="Last Name" autocomplete="off" value="{{ isset($user->members->last_name) ? $user->members->last_name : old('first_name') }}">
         </div>
     </div>
 
@@ -19,7 +19,7 @@
         <label class="col-sm-2 control-label">Email Address <span class="required">*</span></label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" name="email" placeholder="Email Address" autocomplete="off" value="{{ isset($user_info->email) ? $user_info->email : old('first_name') }}">
+            <input type="text" class="form-control" name="email" placeholder="Email Address" autocomplete="off" value="{{ isset($user->email) ? $user->email : old('first_name') }}">
         </div>
     </div>
 
@@ -30,8 +30,8 @@
             <select name="role_id" id="role-id" class="form-control">
                 <option value="" readonly>-- Roles --</option>
                 @foreach($roles as $role)
-                    @if(count($user_info))
-                        @if($user_info->roles[0]->id == $role->id)
+                    @if(count($user))
+                        @if($user->roles[0]->id == $role->id)
                         <option value="{{ $role->id }}"selected>{{ $role->name }}</option>
                         @else
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -44,9 +44,9 @@
         </div>
     </div>
 
-    @if(count($user_info))
+    @if(count($user))
         @php
-            $class = ($user_info->roles[0]->slug == 'vendor' or $user_info->roles[0]->slug == 'travel_agent') ? '' : 'hidden';
+            $class = ($user->roles[0]->slug == 'vendor' or $user->roles[0]->slug == 'travel_agent') ? '' : 'hidden';
         @endphp
     @else
         @php
@@ -54,8 +54,8 @@
         @endphp
     @endif
 
-    @if(count($user_info))
-        @if($user_info->roles[0]->slug == 'vendor')
+    @if(count($user))
+        @if($user->roles[0]->slug == 'vendor')
             @php
                 $carpark_wrapper_class = '';
                 $company_wrapper_class = 'hidden';
@@ -83,8 +83,8 @@
                     <option value="" readonly>-- Company --</option>
                     @if(isset($carparks))
                         @foreach($carparks as $carpark)
-                            @if(isset($user_info->members->company_id))
-                                @if($user_info->members->company_id == $carpark->id)
+                            @if(isset($user->members->company_id))
+                                @if($user->members->company_id == $carpark->id)
                                 <option value="{{ $carpark->id }}" selected>{{ $carpark->name }}</option>
                                 @else
                                 <option value="{{ $carpark->id }}">{{ $carpark->name }}</option>
@@ -102,8 +102,8 @@
             <label class="col-sm-2 control-label">Address</label>
 
             <div class="col-sm-9">
-                @if(isset($user_info->members->carpark))
-                    @php($carpark = $user_info->members->carpark)
+                @if(isset($user->members->carpark))
+                    @php($carpark = $user->members->carpark)
                     @php($address = "{$carpark->address} {$carpark->city} {$carpark->count_state} {$carpark->zipcode}")
                 @else
                     @php($address = '')

@@ -31,14 +31,13 @@ class UsersController extends Controller
         $page_title = "Add User";
         $user_info = null;
         $companies = Companies::selectRaw("id, company_name AS name")->active()->orderBy('company_name', 'asc')->get();
-		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
+        $carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
         return view('app.User.create', compact('roles', 'page_title', 'user_info', 'companies', 'carparks'));
     }
 
     public function store(UserFormRequest $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $form_user   = $request->except(['_token', 'first_name', 'last_name']);
                 $form_member = $request->only(['first_name', 'last_name', 'company']);
@@ -49,30 +48,30 @@ class UsersController extends Controller
                 $form_user['password'] = $temporary_password;
 
                 if ($user = Sentinel::registerAndActivate($form_user)) {
-                	if (!is_null($form_member['company']['company_name'])) {
-//						$company = Companies::create($form_member['company']['company_name']);
-//						var_dump($form_member['company']['company_name']);
-//						dd($company);
+                    if (!is_null($form_member['company']['company_name'])) {
+                        //						$company = Companies::create($form_member['company']['company_name']);
+                        //						var_dump($form_member['company']['company_name']);
+                        //						dd($company);
 
-						$carpark = Carpark::findOrFail($form_member['company']['company_name']);
+                        $carpark = Carpark::findOrFail($form_member['company']['company_name']);
 
-						// create member info
-						$member = Members::create([
-							'user_id'    => $user->id,
-							'company_id' => $carpark->id,
-							'first_name' => $form_member['first_name'],
-							'last_name'  => $form_member['last_name'],
-							'is_active'  => 1
-						]);
-					} else {
-						// create member info
-						$member = Members::create([
-							'user_id'    => $user->id,
-							'first_name' => $form_member['first_name'],
-							'last_name'  => $form_member['last_name'],
-							'is_active'  => 1
-						]);
-					}
+                        // create member info
+                        $member = Members::create([
+                            'user_id'    => $user->id,
+                            'company_id' => $carpark->id,
+                            'first_name' => $form_member['first_name'],
+                            'last_name'  => $form_member['last_name'],
+                            'is_active'  => 1
+                        ]);
+                    } else {
+                        // create member info
+                        $member = Members::create([
+                            'user_id'    => $user->id,
+                            'first_name' => $form_member['first_name'],
+                            'last_name'  => $form_member['last_name'],
+                            'is_active'  => 1
+                        ]);
+                    }
 
                     // assign role to a user
                     $role = Sentinel::findRoleById($form_user['role_id']);
@@ -88,15 +87,13 @@ class UsersController extends Controller
 
                     return back()->with('error', 'Error in adding new user');
                 }
-
             } else {
                 DB::rollback();
 
                 return back()->with('error', 'Invalid request');
             }
-
         } catch (\Exception $e) {
-        	dd($e);
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -104,7 +101,6 @@ class UsersController extends Controller
     public function search(Request $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $form = $request->except('_token');
                 $result = User::search($form['search']);
@@ -116,11 +112,9 @@ class UsersController extends Controller
                 } else {
                     return redirect('/admin/users')->with('error', 'No data found');
                 }
-
             } else {
                 return redirect('/admin/users')->with('error', 'Invalid request');
             }
-
         } catch (\Exception $e) {
             abort(404, $e->getMessage());
         }
@@ -141,13 +135,12 @@ class UsersController extends Controller
         $user = Sentinel::getUser();
         $roles = Roles::all();
         $page_title = "Profile of ".$user->members->first_name." ".$user->members->last_name;
-        return view('app.User.profile', compact('roles', 'page_title'));
+        return view('app.User.profile', compact('roles', 'page_title', 'user'));
     }
 
     public function update(UserFormRequest $request)
     {
         try {
-
             if ($request->isMethod('post')) {
                 $user = (isset($request->id)) ? User::findOrFail($request->id) : Sentinel::getUser();
 
@@ -155,20 +148,20 @@ class UsersController extends Controller
                 $form_member = $request->only(['first_name', 'last_name', 'company']);
 
                 if ($user->update($form_user)) {
-                	$company = Companies::where('company_name', $form_member['company']['company_name'])->orWhere('id', $form_member['company']['company_name']);
-                	if ($company->count() == 0) {
-                		$company = $company->create(['company_name' => $form_member['company']['company_name']]);
-                		$company_id = $company->id;
-					} else {
-                		$company_id = $form_member['company']['company_name'];
-					}
+                    $company = Companies::where('company_name', $form_member['company']['company_name'])->orWhere('id', $form_member['company']['company_name']);
+                    if ($company->count() == 0) {
+                        $company = $company->create(['company_name' => $form_member['company']['company_name']]);
+                        $company_id = $company->id;
+                    } else {
+                        $company_id = $form_member['company']['company_name'];
+                    }
 
                     // update member details
                     $user->members->update([
-                    	'first_name' => $form_member['first_name'],
-                    	'last_name'  => $form_member['last_name'],
-                    	'company_id' => $company_id
-					]);
+                        'first_name' => $form_member['first_name'],
+                        'last_name'  => $form_member['last_name'],
+                        'company_id' => $company_id
+                    ]);
 
                     // check if role is still the same
                     if ($user->roles[0]->id != $form_user['role_id']) {
@@ -187,9 +180,8 @@ class UsersController extends Controller
             } else {
                 return back()->with('error', 'Invalid request');
             }
-
         } catch (\Exception $e) {
-        	dd($e);
+            dd($e);
             abort(404, $e->getMessage());
         }
     }
@@ -212,25 +204,25 @@ class UsersController extends Controller
         $user_info = User::findOrFail($id);
         $roles = Roles::all();
         $page_title = "Profile of ".$user_info->members->first_name." ".$user_info->members->last_name;
-		$companies = Companies::selectRaw("id, company_name AS name")->active()->orderBy('company_name', 'asc')->get();
-		$carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
+        $companies = Companies::selectRaw("id, company_name AS name")->active()->orderBy('company_name', 'asc')->get();
+        $carparks = Carpark::select('id', 'name')->active()->orderBy('name', 'asc')->get();
 
         return view('app.User.edit', compact('roles', 'page_title', 'user_info', 'companies', 'carparks'));
     }
 
-	public function activate($id)
-	{
-		$response = ['success' => false];
-		$temporary_password = str_random(8);
-		$user = Sentinel::findById($id);
+    public function activate($id)
+    {
+        $response = ['success' => false];
+        $temporary_password = str_random(8);
+        $user = Sentinel::findById($id);
 
-		if (Activation::create($user)) {
-			if ($user->update(['password' => $temporary_password])) {
-				Mail::to($user->email)->send(new ActivatedAccount(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
-				$response = ['success' => true];
-			}
-		}
+        if (Activation::create($user)) {
+            if ($user->update(['password' => $temporary_password])) {
+                Mail::to($user->email)->send(new ActivatedAccount(['first_name' => $user->members->first_name, 'password' => $temporary_password]));
+                $response = ['success' => true];
+            }
+        }
 
-		return response()->json($response);
-	}
+        return response()->json($response);
+    }
 }
