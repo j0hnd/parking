@@ -67,6 +67,20 @@ elixir(function (mix) {
     mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js', destinationAssets + 'vendors/js/bootstrap3-wysihtml5.all.min.js');
     mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css', destinationAssets + 'vendors/css/bootstrap3-wysihtml5.min.css');
 
+    // bootstrap datepicker
+    mix.copy(vendors + 'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js', destinationAssets + 'vendors/js/bootstrap-datepicker.min.js');
+    mix.copy(vendors + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css', destinationAssets + 'vendors/css/bootstrap-datepicker3.min.css');
+
+    // bootstrap daterangepicker
+    mix.copy(vendors + 'bootstrap-daterangepicker/daterangepicker.js', destinationAssets + 'vendors/js/daterangepicker.js');
+    mix.copy(vendors + 'bootstrap-daterangepicker/daterangepicker.js', destinationAssets + 'vendors/css/daterangepicker.js');
+
+    // bootstrap timepicker
+    mix.copy(vendors + 'bootstrap-timepicker/js/bootstrap-timepicker.js', destinationAssets + 'vendors/js/bootstrap-timepicker.js')
+
+    // easy autocomplete
+    mix.copy(vendors + 'EasyAutoComplete/dist/jquery.easy-autocomplete.min.js', destinationAssets + 'vendors/js/jquery.easy-autocomplete.min.js');
+
     // font-awesome
     mix.copy(vendors + 'font-awesome/css/font-awesome.min.css', destinationAssets + 'vendors/css/font-awesome.min.css');
     mix.copy(vendors + 'font-awesome/fonts', destinationAssets + 'vendors/fonts');
