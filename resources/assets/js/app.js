@@ -10,6 +10,7 @@ require('./bootstrap');
 import "select2";
 import "sweetalert2";
 import "moment";
+import "jquery-match-height";
 
 // window.Vue = require('vue');
 

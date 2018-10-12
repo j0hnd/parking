@@ -29,6 +29,7 @@
         "gulp": "^3.9.1",
         "gulp-bower": "0.0.14",
         "gulp-htmlmin": "^5.0.1",
+        "jquery-match-height": "^0.7.2",
         "jquery-ui": "^1.12.1",
         "laravel-elixir": "^6.0.0-18",
         "moment": "^2.22.2",
