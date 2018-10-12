@@ -1,12 +1,19 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic");
 
 // Variables
 @import "variables";
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// SweetAlert2
+@import "~sweetalert2/src/sweetalert2";
+
+// Select2
+@import "~select2/src/scss/core";
 
 .navbar-laravel {
   background-color: #fff;
