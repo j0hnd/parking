@@ -48,43 +48,44 @@ elixir(function (mix) {
     mix.task('delete');
 
     // jquery
-    mix.copy(vendors + 'jquery/dist/jquery.min.js', destinationAssets + 'vendors/js/jquery.min.js');
+    mix.copy(vendors + 'jquery/dist/jquery.min.js', destinationAssets + 'vendors/js/jquery.js');
 
     // admin-lte
-    mix.copy(vendors + 'admin-lte/dist/js/adminlte.min.js', destinationAssets + 'vendors/js/adminlte.min.js');
-    mix.copy(vendors + 'admin-lte/dist/css/AdminLTE.min.css', destinationAssets + 'vendors/css/AdminLTE.min.css');
+    mix.copy(vendors + 'admin-lte/dist/js/adminlte.min.js', destinationAssets + 'vendors/js/adminlte.js');
+    mix.copy(vendors + 'admin-lte/dist/css/AdminLTE.min.css', destinationAssets + 'vendors/css/AdminLTE.css');
     mix.copy(vendors + 'admin-lte/dist/css/skins', destinationAssets + 'vendors/css/skins');
 
     // moment
-    mix.copy(vendors + 'moment/min/moment.min.js', destinationAssets + 'vendors/js/moment.min.js');
-    mix.copy(vendors + 'moment/min/locales.min.js', destinationAssets + 'vendors/js/locales.min.js');
+    mix.copy(vendors + 'moment/src/moment.js', destinationAssets + 'vendors/js/moment.js');
+    mix.copy(vendors + 'moment/min/locales.js', destinationAssets + 'vendors/js/locales.js');
 ``
     // bootstrap
-    mix.copy(vendors + 'bootstrap/dist/js/bootstrap.min.js', destinationAssets + 'vendors/js/bootstrap.min.js');
+    mix.copy(vendors + 'bootstrap/dist/js/bootstrap.js', destinationAssets + 'vendors/js/bootstrap.js');
     mix.copy(vendors + 'bootstrap/dist/fonts', destinationAssets + 'vendors/fonts');
-    mix.copy(vendors + 'bootstrap/dist/css/bootstrap.min.css', destinationAssets + 'vendors/css/bootstrap.min.css');
+    mix.copy(vendors + 'bootstrap/dist/css/bootstrap.css', destinationAssets + 'vendors/css/bootstrap.css');
     mix.copy(vendors + 'bootstrap/fonts', public + 'fonts');
 
     // bootstrap3-wysihtml5-bower
-    mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js', destinationAssets + 'vendors/js/bootstrap3-wysihtml5.all.min.js');
-    mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css', destinationAssets + 'vendors/css/bootstrap3-wysihtml5.min.css');
+    mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js', destinationAssets + 'vendors/js/bootstrap3-wysihtml5.all.js');
+    mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css', destinationAssets + 'vendors/css/bootstrap3-wysihtml5.css');
 
     // bootstrap datepicker
-    mix.copy(vendors + 'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js', destinationAssets + 'vendors/js/bootstrap-datepicker.min.js');
-    mix.copy(vendors + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css', destinationAssets + 'vendors/css/bootstrap-datepicker3.min.css');
+    mix.copy(vendors + 'bootstrap-datepicker/dist/js/bootstrap-datepicker.js', destinationAssets + 'vendors/js/bootstrap-datepicker.js');
+    mix.copy(vendors + 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css', destinationAssets + 'vendors/css/bootstrap-datepicker3.css');
 
     // bootstrap daterangepicker
     mix.copy(vendors + 'bootstrap-daterangepicker/daterangepicker.js', destinationAssets + 'vendors/js/daterangepicker.js');
     mix.copy(vendors + 'bootstrap-daterangepicker/daterangepicker.js', destinationAssets + 'vendors/css/daterangepicker.js');
 
     // bootstrap timepicker
-    mix.copy(vendors + 'bootstrap-timepicker/js/bootstrap-timepicker.js', destinationAssets + 'vendors/js/bootstrap-timepicker.js')
+    mix.copy(vendors + 'bootstrap-timepicker/js/bootstrap-timepicker.js', destinationAssets + 'vendors/js/bootstrap-timepicker.js');
+    mix.copy(vendors + 'bootstrap-timepicker/css/timepicker.css', destinationAssets + 'vendors/css/timepicker.css');
 
     // easy autocomplete
-    mix.copy(vendors + 'EasyAutoComplete/dist/jquery.easy-autocomplete.min.js', destinationAssets + 'vendors/js/jquery.easy-autocomplete.min.js');
+    mix.copy(vendors + 'EasyAutoComplete/dist/jquery.easy-autocomplete.js', destinationAssets + 'vendors/js/jquery.easy-autocomplete.js');
 
     // font-awesome
-    mix.copy(vendors + 'font-awesome/css/font-awesome.min.css', destinationAssets + 'vendors/css/font-awesome.min.css');
+    mix.copy(vendors + 'font-awesome/css/font-awesome.css', destinationAssets + 'vendors/css/font-awesome.css');
     mix.copy(vendors + 'font-awesome/fonts', public + 'fonts');
 
     // ionicons
@@ -92,7 +93,11 @@ elixir(function (mix) {
     mix.copy(vendors + 'Ionicons/css/ionicons.css', destinationAssets + 'vendors/css/ionicons.css');
 
     // jquery-ui
-    mix.copy(vendors + 'jquery-ui/jquery-ui.min.js', destinationAssets + 'vendors/js/jquery-ui.min.js');
-    mix.copy(vendors + 'jquery-ui/themes/base/jquery-ui.min.css', destinationAssets + 'vendors/css/jquey-ui.min.css');
+    mix.copy(vendors + 'jquery-ui/jquery-ui.js', destinationAssets + 'vendors/js/jquery-ui.js');
+    mix.copy(vendors + 'jquery-ui/themes/base/jquery-ui.css', destinationAssets + 'vendors/css/jquey-ui.css');
     mix.copy(vendors + 'jquery-ui/themes/base/autocomplete.css', destinationAssets + 'vendors/css/autocomplete.css');
+
+    // media
+    mix.copy(resourcesAssets + 'img', public + 'img');
+    mix.copy(resourcesAssets + 'video', public + 'video');
 });

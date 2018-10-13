@@ -14,3 +14,9 @@ npm-debug.log
 yarn-error.log
 .env
 storage/csv/*
+public/assets/*
+public/img/*
+public/css/*
+public/js/*
+public/fonts/*
+public/video/*

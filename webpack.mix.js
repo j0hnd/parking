@@ -17,8 +17,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .copy('node_modules/daterangepicker/daterangepicker.js', 'public/assets/vendors/js/daterangepicker.js')
 
     // bootstrap3-wysihtml5
-    .copy('node_modules/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.js', 'public/assets/vendors/js/bootstrap3-wysihtml5.min.js')   
-    .copy('node_modules/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css', 'public/assets/vendors/css/bootstrap3-wysihtml5.min.css')
+    .copy('node_modules/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.js', 'public/assets/vendors/js/bootstrap3-wysihtml5.js')   
+    .copy('node_modules/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css', 'public/assets/vendors/css/bootstrap3-wysihtml5.css')
 
     // bootstrap timepicker
     // .less('bower_components/bootstrap-timepicker/less/timepicker.less', 'public/assets/vendors/css/timepicker.css')
@@ -36,17 +36,18 @@ mix.js('resources/assets/js/app.js', 'public/js')
 
     // admin assets
     .styles([
-        'public/assets/vendors/css/AdminLTE.min.css',
+        'public/assets/vendors/css/AdminLTE.css',
         'public/assets/vendors/css/autocomplete.css',
-        'public/assets/vendors/css/bootstrap.min.css',
-        'public/assets/vendors/css/bootstrap3-wysihtml5.min.css',
-        'public/assets/vendors/css/bootstrap-datepicker3.min.css',
+        'public/assets/vendors/css/bootstrap.css',
+        'public/assets/vendors/css/bootstrap3-wysihtml5.css',
+        'public/assets/vendors/css/bootstrap-datepicker3.css',
         'public/assets/vendors/css/daterangepicker.css',
-        'public/assets/vendors/css/font-awesome.min.css',
+        'public/assets/vendors/css/font-awesome.css',
         'public/assets/vendors/css/ionicons.css',
-        'public/assets/vendors/css/jquery-ui.min.css',
-        'public/assets/vendors/css/sweetalert2.min.css',
-        'public/assets/vendors/css/skins/skin-red.min.css'
+        'public/assets/vendors/css/jquery-ui.css',
+        'public/assets/vendors/css/sweetalert2.css',
+        'public/assets/vendors/css/skins/skin-red.css',
+        'public/assets/vendors/css/timepicker.css'
     ], 'public/css/admin-vendor.css')
 
     .styles([
@@ -54,12 +55,13 @@ mix.js('resources/assets/js/app.js', 'public/js')
     ], 'public/css/admin.css')
 
     .scripts([
-        'public/assets/vendors/js/adminlte.min.js',
-        'public/assets/vendors/js/bootstrap.min.js',
-        'public/assets/vendors/js/jquery-ui.min.js',
-        'public/assets/vendors/js/bootstrap-datepicker.min.js',
+        'public/assets/vendors/js/jquery-ui.js',
+        'public/assets/vendors/js/adminlte.js',
+        'public/assets/vendors/js/bootstrap.js',
+        'public/assets/vendors/js/bootstrap-datepicker.js',
+        'public/assets/vendors/js/bootstrap-timepicker.js',
+        'public/assets/vendors/js/bootstrap3-wysihtml5.all.js',
         'public/assets/vendors/js/daterangepicker.js',
-        'public/assets/vendors/js/bootstrap3-wysihtml5.all.min.js',
     ], 'public/js/admin-vendor.js')
 
     .scripts([
