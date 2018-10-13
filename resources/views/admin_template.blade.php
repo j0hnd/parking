@@ -59,32 +59,11 @@ desired effect
   </div>
   <!-- ./wrapper -->
 
-  <!-- REQUIRED JS SCRIPTS -->
+  {{-- required scripts --}}
+  <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
+  <script src="{{ mix('js/admin-vendor.js') }}" type="text/javascript"></script>
+  <script src="{{ mix('js/admin.js') }}" type="text/javascript"></script>
 
-  <!-- jQuery 3 -->
-  <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-  <!-- jQuery UI -->
-  <script src="{{ asset('bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
-  {{-- moment --}}
-  <script src="{{ asset('bower_components/moment/moment.js') }}"></script>
-  <!-- Bootstrap 3.3.7 -->
-  <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-  <!-- AdminLTE App -->
-  <script src="{{ asset('bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
-  <!-- Select2 -->
-  <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
-  {{-- Bootstratp Datepicker and Timepicker --}}
-  <script src="{{ asset('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
-  <script src="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-  <script src="{{ asset('bower_components/bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
-  <!-- Bootstrap WYSIHTML -->
-  <script src="{{ asset('bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js') }}"></script>
-  {{-- sweetalert2 --}}
-  <script src="{{ asset('bower_components/sweetalert2/dist/sweetalert2.all.js') }}"></script>
-  {{-- easy autocomplete --}}
-  {{-- <script src="{{ asset('bower_components/EasyAutoComplete/dist/jquery.easy-autocomplete.min.js') }}"></script> --}}
-  {{-- common scripts --}}
-  <script src="{{ asset('js/common.js') }}"></script>
   {{-- custom scripts --}}
   @yield('scripts')
 

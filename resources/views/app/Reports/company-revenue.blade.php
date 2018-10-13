@@ -76,7 +76,7 @@
 @stop
 
 @section('scripts')
-	<script src="{{ url('js/reports.js') }}" type="text/javascript"></script>
+	{{-- <script src="{{ url('js/reports.js') }}" type="text/javascript"></script> --}}
 	<script type="text/javascript">
 		$(function () {
 		    var selected_date = '{{ $selected_date }}';

@@ -42,6 +42,7 @@ elixir.config.publicPath = 'public/assets';
 var vendors = 'bower_components/';
 var resourcesAssets = 'resources/assets/';
 var destinationAssets = 'public/assets/';
+var public = 'public/';
 
 elixir(function (mix) {
     mix.task('delete');
@@ -62,6 +63,7 @@ elixir(function (mix) {
     mix.copy(vendors + 'bootstrap/dist/js/bootstrap.min.js', destinationAssets + 'vendors/js/bootstrap.min.js');
     mix.copy(vendors + 'bootstrap/dist/fonts', destinationAssets + 'vendors/fonts');
     mix.copy(vendors + 'bootstrap/dist/css/bootstrap.min.css', destinationAssets + 'vendors/css/bootstrap.min.css');
+    mix.copy(vendors + 'bootstrap/fonts', public + 'fonts');
 
     // bootstrap3-wysihtml5-bower
     mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js', destinationAssets + 'vendors/js/bootstrap3-wysihtml5.all.min.js');
@@ -83,11 +85,11 @@ elixir(function (mix) {
 
     // font-awesome
     mix.copy(vendors + 'font-awesome/css/font-awesome.min.css', destinationAssets + 'vendors/css/font-awesome.min.css');
-    mix.copy(vendors + 'font-awesome/fonts', destinationAssets + 'vendors/fonts');
+    mix.copy(vendors + 'font-awesome/fonts', public + 'fonts');
 
     // ionicons
-    mix.copy(vendors + 'Ionicons/fonts', destinationAssets + 'vendors/fonts');
-    mix.copy(vendors + 'Ionicons/css/ionicons.min.css', destinationAssets + 'vendors/css/ionicons.min.css');
+    mix.copy(vendors + 'Ionicons/fonts', public + 'fonts');
+    mix.copy(vendors + 'Ionicons/css/ionicons.css', destinationAssets + 'vendors/css/ionicons.css');
 
     // jquery-ui
     mix.copy(vendors + 'jquery-ui/jquery-ui.min.js', destinationAssets + 'vendors/js/jquery-ui.min.js');

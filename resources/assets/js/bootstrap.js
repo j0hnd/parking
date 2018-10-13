@@ -10,8 +10,10 @@ window.Popper = require('popper.js').default;
 
 try {
     window.$ = window.jQuery = require('jquery');
+    window.moment = require('moment');
+    window.swal = require('sweetalert2');
 
-    require('bootstrap');
+    // require('bootstrap');
 } catch (e) {}
 
 /**
