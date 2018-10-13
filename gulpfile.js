@@ -81,7 +81,8 @@ elixir(function (mix) {
 
     // bootstrap timepicker
     mix.copy(vendors + 'bootstrap-timepicker/js/bootstrap-timepicker.js', destinationAssets + 'vendors/js/bootstrap-timepicker.js');
-    mix.copy(vendors + 'bootstrap-timepicker/css/timepicker.css', destinationAssets + 'vendors/css/timepicker.css');
+    mix.copy(vendors + 'admin-lte/plugins/timepicker/bootstrap-timepicker.css', destinationAssets + 'vendors/css/timepicker.css');
+    // mix.copy(vendors + 'bootstrap-timepicker/css/timepicker.css', destinationAssets + 'vendors/css/timepicker.css');
 
     // easy autocomplete
     mix.copy(vendors + 'EasyAutoComplete/dist/jquery.easy-autocomplete.js', destinationAssets + 'vendors/js/jquery.easy-autocomplete.js');
