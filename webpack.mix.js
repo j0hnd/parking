@@ -54,6 +54,14 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'resources/assets/css/spacing.css'
     ], 'public/css/admin.css')
 
+    .styles([
+        'public/assets/vendors/css/bootstrap.css',
+        'public/assets/vendors/css/font-awesome.css',
+        'public/assets/vendors/css/ionicons.css',
+        'public/assets/vendors/css/AdminLTE.css',
+        'public/assets/vendors/css/icheck-square-blue.css',
+    ], 'public/css/admin-vendor-login.css')
+
     .scripts([
         'public/assets/vendors/js/jquery-ui.js',
         'public/assets/vendors/js/adminlte.js',
@@ -68,5 +76,11 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'resources/assets/js/common.js',
         'resources/assets/js/reports.js'
     ], 'public/js/admin.js')
+
+    .scripts([
+        'public/assets/vendors/js/jquery.js',
+        'public/assets/vendors/js/bootstrap.js',
+        'public/assets/vendors/js/icheck.js',
+    ], 'public/js/admin-vendor-login.js')
 
     .sass('resources/assets/sass/app.scss', 'public/css');

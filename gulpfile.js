@@ -48,17 +48,19 @@ elixir(function (mix) {
     mix.task('delete');
 
     // jquery
-    mix.copy(vendors + 'jquery/dist/jquery.min.js', destinationAssets + 'vendors/js/jquery.js');
+    mix.copy(vendors + 'jquery/dist/jquery.js', destinationAssets + 'vendors/js/jquery.js');
 
     // admin-lte
     mix.copy(vendors + 'admin-lte/dist/js/adminlte.min.js', destinationAssets + 'vendors/js/adminlte.js');
     mix.copy(vendors + 'admin-lte/dist/css/AdminLTE.min.css', destinationAssets + 'vendors/css/AdminLTE.css');
     mix.copy(vendors + 'admin-lte/dist/css/skins', destinationAssets + 'vendors/css/skins');
+    mix.copy(vendors + 'admin-lte/plugins/iCheck/icheck.js', destinationAssets + 'vendors/js/icheck.js');
+    mix.copy(vendors + 'admin-lte/plugins/iCheck/square/blue.css', destinationAssets + 'vendors/css/icheck-square-blue.css');
 
     // moment
     mix.copy(vendors + 'moment/src/moment.js', destinationAssets + 'vendors/js/moment.js');
     mix.copy(vendors + 'moment/min/locales.js', destinationAssets + 'vendors/js/locales.js');
-``
+
     // bootstrap
     mix.copy(vendors + 'bootstrap/dist/js/bootstrap.js', destinationAssets + 'vendors/js/bootstrap.js');
     mix.copy(vendors + 'bootstrap/dist/fonts', destinationAssets + 'vendors/fonts');
