@@ -30,10 +30,11 @@ gulp.task('delete', function () {
         '!public/assets/css/.gitignore',
         '!public/assets/js',
         '!public/assets/js/.gitignore',
-        '!public/assets/images',
-        '!public/assets/images/.gitignore',
-        '!public/assets/fonts',
-        '!public/assets/fonts/.gitignore'
+        '!public/assets/vendors/'
+        // '!public/assets/images',
+        // '!public/assets/images/.gitignore',
+        // '!public/assets/fonts',
+        // '!public/assets/fonts/.gitignore'
     ]);
 });
 
@@ -63,7 +64,6 @@ elixir(function (mix) {
 
     // bootstrap
     mix.copy(vendors + 'bootstrap/dist/js/bootstrap.js', destinationAssets + 'vendors/js/bootstrap.js');
-    mix.copy(vendors + 'bootstrap/dist/fonts', destinationAssets + 'vendors/fonts');
     mix.copy(vendors + 'bootstrap/dist/css/bootstrap.css', destinationAssets + 'vendors/css/bootstrap.css');
     mix.copy(vendors + 'bootstrap/fonts', public + 'fonts');
 
