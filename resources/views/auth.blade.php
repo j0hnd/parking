@@ -8,7 +8,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <link rel="stylesheet" href="{{ mix('css/admin-vendor-login.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/admin-login.css') }}">
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/icons.ico/apple-icon-57x57.png') }}">
@@ -37,7 +37,7 @@
 
 @yield('login-content')
 
-<script src="{{ mix('js/admin-vendor-login.js') }}"></script>
+<script src="{{ mix('js/admin-login.js') }}"></script>
 
 <script>
     $(function () {

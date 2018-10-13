@@ -60,7 +60,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/assets/vendors/css/ionicons.css',
         'public/assets/vendors/css/AdminLTE.css',
         'public/assets/vendors/css/icheck-square-blue.css',
-    ], 'public/css/admin-vendor-login.css')
+    ], 'public/css/admin-login.css')
 
     .scripts([
         'public/assets/vendors/js/jquery-ui.js',
@@ -81,6 +81,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/assets/vendors/js/jquery.js',
         'public/assets/vendors/js/bootstrap.js',
         'public/assets/vendors/js/icheck.js',
-    ], 'public/js/admin-vendor-login.js')
+    ], 'public/js/admin-login.js')
 
     .sass('resources/assets/sass/app.scss', 'public/css');
