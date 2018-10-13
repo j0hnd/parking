@@ -102,4 +102,6 @@ elixir(function (mix) {
     // media
     mix.copy(resourcesAssets + 'img', public + 'img');
     mix.copy(resourcesAssets + 'video', public + 'video');
+    mix.copy(vendors + 'admin-lte/plugins/iCheck/square/blue.png', public + 'css');
+    mix.copy(vendors + 'admin-lte/plugins/iCheck/square/blue@2x.png', public + 'css');
 });
