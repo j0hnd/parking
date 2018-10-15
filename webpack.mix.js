@@ -92,12 +92,27 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/assets/vendors/css/bootstrap-datepicker3.css',
         'resources/assets/css/slick.css',
         'resources/assets/css/slick-theme.css',
-        'public/assets/vendors/js/select2.js'
+        'public/assets/vendors/css/select2.css'
     ], 'public/css/mytravelcompared-vendor.css')
 
     .styles([
         'resources/assets/css/parking-app.css',
         'resources/assets/css/spacing.css'
     ], 'public/css/mytravelcompared.css')
+
+    .scripts([
+        'node_modules/jquery/dist/jquery.js',
+        'public/assets/vendors/js/bootstrap4.js',
+        // 'node_modules/popper.js/dist/popper.js',
+        'node_modules/moment/moment.js',
+        'public/assets/vendors/js/daterangepicker.js',
+        'public/assets/vendors/js/bootstrap-datepicker.js',
+        'public/assets/vendors/js/select2.js',
+        'public/assets/vendors/js/slick.min.js'
+    ], 'public/js/mytravelcompared-vendor.js')
+
+    .scripts([
+        'resources/assets/js/parking-app.js'
+    ], 'public/js/mytravelcompared.js')
 
     .sass('resources/assets/sass/app.scss', 'public/css');

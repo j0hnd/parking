@@ -96,7 +96,7 @@ elixir(function (mix) {
     mix.copy(vendors + 'font-awesome/fonts', public + 'fonts');
 
     // font-awesome 5
-    mix.copy(vendors + 'font-awesome-5/web-fonts-with-css/css/fontawesome.css', destinationAssets + 'vendors/css/font-awesome-5.css');
+    mix.copy(vendors + 'font-awesome-5/web-fonts-with-css/css/fontawesome-all.css', destinationAssets + 'vendors/css/font-awesome-5.css');
     mix.copy(vendors + 'font-awesome-5/web-fonts-with-css/webfonts', public + 'webfonts');
 
     // ionicons

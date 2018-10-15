@@ -14,7 +14,7 @@
     {{-- required styles --}}
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/admin-vendor.css') }}">
-    <link rel="stylesheet" href="{{ mix('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/spacing.css') }}">
 
     {{-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --}}
     {{-- WARNING: Respond.js doesn't work if you view the page via file:// --}}

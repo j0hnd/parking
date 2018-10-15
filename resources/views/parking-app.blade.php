@@ -14,11 +14,17 @@
 
         <meta name="viewport" content="user-scalable=yes, initial-scale=1, maximum-scale=1, width=device-width">
         <title>@yield('title') {{ config('app.name') }}</title>
-        <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('/css/spacing.css') }}" rel="stylesheet">
+
+        {{--<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">--}}
+        {{--<link href="{{ asset('/css/spacing.css') }}" rel="stylesheet">--}}
+
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,800" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css"
-              integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+
+        {{--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css"--}}
+              {{--integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">--}}
+
+        <link rel="stylesheet" href="{{ mix('css/mytravelcompared-vendor.css') }}">
+
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/icons.ico/apple-icon-57x57.png') }}">
         <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('img/icons.ico/apple-icon-60x60.png') }}">
         <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('img/icons.ico/apple-icon-72x72.png') }}">
