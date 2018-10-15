@@ -39,7 +39,7 @@
         <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/icons.ico/favicon-96x96.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/icons.ico/favicon-16x16.png') }}">
         <link rel="manifest" href="{{ asset('img/icons.ico/manifest.json') }}">
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        {{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> --}}
         {{-- <link rel="stylesheet" href="{{ asset('bower_components/bootstrap-daterangepicker/daterangepicker.css') }}"> --}}
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -127,34 +127,6 @@
     <script type="text/javascript">
         $(function () {
             var county_slug = ['london', 'heathrow', 'gatwick', 'luton', 'stansted', 'southend'];
-
-			// $('.datepicker').daterangepicker({
-		    //     "minYear": {{ date('Y') }},
-		    //     "maxYear": {{ date('Y', strtotime('+30 years')) }},
-		    //     "showWeekNumbers": true,
-		    //     "timePicker": true,
-		    //     "timePicker24Hour": true,
-		    //     "timePickerIncrement": 5,
-		    //     "alwaysShowCalendars": true,
-		    //     "startDate": "{{ $start_date }}",
-		    //     "endDate": "{{ $end_date }}",
-            //     "applyButtonClasses": "btn-info",
-			// 	"locale": {
-			// 		format: "DD/MM/YYYY H:mm"
-			// 	}
-		    // }, function(start, end, label) {
-		    //     // console.log('New date range selected: ' + start.format('HH:mm') + ' to ' + end.format('HH:mm') + ' (predefined range: ' + label + ')');
-			// 	$('#return-at-date').val(end.format('DD/MM/YYYY'));
-			// 	$('#drop-off-time option[value="'+ start.format('HH:mm') +'"]').attr('selected', 'selected');
-			// 	$('#return-at-time option[value="'+ end.format('HH:mm') +'"]').attr('selected', 'selected');
-		    // });
-            //
-            // if ($('.datepicker').data('daterangepicker') !== undefined) {
-            //     $('.datepicker').data('daterangepicker').setStartDate('{{ $start_date }}');
-            //     $('.datepicker').data('daterangepicker').setEndDate('{{ $end_date }}');
-            //     $('#airport').select2().select2('val', $('#airport option:eq(1)').val());
-            //     $('#return-at-date').val('{{ date('d/m/Y', strtotime($mydate . ' +7 days')) }}');
-            // }
 
             $('#airport-list').select2().select2('val', $('#airport-list option:eq(1)').val());
 

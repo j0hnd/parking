@@ -85,13 +85,14 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/assets/vendors/js/icheck.js',
     ], 'public/js/admin-login.js')
 
-    // search assets
+    // homepage assets
     .styles([
         'public/assets/vendors/css/bootstrap4.css',
         'public/assets/vendors/css/font-awesome-5.css',
         'public/assets/vendors/css/bootstrap-datepicker3.css',
         'resources/assets/css/slick.css',
         'resources/assets/css/slick-theme.css',
+        'resources/assets/css/jquery.steps.css',
         'public/assets/vendors/css/select2.css'
     ], 'public/css/mytravelcompared-vendor.css')
 
@@ -100,19 +101,30 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'resources/assets/css/spacing.css'
     ], 'public/css/mytravelcompared.css')
 
+    .styles([
+        'resources/assets/css/parking-search.css',
+        'resources/assets/css/spacing.css'
+    ], 'public/css/mytravelcompared-search.css')
+
     .scripts([
-        'node_modules/jquery/dist/jquery.js',
+        'node_modules/jquery/dist/jquery.slim.js',
+        // 'node_modules/popper.js/dist/umd/popper.js',
+        'bower_components/popper.js/dist/umd/popper.js',
         'public/assets/vendors/js/bootstrap4.js',
-        // 'node_modules/popper.js/dist/popper.js',
+        'node_modules/jquery/dist/jquery.js',
         'node_modules/moment/moment.js',
         'public/assets/vendors/js/daterangepicker.js',
         'public/assets/vendors/js/bootstrap-datepicker.js',
         'public/assets/vendors/js/select2.js',
-        'public/assets/vendors/js/slick.min.js'
+        'public/assets/vendors/js/slick.min.js',
+        'public/assets/vendors/js/jquery.steps.min.js',
+        'node_modules/jquery-match-height/dist/jquery.matchHeight.js'
     ], 'public/js/mytravelcompared-vendor.js')
 
     .scripts([
-        'resources/assets/js/parking-app.js'
+        'resources/assets/js/parking-app.js',
+        'resources/assets/js/search.js'
     ], 'public/js/mytravelcompared.js')
+
 
     .sass('resources/assets/sass/app.scss', 'public/css');

@@ -3,10 +3,14 @@
 Parking Search |
 @stop
 @section('css')
-    <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('/css/parking-search.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css"/> --}}
+    {{-- <link href="{{ asset('bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('/css/jquery.steps.css') }}" rel="stylesheet"> --}}
+
+    <link rel="stylesheet" href="{{ mix('css/mytravelcompared-vendor.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/mytravelcompared-search.css') }}">
+
     <style type="text/css">
         /* Always set the map height explicitly to define the size of the div
 		 * element that contains the map. */
@@ -41,7 +45,8 @@ Parking Search |
 
             {{-- filters --}}
             <div class="dropdown">
-                <a href="#" class="filter dropdown-toggle" id="ratings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a>
+                {{-- <a href="#" class="filter dropdown-toggle" id="ratings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rating</a> --}}
+                <a href="#" class="filter" id="ratings">Rating</a>
                 {{--<div class="dropdown-menu" aria-labelledby="ratings">--}}
                     {{--<a class="dropdown-item" href="#">Sample 1</a>--}}
                     {{--<a class="dropdown-item" href="#">Sample 2</a>--}}
@@ -95,13 +100,19 @@ Parking Search |
 @stop
 
 @section('js')
-    <script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script>
-    <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/jquery.matchHeight.js') }}" type="text/javascript"></script>
+    {{-- <script src="{{ asset('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script> --}}
+    {{-- <script src="{{ asset('bower_components/select2/dist/js/select2.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('/js/jquery.steps.min.js') }}" type="text/javascript"></script> --}}
+    {{-- <script src="{{ asset('/js/parking-app.js') }}" type="text/javascript"></script> --}}
+    {{-- <script src="{{ asset/('/js/jquery.matchHeight.js') }}" type="text/javascript"></script> --}}
+
+    <script src="{{ mix('js/mytravelcompared-vendor.js') }}"></script>
+    <script src="{{ mix('js/mytravelcompared.js') }}"></script>
+    
     <script src="https://maps.googleapis.com/maps/api/js?key={{ config('app.google_api') }}&callback=initMap" async defer></script>
-    <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script>
+
+    {{-- <script src="{{ asset('/js/search.js') }}" type="text/javascript"></script> --}}
+
     <script type="text/javascript">
         $(function () {
             $('#airport').select2();
