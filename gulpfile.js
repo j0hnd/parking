@@ -67,6 +67,10 @@ elixir(function (mix) {
     mix.copy(vendors + 'bootstrap/dist/css/bootstrap.css', destinationAssets + 'vendors/css/bootstrap.css');
     mix.copy(vendors + 'bootstrap/fonts', public + 'fonts');
 
+    // bootstrap 4
+    mix.copy('node_modules/bootstrap/dist/js/bootstrap.js', destinationAssets + 'vendors/js/bootstrap4.js');
+    mix.copy('node_modules/bootstrap/dist/css/bootstrap.css', destinationAssets + 'vendors/css/bootstrap4.css');
+
     // bootstrap3-wysihtml5-bower
     mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.js', destinationAssets + 'vendors/js/bootstrap3-wysihtml5.all.js');
     mix.copy(vendors + 'bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.css', destinationAssets + 'vendors/css/bootstrap3-wysihtml5.css');
@@ -90,6 +94,10 @@ elixir(function (mix) {
     // font-awesome
     mix.copy(vendors + 'font-awesome/css/font-awesome.css', destinationAssets + 'vendors/css/font-awesome.css');
     mix.copy(vendors + 'font-awesome/fonts', public + 'fonts');
+
+    // font-awesome 5
+    mix.copy(vendors + 'font-awesome-5/web-fonts-with-css/css/fontawesome.css', destinationAssets + 'vendors/css/font-awesome-5.css');
+    mix.copy(vendors + 'font-awesome-5/web-fonts-with-css/webfonts', public + 'webfonts');
 
     // ionicons
     mix.copy(vendors + 'Ionicons/fonts', public + 'fonts');

@@ -27,12 +27,14 @@ mix.js('resources/assets/js/app.js', 'public/js')
     .copy('resources/assets/js/affix.js', 'public/assets/vendors/js/affix.js')
     .copy('resources/assets/js/jquery.steps.min.js', 'public/assets/vendors/js/jquery.steps.min.js')
     .copy('resources/assets/js/slick.min.js', 'public/assets/vendors/js/slick.min.js')
+    .copy('node_modules/select2/dist/js/select2.js', 'public/assets/vendors/js/select2.js')
 
     // other vendors css
     .copy('resources/assets/css/font-face.css', 'public/assets/vendors/css/font-face.css')
     .copy('resources/assets/css/jquery.steps.css', 'public/assets/vendors/css/jquery.steps.css')
     .copy('resources/assets/css/slick.css', 'public/assets/vendors/css/slick.css')
     .copy('resources/assets/css/slick-theme.css', 'public/assets/vendors/css/slick-theme.css')
+    .copy('node_modules/select2/dist/css/select2.css', 'public/assets/vendors/css/select2.css')
 
     // admin assets
     .styles([
@@ -82,5 +84,20 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'public/assets/vendors/js/bootstrap.js',
         'public/assets/vendors/js/icheck.js',
     ], 'public/js/admin-login.js')
+
+    // search assets
+    .styles([
+        'public/assets/vendors/css/bootstrap4.css',
+        'public/assets/vendors/css/font-awesome-5.css',
+        'public/assets/vendors/css/bootstrap-datepicker3.css',
+        'resources/assets/css/slick.css',
+        'resources/assets/css/slick-theme.css',
+        'public/assets/vendors/js/select2.js'
+    ], 'public/css/mytravelcompared-vendor.css')
+
+    .styles([
+        'resources/assets/css/parking-app.css',
+        'resources/assets/css/spacing.css'
+    ], 'public/css/mytravelcompared.css')
 
     .sass('resources/assets/sass/app.scss', 'public/css');
