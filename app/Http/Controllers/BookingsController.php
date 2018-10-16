@@ -180,7 +180,7 @@ class BookingsController extends Controller
                         'airport_details' => $airport_address,
                         'on_arrival' => $booking->products[0]->on_arrival,
                         'on_return' => $booking->products[0]->on_return,
-                        'subject' => "My Travel Compared Booking Confirmation (Customer's Copy)"
+						'subject' => "My Travel Compared Booking Confirmation (Customer's Copy)"
                     ]));
 
 					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
@@ -189,12 +189,13 @@ class BookingsController extends Controller
 						Bookings::convert_to_csv($booking->id);
 					}
 
+
                     Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
                         'booking' => $booking,
                         'customer' => $customer,
                         'vendor' => $vendor,
                         'carpark' => $carpark,
-                        'subject' => "My Travel Compared Booking Confirmation (Vendor's Copy)"
+						'subject' => "My Travel Compared Booking Confirmation (Vendor's Copy)"
                     ]));
 
 
@@ -437,30 +438,30 @@ class BookingsController extends Controller
 
                     $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-                    Mail::to($customer->email)->send(new SendBookingConfirmation([
-                        'booking' => $booking,
-                        'customer' => $customer,
-                        'carpark_name' => $carpark->name,
-                        'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-                        'airport_details' => $airport_address,
-                        'on_arrival' => $booking->products[0]->on_arrival,
-                        'on_return' => $booking->products[0]->on_return,
-                        'subject' => "Erratum - My Travel Compared Booking Confirmation (Customer's Copy)"
-                    ]));
+					Mail::to($customer->email)->send(new SendBookingConfirmation([
+						'booking' => $booking,
+						'customer' => $customer,
+						'carpark_name' => $carpark->name,
+						'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+						'airport_details' => $airport_address,
+						'on_arrival' => $booking->products[0]->on_arrival,
+						'on_return' => $booking->products[0]->on_return,
+						'subject' => "Erratum - My Travel Compared Booking Confirmation (Customer's Copy)"
+					]));
 
-                    $csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
+					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
 
-                    if (file_exists($csv_file) == false) {
-                        Bookings::convert_to_csv($booking->id);
-                    }
+					if (file_exists($csv_file) == false) {
+						Bookings::convert_to_csv($booking->id);
+					}
 
-                    Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
-                        'booking' => $booking,
-                        'customer' => $customer,
-                        'vendor' => $vendor,
-                        'carpark' => $carpark,
-                        'subject' => "Erratum - My Travel Compared Booking Confirmation (Vendor's Copy)"
-                    ]));
+					Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
+						'booking' => $booking,
+						'customer' => $customer,
+						'vendor' => $vendor,
+						'carpark' => $carpark,
+						'subject' => "Erratum - My Travel Compared Booking Confirmation (Vendor's Copy)"
+					]));
 
                     return redirect('/admin/booking')->with('success', 'Booking has been updated');
                 } else {
@@ -503,68 +504,66 @@ class BookingsController extends Controller
 
         try {
             if ($request->ajax() and $request->isMethod('post')) {
-                $booking_id = $request->booking;
-                $forward = $request->get('forward');
-                $forward_customer = $request->get('customer');
-                $forward_vendor = $request->get('vendor');
-                $is_sent = false;
+				$booking_id = $request->booking;
+				$forward = $request->get('forward');
+				$forward_customer = $request->get('customer');
+				$forward_vendor = $request->get('vendor');
+				$is_sent = false;
 
-                $booking  = Bookings::findOrFail($booking_id);
-                $customer = Customers::findOrFail($booking->customer_id);
-                $carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
-                $vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
+				$booking  = Bookings::findOrFail($booking_id);
+				$customer = Customers::findOrFail($booking->customer_id);
+				$carpark  = Carpark::findOrFail($booking->products[0]->carpark->id);
+				$vendor   = Companies::findORFail($booking->products[0]->carpark->company_id);
 
-                if ($forward_customer) {
-                    $airport_address = $booking->products[0]->airport[0]->airport_name;
-                    if (!empty($booking->departure_terminal)) {
-                        $airport_address = $airport_address. " " . $booking->departure_terminal;
-                    }
+				if ($forward_customer) {
+					$airport_address = $booking->products[0]->airport[0]->airport_name;
+					if (!empty($booking->departure_terminal)) {
+						$airport_address = $airport_address. " " . $booking->departure_terminal;
+					}
 
-                    $airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
+					$airport_address = $airport_address. " - Postcode " . $booking->products[0]->airport[0]->zipcode;
 
-                    Mail::to($forward)
-                        ->send(
-                            new SendBookingConfirmation([
-                                'booking' => $booking,
-                                'customer' => $customer,
-                                'carpark_name' => $carpark->name,
-                                'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
-                                'airport_details' => $airport_address,
-                                'on_arrival' => $booking->products[0]->on_arrival,
-                                'on_return' => $booking->products[0]->on_return,
-                                'subject' => "Fwd: My Travel Compared Booking Confirmation (Customer's Copy)",
-                                'bcc' => config('app.bcc')
-                            ])
-                        );
+					Mail::to($forward)
+						->send(new SendBookingConfirmation([
+								'booking' => $booking,
+								'customer' => $customer,
+								'carpark_name' => $carpark->name,
+								'carpark_contact_no' => isset($booking->products[0]->contact_details->contact_person_phone_no) ? $booking->products[0]->contact_details->contact_person_phone_no : "N/A",
+								'airport_details' => $airport_address,
+								'on_arrival' => $booking->products[0]->on_arrival,
+								'on_return' => $booking->products[0]->on_return,
+								'subject' => "Fwd: My Travel Compared Booking Confirmation (Customer's Copy)",
+								'bcc' => config('app.bcc')
+							])
+						);
 
-                    $is_sent = true;
-                }
+					$is_sent = true;
+				}
 
-                if ($forward_vendor) {
-                    $csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
+				if ($forward_vendor) {
+					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
 
-                    if (file_exists($csv_file) == false) {
-                        Bookings::convert_to_csv($booking->id);
-                    }
+					if (file_exists($csv_file) == false) {
+						Bookings::convert_to_csv($booking->id);
+					}
 
-                    Mail::to($forward)
-                        ->send(
-                            new SendBookingConfirmationVendor([
-                                'booking' => $booking,
-                                'customer' => $customer,
-                                'vendor' => $vendor,
-                                'carpark' => $carpark,
-                                'subject' => "Fwd: My Travel Compared Booking Confirmation (Vendor's Copy)",
-                                'bcc' => config('app.bcc')
-                            ])
-                        );
+					Mail::to($forward)
+						->send(new SendBookingConfirmationVendor([
+								'booking' => $booking,
+								'customer' => $customer,
+								'vendor' => $vendor,
+								'carpark' => $carpark,
+								'subject' => "Fwd: My Travel Compared Booking Confirmation (Vendor's Copy)",
+								'bcc' => config('app.bcc')
+							])
+						);
 
-                    $is_sent = true;
-                }
+					$is_sent = true;
+				}
 
-                if ($is_sent) {
-                    $response = ['success' => true, 'message' => 'Booking confirmation has been forwarded'];
-                }
+				if ($is_sent) {
+					$response = ['success' => true, 'message' => 'Booking confirmation has been forwarded'];
+				}
             }
         } catch (\Exception $e) {
             $response['message'] = $e->getMessage();
