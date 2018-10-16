@@ -180,8 +180,14 @@ class BookingsController extends Controller
                         'airport_details' => $airport_address,
                         'on_arrival' => $booking->products[0]->on_arrival,
                         'on_return' => $booking->products[0]->on_return,
-						'subject' => "My Travel Compared Booking Confirmation"
+						'subject' => "My Travel Compared Booking Confirmation (Customer's Copy)"
                     ]));
+
+					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
+
+					if (file_exists($csv_file) == false) {
+						Bookings::convert_to_csv($booking->id);
+					}
 
 
                     Mail::to($booking->products[0]->contact_details->contact_person_email)->send(new SendBookingConfirmationVendor([
@@ -189,7 +195,7 @@ class BookingsController extends Controller
                         'customer' => $customer,
                         'vendor' => $vendor,
                         'carpark' => $carpark,
-						'subject' => "My Travel Compared Booking Confirmation"
+						'subject' => "My Travel Compared Booking Confirmation (Vendor's Copy)"
                     ]));
 
 
@@ -440,7 +446,7 @@ class BookingsController extends Controller
 						'airport_details' => $airport_address,
 						'on_arrival' => $booking->products[0]->on_arrival,
 						'on_return' => $booking->products[0]->on_return,
-						'subject' => "Erratum - My Travel Compared Booking Confirmation"
+						'subject' => "Erratum - My Travel Compared Booking Confirmation (Customer's Copy)"
 					]));
 
 					$csv_file = storage_path('csv') . '/'. strtoupper($booking->booking_id).'.csv';
@@ -454,7 +460,7 @@ class BookingsController extends Controller
 						'customer' => $customer,
 						'vendor' => $vendor,
 						'carpark' => $carpark,
-						'subject' => "Erratum - My Travel Compared Booking Confirmation"
+						'subject' => "Erratum - My Travel Compared Booking Confirmation (Vendor's Copy)"
 					]));
 
                     return redirect('/admin/booking')->with('success', 'Booking has been updated');
@@ -526,7 +532,7 @@ class BookingsController extends Controller
 								'airport_details' => $airport_address,
 								'on_arrival' => $booking->products[0]->on_arrival,
 								'on_return' => $booking->products[0]->on_return,
-								'subject' => "Fwd: My Travel Compared Booking Confirmation (Customr's Copy)",
+								'subject' => "Fwd: My Travel Compared Booking Confirmation (Customer's Copy)",
 								'bcc' => config('app.bcc')
 							])
 						);

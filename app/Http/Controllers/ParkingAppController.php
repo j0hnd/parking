@@ -513,7 +513,7 @@ class ParkingAppController extends Controller
                     'airport_details'    => $airport_address,
                     'on_arrival'         => $booking->products[0]->on_arrival,
                     'on_return'          => $booking->products[0]->on_return,
-					'subject'            => "My Travel Compared Booking Confirmation (Customr's Copy)",
+					'subject'            => "My Travel Compared Booking Confirmation (Customer's Copy)",
                 ]));
 
                 if (!empty($vendor_recipients)) {
